@@ -19,7 +19,8 @@ export class Navbar {
     'nav.commission',
   ] as const;
 
-  setLanguage(locale: Locale): void {
-    this.i18n.setLocale(locale);
+  toggleLanguage(): void {
+    const nextLocale: Locale = this.i18n.locale() === 'en' ? 'ja' : 'en';
+    this.i18n.setLocale(nextLocale);
   }
 }
