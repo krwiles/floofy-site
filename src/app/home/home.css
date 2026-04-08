@@ -1,1 +1,46 @@
+@keyframes introReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+    filter: blur(8px);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.intro-kicker,
+.intro-title {
+  opacity: 0;
+  animation-name: introReveal;
+  animation-duration: 900ms;
+  animation-timing-function: cubic-bezier(0.2, 0.75, 0.2, 1);
+  animation-fill-mode: forwards;
+  will-change: transform, opacity, filter;
+}
+
+.intro-kicker {
+  animation-delay: 100ms;
+}
+
+.intro-title {
+  animation-duration: 1050ms;
+  animation-delay: 220ms;
+}
+
+/* Accessibility: reduce motion if user requests it */
+@media (prefers-reduced-motion: reduce) {
+  .intro-kicker,
+  .intro-title {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
 
