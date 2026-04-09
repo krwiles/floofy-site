@@ -1,31 +1,35 @@
 <!-- Hero section: tall container creates scroll distance while background stays mostly still. -->
 <section
-    class="relative isolate min-h-screen overflow-hidden bg-blue-100"
+    class="relative isolate min-h-screen overflow-hidden bg-fg-brand-subtle"
     aria-label="Hero section"
 >
     <!-- Background image layer: fades in after image decode to prevent pop-in. -->
     <div
-        class="absolute inset-0 bg-fixed bg-[url('/G8s5y4ZakAA0XN9.jpeg')] bg-cover bg-no-repeat bg-position-[center_40%] transition-opacity duration-700 ease-out"
+        class="absolute inset-0 bg-[url('/G8s5y4ZakAA0XN9.jpeg')] bg-cover bg-no-repeat bg-position-[center_40%] will-change-transform transition-opacity duration-700 ease-out"
+        [style.transform]="'translate3d(0,' + parallaxY() + 'px,0)'"
         [class.opacity-0]="!heroImageLoaded()"
         [class.opacity-100]="heroImageLoaded()"
         aria-hidden="true"
     ></div>
 
     <!-- Horizontal dark gradient overlay: improves contrast for right-aligned white text. -->
-    <div class="absolute inset-0 bg-linear-to-r from-black/0 via-black/0 to-black/40" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-linear-to-r from-black/0 via-black/0 to-fg-brand/70" aria-hidden="true"></div>
 
     <!-- Foreground content: this scrolls normally while the background remains visually slower. -->
     <div class="relative z-10 mx-auto flex min-h-[calc(100svh-5rem)] w-full max-w-300 items-center justify-end px-6 text-right text-white lg:min-h-[calc(100svh-6rem)] lg:px-16">
-        <div class="drop-shadow-[0_4px_14px_rgba(0,0,0,0.7)]">
+        <div class="drop-shadow-[0_4px_14px_rgba(0,0,100,0.5)]">
             <!-- Small intro/kicker text above the main title. -->
-            <p class="intro-kicker m-0 text-[clamp(0.95rem,2vw,1.2rem)] uppercase tracking-[0.12em] opacity-90">
+            <p class="intro-kicker m-0 text-[clamp(0.75rem,2vw,1.2rem)] uppercase tracking-[0.12em] opacity-90">
                 Illustrator and Streamer
             </p>
             <!-- Main hero heading. -->
-            <h1 class="intro-title mt-[0.35rem] mb-0 text-[clamp(4.25rem,10vw,9rem)] leading-[0.95] font-extrabold">
+            <h1 class="intro-title mt-[0.35rem] mb-0 text-[clamp(4.5rem,15vw,9rem)] leading-[0.95] font-extrabold">
                 Floofy
             </h1>
         </div>
     </div>
 
 </section>
+
+<app-carousel></app-carousel>
+
