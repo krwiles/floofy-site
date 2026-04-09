@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { Carousel } from "../components/carousel/carousel";
+import { I18nService } from '../core/i18n.service';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,7 @@ import { Carousel } from "../components/carousel/carousel";
   },
 })
 export class Home implements OnInit {
+  readonly i18n = inject(I18nService);
   readonly heroImageLoaded = signal(false);
   readonly parallaxY = signal(0);
   readonly parallaxStrength = 0.30; // Adjust this value to increase/decrease the parallax effect
