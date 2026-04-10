@@ -23,4 +23,6 @@
     --color-fg-brand-subtle: var(--color-sky-100);
     --color-fg-brand: var(--color-sky-300);
     --color-fg-brand-strong: var(--color-sky-500);
+
+    --color-bg-brand-dark: var(--color-sky-900);
 }
