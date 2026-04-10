@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { CarouselImage } from '../../models/carousel-image.model';
 
 @Component({
   selector: 'app-carousel',
@@ -8,11 +9,5 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './carousel.css',
 })
 export class Carousel {
-  images = [
-    { src: '/G_CQjK1XkAALluE.jpeg', alt: 'Image 1' },
-    { src: '/G-Ewq9pagAA7Z-b.jpeg', alt: 'Image 2' },
-    { src: '/G8oM0YEasAAWxIg.jpeg', alt: 'Image 3' },
-    { src: '/G-lXyxKbQAMHkV_.jpeg', alt: 'Image 4' },
-    { src: '/G8s5y4ZakAA0XN9.jpeg', alt: 'Image 5' },
-  ];
+  readonly images = input.required<CarouselImage[]>();
 }
