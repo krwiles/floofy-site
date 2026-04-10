@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { Carousel } from "../components/carousel/carousel";
 import { I18nService } from '../core/i18n.service';
+import { CarouselImage } from '../models/carousel-image.model';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,13 @@ export class Home implements OnInit {
   readonly heroImageLoaded = signal(false);
   readonly parallaxY = signal(0);
   readonly parallaxStrength = 0.30; // Adjust this value to increase/decrease the parallax effect
+  readonly images: CarouselImage[] = [
+    { src: '/G_CQjK1XkAALluE.jpeg', alt: 'Image 1' },
+    { src: '/G-Ewq9pagAA7Z-b.jpeg', alt: 'Image 2' },
+    { src: '/G8oM0YEasAAWxIg.jpeg', alt: 'Image 3' },
+    { src: '/G-lXyxKbQAMHkV_.jpeg', alt: 'Image 4' },
+    { src: '/G8s5y4ZakAA0XN9.jpeg', alt: 'Image 5' },
+  ];
 
   onWindowScroll(): void {
     this.parallaxY.set(window.scrollY * this.parallaxStrength);
