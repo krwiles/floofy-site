@@ -16,10 +16,10 @@
         <div class="drop-shadow-[0_4px_14px_rgba(0,0,100,0.5)]">
             <!-- Small intro/kicker text above the main title. -->
             <p class="intro-kicker m-0 text-[clamp(0.75rem,2vw,1.2rem)] uppercase tracking-[0.12em] opacity-90">
-                @if (i18n.locale() === 'ja') {
-                    イラストレーター・配信者
-                } @else {
+                @if (i18n.locale() === 'en') {
                     Illustrator and Streamer
+                } @else {
+                    イラストレーター・配信者
                 }
             </p>
             <!-- Main hero heading. -->
@@ -35,10 +35,26 @@
  <section class="bg-bg-brand-dark">
     <div class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
         <div class="mt-4 md:mt-0 text-right">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">ART GALLERY</h2>
-            <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">Explore a curated collection of illustrations by Floofy, showcasing a variety of styles and techniques. Each piece reflects a unique perspective and creative expression.</p>
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                @if (i18n.locale() === 'en') {
+                    ART GALLERY
+                } @else {
+                    アートギャラリー
+                }
+            </h2>
+            <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">
+                @if (i18n.locale() === 'en') {
+                    Explore a curated collection of illustrations by Floofy, showcasing a variety of styles and techniques. Each piece reflects a unique perspective and creative expression.
+                } @else {
+                    厳選されたFloofyのイラストコレクションを探索し、さまざまなスタイルや技法を紹介します。各作品は独自の視点と創造的な表現を反映しています。
+                }
+            </p>
             <a href="#" class="inline-flex items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900">
-                View Gallery
+                @if (i18n.locale() === 'en') {
+                    View Gallery
+                } @else {
+                    ギャラリーを見る
+                }
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </a>
         </div>
@@ -50,16 +66,27 @@
 
 <!-- About Section -->
 
-<!-- Socials Embeds -->
+<!-- Twitter Embed -->
 <section class="bg-white">
-    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-            <blockquote class="twitter-tweet mx-auto" data-width="500"><p lang="en" dir="ltr">My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw">#nimagery</a> <a href="https://t.co/GaeMJxpWRb">pic.twitter.com/GaeMJxpWRb</a></p>&mdash; Summer Floofy🍊 (@SummerFloofy) <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw">December 29, 2025</a></blockquote>        <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-heading">Let's create more tools and ideas that brings us together.</h2>
-            <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">Flowbite helps you connect with friends and communities of people who share your interests. Connecting with your friends and family as well as discovering new ones is easy with features like Groups.</p>
-            <a href="#" class="inline-flex items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900">
-                Get started
-                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            </a>
+    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
+        <div class="flex w-full justify-center">
+            <blockquote class="twitter-tweet" data-width="500"><p lang="en" dir="ltr">My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw">#nimagery</a> <a href="https://t.co/GaeMJxpWRb">pic.twitter.com/GaeMJxpWRb</a></p>&mdash; Summer Floofy🍊 (@SummerFloofy) <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw">December 29, 2025</a></blockquote>
+        </div>
+        <div class="mt-4 md:mt-0">
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-heading">
+                @if (i18n.locale() === 'en') {
+                    LATEST NEWS
+                } @else {
+                    最新ニュース
+                }
+            </h2>
+            <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">
+                @if (i18n.locale() === 'en') {
+                    Stay updated with the latest news and updates from Floofy. Follow on Twitter for real-time updates, behind-the-scenes content, and more.
+                } @else {
+                    Floofyの最新ニュースやアップデートをチェックしましょう。リアルタイムの更新情報や舞台裏のコンテンツなどをTwitterでフォローしてください。
+                }
+            </p>
         </div>
     </div>
 </section>
