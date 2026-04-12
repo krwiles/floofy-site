@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { I18nService } from '../services/i18n.service';
 
 @Component({
-  selector: 'app-about',
+  selector: 'app-reviews',
   imports: [],
-  templateUrl: './about.html',
-  styleUrl: './about.css',
+  templateUrl: './reviews.html',
+  styleUrl: './reviews.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class About {
+export class Reviews {
   readonly i18n = inject(I18nService);
 }

@@ -18,6 +18,7 @@ export class Navbar {
     'nav.oc',
     'nav.contact',
     'nav.commission',
+    'nav.reviews',
   ] as const;
 
   toggleLanguage(): void {
