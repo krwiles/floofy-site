@@ -34,12 +34,15 @@ export class Home implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    // Load Twitter widgets after the view has initialized
+    // This is needed to ensure that any embedded tweets are properly rendered after routing
     if (typeof twttr !== 'undefined') {
       twttr.widgets.load();
     }
   }
 
   ngOnInit(): void {
+    // Preload the hero image and set the loaded state when it's ready
     const image = new Image();
     image.src = '/G8s5y4ZakAA0XN9.jpeg';
 

@@ -10,5 +10,31 @@ export const routes: Routes = [
 	{
 		path: 'about',
 		component: About,
+	},
+	/*
+	{
+		path: 'streaming',
+		component: Streaming,
+	},
+	{
+		path: 'gallery',
+		component: Gallery,
+	},
+	{
+		path: 'oc',
+		component: OC,
+	},
+	{
+		path: 'contact',
+		component: Contact,
+	},
+	{
+		path: 'commission',
+		component: Commission,
+	},
+	{
+		path: 'reviews',
+		component: Reviews,
 	}
+	*/
 ];

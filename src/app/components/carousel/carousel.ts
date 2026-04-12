@@ -14,6 +14,7 @@ export class Carousel implements AfterViewInit {
   readonly images = input.required<CarouselImage[]>();
 
   ngAfterViewInit(): void {
+    // Initialize Flowbite carousels after routing to ensure they work correctly
     initCarousels();
   }
 }
