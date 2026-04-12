@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { Carousel } from "../components/carousel/carousel";
 import { I18nService } from '../core/i18n.service';
 import { CarouselImage } from '../models/carousel-image.model';
+
+// Declare the Twitter widgets object to avoid TypeScript errors
+declare const twttr: { widgets: { load: () => void } };
 
 @Component({
   selector: 'app-home',
@@ -13,7 +16,7 @@ import { CarouselImage } from '../models/carousel-image.model';
     '(window:scroll)': 'onWindowScroll()',
   },
 })
-export class Home implements OnInit {
+export class Home implements OnInit, AfterViewInit {
   readonly i18n = inject(I18nService);
   readonly heroImageLoaded = signal(false);
   readonly parallaxY = signal(0);
@@ -28,6 +31,12 @@ export class Home implements OnInit {
 
   onWindowScroll(): void {
     this.parallaxY.set(window.scrollY * this.parallaxStrength);
+  }
+
+  ngAfterViewInit(): void {
+    if (typeof twttr !== 'undefined') {
+      twttr.widgets.load();
+    }
   }
 
   ngOnInit(): void {
