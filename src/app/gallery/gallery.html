@@ -1,1 +1,29 @@
-<p>gallery works!</p>
+<!-- Gallery Section -->
+ <section class="columns-1 md:columns-2 lg:columns-3 gap-8">
+        @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index;) {
+            <img
+                class="gallery-image w-full mb-8 break-inside-avoid"
+                [ngSrc]="galleryImage.srcThumbnail"
+                [alt]="galleryImage.alt"
+                [height]="galleryImage.heightThumbnail"
+                [width]="galleryImage.widthThumbnail"
+                loading="lazy"
+                (click)="showImage(galleryImage)"
+            />
+        }
+ </section>
+
+ @if (showLightBox()) {
+    <div class="fixed inset-0 z-1000 flex items-center justify-center bg-black/80" (click)="closeImage()" animate.enter="enter-lightbox" animate.leave="leave-lightbox">
+        <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
+            <img
+                animate.enter="enter-image"
+                class="lightbox-image max-w-[85vw] max-h-[97vh] shadow-[0_0_3rem_rgb(0,0,0)] bg-[#222]"
+                [src]="selectedImage()?.srcFull"
+                [alt]="selectedImage()?.alt"
+                loading="eager"
+            />
+            <button class="close-btn absolute top-4 -right-16 text-[4rem] bg-transparent border-0 text-white cursor-pointer" (click)="closeImage()">×</button>
+        </div>
+    </div>
+ }
