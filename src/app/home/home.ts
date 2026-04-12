@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { Carousel } from "../components/carousel/carousel";
-import { I18nService } from '../core/i18n.service';
+import { I18nService } from '../services/i18n.service';
 import { CarouselImage } from '../models/carousel-image.model';
 
 // Declare the Twitter widgets object to avoid TypeScript errors
