@@ -1,4 +1,30 @@
-    <div class="flex items-center mx-auto w-full h-screen justify-center">
-        <!-- Twitch embed renders into this element -->
-        <div id="twitch-embed"></div>
+<section class="mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8">
+    <div class="max-w-3xl">
+        <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
+            @if (i18n.locale() === 'en') {
+                STREAMING
+            } @else {
+                配信
+            }
+        </p>
+        <h1 class="text-4xl font-extrabold tracking-tight text-heading sm:text-5xl">
+            @if (i18n.locale() === 'en') {
+                Live stream and latest broadcasts.
+            } @else {
+                ライブ配信と最新の放送。
+            }
+        </h1>
+        <p class="mt-6 text-lg leading-8 text-body">
+            @if (i18n.locale() === 'en') {
+                Watch my current stream and catch recent content directly from Twitch.
+            } @else {
+                Twitch から現在の配信や最新コンテンツを視聴できます。
+            }
+        </p>
     </div>
+</section>
+
+<section class="mx-auto flex w-full max-w-7xl justify-center px-6 pb-20 lg:px-8">
+    <!-- Twitch embed renders into this element -->
+    <div id="twitch-embed"></div>
+</section>

@@ -1,18 +1,27 @@
 <!-- Gallery Hero -->
-<section class="bg-fg-default pt-8 sm:pt-12 bg-bg-brand-dark">
-    <div class="mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:flex lg:items-center lg:justify-between lg:py-16 lg:px-8">
-        <section>
-            <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                @if (i18n.locale() === 'en') { Gallery } @else { ギャラリー }
-            </h1>
-            <p class="mt-4 text-lg text-white">
-                @if (i18n.locale() === 'en') {
-                    A collection of my artwork, showcasing a variety of characters and styles. Available for personal projects, VTuber assets, and commissions.
-                } @else {
-                    私のアートワークのコレクションで、さまざまなキャラクターやスタイルを紹介しています。個人プロジェクト、VTuberアセット、コミッションに利用可能です。
-                }
-            </p>
-        </section>
+<section class="mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8">
+    <div class="max-w-3xl">
+        <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
+            @if (i18n.locale() === 'en') {
+                GALLERY
+            } @else {
+                ギャラリー
+            }
+        </p>
+        <h1 class="text-4xl font-extrabold tracking-tight text-heading sm:text-5xl">
+            @if (i18n.locale() === 'en') {
+                A collection of my artwork.
+            } @else {
+                私のアートワーク集。
+            }
+        </h1>
+        <p class="mt-6 text-lg leading-8 text-body">
+            @if (i18n.locale() === 'en') {
+                A collection of my artwork, showcasing a variety of characters and styles.
+            } @else {
+                私のアートワークのコレクションで、さまざまなキャラクターやスタイルを紹介しています。
+            }
+        </p>
     </div>
 </section>
 

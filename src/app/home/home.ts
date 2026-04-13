@@ -3,13 +3,14 @@ import { Carousel } from "../components/carousel/carousel";
 import { NgOptimizedImage } from '@angular/common';
 import { I18nService } from '../services/i18n.service';
 import { CarouselImage } from '../models/carousel-image.model';
+import { RouterLink } from '@angular/router';
 
 // Declare the Twitter widgets object to avoid TypeScript errors
 declare const twttr: { widgets: { load: () => void } };
 
 @Component({
   selector: 'app-home',
-  imports: [Carousel, NgOptimizedImage],
+  imports: [Carousel, NgOptimizedImage, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,7 +21,7 @@ declare const twttr: { widgets: { load: () => void } };
 export class Home implements AfterViewInit {
   readonly i18n = inject(I18nService);
   readonly parallaxY = signal(0);
-  readonly parallaxStrength = 0.30; // Adjust this value to increase/decrease the parallax effect
+  readonly parallaxStrength = 0.35; // Adjust this value to increase/decrease the parallax effect
   readonly images: CarouselImage[] = [
     { src: 'assets/G_CQjK1XkAALluE.jpeg', alt: 'Image 1', width: 1200, height: 1800 },
     { src: 'assets/G-Ewq9pagAA7Z-b.jpeg', alt: 'Image 2', width: 1442, height: 2048 },

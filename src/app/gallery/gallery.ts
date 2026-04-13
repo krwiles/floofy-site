@@ -12,6 +12,8 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './gallery.css',
 })
 export class Gallery {
+  private readonly document = inject(DOCUMENT);
+
   i18n = inject(I18nService);
   galleryImageService = inject(GalleryImageService);
   selectedImage = signal<GalleryImage | null>(null);
@@ -24,9 +26,17 @@ export class Gallery {
 
       // Lock scroll
       this.scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${this.scrollY}px`;
-      document.body.style.width = '100%';
+      const body = this.document.body;
+      const scrollbarWidth = window.innerWidth - this.document.documentElement.clientWidth;
+
+      body.style.position = 'fixed';
+      body.style.top = `-${this.scrollY}px`;
+      body.style.width = '100%';
+
+      // Compensate for removed scrollbar to prevent horizontal content shift.
+      if (scrollbarWidth > 0) {
+        body.style.paddingRight = `${scrollbarWidth}px`;
+      }
     }
     
     closeImage() {
@@ -34,9 +44,11 @@ export class Gallery {
       this.selectedImage.set(null);
 
       // Unlock scroll
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
+      const body = this.document.body;
+      body.style.position = '';
+      body.style.top = '';
+      body.style.width = '';
+      body.style.paddingRight = '';
       window.scrollTo(0, this.scrollY); // Restore scroll position
     }
 }

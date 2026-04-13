@@ -7,7 +7,6 @@
     aria-hidden="true"></div>
 
     <!-- Horizontal dark gradient overlay: improves contrast for right-aligned white text. -->
-    <div class="absolute inset-0 bg-linear-to-r from-black/0 via-black/0 to-fg-brand/70" aria-hidden="true"></div>
 
     <!-- Foreground content: this scrolls normally while the background remains visually slower. -->
     <div class="relative z-10 mx-auto flex w-full max-w-300 min-h-[calc(100svh-5rem)] items-center justify-end px-6 text-right text-white lg:min-h-[calc(100svh-6rem)] lg:px-16">
@@ -33,21 +32,21 @@
  <section class="bg-bg-brand-dark">
     <div class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
         <div class="mt-4 md:mt-0 text-right">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900">
+            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-white">
                 @if (i18n.locale() === 'en') {
                     ART GALLERY
                 } @else {
                     アートギャラリー
                 }
             </h2>
-            <p class="mb-6 font-light text-gray-500 md:text-lg">
+            <p class="mb-6 font-light text-white md:text-lg">
                 @if (i18n.locale() === 'en') {
                     Explore a curated collection of illustrations by Floofy, showcasing a variety of styles and techniques. Each piece reflects a unique perspective and creative expression.
                 } @else {
                     厳選されたFloofyのイラストコレクションを探索し、さまざまなスタイルや技法を紹介します。各作品は独自の視点と創造的な表現を反映しています。
                 }
             </p>
-            <a href="#" class="inline-flex items-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            <a routerLink="/gallery" class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">
                 @if (i18n.locale() === 'en') {
                     View Gallery
                 } @else {
@@ -81,7 +80,7 @@
                     フルーフィは、魅力的なアートワークと楽しいライブストリームで知られる才能あるイラストレーター兼ストリーマーです。創造性への情熱と独自の芸術スタイルを持つフルーフィは、アートコミュニティで熱心なフォロワーを築いています。デジタルイラストやインタラクティブなストリーミングセッションを通じて、フルーフィは世界中の観客に刺激とエンターテインメントを提供し続けています。
                 }
             </p>
-            <a href="#" class="inline-flex items-center text-bg-brand-dark bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            <a routerLink="/about" class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">
                 @if (i18n.locale() === 'en') {
                     Learn More
                 } @else {
@@ -104,7 +103,7 @@
                     最新ニュース
                 }
             </h2>
-            <p class="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">
+            <p class="mb-6 font-light text-white md:text-lg">
                 @if (i18n.locale() === 'en') {
                     Stay updated with the latest news and updates from Floofy. Follow on Twitter for real-time updates, behind-the-scenes content, and more.
                 } @else {

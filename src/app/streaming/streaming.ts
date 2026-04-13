@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { I18nService } from '../services/i18n.service';
 
 @Component({
   selector: 'app-streaming',
@@ -10,6 +11,7 @@ import { DOCUMENT } from '@angular/common';
 })
 export class Streaming implements AfterViewInit {
   private document = inject(DOCUMENT);
+  i18n = inject(I18nService);
 
   // Load the Twitch embed script and initialize the embed after the view has been initialized
   ngAfterViewInit() {
