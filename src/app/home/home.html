@@ -2,10 +2,8 @@
 <section class="relative isolate min-h-screen overflow-hidden bg-fg-brand-subtle" aria-label="Hero section">
     
     <!-- Background image layer: fades in after image decode to prevent pop-in. -->
-    <div class="absolute inset-0 bg-[url('/G8s5y4ZakAA0XN9.jpeg')] bg-cover bg-no-repeat bg-position-[center_40%] will-change-transform transition-opacity duration-700 ease-out" 
+    <div class="absolute inset-0 bg-[url('/assets/G8s5y4ZakAA0XN9.jpeg')] bg-cover bg-no-repeat bg-position-[center_40%] will-change-transform transition-opacity duration-700 ease-out opacity-100" 
     [style.transform]="'translate3d(0,' + parallaxY() + 'px,0)'" 
-    [class.opacity-0]="!heroImageLoaded()" 
-    [class.opacity-100]="heroImageLoaded()" 
     aria-hidden="true"></div>
 
     <!-- Horizontal dark gradient overlay: improves contrast for right-aligned white text. -->
@@ -67,7 +65,7 @@
 <!-- About Section -->
  <section class="bg-white">
     <div class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-        <img class="w-full rounded-lg" src="/G_Xl1MobAAAVbNn.jpeg" alt="Floofy" />
+        <img class="w-full rounded-lg" ngSrc="/assets/G_Xl1MobAAAVbNn.jpeg" alt="Floofy" width="1080" height="1080" />
         <div class="mt-4 md:mt-0">
             <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-bg-brand-dark">
                 @if (i18n.locale() === 'en') {

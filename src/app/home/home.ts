@@ -1,5 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Carousel } from "../components/carousel/carousel";
+import { NgOptimizedImage } from '@angular/common';
 import { I18nService } from '../services/i18n.service';
 import { CarouselImage } from '../models/carousel-image.model';
 
@@ -8,7 +9,7 @@ declare const twttr: { widgets: { load: () => void } };
 
 @Component({
   selector: 'app-home',
-  imports: [Carousel],
+  imports: [Carousel, NgOptimizedImage],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,17 +17,16 @@ declare const twttr: { widgets: { load: () => void } };
     '(window:scroll)': 'onWindowScroll()',
   },
 })
-export class Home implements OnInit, AfterViewInit {
+export class Home implements AfterViewInit {
   readonly i18n = inject(I18nService);
-  readonly heroImageLoaded = signal(false);
   readonly parallaxY = signal(0);
   readonly parallaxStrength = 0.30; // Adjust this value to increase/decrease the parallax effect
   readonly images: CarouselImage[] = [
-    { src: '/G_CQjK1XkAALluE.jpeg', alt: 'Image 1' },
-    { src: '/G-Ewq9pagAA7Z-b.jpeg', alt: 'Image 2' },
-    { src: '/G8oM0YEasAAWxIg.jpeg', alt: 'Image 3' },
-    { src: '/G-lXyxKbQAMHkV_.jpeg', alt: 'Image 4' },
-    { src: '/G8s5y4ZakAA0XN9.jpeg', alt: 'Image 5' },
+    { src: '/assets/G_CQjK1XkAALluE.jpeg', alt: 'Image 1', width: 1200, height: 1800 },
+    { src: '/assets/G-Ewq9pagAA7Z-b.jpeg', alt: 'Image 2', width: 1442, height: 2048 },
+    { src: '/assets/G8oM0YEasAAWxIg.jpeg', alt: 'Image 3', width: 999, height: 1332 },
+    { src: '/assets/G-lXyxKbQAMHkV_.jpeg', alt: 'Image 4', width: 1080, height: 1350 },
+    { src: '/assets/G8s5y4ZakAA0XN9.jpeg', alt: 'Image 5', width: 1080, height: 1350 },
   ];
 
   onWindowScroll(): void {
@@ -41,20 +41,4 @@ export class Home implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {
-    // Preload the hero image and set the loaded state when it's ready
-    const image = new Image();
-    image.src = '/G8s5y4ZakAA0XN9.jpeg';
-
-    if (image.decode) {
-      image
-        .decode()
-        .then(() => this.heroImageLoaded.set(true))
-        .catch(() => this.heroImageLoaded.set(true));
-      return;
-    }
-
-    image.onload = () => this.heroImageLoaded.set(true);
-    image.onerror = () => this.heroImageLoaded.set(true);
-  }
 }
