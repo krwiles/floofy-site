@@ -12,65 +12,51 @@
                     }
                 </p>
                 <a
-                    href="/commission"
+                    routerLink="/commission"
                     class="mt-5 inline-flex rounded-base bg-fg-brand-subtle px-4 py-2 text-sm font-semibold text-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
                 >
                     @if (i18n.locale() === 'en') { View Commission Info } @else { コミッション情報を見る }
                 </a>
             </section>
 
-            <div class="grid gap-8 sm:grid-cols-2 lg:col-span-7 lg:grid-cols-3 lg:pl-10 xl:pl-14">
+            <div class="grid gap-8 sm:grid-cols-2 lg:col-span-5 lg:col-start-8">
                 <nav aria-labelledby="footer-explore">
                     <h2 id="footer-explore" class="text-sm font-semibold uppercase tracking-wide text-heading">
                         @if (i18n.locale() === 'en') { Explore } @else { サイト内 }
                     </h2>
                     <ul class="mt-4 space-y-2 text-body">
-                        <li><a href="/about" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { About } @else { 概要 }</a></li>
-                        <li><a href="/gallery" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Gallery } @else { ギャラリー }</a></li>
-                        <li><a href="/oc" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Floofy's OC } @else { オリジナルキャラ }</a></li>
-                        <li><a href="/reviews" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Client Reviews } @else { レビュー }</a></li>
-                        <li><a href="/streaming" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Streaming } @else { 配信 }</a></li>
+                        <li><a routerLink="/about" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { About } @else { 概要 }</a></li>
+                        <li><a routerLink="/gallery" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Gallery } @else { ギャラリー }</a></li>
+                        <li><a routerLink="/oc" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Floofy's OC } @else { オリジナルキャラ }</a></li>
+                        <li><a routerLink="/reviews" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Client Reviews } @else { レビュー }</a></li>
+                        <li><a routerLink="/streaming" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Streaming } @else { 配信 }</a></li>
                     </ul>
                 </nav>
 
-                <section aria-labelledby="footer-services">
-                    <h2 id="footer-services" class="text-sm font-semibold uppercase tracking-wide text-heading">
-                        @if (i18n.locale() === 'en') { Services } @else { サービス }
-                    </h2>
-                    <ul class="mt-4 space-y-2 text-body">
-                        <li>@if (i18n.locale() === 'en') { Illustrations } @else { イラスト }</li>
-                        <li>@if (i18n.locale() === 'en') { Wallpapers } @else { 壁紙 }</li>
-                        <li>@if (i18n.locale() === 'en') { Comics } @else { 漫画 }</li>
-                        <li>
-                            @if (i18n.locale() === 'en') { Status: } @else { ステータス: }
-                            <span class="font-semibold text-heading">@if (i18n.locale() === 'en') { Open } @else { 受付中 }</span>
-                        </li>
-                    </ul>
-                </section>
-
-                <section aria-labelledby="footer-contact">
-                    <h2 id="footer-contact" class="text-sm font-semibold uppercase tracking-wide text-heading">
-                        @if (i18n.locale() === 'en') { Contact } @else { お問い合わせ }
+                <section aria-labelledby="footer-connect">
+                    <h2 id="footer-connect" class="text-sm font-semibold uppercase tracking-wide text-heading">
+                        @if (i18n.locale() === 'en') { Connect } @else { つながる }
                     </h2>
                     <ul class="mt-4 space-y-2 text-body">
                         <li>
                             <a href="mailto:hello@floofy.art" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">hello@floofy.art</a>
                         </li>
                         <li>
-                            <a href="/contact" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">
+                            <a routerLink="/contact" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">
                                 @if (i18n.locale() === 'en') { Contact Form } @else { お問い合わせフォーム }
                             </a>
                         </li>
+                        <li>
+                            <a href="https://x.com/" target="_blank" rel="noopener noreferrer" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">X / Twitter</a>
+                        </li>
+                        <li>
+                            <a href="https://www.pixiv.net/" target="_blank" rel="noopener noreferrer" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">Pixiv</a>
+                        </li>
+                        <li>
+                            <a href="https://bsky.app/" target="_blank" rel="noopener noreferrer" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">Bluesky</a>
+                        </li>
                     </ul>
                 </section>
-            </div>
-        </div>
-
-        <div class="mt-8 flex justify-end">
-            <div class="flex items-center gap-2 rounded-full border border-default bg-white/50 p-1.5 backdrop-blur-sm" aria-label="Social media links">
-                <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-default text-[11px] font-semibold uppercase tracking-wide text-body transition hover:-translate-y-0.5 hover:border-fg-brand-strong hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">X</a>
-                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-default text-[11px] font-semibold uppercase tracking-wide text-body transition hover:-translate-y-0.5 hover:border-fg-brand-strong hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">IG</a>
-                <a href="https://bsky.app/" target="_blank" rel="noopener noreferrer" aria-label="Bluesky" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-default text-[11px] font-semibold uppercase tracking-wide text-body transition hover:-translate-y-0.5 hover:border-fg-brand-strong hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">BS</a>
             </div>
         </div>
 

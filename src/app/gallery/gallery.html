@@ -1,19 +1,38 @@
-<!-- Gallery Section -->
- <section class="columns-1 md:columns-2 lg:columns-3 gap-8">
-        @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index;) {
-            <img
-                class="gallery-image w-full mb-8 break-inside-avoid"
-                [ngSrc]="galleryImage.srcThumbnail"
-                [alt]="galleryImage.alt"
-                [height]="galleryImage.heightThumbnail"
-                [width]="galleryImage.widthThumbnail"
-                loading="lazy"
-                (click)="showImage(galleryImage)"
-            />
-        }
- </section>
+<!-- Gallery Hero -->
+<section class="bg-fg-default">
+    <div class="mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:flex lg:items-center lg:justify-between lg:py-16 lg:px-8">
+        <section>
+            <h1 class="text-3xl font-bold tracking-tight text-heading sm:text-4xl">
+                @if (i18n.locale() === 'en') { Gallery } @else { ギャラリー }
+            </h1>
+            <p class="mt-4 text-lg text-body">
+                @if (i18n.locale() === 'en') {
+                    A collection of my artwork, showcasing a variety of characters and styles. Available for personal projects, VTuber assets, and commissions.
+                } @else {
+                    私のアートワークのコレクションで、さまざまなキャラクターやスタイルを紹介しています。個人プロジェクト、VTuberアセット、コミッションに利用可能です。
+                }
+            </p>
+        </section>
+    </div>
+</section>
 
- @if (showLightBox()) {
+<!-- Gallery Section -->
+<section class="columns-1 md:columns-2 lg:columns-3 gap-8 max-w-7xl mx-auto py-8 px-4 sm:py-16 lg:px-6">
+    @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index;) {
+        <img
+            class="gallery-image w-full mb-8 break-inside-avoid"
+            [ngSrc]="galleryImage.srcThumbnail"
+            [alt]="galleryImage.alt"
+            [height]="galleryImage.heightThumbnail"
+            [width]="galleryImage.widthThumbnail"
+            loading="lazy"
+            (click)="showImage(galleryImage)"
+        />
+    }
+</section>
+
+<!-- Lightbox Modal -->
+@if (showLightBox()) {
     <div class="fixed inset-0 z-1000 flex items-center justify-center bg-black/80" (click)="closeImage()" animate.enter="enter-lightbox" animate.leave="leave-lightbox">
         <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
             <img
@@ -26,4 +45,4 @@
             <button class="close-btn absolute top-4 -right-16 text-[4rem] bg-transparent border-0 text-white cursor-pointer" (click)="closeImage()">×</button>
         </div>
     </div>
- }
+}

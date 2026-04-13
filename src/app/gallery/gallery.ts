@@ -12,6 +12,7 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './gallery.css',
 })
 export class Gallery {
+  i18n = inject(I18nService);
   galleryImageService = inject(GalleryImageService);
   selectedImage = signal<GalleryImage | null>(null);
   showLightBox = signal<boolean>(false);
