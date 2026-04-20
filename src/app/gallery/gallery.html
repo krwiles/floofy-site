@@ -40,6 +40,8 @@
     }
 </section>
 
+<!-- TODO fix the scrollbar issue again. It's double counting now so it moves content left now -->
+<!-- TODO fix the dropdown, also ask about going to a url like /gallery and it doesn't load. Can we fix this? -->
 <!-- Lightbox Modal -->
 @if (showLightBox()) {
     <div class="fixed inset-0 z-1000 flex items-center justify-center bg-black/80" (click)="closeImage()" animate.enter="enter-lightbox" animate.leave="leave-lightbox">

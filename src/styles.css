@@ -29,4 +29,6 @@ html {
     --color-fg-brand-strong: var(--color-sky-500);
 
     --color-bg-brand-dark: var(--color-sky-900);
+    --color-bg-brand: var(--color-sky-700);
+    --color-bg-brand-light: var(--color-sky-500);
 }
