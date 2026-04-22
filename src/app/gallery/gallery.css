@@ -1,70 +1,68 @@
-
-
 .leave-grid {
-	opacity: 1;
-	animation: slide-out 0.5s forwards;
+  opacity: 1;
+  animation: slide-out 0.5s forwards;
 }
 
 .gallery-image {
-	transition: transform 0.3s;
+  transition: transform 0.3s;
 }
 .gallery-image:hover {
-	transform: scale(1.02);
-	cursor: pointer;
+  transform: scale(1.02);
+  cursor: pointer;
 }
 
 .enter-image {
-	opacity: 0;
-	animation: slide-in 0.4s forwards;
+  opacity: 0;
+  animation: slide-in 0.4s forwards;
 }
 
 @keyframes slide-in {
-	from {
-		opacity: 0;
-		transform: translateY(20rem) scale(0);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0) scale(1);
-	}
+  from {
+    opacity: 0;
+    transform: translateY(20rem) scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes slide-out {
-	to {
-		opacity: 0;
-		transform: translateY(6rem) scale(0.7);
-	}
+  to {
+    opacity: 0;
+    transform: translateY(6rem) scale(0.7);
+  }
 }
 
 .close-btn {
-	transition: color 0.2s;
+  transition: color 0.2s;
 }
 
 .close-btn:hover {
-	color: #ff4081;
+  color: #ff4081;
 }
 
 .enter-lightbox {
-	opacity: 0;
-	animation: fade-in 0.3s forwards;
+  opacity: 0;
+  animation: fade-in 0.3s forwards;
 }
 
 .leave-lightbox {
-	opacity: 1;
-	animation: fade-out 0.3s forwards;
+  opacity: 1;
+  animation: fade-out 0.3s forwards;
 }
 
 @keyframes fade-in {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fade-out {
-	to {
-		opacity: 0;
-	}
+  to {
+    opacity: 0;
+  }
 }

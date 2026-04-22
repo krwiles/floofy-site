@@ -7,7 +7,9 @@
     "build": "ng build",
     "build:gh-pages": "ng build --base-href /floofy-site/",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "private": true,
   "packageManager": "npm@11.11.0",

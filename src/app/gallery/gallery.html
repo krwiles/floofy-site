@@ -1,59 +1,71 @@
 <!-- Gallery Hero -->
 <section class="mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8">
-    <div class="max-w-3xl">
-        <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
-            @if (i18n.locale() === 'en') {
-                GALLERY
-            } @else {
-                ギャラリー
-            }
-        </p>
-        <h1 class="text-4xl font-extrabold tracking-tight text-heading sm:text-5xl">
-            @if (i18n.locale() === 'en') {
-                A collection of my artwork.
-            } @else {
-                私のアートワーク集。
-            }
-        </h1>
-        <p class="mt-6 text-lg leading-8 text-body">
-            @if (i18n.locale() === 'en') {
-                A collection of my artwork, showcasing a variety of characters and styles.
-            } @else {
-                私のアートワークのコレクションで、さまざまなキャラクターやスタイルを紹介しています。
-            }
-        </p>
-    </div>
+  <div class="max-w-3xl">
+    <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
+      @if (i18n.locale() === 'en') {
+        GALLERY
+      } @else {
+        ギャラリー
+      }
+    </p>
+    <h1 class="text-4xl font-extrabold tracking-tight text-heading sm:text-5xl">
+      @if (i18n.locale() === 'en') {
+        A collection of my artwork.
+      } @else {
+        私のアートワーク集。
+      }
+    </h1>
+    <p class="mt-6 text-lg leading-8 text-body">
+      @if (i18n.locale() === 'en') {
+        A collection of my artwork, showcasing a variety of characters and styles.
+      } @else {
+        私のアートワークのコレクションで、さまざまなキャラクターやスタイルを紹介しています。
+      }
+    </p>
+  </div>
 </section>
 
 <!-- Gallery Section -->
-<section class="columns-1 md:columns-2 lg:columns-3 gap-8 max-w-7xl mx-auto py-8 px-4 sm:py-16 lg:px-6">
-    @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index;) {
-        <img
-            class="gallery-image w-full mb-8 break-inside-avoid"
-            [ngSrc]="galleryImage.srcThumbnail"
-            [alt]="galleryImage.alt"
-            [height]="galleryImage.heightThumbnail"
-            [width]="galleryImage.widthThumbnail"
-            loading="lazy"
-            (click)="showImage(galleryImage)"
-        />
-    }
+<section
+  class="columns-1 md:columns-2 lg:columns-3 gap-8 max-w-7xl mx-auto py-8 px-4 sm:py-16 lg:px-6"
+>
+  @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index) {
+    <img
+      class="gallery-image w-full mb-8 break-inside-avoid"
+      [ngSrc]="galleryImage.srcThumbnail"
+      [alt]="galleryImage.alt"
+      [height]="galleryImage.heightThumbnail"
+      [width]="galleryImage.widthThumbnail"
+      loading="lazy"
+      (click)="showImage(galleryImage)"
+    />
+  }
 </section>
 
 <!-- TODO fix the scrollbar issue again. It's double counting now so it moves content left now -->
 <!-- TODO fix the dropdown, also ask about going to a url like /gallery and it doesn't load. Can we fix this? -->
 <!-- Lightbox Modal -->
 @if (showLightBox()) {
-    <div class="fixed inset-0 z-1000 flex items-center justify-center bg-black/80" (click)="closeImage()" animate.enter="enter-lightbox" animate.leave="leave-lightbox">
-        <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
-            <img
-                animate.enter="enter-image"
-                class="lightbox-image max-w-[85vw] max-h-[97vh] shadow-[0_0_3rem_rgb(0,0,0)] bg-[#222]"
-                [src]="selectedImage()?.srcFull"
-                [alt]="selectedImage()?.alt"
-                loading="eager"
-            />
-            <button class="close-btn absolute top-4 -right-16 text-[4rem] bg-transparent border-0 text-white cursor-pointer" (click)="closeImage()">×</button>
-        </div>
+  <div
+    class="fixed inset-0 z-1000 flex items-center justify-center bg-black/80"
+    (click)="closeImage()"
+    animate.enter="enter-lightbox"
+    animate.leave="leave-lightbox"
+  >
+    <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
+      <img
+        animate.enter="enter-image"
+        class="lightbox-image max-w-[85vw] max-h-[97vh] shadow-[0_0_3rem_rgb(0,0,0)] bg-[#222]"
+        [src]="selectedImage()?.srcFull"
+        [alt]="selectedImage()?.alt"
+        loading="eager"
+      />
+      <button
+        class="close-btn absolute top-4 -right-16 text-[4rem] bg-transparent border-0 text-white cursor-pointer"
+        (click)="closeImage()"
+      >
+        ×
+      </button>
     </div>
+  </div>
 }

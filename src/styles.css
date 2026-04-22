@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap');
-@import "flowbite/src/themes/default";
+@import 'flowbite/src/themes/default';
 @import 'tailwindcss';
 @plugin 'flowbite/plugin';
 @source "../node_modules/flowbite";
@@ -16,19 +16,19 @@ html {
 }
 
 @theme {
-    /* main text color */
-    --color-body: var(--color-sky-600);
-    --color-body-subtle: var(--color-sky-500);
+  /* main text color */
+  --color-body: var(--color-sky-600);
+  --color-body-subtle: var(--color-sky-500);
 
-    /* text heading colors */
-    --color-heading: var(--color-sky-800);
+  /* text heading colors */
+  --color-heading: var(--color-sky-800);
 
-    /* used for custom brand colors */
-    --color-fg-brand-subtle: var(--color-sky-100);
-    --color-fg-brand: var(--color-sky-300);
-    --color-fg-brand-strong: var(--color-sky-500);
+  /* used for custom brand colors */
+  --color-fg-brand-subtle: var(--color-sky-100);
+  --color-fg-brand: var(--color-sky-300);
+  --color-fg-brand-strong: var(--color-sky-500);
 
-    --color-bg-brand-dark: var(--color-sky-900);
-    --color-bg-brand: var(--color-sky-700);
-    --color-bg-brand-light: var(--color-sky-500);
+  --color-bg-brand-dark: var(--color-sky-900);
+  --color-bg-brand: var(--color-sky-700);
+  --color-bg-brand-light: var(--color-sky-500);
 }

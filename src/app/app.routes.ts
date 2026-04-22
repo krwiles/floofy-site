@@ -9,36 +9,36 @@ import { Commission } from './commission/commission';
 import { OC } from './oc/oc';
 
 export const routes: Routes = [
-	{
-		path: '',
-		component: Home,
-	},
-	{
-		path: 'about',
-		component: About,
-	},
-	{
-		path: 'streaming',
-		component: Streaming,
-	},
-	{
-		path: 'gallery',
-		component: Gallery,
-	},
-	{
-		path: 'reviews',
-		component: Reviews,
-	},
-	{
-		path: 'oc',
-		component: OC,
-	},
-	{
-		path: 'contact',
-		component: Contact,
-	},
-	{
-		path: 'commission',
-		component: Commission,
-	},
+  {
+    path: '',
+    component: Home,
+  },
+  {
+    path: 'about',
+    component: About,
+  },
+  {
+    path: 'streaming',
+    component: Streaming,
+  },
+  {
+    path: 'gallery',
+    component: Gallery,
+  },
+  {
+    path: 'reviews',
+    component: Reviews,
+  },
+  {
+    path: 'oc',
+    component: OC,
+  },
+  {
+    path: 'contact',
+    component: Contact,
+  },
+  {
+    path: 'commission',
+    component: Commission,
+  },
 ];

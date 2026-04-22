@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { Carousel } from "../components/carousel/carousel";
+import { Carousel } from '../components/carousel/carousel';
 import { NgOptimizedImage } from '@angular/common';
 import { I18nService } from '../services/i18n.service';
 import { CarouselImage } from '../models/carousel-image.model';
@@ -41,5 +41,4 @@ export class Home implements AfterViewInit {
       twttr.widgets.load();
     }
   }
-
 }

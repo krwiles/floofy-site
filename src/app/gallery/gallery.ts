@@ -20,35 +20,35 @@ export class Gallery {
   showLightBox = signal<boolean>(false);
   scrollY = 0;
 
-    showImage(image: GalleryImage) {
-      this.selectedImage.set(image);
-      this.showLightBox.set(true);
+  showImage(image: GalleryImage) {
+    this.selectedImage.set(image);
+    this.showLightBox.set(true);
 
-      // Lock scroll
-      this.scrollY = window.scrollY;
-      const body = this.document.body;
-      const scrollbarWidth = window.innerWidth - this.document.documentElement.clientWidth;
+    // Lock scroll
+    this.scrollY = window.scrollY;
+    const body = this.document.body;
+    const scrollbarWidth = window.innerWidth - this.document.documentElement.clientWidth;
 
-      body.style.position = 'fixed';
-      body.style.top = `-${this.scrollY}px`;
-      body.style.width = '100%';
+    body.style.position = 'fixed';
+    body.style.top = `-${this.scrollY}px`;
+    body.style.width = '100%';
 
-      // Compensate for removed scrollbar to prevent horizontal content shift.
-      if (scrollbarWidth > 0) {
-        body.style.paddingRight = `${scrollbarWidth}px`;
-      }
+    // Compensate for removed scrollbar to prevent horizontal content shift.
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${scrollbarWidth}px`;
     }
-    
-    closeImage() {
-      this.showLightBox.set(false);
-      this.selectedImage.set(null);
+  }
 
-      // Unlock scroll
-      const body = this.document.body;
-      body.style.position = '';
-      body.style.top = '';
-      body.style.width = '';
-      body.style.paddingRight = '';
-      window.scrollTo(0, this.scrollY); // Restore scroll position
-    }
+  closeImage() {
+    this.showLightBox.set(false);
+    this.selectedImage.set(null);
+
+    // Unlock scroll
+    const body = this.document.body;
+    body.style.position = '';
+    body.style.top = '';
+    body.style.width = '';
+    body.style.paddingRight = '';
+    window.scrollTo(0, this.scrollY); // Restore scroll position
+  }
 }

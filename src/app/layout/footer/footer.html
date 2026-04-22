@@ -1,77 +1,192 @@
 <footer class="border-default border-t bg-neutral-primary-soft">
-    <div class="mx-auto w-full max-w-7xl px-6 py-8 lg:px-8 lg:py-10">
-        <div class="grid gap-10 lg:grid-cols-12 lg:gap-6 xl:gap-8">
-            <section aria-labelledby="footer-brand" class="lg:col-span-5 lg:pr-6">
-                <h2 id="footer-brand" class="text-xl font-semibold text-heading">Floofy</h2>
-                <p class="mt-4 text-sm leading-6 text-body">
-                    @if (i18n.locale() === 'en') {
-                        Illustrator and streamer specializing in expressive character art. Available for illustration commissions.
-                    } @else {
-                        表情豊かなキャラクターアートを専門とするイラストレーター兼配信者。イラストコミッションを受け付けています。
-                    }
-                </p>
-                <a
-                    routerLink="/commission"
-                    class="mt-5 inline-flex rounded-base bg-fg-brand-subtle px-4 py-2 text-sm font-semibold text-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
-                >
-                    @if (i18n.locale() === 'en') { View Commission Info } @else { コミッション情報を見る }
-                </a>
-            </section>
+  <div class="mx-auto w-full max-w-7xl px-6 py-8 lg:px-8 lg:py-10">
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-6 xl:gap-8">
+      <section aria-labelledby="footer-brand" class="lg:col-span-5 lg:pr-6">
+        <h2 id="footer-brand" class="text-xl font-semibold text-heading">Floofy</h2>
+        <p class="mt-4 text-sm leading-6 text-body">
+          @if (i18n.locale() === 'en') {
+            Illustrator and streamer specializing in expressive character art. Available for
+            illustration commissions.
+          } @else {
+            表情豊かなキャラクターアートを専門とするイラストレーター兼配信者。イラストコミッションを受け付けています。
+          }
+        </p>
+        <a
+          routerLink="/commission"
+          class="mt-5 inline-flex rounded-base bg-fg-brand-subtle px-4 py-2 text-sm font-semibold text-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        >
+          @if (i18n.locale() === 'en') {
+            View Commission Info
+          } @else {
+            コミッション情報を見る
+          }
+        </a>
+      </section>
 
-            <div class="grid gap-8 sm:grid-cols-2 lg:col-span-5 lg:col-start-8">
-                <nav aria-labelledby="footer-explore">
-                    <h2 id="footer-explore" class="text-sm font-semibold uppercase tracking-wide text-heading">
-                        @if (i18n.locale() === 'en') { Explore } @else { サイト内 }
-                    </h2>
-                    <ul class="mt-4 space-y-2 text-body">
-                        <li><a routerLink="/about" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { About } @else { 概要 }</a></li>
-                        <li><a routerLink="/gallery" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Gallery } @else { ギャラリー }</a></li>
-                        <li><a routerLink="/oc" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Floofy's OC } @else { オリジナルキャラ }</a></li>
-                        <li><a routerLink="/reviews" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Client Reviews } @else { レビュー }</a></li>
-                        <li><a routerLink="/streaming" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">@if (i18n.locale() === 'en') { Streaming } @else { 配信 }</a></li>
-                    </ul>
-                </nav>
-
-                <section aria-labelledby="footer-connect">
-                    <h2 id="footer-connect" class="text-sm font-semibold uppercase tracking-wide text-heading">
-                        @if (i18n.locale() === 'en') { Connect } @else { つながる }
-                    </h2>
-                    <ul class="mt-4 space-y-2 text-body">
-                        <li>
-                            <a href="mailto:hello@floofy.art" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">hello@floofy.art</a>
-                        </li>
-                        <li>
-                            <a routerLink="/contact" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">
-                                @if (i18n.locale() === 'en') { Contact Form } @else { お問い合わせフォーム }
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://x.com/" target="_blank" rel="noopener noreferrer" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">X / Twitter</a>
-                        </li>
-                        <li>
-                            <a href="https://www.pixiv.net/" target="_blank" rel="noopener noreferrer" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">Pixiv</a>
-                        </li>
-                        <li>
-                            <a href="https://bsky.app/" target="_blank" rel="noopener noreferrer" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">Bluesky</a>
-                        </li>
-                    </ul>
-                </section>
-            </div>
-        </div>
-
-        <hr class="my-6 border-default lg:my-8" />
-
-        <div class="flex flex-col gap-3 text-sm text-body sm:flex-row sm:items-center sm:justify-between">
-            <p>
+      <div class="grid gap-8 sm:grid-cols-2 lg:col-span-5 lg:col-start-8">
+        <nav aria-labelledby="footer-explore">
+          <h2
+            id="footer-explore"
+            class="text-sm font-semibold uppercase tracking-wide text-heading"
+          >
+            @if (i18n.locale() === 'en') {
+              Explore
+            } @else {
+              サイト内
+            }
+          </h2>
+          <ul class="mt-4 space-y-2 text-body">
+            <li>
+              <a
+                routerLink="/about"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+              >
                 @if (i18n.locale() === 'en') {
-                    © 2026 Floofy. All original illustrations are my own work. Characters depicted may be owned by their respective copyright holders.
+                  About
                 } @else {
-                    © 2026 Floofy. 掲載のイラストはすべて私自身の作品です。描かれているキャラクターの著作権は各権利者に帰属する場合があります。
+                  概要
                 }
-            </p>
-            <button type="button" (click)="scrollToTop()" class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">
-                @if (i18n.locale() === 'en') { Back to top } @else { 上へ戻る }
-            </button>
-        </div>
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="/gallery"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+              >
+                @if (i18n.locale() === 'en') {
+                  Gallery
+                } @else {
+                  ギャラリー
+                }
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="/oc"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+              >
+                @if (i18n.locale() === 'en') {
+                  Floofy's OC
+                } @else {
+                  オリジナルキャラ
+                }
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="/reviews"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+              >
+                @if (i18n.locale() === 'en') {
+                  Client Reviews
+                } @else {
+                  レビュー
+                }
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="/streaming"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+              >
+                @if (i18n.locale() === 'en') {
+                  Streaming
+                } @else {
+                  配信
+                }
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <section aria-labelledby="footer-connect">
+          <h2
+            id="footer-connect"
+            class="text-sm font-semibold uppercase tracking-wide text-heading"
+          >
+            @if (i18n.locale() === 'en') {
+              Connect
+            } @else {
+              つながる
+            }
+          </h2>
+          <ul class="mt-4 space-y-2 text-body">
+            <li>
+              <a
+                href="mailto:hello@floofy.art"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+                >hello@floofy.art</a
+              >
+            </li>
+            <li>
+              <a
+                routerLink="/contact"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+              >
+                @if (i18n.locale() === 'en') {
+                  Contact Form
+                } @else {
+                  お問い合わせフォーム
+                }
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://x.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+                >X / Twitter</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.pixiv.net/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+                >Pixiv</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://bsky.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+                >Bluesky</a
+              >
+            </li>
+          </ul>
+        </section>
+      </div>
     </div>
+
+    <hr class="my-6 border-default lg:my-8" />
+
+    <div
+      class="flex flex-col gap-3 text-sm text-body sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>
+        @if (i18n.locale() === 'en') {
+          © 2026 Floofy. All original illustrations are my own work. Characters depicted may be
+          owned by their respective copyright holders.
+        } @else {
+          © 2026 Floofy.
+          掲載のイラストはすべて私自身の作品です。描かれているキャラクターの著作権は各権利者に帰属する場合があります。
+        }
+      </p>
+      <button
+        type="button"
+        (click)="scrollToTop()"
+        class="underline-offset-2 transition-colors hover:text-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+      >
+        @if (i18n.locale() === 'en') {
+          Back to top
+        } @else {
+          上へ戻る
+        }
+      </button>
+    </div>
+  </div>
 </footer>
