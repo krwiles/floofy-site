@@ -3,6 +3,10 @@
   animation: slide-out 0.5s forwards;
 }
 
+.lightbox-overlay {
+  padding-right: var(--scrollbar-compensation, 0px);
+}
+
 .gallery-image {
   transition: transform 0.3s;
 }

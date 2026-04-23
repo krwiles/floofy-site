@@ -10,11 +10,6 @@
   font-family: 'Inter', 'Noto Sans JP', sans-serif;
 }
 
-html {
-  /* Keep scrollbar gutter space reserved to avoid layout jumps when modals open. */
-  scrollbar-gutter: stable;
-}
-
 @theme {
   /* main text color */
   --color-body: var(--color-sky-600);

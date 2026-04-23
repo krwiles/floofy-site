@@ -27,7 +27,9 @@ export class Gallery {
     // Lock scroll
     this.scrollY = window.scrollY;
     const body = this.document.body;
+    const root = this.document.documentElement;
     const scrollbarWidth = window.innerWidth - this.document.documentElement.clientWidth;
+    root.style.setProperty('--scrollbar-compensation', `${Math.max(scrollbarWidth, 0)}px`);
 
     body.style.position = 'fixed';
     body.style.top = `-${this.scrollY}px`;
@@ -45,10 +47,12 @@ export class Gallery {
 
     // Unlock scroll
     const body = this.document.body;
+    const root = this.document.documentElement;
     body.style.position = '';
     body.style.top = '';
     body.style.width = '';
     body.style.paddingRight = '';
+    root.style.removeProperty('--scrollbar-compensation');
     window.scrollTo(0, this.scrollY); // Restore scroll position
   }
 }
