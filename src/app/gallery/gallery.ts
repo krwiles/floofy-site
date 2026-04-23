@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { GalleryImageService } from '../services/gallery-image.service';
 import { GalleryImage } from '../models/gallery-image';
 import { DOCUMENT } from '@angular/common';
@@ -39,6 +39,11 @@ export class Gallery {
     if (scrollbarWidth > 0) {
       body.style.paddingRight = `${scrollbarWidth}px`;
     }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (this.showLightBox()) this.closeImage();
   }
 
   closeImage() {

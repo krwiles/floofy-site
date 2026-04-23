@@ -42,7 +42,6 @@
   }
 </section>
 
-<!-- TODO fix the scrollbar issue again. It's double counting now so it moves content left now -->
 <!-- TODO fix the dropdown, also ask about going to a url like /gallery and it doesn't load. Can we fix this? -->
 <!-- Lightbox Modal -->
 @if (showLightBox()) {
@@ -55,13 +54,13 @@
     <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
       <img
         animate.enter="enter-image"
-        class="lightbox-image max-w-[85vw] max-h-[97vh] shadow-[0_0_3rem_rgb(0,0,0)] bg-[#222]"
+        class="lightbox-image max-w-screen max-h-screen shadow-[0_0_3rem_rgb(0,0,0)] bg-[#222]"
         [src]="selectedImage()?.srcFull"
         [alt]="selectedImage()?.alt"
         loading="eager"
       />
       <button
-        class="close-btn absolute top-4 -right-16 text-[4rem] bg-transparent border-0 text-white cursor-pointer"
+        class="close-btn absolute right-8 text-[4rem] bg-transparent border-0 text-white lg:text-transparent cursor-pointer"
         (click)="closeImage()"
       >
         ×
