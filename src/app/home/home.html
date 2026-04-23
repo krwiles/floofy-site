@@ -1,18 +1,10 @@
 <!-- Hero Section  -->
-<section
-  class="relative isolate min-h-screen overflow-hidden bg-fg-brand-subtle"
-  aria-label="Hero section"
+<app-parallax-section
+  class="min-h-screen"
+  [ariaLabel]="'Hero section'"
+  [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
+  [backgroundPosition]="'center 40%'"
 >
-  <!-- Background image layer: fades in after image decode to prevent pop-in. -->
-  <div
-    class="absolute inset-0 bg-[url('assets/G8s5y4ZakAA0XN9.jpeg')] bg-cover bg-no-repeat bg-position-[center_40%] will-change-transform transition-opacity duration-700 ease-out opacity-100"
-    [style.transform]="'translate3d(0,' + parallaxY() + 'px,0)'"
-    aria-hidden="true"
-  ></div>
-
-  <!-- Horizontal dark gradient overlay: improves contrast for right-aligned white text. -->
-
-  <!-- Foreground content: this scrolls normally while the background remains visually slower. -->
   <div
     class="relative z-10 mx-auto flex w-full max-w-300 min-h-[calc(100svh-5rem)] items-center justify-end px-6 text-right text-white lg:min-h-[calc(100svh-6rem)] lg:px-16"
   >
@@ -35,7 +27,7 @@
       </h1>
     </div>
   </div>
-</section>
+</app-parallax-section>
 
 <!-- Gallery Section -->
 <section class="bg-bg-brand-dark">
