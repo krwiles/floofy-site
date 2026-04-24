@@ -17,9 +17,6 @@ body {
 @theme {
   /* ── Page background ─────────────────────────────────────────────────────
      The root canvas. Choose pure white OR a subtle tint — swap here only.
-     white        → clean, high contrast
-     sky-50       → barely-there blue tint (airy / soft)
-     sky-100      → noticeable tint (clearly off-white)
   ── */
   --color-bg: var(--color-sky-50); /* ← tweak this one line */
   --color-bg-subtle: var(--color-sky-100); /* inset / card surface on light bg */
@@ -27,7 +24,6 @@ body {
 
   /* ── Section – Light ─────────────────────────────────────────────────────
      Light-background sections (hero intros, alternating content rows, etc.)
-     Apply bg-section-light to the <section>; pair with text-on-light-* for text.
   ── */
   --color-section-light: var(--color-sky-50); /* section background */
   --color-section-light-alt: var(--color-sky-100); /* alternate / zebra-stripe light section */
@@ -37,7 +33,6 @@ body {
 
   /* ── Section – Dark ──────────────────────────────────────────────────────
      Dark-background sections (feature bands, CTAs, footers, etc.)
-     Apply bg-section-dark to the <section>; pair with text-on-dark-* for text.
   ── */
   --color-section-dark: var(--color-sky-900); /* section background */
   --color-section-dark-alt: var(--color-sky-800); /* alternate dark section */
@@ -51,7 +46,7 @@ body {
   --color-bg-brand-dark: var(--color-sky-900); /* dark brand band */
   --color-bg-brand: var(--color-sky-700); /* brand band */
   --color-bg-brand-light: var(--color-sky-500); /* light brand band */
-  --color-fg-brand-subtle: var(--color-sky-100); /* very light brand tint */
+  --color-fg-brand-subtle: var(--color-sky-200); /* very light brand tint */
   --color-fg-brand: var(--color-sky-300); /* default brand accent */
   --color-fg-brand-strong: var(--color-sky-500); /* prominent brand accent */
 

@@ -1,6 +1,26 @@
 :host {
   display: block;
-  min-height: 100svh;
+  min-height: var(--parallax-min-height, 100svh);
+}
+
+:host(.parallax-h-sm) {
+  --parallax-min-height: 70svh;
+}
+
+:host(.parallax-h-md) {
+  --parallax-min-height: 100svh;
+}
+
+:host(.parallax-h-lg) {
+  --parallax-min-height: 120svh;
+}
+
+:host(.parallax-h-xl) {
+  --parallax-min-height: 150svh;
+}
+
+:host(.parallax-h-2xl) {
+  --parallax-min-height: 180svh;
 }
 
 .parallax-root {
