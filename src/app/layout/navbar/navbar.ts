@@ -10,7 +10,7 @@ import { I18nService, Locale } from '../../services/i18n.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Navbar {
-  readonly i18n = inject(I18nService);  
+  readonly i18n = inject(I18nService);
   readonly navKeys = [
     'nav.about',
     'nav.streaming',

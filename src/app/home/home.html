@@ -1,122 +1,187 @@
 <!-- Hero Section  -->
-<section class="relative isolate min-h-screen overflow-hidden bg-fg-brand-subtle" aria-label="Hero section">
-    
-    <!-- Background image layer: fades in after image decode to prevent pop-in. -->
-    <div class="absolute inset-0 bg-[url('assets/G8s5y4ZakAA0XN9.jpeg')] bg-cover bg-no-repeat bg-position-[center_40%] will-change-transform transition-opacity duration-700 ease-out opacity-100" 
-    [style.transform]="'translate3d(0,' + parallaxY() + 'px,0)'" 
-    aria-hidden="true"></div>
-
-    <!-- Horizontal dark gradient overlay: improves contrast for right-aligned white text. -->
-
-    <!-- Foreground content: this scrolls normally while the background remains visually slower. -->
-    <div class="relative z-10 mx-auto flex w-full max-w-300 min-h-[calc(100svh-5rem)] items-center justify-end px-6 text-right text-white lg:min-h-[calc(100svh-6rem)] lg:px-16">
-        <div class="drop-shadow-[0_4px_14px_rgba(0,0,100,0.5)]">
-            <!-- Small intro/kicker text above the main title. -->
-            <p class="intro-kicker m-0 text-[clamp(0.75rem,2vw,1.2rem)] uppercase tracking-[0.12em] opacity-90">
-                @if (i18n.locale() === 'en') {
-                    Illustrator and Streamer
-                } @else {
-                    イラストレーター・配信者
-                }
-            </p>
-            <!-- Main hero heading. -->
-            <h1 class="intro-title mt-[0.35rem] mb-0 text-[clamp(4.5rem,15vw,9rem)] leading-[0.95] font-extrabold">
-                Floofy
-            </h1>
-        </div>
+<app-parallax-section
+  class="parallax-h-lg"
+  [ariaLabel]="'Hero section'"
+  [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
+  [backgroundPosition]="'center 40%'"
+>
+  <div
+    class="relative z-10 mx-auto flex w-full max-w-300 items-center justify-end px-6 text-right text-on-dark-heading lg:min-h-[calc(100svh-6rem)] lg:px-16"
+  >
+    <div class="drop-shadow-[0_4px_14px_rgba(0,0,100,0.5)]">
+      <!-- Small intro/kicker text above the main title. -->
+      <p
+        class="intro-kicker m-0 text-[clamp(0.75rem,2vw,1.2rem)] uppercase tracking-[0.12em] opacity-90"
+      >
+        @if (i18n.locale() === 'en') {
+          Illustrator and Streamer
+        } @else {
+          イラストレーター・配信者
+        }
+      </p>
+      <!-- Main hero heading. -->
+      <h1
+        class="intro-title mt-[0.35rem] mb-0 text-[clamp(4.5rem,15vw,9rem)] leading-[0.95] font-extrabold"
+      >
+        Floofy
+      </h1>
     </div>
-
-</section>
+  </div>
+</app-parallax-section>
 
 <!-- Gallery Section -->
- <section class="bg-bg-brand-dark">
-    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-        <div class="mt-4 md:mt-0 text-right">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-white">
-                @if (i18n.locale() === 'en') {
-                    ART GALLERY
-                } @else {
-                    アートギャラリー
-                }
-            </h2>
-            <p class="mb-6 font-light text-white md:text-lg">
-                @if (i18n.locale() === 'en') {
-                    Explore a curated collection of illustrations by Floofy, showcasing a variety of styles and techniques. Each piece reflects a unique perspective and creative expression.
-                } @else {
-                    厳選されたFloofyのイラストコレクションを探索し、さまざまなスタイルや技法を紹介します。各作品は独自の視点と創造的な表現を反映しています。
-                }
-            </p>
-            <a routerLink="/gallery" class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">
-                @if (i18n.locale() === 'en') {
-                    View Gallery
-                } @else {
-                    ギャラリーを見る
-                }
-                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            </a>
-        </div>
-        <div class="h-135 w-90 mx-auto rounded-base overflow-hidden">
-            <app-carousel [images]="images"></app-carousel>
-        </div>     
+<section class="bg-section-dark">
+  <div
+    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+  >
+    <div class="mt-4 md:mt-0 text-right">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+        @if (i18n.locale() === 'en') {
+          ART GALLERY
+        } @else {
+          アートギャラリー
+        }
+      </h2>
+      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+        @if (i18n.locale() === 'en') {
+          Explore a curated collection of illustrations by Floofy, showcasing a variety of styles
+          and techniques. Each piece reflects a unique perspective and creative expression.
+        } @else {
+          厳選されたFloofyのイラストコレクションを探索し、さまざまなスタイルや技法を紹介します。各作品は独自の視点と創造的な表現を反映しています。
+        }
+      </p>
+      <a
+        routerLink="/gallery"
+        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+      >
+        @if (i18n.locale() === 'en') {
+          View Gallery
+        } @else {
+          ギャラリーを見る
+        }
+        <svg
+          class="ml-2 -mr-1 w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </a>
     </div>
+    <div class="h-135 w-90 mx-auto rounded-base overflow-hidden">
+      <app-carousel [images]="images"></app-carousel>
+    </div>
+  </div>
 </section>
 
 <!-- About Section -->
- <section class="bg-white">
-    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-        <img class="w-full rounded-lg" ngSrc="assets/G_Xl1MobAAAVbNn.jpeg" alt="Floofy" width="1080" height="1080" />
-        <div class="mt-4 md:mt-0">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-bg-brand-dark">
-                @if (i18n.locale() === 'en') {
-                    ABOUT FLOOFY
-                } @else {
-                    フルーフィについて
-                }
-            </h2>
-            <p class="mb-6 font-light text-gray-500 md:text-lg">
-                @if (i18n.locale() === 'en') {
-                    Floofy is a talented illustrator and streamer known for captivating artwork and fun live streams. With a passion for creativity and a unique artistic style, Floofy has built a dedicated following in the art community. Whether through digital illustrations or interactive streaming sessions, Floofy continues to inspire and entertain audiences worldwide.
-                } @else {
-                    フルーフィは、魅力的なアートワークと楽しいライブストリームで知られる才能あるイラストレーター兼ストリーマーです。創造性への情熱と独自の芸術スタイルを持つフルーフィは、アートコミュニティで熱心なフォロワーを築いています。デジタルイラストやインタラクティブなストリーミングセッションを通じて、フルーフィは世界中の観客に刺激とエンターテインメントを提供し続けています。
-                }
-            </p>
-            <a routerLink="/about" class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong">
-                @if (i18n.locale() === 'en') {
-                    Learn More
-                } @else {
-                    詳しく見る
-                }
-                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            </a>
-        </div>
+<section class="bg-section-light">
+  <div
+    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+  >
+    <img
+      class="w-full rounded-lg"
+      ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
+      alt="Floofy"
+      width="1080"
+      height="1080"
+    />
+    <div class="mt-4 md:mt-0">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading">
+        @if (i18n.locale() === 'en') {
+          ABOUT FLOOFY
+        } @else {
+          フルーフィについて
+        }
+      </h2>
+      <p class="mb-6 font-light text-on-light-body md:text-lg">
+        @if (i18n.locale() === 'en') {
+          Floofy is a talented illustrator and streamer known for captivating artwork and fun live
+          streams. With a passion for creativity and a unique artistic style, Floofy has built a
+          dedicated following in the art community. Whether through digital illustrations or
+          interactive streaming sessions, Floofy continues to inspire and entertain audiences
+          worldwide.
+        } @else {
+          フルーフィは、魅力的なアートワークと楽しいライブストリームで知られる才能あるイラストレーター兼ストリーマーです。創造性への情熱と独自の芸術スタイルを持つフルーフィは、アートコミュニティで熱心なフォロワーを築いています。デジタルイラストやインタラクティブなストリーミングセッションを通じて、フルーフィは世界中の観客に刺激とエンターテインメントを提供し続けています。
+        }
+      </p>
+      <a
+        routerLink="/about"
+        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+      >
+        @if (i18n.locale() === 'en') {
+          Learn More
+        } @else {
+          詳しく見る
+        }
+        <svg
+          class="ml-2 -mr-1 w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </a>
     </div>
+  </div>
 </section>
 
 <!-- Twitter Embed -->
-<section class="bg-bg-brand-dark">
-    <div class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
-        <div class="mt-4 md:mt-0 text-right">
-            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-white">
-                @if (i18n.locale() === 'en') {
-                    LATEST NEWS
-                } @else {
-                    最新ニュース
-                }
-            </h2>
-            <p class="mb-6 font-light text-white md:text-lg">
-                @if (i18n.locale() === 'en') {
-                    Stay updated with the latest news and updates from Floofy. Follow on Twitter for real-time updates, behind-the-scenes content, and more.
-                } @else {
-                    Floofyの最新ニュースやアップデートをチェックしましょう。リアルタイムの更新情報や舞台裏のコンテンツなどをTwitterでフォローしてください。
-                }
-            </p>
-            <div class="flex w-full justify-end">
-                <a href="https://twitter.com/SummerFloofy?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-screen-name="true" data-show-count="true">Follow @SummerFloofy</a>        
-            </div>
-        </div>
-        <div class="flex w-full justify-center">
-            <blockquote class="twitter-tweet" data-width="500"><p lang="en" dir="ltr">My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw">#nimagery</a> <a href="https://t.co/GaeMJxpWRb">pic.twitter.com/GaeMJxpWRb</a></p>&mdash; Summer Floofy🍊 (@SummerFloofy) <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw">December 29, 2025</a></blockquote>
-        </div>
+<section class="bg-section-dark">
+  <div
+    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+  >
+    <div class="mt-4 md:mt-0 text-right">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+        @if (i18n.locale() === 'en') {
+          LATEST NEWS
+        } @else {
+          最新ニュース
+        }
+      </h2>
+      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+        @if (i18n.locale() === 'en') {
+          Stay updated with the latest news and updates from Floofy. Follow on Twitter for real-time
+          updates, behind-the-scenes content, and more.
+        } @else {
+          Floofyの最新ニュースやアップデートをチェックしましょう。リアルタイムの更新情報や舞台裏のコンテンツなどをTwitterでフォローしてください。
+        }
+      </p>
+      <div class="flex w-full justify-end">
+        <a
+          href="https://twitter.com/SummerFloofy?ref_src=twsrc%5Etfw"
+          class="twitter-follow-button"
+          data-size="large"
+          data-show-screen-name="true"
+          data-show-count="true"
+          >Follow @SummerFloofy</a
+        >
+      </div>
     </div>
+    <div class="flex w-full justify-center">
+      <blockquote class="twitter-tweet" data-width="500">
+        <p lang="en" dir="ltr">
+          My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try
+          <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw"
+            >#nimagery</a
+          >
+          <a href="https://t.co/GaeMJxpWRb">pic.twitter.com/GaeMJxpWRb</a>
+        </p>
+        &mdash; Summer Floofy🍊 (@SummerFloofy)
+        <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw"
+          >December 29, 2025</a
+        >
+      </blockquote>
+    </div>
+  </div>
 </section>
-

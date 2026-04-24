@@ -1,4 +1,6 @@
-<section class="mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8">
+<section
+  class="bg-section-light mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8"
+>
   <div class="max-w-3xl">
     <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
       @if (i18n.locale() === 'en') {
@@ -7,18 +9,386 @@
         依頼
       }
     </p>
-    <h1 class="text-4xl font-extrabold tracking-tight text-heading sm:text-5xl">
+    <h1 class="text-4xl font-extrabold tracking-tight text-on-light-heading sm:text-5xl">
       @if (i18n.locale() === 'en') {
         Commission info and pricing.
       } @else {
         依頼情報と料金について。
       }
     </h1>
-    <p class="mt-6 text-lg leading-8 text-body">
+    <p class="mt-6 text-lg leading-8 text-on-light-body">
       @if (i18n.locale() === 'en') {
         Details about commission types, pricing, and how to place an order will be listed here.
       } @else {
         依頼の種類、料金、注文方法についての詳細はこちらに掲載します。
+      }
+    </p>
+  </div>
+</section>
+
+<section class="bg-section-dark">
+  <div class="mx-auto w-full max-w-7xl px-6 py-16 lg:px-8">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-on-dark-heading sm:text-4xl">
+        @if (i18n.locale() === 'en') {
+          Pricing
+        } @else {
+          料金
+        }
+      </h2>
+      <p class="text-lg text-on-dark-body">
+        @if (i18n.locale() === 'en') {
+          Choose the commission type that works best for you.
+        } @else {
+          あなたに最適な依頼の種類をお選びください。
+        }
+      </p>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-3">
+      <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
+        <div class="flex-1">
+          <h3 class="text-2xl font-bold text-on-dark-heading">
+            @if (i18n.locale() === 'en') {
+              Chibi
+            } @else {
+              ちび
+            }
+          </h3>
+          <p class="mt-2 text-sm text-on-dark-body-subtle">
+            @if (i18n.locale() === 'en') {
+              Cute, compact style
+            } @else {
+              かわいいコンパクトスタイル
+            }
+          </p>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-dark-heading">$27</span>
+            <span
+              class="ml-2 text-base font-semibold uppercase tracking-wide text-on-dark-body-subtle"
+              >USD</span
+            >
+          </p>
+
+          <ul role="list" class="mt-8 space-y-4">
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  Half-body illustration
+                } @else {
+                  半身イラスト
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  Simple background
+                } @else {
+                  シンプルな背景
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  3 revisions
+                } @else {
+                  修正3回
+                }
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <button
+          type="button"
+          class="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-fg-brand px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-fg-brand-strong focus:outline-none focus:ring-2 focus:ring-fg-brand focus:ring-offset-2 focus:ring-offset-sky-900"
+        >
+          @if (i18n.locale() === 'en') {
+            Select
+          } @else {
+            選択
+          }
+        </button>
+      </div>
+
+      <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
+        <div class="flex-1">
+          <h3 class="text-2xl font-bold text-on-dark-heading">
+            @if (i18n.locale() === 'en') {
+              Emotes
+            } @else {
+              エモート
+            }
+          </h3>
+          <p class="mt-2 text-sm text-on-dark-body-subtle">
+            @if (i18n.locale() === 'en') {
+              For streaming & social media
+            } @else {
+              ストリーミング・SNS向け
+            }
+          </p>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-dark-heading">$30</span>
+            <span
+              class="ml-2 text-base font-semibold uppercase tracking-wide text-on-dark-body-subtle"
+              >USD</span
+            >
+          </p>
+
+          <ul role="list" class="mt-8 space-y-4">
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  1 custom emote
+                } @else {
+                  カスタムエモート1個
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  PNG & high resolution
+                } @else {
+                  PNG・高解像度
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  3 revisions
+                } @else {
+                  修正3回
+                }
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <button
+          type="button"
+          class="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-fg-brand px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-fg-brand-strong focus:outline-none focus:ring-2 focus:ring-fg-brand focus:ring-offset-2 focus:ring-offset-sky-900"
+        >
+          @if (i18n.locale() === 'en') {
+            Select
+          } @else {
+            選択
+          }
+        </button>
+      </div>
+
+      <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
+        <div class="flex-1">
+          <h3 class="text-2xl font-bold text-on-dark-heading">
+            @if (i18n.locale() === 'en') {
+              Illustration
+            } @else {
+              イラスト
+            }
+          </h3>
+          <p class="mt-2 text-sm text-on-dark-body-subtle">
+            @if (i18n.locale() === 'en') {
+              Premium thigh-up artwork
+            } @else {
+              プレミアム腰上作品
+            }
+          </p>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-dark-heading">$80</span>
+            <span
+              class="ml-2 text-base font-semibold uppercase tracking-wide text-on-dark-body-subtle"
+              >USD</span
+            >
+          </p>
+
+          <ul role="list" class="mt-8 space-y-4">
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  Full color artwork
+                } @else {
+                  フルカラー作品
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  Custom background included
+                } @else {
+                  カスタム背景込み
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  3 revisions
+                } @else {
+                  修正3回
+                }
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <button
+          type="button"
+          class="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-fg-brand px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-fg-brand-strong focus:outline-none focus:ring-2 focus:ring-fg-brand focus:ring-offset-2 focus:ring-offset-sky-900"
+        >
+          @if (i18n.locale() === 'en') {
+            Select
+          } @else {
+            選択
+          }
+        </button>
+      </div>
+    </div>
+
+    <p class="mt-10 text-center text-sm text-on-dark-body-subtle">
+      @if (i18n.locale() === 'en') {
+        Commercial use of any artwork requires a price increase. Please inquire when placing your
+        order.
+      } @else {
+        いかなる作品の商業利用も料金が増加します。ご注文の際にお問い合わせください。
       }
     </p>
   </div>
