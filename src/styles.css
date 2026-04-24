@@ -10,20 +10,69 @@
   font-family: 'Inter', 'Noto Sans JP', sans-serif;
 }
 
+body {
+  background-color: var(--color-bg);
+}
+
 @theme {
-  /* main text color */
-  --color-body: var(--color-sky-600);
-  --color-body-subtle: var(--color-sky-500);
+  /* ── Page background ─────────────────────────────────────────────────────
+     The root canvas. Choose pure white OR a subtle tint — swap here only.
+     white        → clean, high contrast
+     sky-50       → barely-there blue tint (airy / soft)
+     sky-100      → noticeable tint (clearly off-white)
+  ── */
+  --color-bg: var(--color-sky-50); /* ← tweak this one line */
+  --color-bg-subtle: var(--color-sky-100); /* inset / card surface on light bg */
+  --color-bg-muted: var(--color-sky-200); /* deeply recessed surface on light bg */
 
-  /* text heading colors */
-  --color-heading: var(--color-sky-800);
+  /* ── Section – Light ─────────────────────────────────────────────────────
+     Light-background sections (hero intros, alternating content rows, etc.)
+     Apply bg-section-light to the <section>; pair with text-on-light-* for text.
+  ── */
+  --color-section-light: var(--color-sky-50); /* section background */
+  --color-section-light-alt: var(--color-sky-100); /* alternate / zebra-stripe light section */
+  --color-on-light-heading: var(--color-sky-900); /* headings on light bg */
+  --color-on-light-body: var(--color-sky-700); /* body text on light bg */
+  --color-on-light-body-subtle: var(--color-sky-500); /* secondary text on light bg */
 
-  /* used for custom brand colors */
-  --color-fg-brand-subtle: var(--color-sky-100);
-  --color-fg-brand: var(--color-sky-300);
-  --color-fg-brand-strong: var(--color-sky-500);
+  /* ── Section – Dark ──────────────────────────────────────────────────────
+     Dark-background sections (feature bands, CTAs, footers, etc.)
+     Apply bg-section-dark to the <section>; pair with text-on-dark-* for text.
+  ── */
+  --color-section-dark: var(--color-sky-900); /* section background */
+  --color-section-dark-alt: var(--color-sky-800); /* alternate dark section */
+  --color-on-dark-heading: white; /* headings on dark bg */
+  --color-on-dark-body: var(--color-sky-100); /* body text on dark bg */
+  --color-on-dark-body-subtle: var(--color-sky-300); /* secondary text on dark bg */
 
-  --color-bg-brand-dark: var(--color-sky-900);
-  --color-bg-brand: var(--color-sky-700);
-  --color-bg-brand-light: var(--color-sky-500);
+  /* ── Brand accent ────────────────────────────────────────────────────────
+     Buttons, badges, highlights — works on both light and dark sections.
+  ── */
+  --color-bg-brand-dark: var(--color-sky-900); /* dark brand band */
+  --color-bg-brand: var(--color-sky-700); /* brand band */
+  --color-bg-brand-light: var(--color-sky-500); /* light brand band */
+  --color-fg-brand-subtle: var(--color-sky-100); /* very light brand tint */
+  --color-fg-brand: var(--color-sky-300); /* default brand accent */
+  --color-fg-brand-strong: var(--color-sky-500); /* prominent brand accent */
+
+  /* ── Border ──────────────────────────────────────────────────────────────
+     Dividers and outlines; use border-border, border-border-subtle, etc.
+  ── */
+  --color-border: var(--color-sky-200); /* default border */
+  --color-border-subtle: var(--color-sky-100); /* hairline / subtle border */
+  --color-border-strong: var(--color-sky-400); /* prominent border */
+
+  /* ── Interactive ─────────────────────────────────────────────────────────
+     Links and focusable elements; use text-link, hover:text-link-hover.
+  ── */
+  --color-link: var(--color-sky-600); /* default link */
+  --color-link-hover: var(--color-sky-800); /* hovered / active link */
+
+  /* ── State ───────────────────────────────────────────────────────────────
+     Semantic feedback colors for alerts, badges, and form validation.
+  ── */
+  --color-success: var(--color-emerald-600);
+  --color-warning: var(--color-amber-500);
+  --color-error: var(--color-red-600);
+  --color-info: var(--color-sky-500);
 }

@@ -1,8 +1,17 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "editor.colorDecorators": true,
   "prettier.prettierPath": "./node_modules/prettier/index.cjs",
   "prettier.resolveGlobalModules": false,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.experimental.configFile": "src/styles.css",
+  "tailwindCSS.colorDecorators": true,
   "css.lint.unknownAtRules": "ignore",
   "scss.lint.unknownAtRules": "ignore",
   "less.lint.unknownAtRules": "ignore"
