@@ -4,10 +4,11 @@ import { GalleryImage } from '../models/gallery-image';
 import { DOCUMENT } from '@angular/common';
 import { I18nService } from '../services/i18n.service';
 import { NgOptimizedImage } from '@angular/common';
+import { ParallaxSection } from '../components/parallax-section/parallax-section';
 
 @Component({
   selector: 'app-gallery',
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, ParallaxSection],
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
 })
