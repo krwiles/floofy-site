@@ -46,7 +46,6 @@
     </div>
 
     <div class="grid gap-8 lg:grid-cols-3">
-      <!-- Chibi Card -->
       <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
         <div class="flex-1">
           <h3 class="text-2xl font-bold text-on-dark-heading">
@@ -138,9 +137,9 @@
               </div>
               <span class="ml-3 text-on-dark-body">
                 @if (i18n.locale() === 'en') {
-                  2-3 revisions
+                  3 revisions
                 } @else {
-                  修正2-3回
+                  修正3回
                 }
               </span>
             </li>
@@ -159,7 +158,6 @@
         </button>
       </div>
 
-      <!-- Emotes Card -->
       <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
         <div class="flex-1">
           <h3 class="text-2xl font-bold text-on-dark-heading">
@@ -203,9 +201,9 @@
               </div>
               <span class="ml-3 text-on-dark-body">
                 @if (i18n.locale() === 'en') {
-                  5 custom emotes
+                  1 custom emote
                 } @else {
-                  カスタムエモート5個
+                  カスタムエモート1個
                 }
               </span>
             </li>
@@ -251,9 +249,9 @@
               </div>
               <span class="ml-3 text-on-dark-body">
                 @if (i18n.locale() === 'en') {
-                  1 revision round
+                  3 revisions
                 } @else {
-                  修正1回
+                  修正3回
                 }
               </span>
             </li>
@@ -272,7 +270,6 @@
         </button>
       </div>
 
-      <!-- Illustration Card -->
       <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
         <div class="flex-1">
           <h3 class="text-2xl font-bold text-on-dark-heading">
@@ -284,9 +281,9 @@
           </h3>
           <p class="mt-2 text-sm text-on-dark-body-subtle">
             @if (i18n.locale() === 'en') {
-              Premium half-body artwork
+              Premium thigh-up artwork
             } @else {
-              プレミアム半身作品
+              プレミアム腰上作品
             }
           </p>
           <p class="mt-6 flex items-baseline">
@@ -364,9 +361,9 @@
               </div>
               <span class="ml-3 text-on-dark-body">
                 @if (i18n.locale() === 'en') {
-                  Unlimited revisions
+                  3 revisions
                 } @else {
-                  無制限修正
+                  修正3回
                 }
               </span>
             </li>
@@ -385,5 +382,14 @@
         </button>
       </div>
     </div>
+
+    <p class="mt-10 text-center text-sm text-on-dark-body-subtle">
+      @if (i18n.locale() === 'en') {
+        Commercial use of any artwork requires a price increase. Please inquire when placing your
+        order.
+      } @else {
+        いかなる作品の商業利用も料金が増加します。ご注文の際にお問い合わせください。
+      }
+    </p>
   </div>
 </section>
