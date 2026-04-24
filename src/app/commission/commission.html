@@ -1,4 +1,6 @@
-<section class="bg-section-light mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8">
+<section
+  class="bg-section-light mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8"
+>
   <div class="max-w-3xl">
     <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
       @if (i18n.locale() === 'en') {
@@ -24,155 +26,364 @@
   </div>
 </section>
 
-<section>
-  <section>
-    <div class="container py-24">
-      <div>
-        <div
-          class="relative p-10 space-y-12 overflow-hidden lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8 rounded-xl"
-        >
-          <div class="relative flex flex-col p-8 bg-bg-brand-light rounded-2xl">
-            <div class="flex-1">
-              <h3 class="text-xl font-semibold text-white">Chibi - Half body</h3>
-              <p class="flex items-baseline mt-4 text-white">
-                <span class="text-5xl font-extrabold tracking-tight">$27</span>
-                <span class="ml-2 text-base font-semibold uppercase tracking-wide opacity-90"
-                  >USD</span
+<section class="bg-section-dark">
+  <div class="mx-auto w-full max-w-7xl px-6 py-16 lg:px-8">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-on-dark-heading sm:text-4xl">
+        @if (i18n.locale() === 'en') {
+          Pricing
+        } @else {
+          料金
+        }
+      </h2>
+      <p class="text-lg text-on-dark-body">
+        @if (i18n.locale() === 'en') {
+          Choose the commission type that works best for you.
+        } @else {
+          あなたに最適な依頼の種類をお選びください。
+        }
+      </p>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-3">
+      <!-- Chibi Card -->
+      <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
+        <div class="flex-1">
+          <h3 class="text-2xl font-bold text-on-dark-heading">
+            @if (i18n.locale() === 'en') {
+              Chibi
+            } @else {
+              ちび
+            }
+          </h3>
+          <p class="mt-2 text-sm text-on-dark-body-subtle">
+            @if (i18n.locale() === 'en') {
+              Cute, compact style
+            } @else {
+              かわいいコンパクトスタイル
+            }
+          </p>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-dark-heading">$27</span>
+            <span
+              class="ml-2 text-base font-semibold uppercase tracking-wide text-on-dark-body-subtle"
+              >USD</span
+            >
+          </p>
+
+          <ul role="list" class="mt-8 space-y-4">
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
                 >
-              </p>
-              <p class="mt-6 text-white">The essentials to provide your best work for clients.</p>
-
-              <!-- Feature list -->
-              <ul role="list" class="pt-6 mt-6 space-y-6 border-t">
-                <span class="text-lg font-semibold text-white">What's included?</span>
-
-                <li class="flex">
-                  <div class="inline-flex items-center w-6 h-6 bg-blue-600 rounded-xl">
-                    <svg
-                      class="shrink-0 w-4 h-4 mx-auto text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 13l4 4L19 7"
-                      ></path>
-                    </svg>
-                  </div>
-                  <span class="ml-3 text-white">Up to 10 credit cards</span>
-                </li>
-              </ul>
-            </div>
-            <div class="mt-6 rounded-lg">
-              <button
-                type="button"
-                class="w-full items-center block px-10 py-3.5 text-base font-medium text-center text-white transition duration-500 ease-in-out transform border-2 border-white shadow-md rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 bg-white"
-              >
-                Select
-              </button>
-            </div>
-          </div>
-          <div class="relative flex flex-col p-8 bg-bg-brand-light rounded-2xl">
-            <div class="relative flex-1">
-              <h3 class="text-xl font-semibold text-white">Emotes</h3>
-
-              <p class="flex items-baseline mt-4 text-white">
-                <span class="text-5xl font-extrabold tracking-tight">$30</span>
-                <span class="ml-2 text-base font-semibold uppercase tracking-wide opacity-90"
-                  >USD</span
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  Half-body illustration
+                } @else {
+                  半身イラスト
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
                 >
-              </p>
-              <p class="mt-6 text-white">A plan that scales with your rapidly growing business.</p>
-
-              <!-- Feature list -->
-              <ul role="list" class="pt-6 mt-6 space-y-6 border-t">
-                <span class="text-lg font-semibold text-white">What's included?</span>
-
-                <li class="flex">
-                  <div class="inline-flex items-center w-6 h-6 bg-white rounded-xl">
-                    <svg
-                      class="shrink-0 w-4 h-4 mx-auto text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 13l4 4L19 7"
-                      ></path>
-                    </svg>
-                  </div>
-                  <span class="ml-3 text-white">Up to 10 credit cards</span>
-                </li>
-              </ul>
-            </div>
-            <div class="z-50 mt-6 rounded-lg">
-              <button
-                type="button"
-                class="w-full items-center block px-10 py-3.5 text-base font-medium text-center text-white transition duration-500 ease-in-out transform border-2 border-white shadow-md rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 bg-white"
-              >
-                Select
-              </button>
-            </div>
-          </div>
-          <div class="relative flex flex-col p-8 bg-bg-brand-light rounded-2xl">
-            <div class="flex-1">
-              <h3 class="text-xl font-semibold text-white">Illustration - Half body</h3>
-              <p class="flex items-baseline mt-4 text-white">
-                <span class="text-5xl font-extrabold tracking-tight">$80</span>
-                <span class="ml-2 text-base font-semibold uppercase tracking-wide opacity-90"
-                  >USD</span
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  Simple background
+                } @else {
+                  シンプルな背景
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
                 >
-              </p>
-              <p class="mt-6 text-white">Dedicated support and infrastructure for your company.</p>
-
-              <!-- Feature list -->
-              <ul role="list" class="pt-6 mt-6 space-y-6 border-t">
-                <span class="text-lg font-semibold text-white">What's included?</span>
-
-                <li class="flex">
-                  <div class="inline-flex items-center w-6 h-6 bg-blue-600 rounded-xl">
-                    <svg
-                      class="shrink-0 w-4 h-4 mx-auto text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 13l4 4L19 7"
-                      ></path>
-                    </svg>
-                  </div>
-                  <span class="ml-3 text-white">Unlimited credit cards</span>
-                </li>
-              </ul>
-            </div>
-
-            <div class="mt-6 rounded-lg">
-              <button
-                type="button"
-                class="w-full items-center block px-10 py-3.5 text-base font-medium text-center text-white transition duration-500 ease-in-out transform border-2 border-white shadow-md rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 bg-white"
-              >
-                Select
-              </button>
-            </div>
-          </div>
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  2-3 revisions
+                } @else {
+                  修正2-3回
+                }
+              </span>
+            </li>
+          </ul>
         </div>
+
+        <button
+          type="button"
+          class="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-fg-brand px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-fg-brand-strong focus:outline-none focus:ring-2 focus:ring-fg-brand focus:ring-offset-2 focus:ring-offset-sky-900"
+        >
+          @if (i18n.locale() === 'en') {
+            Select
+          } @else {
+            選択
+          }
+        </button>
+      </div>
+
+      <!-- Emotes Card -->
+      <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
+        <div class="flex-1">
+          <h3 class="text-2xl font-bold text-on-dark-heading">
+            @if (i18n.locale() === 'en') {
+              Emotes
+            } @else {
+              エモート
+            }
+          </h3>
+          <p class="mt-2 text-sm text-on-dark-body-subtle">
+            @if (i18n.locale() === 'en') {
+              For streaming & social media
+            } @else {
+              ストリーミング・SNS向け
+            }
+          </p>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-dark-heading">$30</span>
+            <span
+              class="ml-2 text-base font-semibold uppercase tracking-wide text-on-dark-body-subtle"
+              >USD</span
+            >
+          </p>
+
+          <ul role="list" class="mt-8 space-y-4">
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  5 custom emotes
+                } @else {
+                  カスタムエモート5個
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  PNG & high resolution
+                } @else {
+                  PNG・高解像度
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  1 revision round
+                } @else {
+                  修正1回
+                }
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <button
+          type="button"
+          class="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-fg-brand px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-fg-brand-strong focus:outline-none focus:ring-2 focus:ring-fg-brand focus:ring-offset-2 focus:ring-offset-sky-900"
+        >
+          @if (i18n.locale() === 'en') {
+            Select
+          } @else {
+            選択
+          }
+        </button>
+      </div>
+
+      <!-- Illustration Card -->
+      <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
+        <div class="flex-1">
+          <h3 class="text-2xl font-bold text-on-dark-heading">
+            @if (i18n.locale() === 'en') {
+              Illustration
+            } @else {
+              イラスト
+            }
+          </h3>
+          <p class="mt-2 text-sm text-on-dark-body-subtle">
+            @if (i18n.locale() === 'en') {
+              Premium half-body artwork
+            } @else {
+              プレミアム半身作品
+            }
+          </p>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-dark-heading">$80</span>
+            <span
+              class="ml-2 text-base font-semibold uppercase tracking-wide text-on-dark-body-subtle"
+              >USD</span
+            >
+          </p>
+
+          <ul role="list" class="mt-8 space-y-4">
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  Full color artwork
+                } @else {
+                  フルカラー作品
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  Custom background included
+                } @else {
+                  カスタム背景込み
+                }
+              </span>
+            </li>
+            <li class="flex items-start">
+              <div class="shrink-0">
+                <svg
+                  class="h-5 w-5 text-fg-brand"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span class="ml-3 text-on-dark-body">
+                @if (i18n.locale() === 'en') {
+                  Unlimited revisions
+                } @else {
+                  無制限修正
+                }
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <button
+          type="button"
+          class="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-fg-brand px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-fg-brand-strong focus:outline-none focus:ring-2 focus:ring-fg-brand focus:ring-offset-2 focus:ring-offset-sky-900"
+        >
+          @if (i18n.locale() === 'en') {
+            Select
+          } @else {
+            選択
+          }
+        </button>
       </div>
     </div>
-  </section>
+  </div>
 </section>
