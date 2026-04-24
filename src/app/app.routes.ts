@@ -1,44 +1,36 @@
 import { Routes } from '@angular/router';
-import { Home } from './home/home';
-import { About } from './about/about';
-import { Gallery } from './gallery/gallery';
-import { Reviews } from './reviews/reviews';
-import { Streaming } from './streaming/streaming';
-import { Contact } from './contact/contact';
-import { Commission } from './commission/commission';
-import { OC } from './oc/oc';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Home,
+    loadComponent: () => import('./home/home').then((m) => m.Home),
   },
   {
     path: 'about',
-    component: About,
+    loadComponent: () => import('./about/about').then((m) => m.About),
   },
   {
     path: 'streaming',
-    component: Streaming,
+    loadComponent: () => import('./streaming/streaming').then((m) => m.Streaming),
   },
   {
     path: 'gallery',
-    component: Gallery,
+    loadComponent: () => import('./gallery/gallery').then((m) => m.Gallery),
   },
   {
     path: 'reviews',
-    component: Reviews,
+    loadComponent: () => import('./reviews/reviews').then((m) => m.Reviews),
   },
   {
     path: 'oc',
-    component: OC,
+    loadComponent: () => import('./oc/oc').then((m) => m.OC),
   },
   {
     path: 'contact',
-    component: Contact,
+    loadComponent: () => import('./contact/contact').then((m) => m.Contact),
   },
   {
     path: 'commission',
-    component: Commission,
+    loadComponent: () => import('./commission/commission').then((m) => m.Commission),
   },
 ];
