@@ -30,7 +30,12 @@
 </app-parallax-section>
 
 <!-- Gallery Section -->
-<section class="pattern-bg bg-bg-brand-dark">
+<app-parallax-section
+  class=""
+  [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
+  [ariaLabel]="'Gallery section'"
+  [backgroundPosition]="'center 50%'"
+>
   <div
     class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
   >
@@ -77,7 +82,7 @@
       <app-carousel [images]="images"></app-carousel>
     </div>
   </div>
-</section>
+</app-parallax-section>
 
 <!-- About Section -->
 <section class="bg-section-light">
@@ -200,7 +205,12 @@
 </section>
 
 <!-- Streaming Section -->
-<section class="bg-section-light">
+<app-parallax-section
+  class="bg-section-light"
+  [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
+  [ariaLabel]="'Streaming section'"
+  [backgroundHeight]="'130%'"
+>
   <div
     class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
   >
@@ -251,4 +261,4 @@
       </a>
     </div>
   </div>
-</section>
+</app-parallax-section>
