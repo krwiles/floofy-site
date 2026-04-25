@@ -3,7 +3,7 @@ import {
   PreloadAllModules,
   provideRouter,
   withPreloading,
-  withViewTransitions,
+  withInMemoryScrolling,
 } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -14,16 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withPreloading(PreloadAllModules),
-      withViewTransitions({
-        skipInitialTransition: true,
-        onViewTransitionCreated: ({ transition }) => {
-          transition.ready.then(() => {
-            document
-              .querySelector('.route-scroll-container')
-              ?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-          });
-        },
-      }),
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
     ),
   ],
 };
