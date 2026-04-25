@@ -10,9 +10,9 @@ type MessageKey =
   | 'nav.streaming'
   | 'nav.gallery'
   | 'nav.reviews'
-  | 'nav.oc'
   | 'nav.contact'
-  | 'nav.commission';
+  | 'nav.commission'
+  | 'nav.donate';
 
 const messages: Record<Locale, Record<MessageKey, string>> = {
   en: {
@@ -22,9 +22,10 @@ const messages: Record<Locale, Record<MessageKey, string>> = {
     'nav.streaming': 'STREAMING',
     'nav.gallery': 'GALLERY',
     'nav.reviews': 'REVIEWS',
-    'nav.oc': 'OC',
+
     'nav.contact': 'CONTACT',
     'nav.commission': 'COMMISSION',
+    'nav.donate': 'DONATE',
   },
   ja: {
     'language.english': '英語',
@@ -33,9 +34,10 @@ const messages: Record<Locale, Record<MessageKey, string>> = {
     'nav.streaming': '配信',
     'nav.gallery': 'ギャラリー',
     'nav.reviews': 'レビュー',
-    'nav.oc': 'オリジナルキャラ',
+
     'nav.contact': 'お問い合わせ',
     'nav.commission': '依頼',
+    'nav.donate': '寄付',
   },
 };
 
