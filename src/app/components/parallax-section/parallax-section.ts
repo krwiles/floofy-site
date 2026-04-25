@@ -19,7 +19,7 @@ import {
 export class ParallaxSection implements AfterViewInit {
   readonly ariaLabel = input<string>('Parallax section');
   readonly backgroundImage = input.required<string>();
-  readonly backgroundPosition = input<string>('center 40%');
+  readonly backgroundPosition = input<string>('center');
   readonly parallaxStrength = input<number>(0.5);
 
   readonly parallaxY = signal(0);

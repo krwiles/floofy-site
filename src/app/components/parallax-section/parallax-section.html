@@ -1,7 +1,4 @@
-<section
-  class="parallax-root relative isolate overflow-hidden bg-fg-brand-subtle"
-  [attr.aria-label]="ariaLabel()"
->
+<section class="parallax-root relative overflow-hidden" [attr.aria-label]="ariaLabel()">
   <div
     class="parallax-background absolute inset-0 bg-cover will-change-transform"
     [style.background-image]="'url(' + backgroundImage() + ')'"
@@ -9,7 +6,6 @@
     [style.transform]="backgroundTransform()"
     aria-hidden="true"
   ></div>
-
   <div class="relative z-10 h-full w-full">
     <ng-content></ng-content>
   </div>
