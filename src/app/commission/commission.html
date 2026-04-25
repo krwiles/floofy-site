@@ -1,30 +1,35 @@
-<section
-  class="bg-section-light mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8"
+<app-parallax-section
+  class="parallax-h-sm"
+  [ariaLabel]="'Hero section'"
+  [backgroundImage]="'assets/A6757DF0.jpeg'"
+  [backgroundPosition]="'center 35%'"
 >
-  <div class="max-w-3xl">
-    <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
-      @if (i18n.locale() === 'en') {
-        COMMISSION
-      } @else {
-        依頼
-      }
-    </p>
-    <h1 class="text-4xl font-extrabold tracking-tight text-on-light-heading sm:text-5xl">
-      @if (i18n.locale() === 'en') {
-        Commission info and pricing.
-      } @else {
-        依頼情報と料金について。
-      }
-    </h1>
-    <p class="mt-6 text-lg leading-8 text-on-light-body">
-      @if (i18n.locale() === 'en') {
-        Details about commission types, pricing, and how to place an order will be listed here.
-      } @else {
-        依頼の種類、料金、注文方法についての詳細はこちらに掲載します。
-      }
-    </p>
+  <div class="mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8">
+    <div class="max-w-3xl">
+      <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
+        @if (i18n.locale() === 'en') {
+          COMMISSION
+        } @else {
+          依頼
+        }
+      </p>
+      <h1 class="text-4xl font-extrabold tracking-tight text-on-light-heading sm:text-5xl">
+        @if (i18n.locale() === 'en') {
+          Commission info and pricing.
+        } @else {
+          依頼情報と料金について。
+        }
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-on-light-body">
+        @if (i18n.locale() === 'en') {
+          Details about commission types, pricing, and how to place an order will be listed here.
+        } @else {
+          依頼の種類、料金、注文方法についての詳細はこちらに掲載します。
+        }
+      </p>
+    </div>
   </div>
-</section>
+</app-parallax-section>
 
 <section class="bg-section-dark">
   <div class="mx-auto w-full max-w-7xl px-6 py-16 lg:px-8">

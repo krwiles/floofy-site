@@ -30,7 +30,7 @@
 </app-parallax-section>
 
 <!-- Gallery Section -->
-<section class="bg-section-dark">
+<section class="pattern-bg bg-bg-brand-dark">
   <div
     class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
   >
@@ -132,6 +132,69 @@
           ></path>
         </svg>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- Commission Section -->
+<section class="bg-section-dark">
+  <div
+    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+  >
+    <div class="mt-4 md:mt-0 text-right">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+        @if (i18n.locale() === 'en') {
+          COMMISSION
+        } @else {
+          コミッション
+        }
+      </h2>
+      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+        @if (i18n.locale() === 'en') {
+          Commission your own custom artwork from Floofy, tailored to your preferences and
+          specifications.
+        } @else {
+          Floofyにあなたの好みや仕様に合わせたカスタムアートワークを依頼できます。
+        }
+      </p>
+      <a
+        routerLink="/commission"
+        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+      >
+        @if (i18n.locale() === 'en') {
+          Commission Now
+        } @else {
+          コミッションを依頼
+        }
+        <svg
+          class="ml-2 -mr-1 w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="h-135 flex flex-row gap-6 items-center justify-center">
+      <img
+        ngSrc="assets/HE_aWzObYAAc7MN.jpeg"
+        width="280"
+        height="420"
+        alt="Commission Example 1"
+        class="rounded-lg object-cover w-56 h-135"
+      />
+      <img
+        ngSrc="assets/HFT6u19bsAAQG-z.jpeg"
+        width="280"
+        height="420"
+        alt="Commission Example 2"
+        class="rounded-lg object-cover w-56 h-135"
+      />
     </div>
   </div>
 </section>
