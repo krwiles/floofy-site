@@ -5,6 +5,8 @@ import {
   computed,
   input,
   signal,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 
 @Component({
@@ -22,6 +24,8 @@ export class ParallaxSection implements AfterViewInit {
   readonly backgroundPosition = input<string>('center');
   readonly parallaxStrength = input<number>(0.5);
 
+  @ViewChild('parallaxRoot', { static: true }) root!: ElementRef<HTMLElement>;
+
   readonly parallaxY = signal(0);
   readonly backgroundTransform = computed(() => `translate3d(0,${this.parallaxY()}px,0)`);
 
@@ -30,6 +34,8 @@ export class ParallaxSection implements AfterViewInit {
   }
 
   onWindowScroll(): void {
-    this.parallaxY.set(window.scrollY * this.parallaxStrength());
+    if (!this.root) return;
+    const rect = this.root.nativeElement.getBoundingClientRect();
+    this.parallaxY.set(rect.top * this.parallaxStrength());
   }
 }

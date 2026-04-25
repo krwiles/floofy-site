@@ -2,6 +2,11 @@
   display: block;
 }
 
+.parallax-background {
+  background-size: cover;
+  height: 130%;
+}
+
 .parallax-root {
   height: inherit;
   min-height: inherit;
