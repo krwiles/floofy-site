@@ -36,6 +36,6 @@ export class ParallaxSection implements AfterViewInit {
   onWindowScroll(): void {
     if (!this.root) return;
     const rect = this.root.nativeElement.getBoundingClientRect();
-    this.parallaxY.set(rect.top * this.parallaxStrength());
+    this.parallaxY.set(-rect.top * this.parallaxStrength());
   }
 }
