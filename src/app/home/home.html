@@ -155,7 +155,7 @@
   class="bg-section-dark border-t-4 border-border"
   [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
-  [backgroundHeight]="'120%'"
+  [backgroundHeight]="'130%'"
   [parallaxStrength]="0.3"
   [ariaLabel]="'Gallery section'"
 >
@@ -225,7 +225,7 @@
   class="bg-section-light border-t-4 border-border"
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
-  [backgroundHeight]="'120%'"
+  [backgroundHeight]="'140%'"
   [parallaxStrength]="0.3"
   [ariaLabel]="'Gallery section'"
 >
@@ -263,6 +263,154 @@
           Go to Streaming
         } @else {
           ストリーミングを見る
+        }
+        <svg
+          class="ml-2 -mr-1 w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</app-parallax-section>
+
+<!-- Reviews and Donate Section -->
+<app-parallax-section
+  class="bg-section-dark border-t-4 border-border"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'150%'"
+  [parallaxStrength]="0.3"
+  [ariaLabel]="'Gallery section'"
+>
+  <div
+    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+  >
+    <div class="mt-4 md:mt-0 text-center">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+        @if (i18n.locale() === 'en') {
+          REVIEWS
+        } @else {
+          レビュー
+        }
+      </h2>
+      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+        @if (i18n.locale() === 'en') {
+          Read what others have to say about their commissions and experiences with Floofy! Your
+          feedback is important—share your own review and help others discover the quality and
+          creativity of Floofy’s work.
+        } @else {
+          他の方のコミッションやFloofyとの体験についてのレビューを読んでみましょう！あなたのフィードバックも大歓迎です。レビューを投稿して、Floofyの作品のクオリティと創造性を広めましょう。
+        }
+      </p>
+      <a
+        routerLink="/reviews"
+        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+      >
+        @if (i18n.locale() === 'en') {
+          See Reviews
+        } @else {
+          レビューを見る
+        }
+        <svg
+          class="ml-2 -mr-1 w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="mt-4 md:mt-0 text-center">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+        @if (i18n.locale() === 'en') {
+          DONATE
+        } @else {
+          寄付
+        }
+      </h2>
+      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+        @if (i18n.locale() === 'en') {
+          Support Floofy’s creative journey! Your donation helps keep the art and streams coming,
+          funds new projects, and shows your appreciation for the work. Every contribution, big or
+          small, makes a difference—thank you for being part of the community!
+        } @else {
+          Floofyの創作活動を応援しませんか？あなたのご支援はアートや配信の継続、新しいプロジェクトの実現に役立ちます。どんなに小さなご寄付でも大きな力になります。コミュニティの一員として、ありがとうございます！
+        }
+      </p>
+      <a
+        routerLink="/donate"
+        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+      >
+        @if (i18n.locale() === 'en') {
+          Donate
+        } @else {
+          寄付
+        }
+        <svg
+          class="ml-2 -mr-1 w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</app-parallax-section>
+
+<!-- Contact Section -->
+<app-parallax-section
+  class="bg-section-light border-t-4 border-border"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'140%'"
+  [parallaxStrength]="0.3"
+  [ariaLabel]="'Gallery section'"
+>
+  <div class="gap-8 items-center py-8 px-4 mx-auto max-w-4xl sm:py-16 lg:px-6">
+    <div class="mt-4 md:mt-0 text-center">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading">
+        @if (i18n.locale() === 'en') {
+          CONTACT
+        } @else {
+          お問い合わせ
+        }
+      </h2>
+      <p class="mb-6 font-light text-on-light-body md:text-lg">
+        @if (i18n.locale() === 'en') {
+          Have a question, want to discuss a project, or need info about a special commission? Reach
+          out to Floofy—your message is always welcome! Use the contact page to send your inquiry,
+          and Floofy will get back to you as soon as possible.
+        } @else {
+          ご質問やプロジェクトのご相談、特別なコミッションについてのお問い合わせなど、お気軽にご連絡ください。コンタクトページからメッセージを送信いただければ、できるだけ早くご返信いたします。
+        }
+      </p>
+      <a
+        routerLink="/contact"
+        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+      >
+        @if (i18n.locale() === 'en') {
+          Get in touch
+        } @else {
+          お問い合わせ
         }
         <svg
           class="ml-2 -mr-1 w-5 h-5"
