@@ -12,13 +12,13 @@ import { I18nService, Locale } from '../../services/i18n.service';
 export class Navbar {
   readonly i18n = inject(I18nService);
   readonly navKeys = [
-    'nav.about',
-    'nav.streaming',
     'nav.gallery',
-    'nav.oc',
-    'nav.contact',
+    'nav.about',
     'nav.commission',
+    'nav.streaming',
     'nav.reviews',
+    'nav.donate',
+    'nav.contact',
   ] as const;
 
   toggleLanguage(): void {

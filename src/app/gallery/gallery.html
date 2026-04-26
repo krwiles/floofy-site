@@ -33,33 +33,35 @@
 </app-parallax-section>
 
 <!-- Gallery Section -->
-<section
-  class="columns-1 md:columns-2 lg:columns-3 gap-8 max-w-7xl mx-auto py-8 px-4 sm:py-16 lg:px-6"
->
-  @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index) {
-    @defer (on viewport) {
-      <img
-        class="gallery-image w-full mb-8 break-inside-avoid"
-        [ngSrc]="galleryImage.srcThumbnail"
-        [alt]="galleryImage.alt"
-        [height]="galleryImage.heightThumbnail"
-        [width]="galleryImage.widthThumbnail"
-        (click)="showImage(galleryImage)"
-      />
-    } @placeholder {
-      <div
-        class="w-full mb-8 break-inside-avoid bg-section-dark"
-        [style.aspect-ratio]="galleryImage.widthThumbnail + '/' + galleryImage.heightThumbnail"
-      ></div>
+<section class="bg-bg">
+  <div
+    class="columns-1 md:columns-2 lg:columns-3 gap-8 max-w-7xl mx-auto py-8 px-4 sm:py-16 lg:px-6"
+  >
+    @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index) {
+      @defer (on viewport) {
+        <img
+          class="gallery-image w-full mb-8 break-inside-avoid"
+          [ngSrc]="galleryImage.srcThumbnail"
+          [alt]="galleryImage.alt"
+          [height]="galleryImage.heightThumbnail"
+          [width]="galleryImage.widthThumbnail"
+          (click)="showImage(galleryImage)"
+        />
+      } @placeholder {
+        <div
+          class="w-full mb-8 break-inside-avoid bg-section-dark"
+          [style.aspect-ratio]="galleryImage.widthThumbnail + '/' + galleryImage.heightThumbnail"
+        ></div>
+      }
     }
-  }
+  </div>
 </section>
 
 <!-- TODO fix the dropdown, also ask about going to a url like /gallery and it doesn't load. Can we fix this? -->
 <!-- Lightbox Modal -->
 @if (showLightBox()) {
   <div
-    class="lightbox-overlay fixed inset-0 z-1000 flex items-center justify-center bg-black/80"
+    class="lightbox-overlay fixed inset-0 z-20000 flex items-center justify-center bg-black/80"
     (click)="closeImage()"
     animate.enter="enter-lightbox"
     animate.leave="leave-lightbox"

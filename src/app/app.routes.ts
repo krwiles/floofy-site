@@ -22,8 +22,8 @@ export const routes: Routes = [
     loadComponent: () => import('./reviews/reviews').then((m) => m.Reviews),
   },
   {
-    path: 'oc',
-    loadComponent: () => import('./oc/oc').then((m) => m.OC),
+    path: 'donate',
+    loadComponent: () => import('./donate/donate').then((m) => m.Donate),
   },
   {
     path: 'contact',

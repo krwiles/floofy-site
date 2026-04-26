@@ -6,9 +6,6 @@ import { CarouselImage } from '../models/carousel-image.model';
 import { RouterLink } from '@angular/router';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 
-// Declare the Twitter widgets object to avoid TypeScript errors
-declare const twttr: { widgets: { load: () => void } };
-
 @Component({
   selector: 'app-home',
   imports: [Carousel, NgOptimizedImage, RouterLink, ParallaxSection],
@@ -16,7 +13,7 @@ declare const twttr: { widgets: { load: () => void } };
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Home implements AfterViewInit {
+export class Home {
   readonly i18n = inject(I18nService);
   readonly images: CarouselImage[] = [
     { src: 'assets/G_CQjK1XkAALluE.jpeg', alt: 'Image 1', width: 1200, height: 1800 },
@@ -25,12 +22,4 @@ export class Home implements AfterViewInit {
     { src: 'assets/G-lXyxKbQAMHkV_.jpeg', alt: 'Image 4', width: 1080, height: 1350 },
     { src: 'assets/G8s5y4ZakAA0XN9.jpeg', alt: 'Image 5', width: 1080, height: 1350 },
   ];
-
-  ngAfterViewInit(): void {
-    // Load Twitter widgets after the view has initialized
-    // This is needed to ensure that any embedded tweets are properly rendered after routing
-    if (typeof twttr !== 'undefined') {
-      twttr.widgets.load();
-    }
-  }
 }
