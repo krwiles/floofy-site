@@ -24,6 +24,7 @@ export class ParallaxSection implements AfterViewInit {
   readonly backgroundPosition = input<string>('center');
   readonly parallaxStrength = input<number>(0.5);
   readonly backgroundHeight = input<string>('100%');
+  readonly backgroundSize = input<string>('cover');
 
   @ViewChild('parallaxRoot', { static: true }) root!: ElementRef<HTMLElement>;
 

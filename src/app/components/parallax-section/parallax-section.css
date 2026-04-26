@@ -3,7 +3,7 @@
 }
 
 .parallax-background {
-  background-size: cover;
+  background-repeat: repeat;
 }
 
 .parallax-root {

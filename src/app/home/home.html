@@ -31,10 +31,12 @@
 
 <!-- Gallery Section -->
 <app-parallax-section
-  class=""
-  [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
+  class="bg-section-dark border-t-4 border-border"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'120%'"
+  [parallaxStrength]="0.3"
   [ariaLabel]="'Gallery section'"
-  [backgroundPosition]="'center 50%'"
 >
   <div
     class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
@@ -78,14 +80,21 @@
         </svg>
       </a>
     </div>
-    <div class="h-135 w-90 mx-auto rounded-base overflow-hidden">
+    <div class="h-135 w-90 mx-auto rounded-base overflow-hidden pt-4 lg:pt-0 md:pt-0">
       <app-carousel [images]="images"></app-carousel>
     </div>
   </div>
 </app-parallax-section>
 
 <!-- About Section -->
-<section class="bg-section-light">
+<app-parallax-section
+  class="bg-section-light border-t-4 border-border"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'120%'"
+  [parallaxStrength]="0.3"
+  [ariaLabel]="'Gallery section'"
+>
   <div
     class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
   >
@@ -139,10 +148,17 @@
       </a>
     </div>
   </div>
-</section>
+</app-parallax-section>
 
 <!-- Commission Section -->
-<section class="bg-section-dark">
+<app-parallax-section
+  class="bg-section-dark border-t-4 border-border"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'120%'"
+  [parallaxStrength]="0.3"
+  [ariaLabel]="'Gallery section'"
+>
   <div
     class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
   >
@@ -185,38 +201,40 @@
         </svg>
       </a>
     </div>
-    <div class="h-135 flex flex-row gap-6 items-center justify-center">
+    <div class="w-full flex flex-row gap-4 items-center justify-center pt-4 lg:pt-0 md:pt-0">
       <img
         ngSrc="assets/HE_aWzObYAAc7MN.jpeg"
-        width="280"
-        height="420"
+        width="900"
+        height="1200"
         alt="Commission Example 1"
-        class="rounded-lg object-cover w-56 h-135"
+        class="rounded-lg max-w-[47%]"
       />
       <img
         ngSrc="assets/HFT6u19bsAAQG-z.jpeg"
-        width="280"
-        height="420"
+        width="900"
+        height="1200"
         alt="Commission Example 2"
-        class="rounded-lg object-cover w-56 h-135"
+        class="rounded-lg max-w-[47%]"
       />
     </div>
   </div>
-</section>
+</app-parallax-section>
 
 <!-- Streaming Section -->
 <app-parallax-section
-  class="bg-section-light"
-  [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
-  [ariaLabel]="'Streaming section'"
-  [backgroundHeight]="'130%'"
+  class="bg-section-light border-t-4 border-border"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'120%'"
+  [parallaxStrength]="0.3"
+  [ariaLabel]="'Gallery section'"
 >
   <div
     class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
   >
     <img
       class="w-full rounded-lg"
-      ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
+      ngSrc="assets/6BA33836.jpeg"
       alt="Floofy"
       width="1080"
       height="1080"
