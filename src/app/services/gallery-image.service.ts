@@ -51,7 +51,7 @@ export class GalleryImageService {
       widthThumbnail: 1200,
       heightThumbnail: 1800,
     }),
-    GalleryImage.fromObject({
+    /*GalleryImage.fromObject({
       srcFull: 'assets/G_Xl1MobAAAVbNn.jpeg',
       srcThumbnail: 'assets/G_Xl1MobAAAVbNn.jpeg',
       alt: 'G_Xl1MobAAAVbNn',
@@ -59,6 +59,42 @@ export class GalleryImageService {
       heightFull: 1080,
       widthThumbnail: 1080,
       heightThumbnail: 1080,
+    }),*/
+    GalleryImage.fromObject({
+      srcFull: 'assets/HFT6u19bsAAQG-z.jpeg',
+      srcThumbnail: 'assets/HFT6u19bsAAQG-z.jpeg',
+      alt: 'HFT6u19bsAAQG-z',
+      widthFull: 900,
+      heightFull: 1200,
+      widthThumbnail: 900,
+      heightThumbnail: 1200,
+    }),
+    GalleryImage.fromObject({
+      srcFull: 'assets/HFImiOIbkAAPgg6.jpeg',
+      srcThumbnail: 'assets/HFImiOIbkAAPgg6.jpeg',
+      alt: 'HFImiOIbkAAPgg6',
+      widthFull: 900,
+      heightFull: 1200,
+      widthThumbnail: 900,
+      heightThumbnail: 1200,
+    }),
+    GalleryImage.fromObject({
+      srcFull: 'assets/HGl6r3xbcAAy7uU.jpeg',
+      srcThumbnail: 'assets/HGl6r3xbcAAy7uU.jpeg',
+      alt: 'HGl6r3xbcAAy7uU',
+      widthFull: 1500,
+      heightFull: 2000,
+      widthThumbnail: 1500,
+      heightThumbnail: 2000,
+    }),
+    GalleryImage.fromObject({
+      srcFull: 'assets/G9bdIEcbEAAFxwd.jpeg',
+      srcThumbnail: 'assets/G9bdIEcbEAAFxwd.jpeg',
+      alt: 'G9bdIEcbEAAFxwd',
+      widthFull: 1080,
+      heightFull: 1440,
+      widthThumbnail: 1080,
+      heightThumbnail: 1440,
     }),
   ];
 }
