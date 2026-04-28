@@ -2,6 +2,17 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.6.
 
+## License
+
+The source code in this repository is licensed under the MIT License.
+
+## Media and Images
+
+All images and media files (e.g., files in `/assets/`) are **not covered by the MIT License**.
+
+They are all rights reserved.  
+You may view them as part of this repository or website, but you may not copy, reuse, modify, or distribute them without explicit permission.
+
 ## Development server
 
 To start a local development server, run:
