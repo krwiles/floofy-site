@@ -2,6 +2,13 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.6.
 
+## Image Usage
+
+All images and media files in this repository are **not licensed for reuse**.
+
+They are provided for viewing as part of the website only.  
+You may not copy, download, modify, distribute, or use them in any form without explicit permission.
+
 ## Development server
 
 To start a local development server, run:
