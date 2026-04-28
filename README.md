@@ -8,7 +8,7 @@ The source code in this repository is licensed under the MIT License.
 
 ## Media and Images
 
-All images and media files (e.g., files in `/assets/images`) are **not covered by the MIT License**.
+All images and media files (e.g., files in `/assets/`) are **not covered by the MIT License**.
 
 They are all rights reserved.  
 You may view them as part of this repository or website, but you may not copy, reuse, modify, or distribute them without explicit permission.
