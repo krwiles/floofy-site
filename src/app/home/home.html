@@ -1,17 +1,27 @@
 <!-- Hero Section  -->
 <app-parallax-section
-  class="h-[120svh]"
-  [ariaLabel]="'Hero section'"
-  [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
-  [backgroundPosition]="'center 40%'"
+  class="bg-section-light h-[92svh]"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Hero Background'"
 >
-  <div
-    class="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-end px-6 text-right text-on-dark-heading lg:min-h-[calc(100svh-6rem)] lg:px-16"
+  <app-parallax-section
+    class="absolute inset-0 min-h-[92svh] max-w-7xl mx-auto lg:mask-fade-x"
+    [ariaLabel]="'Hero section'"
+    [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
+    [backgroundPosition]="'center 40%'"
+    [parallaxStrength]="0.4"
   >
-    <div class="drop-shadow-[0_4px_14px_rgba(0,0,100,0.5)]">
+  </app-parallax-section>
+  <div
+    class="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-end px-6 text-right text-on-dark-heading h-full"
+  >
+    <div class="drop-shadow-[2px_4px_5px_theme('colors.fg.brand')] mt-24">
       <!-- Small intro/kicker text above the main title. -->
       <p
-        class="intro-kicker m-0 text-[clamp(0.75rem,2vw,1.2rem)] uppercase tracking-[0.12em] opacity-90"
+        class="intro-kicker m-0 text-[clamp(0.75rem,2vw,1.5rem)] uppercase tracking-[0.12em] opacity-90"
       >
         @if (i18n.locale() === 'en') {
           Illustrator and Streamer
@@ -21,7 +31,7 @@
       </p>
       <!-- Main hero heading. -->
       <h1
-        class="intro-title mt-[0.35rem] mb-0 text-[clamp(4.5rem,15vw,9rem)] leading-[0.95] font-extrabold"
+        class="intro-title mt-2 mb-0 text-[clamp(5.5rem,15vw,11rem)] leading-[0.95] font-extrabold"
       >
         Floofy
       </h1>
@@ -34,14 +44,14 @@
   class="bg-section-dark border-t-4 border-border"
   [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
-  [backgroundHeight]="'120%'"
-  [parallaxStrength]="0.3"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
   [ariaLabel]="'Gallery section'"
 >
   <div
-    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
   >
-    <div class="mt-4 md:mt-0 text-right">
+    <div class="mt-4 md:mt-0 text-center md:text-right">
       <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
         @if (i18n.locale() === 'en') {
           ART GALLERY
@@ -80,8 +90,10 @@
         </svg>
       </a>
     </div>
-    <div class="h-135 w-90 mx-auto rounded-base overflow-hidden pt-4 lg:pt-0 md:pt-0">
-      <app-carousel [images]="images"></app-carousel>
+    <div
+      class="mt-16 md:mt-0 mx-auto w-full max-w-[360px] aspect-[2/3] max-h-[540px] overflow-hidden rounded-base"
+    >
+      <app-carousel class="block h-full w-full" [images]="images"></app-carousel>
     </div>
   </div>
 </app-parallax-section>
@@ -91,21 +103,21 @@
   class="bg-section-light border-t-4 border-border"
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
-  [backgroundHeight]="'120%'"
-  [parallaxStrength]="0.3"
-  [ariaLabel]="'Gallery section'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'About Section'"
 >
   <div
-    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+    class="flex flex-col md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
   >
     <img
-      class="w-full rounded-lg"
+      class="w-full rounded-lg mask-fade-xy block"
       ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
       alt="Floofy"
       width="1080"
       height="1080"
     />
-    <div class="mt-4 md:mt-0">
+    <div class="mt-4 md:mt-0 text-center md:text-left">
       <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading">
         @if (i18n.locale() === 'en') {
           ABOUT FLOOFY
@@ -155,14 +167,14 @@
   class="bg-section-dark border-t-4 border-border"
   [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
-  [backgroundHeight]="'130%'"
-  [parallaxStrength]="0.3"
-  [ariaLabel]="'Gallery section'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Commission Section'"
 >
   <div
-    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
   >
-    <div class="mt-4 md:mt-0 text-right">
+    <div class="mt-4 md:mt-0 text-center md:text-right">
       <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
         @if (i18n.locale() === 'en') {
           COMMISSION
@@ -225,12 +237,12 @@
   class="bg-section-light border-t-4 border-border"
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
-  [backgroundHeight]="'140%'"
-  [parallaxStrength]="0.3"
-  [ariaLabel]="'Gallery section'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Streaming Section'"
 >
   <div
-    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+    class="flex flex-col md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
   >
     <img
       class="w-full rounded-lg"
@@ -239,7 +251,7 @@
       width="1080"
       height="1080"
     />
-    <div class="mt-4 md:mt-0 text-left">
+    <div class="mt-4 md:mt-0 text-center md:text-left">
       <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading">
         @if (i18n.locale() === 'en') {
           STREAMING
@@ -286,9 +298,9 @@
   class="bg-section-dark border-t-4 border-border"
   [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
-  [backgroundHeight]="'150%'"
-  [parallaxStrength]="0.3"
-  [ariaLabel]="'Gallery section'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Reviews and Donate Section'"
 >
   <div
     class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
@@ -333,7 +345,7 @@
         </svg>
       </a>
     </div>
-    <div class="mt-4 md:mt-0 text-center">
+    <div class="mt-4 md:mt-0 text-center pt-16 md:pt-0">
       <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
         @if (i18n.locale() === 'en') {
           DONATE
@@ -374,27 +386,16 @@
       </a>
     </div>
   </div>
-</app-parallax-section>
-
-<!-- Contact Section -->
-<app-parallax-section
-  class="bg-section-light border-t-4 border-border"
-  [backgroundImage]="'assets/4-point-stars.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'140%'"
-  [parallaxStrength]="0.3"
-  [ariaLabel]="'Gallery section'"
->
   <div class="gap-8 items-center py-8 px-4 mx-auto max-w-4xl sm:py-16 lg:px-6">
     <div class="mt-4 md:mt-0 text-center">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
         @if (i18n.locale() === 'en') {
           CONTACT
         } @else {
           お問い合わせ
         }
       </h2>
-      <p class="mb-6 font-light text-on-light-body md:text-lg">
+      <p class="mb-6 font-light text-on-dark-body md:text-lg">
         @if (i18n.locale() === 'en') {
           Have a question, want to discuss a project, or need info about a special commission? Reach
           out to Floofy—your message is always welcome! Use the contact page to send your inquiry,

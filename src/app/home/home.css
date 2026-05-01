@@ -18,7 +18,7 @@
 .intro-title {
   opacity: 0;
   animation-name: introReveal;
-  animation-duration: 900ms;
+  animation-duration: 1200ms;
   animation-timing-function: cubic-bezier(0.2, 0.75, 0.2, 1);
   animation-fill-mode: forwards;
   will-change: transform, opacity, filter;
@@ -29,7 +29,7 @@
 }
 
 .intro-title {
-  animation-duration: 1050ms;
+  animation-duration: 1350ms;
   animation-delay: 220ms;
 }
 
