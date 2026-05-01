@@ -51,7 +51,7 @@
   <div
     class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
   >
-    <div class="mt-4 md:mt-0 text-center md:text-right">
+    <div class="animate-on-scroll mt-4 md:mt-0 text-center md:text-right">
       <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
         @if (i18n.locale() === 'en') {
           ART GALLERY
@@ -59,7 +59,7 @@
           アートギャラリー
         }
       </h2>
-      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
         @if (i18n.locale() === 'en') {
           Explore a curated collection of illustrations by Floofy, showcasing a variety of styles
           and techniques. Each piece reflects a unique perspective and creative expression.
@@ -69,7 +69,7 @@
       </p>
       <a
         routerLink="/gallery"
-        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
         @if (i18n.locale() === 'en') {
           View Gallery
@@ -91,9 +91,9 @@
       </a>
     </div>
     <div
-      class="mt-16 md:mt-0 mx-auto w-full max-w-[360px] aspect-[2/3] max-h-[540px] overflow-hidden rounded-base"
+      class="mt-16 md:mt-0 mx-auto w-full max-w-90 aspect-2/3 max-h-135 overflow-hidden rounded-base"
     >
-      <app-carousel class="block h-full w-full" [images]="images"></app-carousel>
+      <app-carousel class="animate-on-scroll block h-full w-full" [images]="images"></app-carousel>
     </div>
   </div>
 </app-parallax-section>
@@ -111,21 +111,23 @@
     class="flex flex-col md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
   >
     <img
-      class="w-full rounded-lg mask-fade-xy block"
+      class="animate-on-scroll w-full rounded-lg mask-fade-xy block"
       ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
       alt="Floofy"
       width="1080"
       height="1080"
     />
     <div class="mt-4 md:mt-0 text-center md:text-left">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading">
+      <h2
+        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading"
+      >
         @if (i18n.locale() === 'en') {
           ABOUT FLOOFY
         } @else {
           フルーフィについて
         }
       </h2>
-      <p class="mb-6 font-light text-on-light-body md:text-lg">
+      <p class="animate-on-scroll mb-6 font-light text-on-light-body md:text-lg">
         @if (i18n.locale() === 'en') {
           Floofy is a talented illustrator and streamer known for captivating artwork and fun live
           streams. With a passion for creativity and a unique artistic style, Floofy has built a
@@ -138,7 +140,7 @@
       </p>
       <a
         routerLink="/about"
-        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
         @if (i18n.locale() === 'en') {
           Learn More
@@ -175,14 +177,16 @@
     class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
   >
     <div class="mt-4 md:mt-0 text-center md:text-right">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+      <h2
+        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+      >
         @if (i18n.locale() === 'en') {
           COMMISSION
         } @else {
           コミッション
         }
       </h2>
-      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
         @if (i18n.locale() === 'en') {
           Commission your own custom artwork from Floofy, tailored to your preferences and
           specifications.
@@ -192,7 +196,7 @@
       </p>
       <a
         routerLink="/commission"
-        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
         @if (i18n.locale() === 'en') {
           Commission Now
@@ -213,7 +217,9 @@
         </svg>
       </a>
     </div>
-    <div class="w-full flex flex-row gap-4 items-center justify-center pt-4 lg:pt-0 md:pt-0">
+    <div
+      class="animate-on-scroll w-full flex flex-row gap-4 items-center justify-center pt-4 lg:pt-0 md:pt-0"
+    >
       <img
         ngSrc="assets/HE_aWzObYAAc7MN.jpeg"
         width="900"
@@ -245,21 +251,23 @@
     class="flex flex-col md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
   >
     <img
-      class="w-full rounded-lg"
+      class="animate-on-scroll w-full rounded-lg"
       ngSrc="assets/6BA33836.jpeg"
       alt="Floofy"
       width="1080"
       height="1080"
     />
     <div class="mt-4 md:mt-0 text-center md:text-left">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading">
+      <h2
+        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading"
+      >
         @if (i18n.locale() === 'en') {
           STREAMING
         } @else {
           ストリーミング
         }
       </h2>
-      <p class="mb-6 font-light text-on-light-body md:text-lg">
+      <p class="animate-on-scroll mb-6 font-light text-on-light-body md:text-lg">
         @if (i18n.locale() === 'en') {
           Join Floofy live for art streams, Q&A, and community fun! Check out the streaming schedule
           and never miss a session.
@@ -269,7 +277,7 @@
       </p>
       <a
         routerLink="/streaming"
-        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
         @if (i18n.locale() === 'en') {
           Go to Streaming
@@ -306,14 +314,16 @@
     class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
   >
     <div class="mt-4 md:mt-0 text-center">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+      <h2
+        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+      >
         @if (i18n.locale() === 'en') {
           REVIEWS
         } @else {
           レビュー
         }
       </h2>
-      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
         @if (i18n.locale() === 'en') {
           Read what others have to say about their commissions and experiences with Floofy! Your
           feedback is important—share your own review and help others discover the quality and
@@ -324,7 +334,7 @@
       </p>
       <a
         routerLink="/reviews"
-        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
         @if (i18n.locale() === 'en') {
           See Reviews
@@ -346,14 +356,16 @@
       </a>
     </div>
     <div class="mt-4 md:mt-0 text-center pt-16 md:pt-0">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+      <h2
+        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+      >
         @if (i18n.locale() === 'en') {
           DONATE
         } @else {
           寄付
         }
       </h2>
-      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
         @if (i18n.locale() === 'en') {
           Support Floofy’s creative journey! Your donation helps keep the art and streams coming,
           funds new projects, and shows your appreciation for the work. Every contribution, big or
@@ -364,7 +376,7 @@
       </p>
       <a
         routerLink="/donate"
-        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
         @if (i18n.locale() === 'en') {
           Donate
@@ -388,14 +400,16 @@
   </div>
   <div class="gap-8 items-center py-8 px-4 mx-auto max-w-4xl sm:py-16 lg:px-6">
     <div class="mt-4 md:mt-0 text-center">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+      <h2
+        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+      >
         @if (i18n.locale() === 'en') {
           CONTACT
         } @else {
           お問い合わせ
         }
       </h2>
-      <p class="mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
         @if (i18n.locale() === 'en') {
           Have a question, want to discuss a project, or need info about a special commission? Reach
           out to Floofy—your message is always welcome! Use the contact page to send your inquiry,
@@ -406,7 +420,7 @@
       </p>
       <a
         routerLink="/contact"
-        class="inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
         @if (i18n.locale() === 'en') {
           Get in touch

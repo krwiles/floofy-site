@@ -79,7 +79,7 @@ body {
     black 80%,
     transparent 100%
   );
-  mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 20%, black 85%, transparent 100%);
 }
 
 /* Responsive variant: only applies mask-fade-x at lg and up */
@@ -92,7 +92,7 @@ body {
       black 80%,
       transparent 100%
     );
-    mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 20%, black 85%, transparent 100%);
   }
 }
 
@@ -106,4 +106,29 @@ body {
     linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
   -webkit-mask-composite: intersect;
   mask-composite: intersect;
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  filter: blur(6px);
+  transition:
+    opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-on-scroll.animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll,
+  .animate-on-scroll.animate-in {
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
