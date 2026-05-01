@@ -1,11 +1,23 @@
 <!-- Gallery Hero -->
 <app-parallax-section
-  class="parallax-h-sm"
-  [ariaLabel]="'Hero section'"
-  [backgroundImage]="'assets/G_CQjK1XkAALluE.jpeg'"
-  [backgroundPosition]="'center 35%'"
+  class="bg-section-light border-t-4 border-border"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.8"
+  [ariaLabel]="'Hero Background'"
 >
-  <div class="mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8">
+  <app-parallax-section
+    class="absolute inset-0 h-full max-w-7xl mx-auto lg:mask-fade-x"
+    [ariaLabel]="'Hero section'"
+    [backgroundImage]="'assets/G_CQjK1XkAALluE.jpeg'"
+    [backgroundPosition]="'center 33%'"
+    [parallaxStrength]="0.6"
+  >
+  </app-parallax-section>
+  <div
+    class="relative mx-auto z-10 flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8"
+  >
     <div class="max-w-3xl">
       <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
         @if (i18n.locale() === 'en') {
@@ -33,7 +45,14 @@
 </app-parallax-section>
 
 <!-- Gallery Section -->
-<section class="bg-bg">
+<app-parallax-section
+  class="bg-section-dark border-t-4 border-border"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Streaming Section'"
+>
   <div
     class="columns-1 md:columns-2 lg:columns-3 gap-8 max-w-7xl mx-auto py-8 px-4 sm:py-16 lg:px-6"
   >
@@ -46,16 +65,17 @@
           [height]="galleryImage.heightThumbnail"
           [width]="galleryImage.widthThumbnail"
           (click)="showImage(galleryImage)"
+          animate.enter="enter-image"
         />
       } @placeholder {
         <div
-          class="w-full mb-8 break-inside-avoid bg-section-dark"
+          class="w-full mb-8 break-inside-avoid bg-section-light"
           [style.aspect-ratio]="galleryImage.widthThumbnail + '/' + galleryImage.heightThumbnail"
         ></div>
       }
     }
   </div>
-</section>
+</app-parallax-section>
 
 <!-- TODO fix the dropdown, also ask about going to a url like /gallery and it doesn't load. Can we fix this? -->
 <!-- Lightbox Modal -->
