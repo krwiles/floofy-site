@@ -124,11 +124,103 @@ body {
   filter: blur(0);
 }
 
+@keyframes hero-text-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+    filter: blur(8px);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes hero-surface-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.hero-reveal-surface,
+.hero-reveal-kicker,
+.hero-reveal-title,
+.hero-reveal-copy {
+  opacity: 0;
+  animation-timing-function: cubic-bezier(0.2, 0.75, 0.2, 1);
+  animation-fill-mode: forwards;
+}
+
+.hero-reveal-surface {
+  animation-name: hero-surface-reveal;
+  animation-duration: 1000ms;
+  animation-delay: 40ms;
+  will-change: transform, opacity;
+}
+
+.hero-reveal-kicker,
+.hero-reveal-title,
+.hero-reveal-copy {
+  animation-name: hero-text-reveal;
+  will-change: transform, opacity, filter;
+}
+
+.hero-reveal-kicker {
+  animation-duration: 1000ms;
+  animation-delay: 100ms;
+}
+
+.hero-reveal-title {
+  animation-duration: 1150ms;
+  animation-delay: 220ms;
+}
+
+.hero-reveal-copy {
+  animation-duration: 1050ms;
+  animation-delay: 300ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-on-scroll,
-  .animate-on-scroll.animate-in {
+  .animate-on-scroll.animate-in,
+  .hero-reveal-surface,
+  .hero-reveal-kicker,
+  .hero-reveal-title,
+  .hero-reveal-copy {
     transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
     transform: none !important;
     filter: none !important;
+  }
+}
+
+.glass-panel {
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-section-light) 55%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-section-light) 32%, transparent),
+    color-mix(in srgb, var(--color-section-dark) 12%, transparent)
+  );
+  box-shadow:
+    0 0.65rem 1.6rem color-mix(in srgb, var(--color-section-dark) 35%, transparent),
+    0 0.1rem 0.5rem color-mix(in srgb, var(--color-section-dark) 22%, transparent);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-panel {
+    background: color-mix(in srgb, var(--color-section-dark) 66%, transparent);
   }
 }

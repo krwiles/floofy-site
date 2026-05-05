@@ -1,27 +1,62 @@
-<section
-  class="bg-section-light mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8"
+﻿<!-- Donate Hero -->
+<app-parallax-section
+  class="bg-section-light border-t-4 border-border"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.8"
+  [ariaLabel]="'Hero Background'"
 >
-  <div class="max-w-3xl">
-    <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
-      @if (i18n.locale() === 'en') {
-        DONATE
-      } @else {
-        寄付
-      }
-    </p>
-    <h1 class="text-4xl font-extrabold tracking-tight text-on-light-heading sm:text-5xl">
-      @if (i18n.locale() === 'en') {
-        Support the artist and future projects.
-      } @else {
-        アーティストと今後のプロジェクトを応援してください。
-      }
-    </h1>
-    <p class="mt-6 text-lg leading-8 text-on-light-body">
-      @if (i18n.locale() === 'en') {
-        This section will soon include ways to support Floofy’s art journey.
-      } @else {
-        ここには、フルーフィの活動を支援する方法を掲載する予定です。
-      }
-    </p>
+  <app-parallax-section
+    class="absolute inset-0 h-full max-w-7xl mx-auto lg:mask-fade-x"
+    [ariaLabel]="'Hero section'"
+    [backgroundImage]="'assets/G_CQjK1XkAALluE.jpeg'"
+    [backgroundPosition]="'center 33%'"
+    [parallaxStrength]="0.6"
+  >
+  </app-parallax-section>
+  <div
+    class="relative z-10 mx-auto min-h-[75svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-left"
+  >
+    <div
+      class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 sm:px-7 sm:py-7 mb-16 drop-shadow-md"
+    >
+      <p
+        class="hero-reveal-kicker mb-3 text-sm font-bold uppercase tracking-[0.32em] text-on-dark-heading sm:text-[0.95rem]"
+      >
+        @if (i18n.locale() === 'en') {
+          SHOW SUPPORT
+        } @else {
+          応援してください
+        }
+      </p>
+      <h1
+        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black uppercase tracking-[0.02em] text-on-dark-heading"
+      >
+        @if (i18n.locale() === 'en') {
+          DONATE
+        } @else {
+          サポート
+        }
+      </h1>
+      <p
+        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-fg-brand-subtle sm:text-base"
+      >
+        @if (i18n.locale() === 'en') {
+          Support the art journey and help bring future projects to life.
+        } @else {
+          アート活動を応援し、今後のプロジェクトを実現させましょう。
+        }
+      </p>
+      <p
+        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-fg-brand-subtle sm:text-sm"
+      >
+        @if (i18n.locale() === 'en') {
+          Ko-fi • Tip Jar • Support
+        } @else {
+          Ko-fi • チップ • サポート
+        }
+      </p>
+    </div>
   </div>
-</section>
+</app-parallax-section>

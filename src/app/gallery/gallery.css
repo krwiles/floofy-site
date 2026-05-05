@@ -10,6 +10,7 @@
 .gallery-image {
   transition: transform 0.3s;
 }
+
 .gallery-image:hover {
   transform: scale(1.02);
   cursor: pointer;
