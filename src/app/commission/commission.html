@@ -1,29 +1,60 @@
+<!-- Commission Hero -->
 <app-parallax-section
-  class="parallax-h-sm"
-  [ariaLabel]="'Hero section'"
-  [backgroundImage]="'assets/A6757DF0.jpeg'"
+  class="bg-section-light border-t-4 border-border"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.8"
+  [ariaLabel]="'Hero Background'"
 >
-  <div class="mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8">
-    <div class="max-w-3xl">
-      <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
+  <app-parallax-section
+    class="absolute inset-0 h-full max-w-7xl mx-auto lg:mask-fade-x"
+    [ariaLabel]="'Hero section'"
+    [backgroundImage]="'assets/A6757DF0.jpeg'"
+    [backgroundPosition]="'center 33%'"
+    [parallaxStrength]="0.6"
+  >
+  </app-parallax-section>
+  <div
+    class="relative z-10 mx-auto min-h-[75svh] flex w-full max-w-7xl items-end justify-center md:justify-start text-left"
+  >
+    <div
+      class="glass-panel hero-reveal-surface max-w-4xl px-6 py-6 sm:px-7 sm:py-7 mb-16 drop-shadow-md"
+    >
+      <p
+        class="hero-reveal-kicker mb-3 text-sm font-bold uppercase tracking-[0.32em] text-on-dark-heading sm:text-[0.95rem]"
+      >
+        @if (i18n.locale() === 'en') {
+          OPEN FOR WORK
+        } @else {
+          受注中
+        }
+      </p>
+      <h1
+        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black uppercase tracking-[0.02em] text-on-dark-heading"
+      >
         @if (i18n.locale() === 'en') {
           COMMISSION
         } @else {
-          依頼
-        }
-      </p>
-      <h1 class="text-4xl font-extrabold tracking-tight text-on-light-heading sm:text-5xl">
-        @if (i18n.locale() === 'en') {
-          Commission info and pricing.
-        } @else {
-          依頼情報と料金について。
+          コミッション
         }
       </h1>
-      <p class="mt-6 text-lg leading-8 text-on-light-body">
+      <p
+        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-fg-brand-subtle sm:text-base"
+      >
         @if (i18n.locale() === 'en') {
-          Details about commission types, pricing, and how to place an order will be listed here.
+          Custom characters, illustrations, and style explorations. Pricing and details below.
         } @else {
-          依頼の種類、料金、注文方法についての詳細はこちらに掲載します。
+          オリジナルキャラクターやイラストのカスタム制作。料金と詳細は下記をご確認ください。
+        }
+      </p>
+      <p
+        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-fg-brand-subtle sm:text-sm"
+      >
+        @if (i18n.locale() === 'en') {
+          Chibi • Character • Custom
+        } @else {
+          ちびキャラ • キャラクター • カスタム
         }
       </p>
     </div>

@@ -1,10 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { I18nService } from '../services/i18n.service';
+import { ParallaxSection } from '../components/parallax-section/parallax-section';
 
 @Component({
   selector: 'app-streaming',
-  imports: [],
+  imports: [ParallaxSection],
   templateUrl: './streaming.html',
   styleUrl: './streaming.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,31 +1,60 @@
 <!-- Gallery Hero -->
 <app-parallax-section
-  class="parallax-h-sm"
-  [ariaLabel]="'Hero section'"
-  [backgroundImage]="'assets/G_CQjK1XkAALluE.jpeg'"
-  [backgroundPosition]="'center 35%'"
+  class="bg-section-light border-t-4 border-border"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.8"
+  [ariaLabel]="'Hero Background'"
 >
-  <div class="mx-auto flex min-h-[60svh] w-full max-w-7xl items-center px-6 py-20 lg:px-8">
-    <div class="max-w-3xl">
-      <p class="mb-3 text-sm font-semibold tracking-[0.18em] text-fg-brand">
+  <app-parallax-section
+    class="absolute inset-0 h-full max-w-7xl mx-auto lg:mask-fade-x"
+    [ariaLabel]="'Hero section'"
+    [backgroundImage]="'assets/G_CQjK1XkAALluE.jpeg'"
+    [backgroundPosition]="'center 33%'"
+    [parallaxStrength]="0.6"
+  >
+  </app-parallax-section>
+  <div
+    class="relative z-10 mx-auto min-h-[75svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-left"
+  >
+    <div
+      class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 sm:px-7 sm:py-7 mb-16 drop-shadow-md"
+    >
+      <p
+        class="hero-reveal-kicker mb-3 text-sm font-bold uppercase tracking-[0.32em] text-on-dark-heading sm:text-[0.95rem]"
+      >
+        @if (i18n.locale() === 'en') {
+          SELECTED WORKS
+        } @else {
+          作品セレクション
+        }
+      </p>
+      <h1
+        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black uppercase tracking-[0.02em] text-on-dark-heading"
+      >
         @if (i18n.locale() === 'en') {
           GALLERY
         } @else {
           ギャラリー
         }
-      </p>
-      <h1 class="text-4xl font-extrabold tracking-tight text-on-dark-heading sm:text-5xl">
-        @if (i18n.locale() === 'en') {
-          A collection of my artwork.
-        } @else {
-          私のアートワーク集。
-        }
       </h1>
-      <p class="mt-6 text-lg leading-8 text-on-dark-body">
+      <p
+        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-fg-brand-subtle sm:text-base"
+      >
         @if (i18n.locale() === 'en') {
-          A collection of my artwork, showcasing a variety of characters and styles.
+          Original illustrations, character pieces, and style explorations in one curated archive.
         } @else {
-          私のアートワークのコレクションで、さまざまなキャラクターやスタイルを紹介しています。
+          オリジナルイラスト、キャラクター作品、さまざまな画風の表現をまとめたキュレーションです。
+        }
+      </p>
+      <p
+        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-fg-brand-subtle sm:text-sm"
+      >
+        @if (i18n.locale() === 'en') {
+          Artworks • Characters • Illustrations
+        } @else {
+          アートワーク • キャラクター • イラスト
         }
       </p>
     </div>
@@ -33,7 +62,14 @@
 </app-parallax-section>
 
 <!-- Gallery Section -->
-<section class="bg-bg">
+<app-parallax-section
+  class="bg-section-dark border-t-4 border-border"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Streaming Section'"
+>
   <div
     class="columns-1 md:columns-2 lg:columns-3 gap-8 max-w-7xl mx-auto py-8 px-4 sm:py-16 lg:px-6"
   >
@@ -46,16 +82,17 @@
           [height]="galleryImage.heightThumbnail"
           [width]="galleryImage.widthThumbnail"
           (click)="showImage(galleryImage)"
+          animate.enter="enter-image"
         />
       } @placeholder {
         <div
-          class="w-full mb-8 break-inside-avoid bg-section-dark"
+          class="w-full mb-8 break-inside-avoid bg-section-light"
           [style.aspect-ratio]="galleryImage.widthThumbnail + '/' + galleryImage.heightThumbnail"
         ></div>
       }
     }
   </div>
-</section>
+</app-parallax-section>
 
 <!-- TODO fix the dropdown, also ask about going to a url like /gallery and it doesn't load. Can we fix this? -->
 <!-- Lightbox Modal -->
