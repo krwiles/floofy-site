@@ -1,22 +1,25 @@
 <!-- Contact Hero -->
 <app-parallax-section
-  class="bg-section-light border-t-4 border-border"
-  [backgroundImage]="'assets/4-point-stars.svg'"
+  class="bg-section-dark border-t-4 border-border"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
   [parallaxStrength]="0.8"
   [ariaLabel]="'Hero Background'"
 >
-  <app-parallax-section
-    class="absolute inset-0 h-full max-w-7xl mx-auto lg:mask-fade-x"
-    [ariaLabel]="'Hero section'"
-    [backgroundImage]="'assets/G_CQjK1XkAALluE.jpeg'"
-    [backgroundPosition]="'center 33%'"
-    [parallaxStrength]="0.6"
-  >
-  </app-parallax-section>
+  <div class="absolute inset-0 h-full max-w-7xl mx-auto">
+    <app-parallax-section
+      class="absolute inset-0 h-full max-w-4xl lg:mask-fade-x"
+      [ariaLabel]="'Hero section'"
+      [backgroundImage]="'assets/G1yNfrpbAAAEPTp.jfif'"
+      [backgroundPosition]="'center 50%'"
+      [backgroundHeight]="'110%'"
+      [parallaxStrength]="0.6"
+    >
+    </app-parallax-section>
+  </div>
   <div
-    class="relative z-10 mx-auto min-h-[75svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-left"
+    class="relative z-10 mx-auto min-h-[80svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-left"
   >
     <div
       class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 sm:px-7 sm:py-7 mb-16 drop-shadow-md"
@@ -40,7 +43,7 @@
         }
       </h1>
       <p
-        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-fg-brand-subtle sm:text-base"
+        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-dark-heading sm:text-base"
       >
         @if (i18n.locale() === 'en') {
           Have a question or just want to say hello? Reach out and I'll get back to you as soon as
@@ -50,7 +53,7 @@
         }
       </p>
       <p
-        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-fg-brand-subtle sm:text-sm"
+        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-on-dark-heading sm:text-sm"
       >
         @if (i18n.locale() === 'en') {
           DMs • Email • Social

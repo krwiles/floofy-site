@@ -7,22 +7,25 @@
   [parallaxStrength]="0.8"
   [ariaLabel]="'Hero Background'"
 >
-  <app-parallax-section
-    class="absolute inset-0 h-full max-w-7xl mx-auto lg:mask-fade-x"
-    [ariaLabel]="'Hero section'"
-    [backgroundImage]="'assets/G_CQjK1XkAALluE.jpeg'"
-    [backgroundPosition]="'center 33%'"
-    [parallaxStrength]="0.6"
-  >
-  </app-parallax-section>
+  <div class="absolute inset-0 h-full max-w-7xl mx-auto">
+    <app-parallax-section
+      class="absolute inset-0 h-full max-w-3xl ml-auto lg:mask-fade-x"
+      [ariaLabel]="'Hero section'"
+      [backgroundImage]="'assets/GyfSzJfaIAAn9qh.jfif'"
+      [backgroundPosition]="'center 33%'"
+      [backgroundHeight]="'110%'"
+      [parallaxStrength]="0.6"
+    >
+    </app-parallax-section>
+  </div>
   <div
-    class="relative z-10 mx-auto min-h-[75svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-left"
+    class="relative z-10 mx-auto min-h-[80svh] flex w-full max-w-7xl items-end justify-center md:justify-start text-left"
   >
     <div
       class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 sm:px-7 sm:py-7 mb-16 drop-shadow-md"
     >
       <p
-        class="hero-reveal-kicker mb-3 text-sm font-bold uppercase tracking-[0.32em] text-on-dark-heading sm:text-[0.95rem]"
+        class="hero-reveal-kicker mb-3 text-sm font-bold uppercase tracking-[0.32em] text-on-light-heading sm:text-[0.95rem]"
       >
         @if (i18n.locale() === 'en') {
           SHOW SUPPORT
@@ -31,7 +34,7 @@
         }
       </p>
       <h1
-        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black uppercase tracking-[0.02em] text-on-dark-heading"
+        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black uppercase tracking-[0.02em] text-on-light-heading"
       >
         @if (i18n.locale() === 'en') {
           DONATE
@@ -40,7 +43,7 @@
         }
       </h1>
       <p
-        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-fg-brand-subtle sm:text-base"
+        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-light-body sm:text-base"
       >
         @if (i18n.locale() === 'en') {
           Support the art journey and help bring future projects to life.
@@ -49,7 +52,7 @@
         }
       </p>
       <p
-        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-fg-brand-subtle sm:text-sm"
+        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-on-light-body sm:text-sm"
       >
         @if (i18n.locale() === 'en') {
           Ko-fi • Tip Jar • Support
