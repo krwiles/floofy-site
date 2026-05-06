@@ -7,23 +7,25 @@
   [parallaxStrength]="0.6"
   [ariaLabel]="'Hero Background'"
 >
-  <app-parallax-section
-    class="absolute inset-0 h-full max-w-7xl mx-auto lg:mask-fade-x"
-    [ariaLabel]="'Hero section'"
-    [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
-    [backgroundPosition]="'center 40%'"
-    [parallaxStrength]="0.4"
-  >
-  </app-parallax-section>
+  <div class="absolute inset-0 h-full max-w-7xl mx-auto">
+    <app-parallax-section
+      class="absolute inset-0 h-full max-w-5xl lg:mask-fade-x"
+      [ariaLabel]="'Hero section'"
+      [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
+      [backgroundPosition]="'center 40%'"
+      [parallaxStrength]="0.4"
+    >
+    </app-parallax-section>
+  </div>
   <div
-    class="relative z-10 mx-auto min-h-[95svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-right h-full"
+    class="relative z-10 mx-auto min-h-[95svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-left h-full"
   >
     <div
-      class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 sm:px-9 sm:py-9 mb-24 drop-shadow-md"
+      class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 sm:px-9 sm:py-9 md:mb-24 drop-shadow-md"
     >
       <!-- Small intro/kicker text above the main title. -->
       <p
-        class="hero-reveal-kicker m-0 text-base font-bold uppercase tracking-[0.34em] text-on-dark-heading sm:text-[1.05rem]"
+        class="hero-reveal-kicker m-0 text-sm font-bold uppercase tracking-[0.34em] text-on-dark-heading md:text-[1.05rem]"
       >
         @if (i18n.locale() === 'en') {
           Illustrator Streamer
@@ -33,12 +35,12 @@
       </p>
       <!-- Main hero heading. -->
       <h1
-        class="hero-reveal-title mt-3 mb-0 text-[clamp(5.75rem,16vw,10.5rem)] leading-[0.86] font-black tracking-[-0.045em] text-on-dark-heading"
+        class="hero-reveal-title mt-3 mb-0 text-[clamp(6.75rem,16vw,12rem)] leading-[0.86] font-black tracking-[-0.045em] text-on-dark-heading"
       >
         Floofy
       </h1>
       <p
-        class="hero-reveal-copy mt-6 text-sm font-bold uppercase tracking-[0.3em] text-on-dark-heading sm:text-base"
+        class="hero-reveal-copy mt-6 text-xs font-bold uppercase tracking-[0.3em] text-on-dark-heading md:text-base"
       >
         @if (i18n.locale() === 'en') {
           Art • Streams • Commissions
@@ -366,7 +368,7 @@
         </svg>
       </a>
     </div>
-    <div class="mt-4 md:mt-0 text-center pt-16 md:pt-0">
+    <div class="mt-4 md:mt-0 text-center pt-8 md:pt-0">
       <h2
         class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
       >
@@ -409,7 +411,7 @@
       </a>
     </div>
   </div>
-  <div class="gap-8 items-center py-8 px-4 mx-auto max-w-4xl sm:py-16 lg:px-6">
+  <div class="gap-8 items-center pb-8 px-4 mx-auto max-w-4xl sm:pb-16 lg:px-6">
     <div class="mt-4 md:mt-0 text-center">
       <h2
         class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
