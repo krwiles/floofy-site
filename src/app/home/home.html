@@ -21,8 +21,12 @@
     class="relative z-10 mx-auto min-h-[95svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-left h-full"
   >
     <div
-      class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 sm:px-9 sm:py-9 md:mb-24 drop-shadow-md"
+      class="relative glass-panel hero-reveal-surface max-w-2xl px-7 py-7 sm:px-9 sm:py-9 md:mb-24 drop-shadow-md"
     >
+      <span
+        class="flourish h-12 f-full text-on-dark-heading absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+        aria-hidden="true"
+      ></span>
       <!-- Small intro/kicker text above the main title. -->
       <p
         class="hero-reveal-kicker m-0 text-sm font-bold uppercase tracking-[0.34em] text-on-dark-heading md:text-[1.05rem]"
@@ -52,9 +56,18 @@
   </div>
 </app-parallax-section>
 
+<span
+  class="h-1 w-full bg-border absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+<span
+  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+
 <!-- Gallery Section -->
 <app-parallax-section
-  class="bg-section-dark border-t-4 border-border"
+  class="bg-section-dark"
   [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
@@ -62,10 +75,16 @@
   [ariaLabel]="'Gallery section'"
 >
   <div
-    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
+    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-32 lg:px-6"
   >
     <div class="animate-on-scroll mt-4 md:mt-0 text-center md:text-right">
-      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading">
+      <h2
+        class="flex items-center justify-center md:justify-end gap-3 mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+      >
+        <span
+          class="flourish f-end text-on-dark-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
         @if (i18n.locale() === 'en') {
           ART GALLERY
         } @else {
@@ -111,9 +130,18 @@
   </div>
 </app-parallax-section>
 
+<span
+  class="h-1 w-full bg-border absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+<span
+  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+
 <!-- About Section -->
 <app-parallax-section
-  class="bg-section-light border-t-4 border-border"
+  class="bg-section-light"
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
@@ -132,13 +160,17 @@
     />
     <div class="mt-4 md:mt-0 text-center md:text-left">
       <h2
-        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading"
+        class="flex items-center justify-center md:justify-start animate-on-scroll mb-4 gap-3 text-4xl tracking-tight font-extrabold text-on-light-heading"
       >
         @if (i18n.locale() === 'en') {
           ABOUT FLOOFY
         } @else {
           フルーフィについて
         }
+        <span
+          class="flourish f-end flip text-on-light-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-light-body md:text-lg">
         @if (i18n.locale() === 'en') {
@@ -177,9 +209,18 @@
   </div>
 </app-parallax-section>
 
+<span
+  class="h-1 w-full bg-border absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+<span
+  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+
 <!-- Commission Section -->
 <app-parallax-section
-  class="bg-section-dark border-t-4 border-border"
+  class="bg-section-dark"
   [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
@@ -187,12 +228,16 @@
   [ariaLabel]="'Commission Section'"
 >
   <div
-    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
+    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-32 lg:px-6"
   >
     <div class="mt-4 md:mt-0 text-center md:text-right">
       <h2
-        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+        class="flex items-center justify-center md:justify-end gap-3 mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
       >
+        <span
+          class="flourish f-end text-on-dark-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
         @if (i18n.locale() === 'en') {
           COMMISSION
         } @else {
@@ -251,9 +296,18 @@
   </div>
 </app-parallax-section>
 
+<span
+  class="h-1 w-full bg-border absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+<span
+  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+
 <!-- Streaming Section -->
 <app-parallax-section
-  class="bg-section-light border-t-4 border-border"
+  class="bg-section-light"
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
@@ -261,7 +315,7 @@
   [ariaLabel]="'Streaming Section'"
 >
   <div
-    class="flex flex-col md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-16 lg:px-6"
+    class="flex flex-col md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-32 lg:px-6"
   >
     <img
       class="animate-on-scroll w-full rounded-lg"
@@ -272,13 +326,17 @@
     />
     <div class="mt-4 md:mt-0 text-center md:text-left">
       <h2
-        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-light-heading"
+        class="flex items-center justify-center md:justify-start animate-on-scroll mb-4 gap-3 text-4xl tracking-tight font-extrabold text-on-light-heading"
       >
         @if (i18n.locale() === 'en') {
           STREAMING
         } @else {
           ストリーミング
         }
+        <span
+          class="flourish f-end flip text-on-light-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-light-body md:text-lg">
         @if (i18n.locale() === 'en') {
@@ -314,9 +372,18 @@
   </div>
 </app-parallax-section>
 
+<span
+  class="h-1 w-full bg-border absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+<span
+  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  aria-hidden="true"
+></span>
+
 <!-- Reviews and Donate Section -->
 <app-parallax-section
-  class="bg-section-dark border-t-4 border-border"
+  class="bg-section-dark"
   [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
@@ -324,17 +391,25 @@
   [ariaLabel]="'Reviews and Donate Section'"
 >
   <div
-    class="gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
+    class="gap-8 items-start py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:pb-16 sm:pt-32 lg:px-6"
   >
     <div class="mt-4 md:mt-0 text-center">
       <h2
         class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
       >
+        <span
+          class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
         @if (i18n.locale() === 'en') {
           REVIEWS
         } @else {
           レビュー
         }
+        <span
+          class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
         @if (i18n.locale() === 'en') {
@@ -372,11 +447,19 @@
       <h2
         class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
       >
+        <span
+          class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
         @if (i18n.locale() === 'en') {
           DONATE
         } @else {
           寄付
         }
+        <span
+          class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
         @if (i18n.locale() === 'en') {
@@ -416,11 +499,19 @@
       <h2
         class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
       >
+        <span
+          class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
         @if (i18n.locale() === 'en') {
           CONTACT
         } @else {
           お問い合わせ
         }
+        <span
+          class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
         @if (i18n.locale() === 'en') {

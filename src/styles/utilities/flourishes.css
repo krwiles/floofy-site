@@ -1,0 +1,43 @@
+/* Reusable flourish masks. Color comes from currentColor. */
+.flourish {
+  --flourish-src: url('/assets/flourish-end.svg');
+  --flourish-ratio: 368 / 54;
+  width: auto;
+  min-height: 1em;
+  aspect-ratio: var(--flourish-ratio);
+  flex-shrink: 0;
+  vertical-align: -0.08em;
+  background-color: currentColor;
+  -webkit-mask-image: var(--flourish-src);
+  mask-image: var(--flourish-src);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.f-end {
+  --flourish-src: url('/assets/flourish-end.svg');
+  --flourish-ratio: 368 / 54;
+}
+
+.f-end-short {
+  --flourish-src: url('/assets/flourish-end-short.svg');
+  --flourish-ratio: 207 / 54;
+}
+
+.f-full {
+  --flourish-src: url('/assets/flourish.svg');
+  --flourish-ratio: 493 / 54;
+}
+
+.f-full-wide {
+  --flourish-src: url('/assets/flourish2.svg');
+  --flourish-ratio: 646 / 54;
+}
+
+.flip {
+  transform: scaleX(-1);
+}
