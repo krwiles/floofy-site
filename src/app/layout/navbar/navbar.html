@@ -55,6 +55,7 @@
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
+            <circle cx="9" cy="9" r="9" fill="white" />
             <circle cx="9" cy="9" r="4.5" fill="#BC002D" />
           </svg>
           日本語/EN
@@ -101,7 +102,7 @@
               routerLinkActive="bg-fg-brand-subtle text-fg-brand lg:bg-transparent lg:text-fg-brand"
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="navDropdown.click()"
-              class="block rounded px-3 py-2 text-on-light-heading transition-colors hover:bg-bg-muted lg:border-0 lg:p-0 lg:hover:bg-transparent lg:hover:text-fg-brand"
+              class="block rounded px-3 py-2 text-on-light-heading transition-colors hover:fg-brand lg:border-0 lg:p-0 lg:hover:bg-transparent lg:hover:text-fg-brand"
               >{{ i18n.t(key) }}</a
             >
           </li>

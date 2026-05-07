@@ -1,13 +1,13 @@
 <!-- Gallery Hero -->
 <app-parallax-section
-  class="bg-section-dark border-t-4 border-border"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
+  class="bg-[#EEDDC3]"
+  [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
   [parallaxStrength]="0.8"
   [ariaLabel]="'Hero Background'"
 >
-  <div class="absolute inset-0 h-full max-w-7xl mx-auto lg:mask-fade-x">
+  <div class="absolute inset-0 h-full max-w-7xl mx-auto">
     <app-parallax-section
       class="absolute inset-0 h-full max-w-5xl lg:mask-fade-x"
       [ariaLabel]="'Hero section'"
@@ -24,6 +24,10 @@
     <div
       class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 sm:px-7 sm:py-7 mb-16 drop-shadow-md"
     >
+      <span
+        class="flourish h-12 f-full text-on-dark-heading absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+        aria-hidden="true"
+      ></span>
       <p
         class="hero-reveal-kicker mb-3 text-sm font-bold uppercase tracking-[0.32em] text-on-dark-heading sm:text-[0.95rem]"
       >
@@ -66,8 +70,8 @@
 
 <!-- Gallery Section -->
 <app-parallax-section
-  class="bg-section-light border-t-4 border-border"
-  [backgroundImage]="'assets/4-point-stars.svg'"
+  class="bg-section-dark border-t-4 border-border"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
   [parallaxStrength]="0.6"
