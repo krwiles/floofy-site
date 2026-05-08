@@ -1,45 +1,17 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import en from '../../assets/i18n/en.json';
+import ja from '../../assets/i18n/ja.json';
 
 export type Locale = 'en' | 'ja';
 
-type MessageKey =
-  | 'language.english'
-  | 'language.japanese'
-  | 'nav.about'
-  | 'nav.streaming'
-  | 'nav.gallery'
-  | 'nav.reviews'
-  | 'nav.contact'
-  | 'nav.commission'
-  | 'nav.donate';
+export interface NavItem {
+  key: string;
+  label: string;
+  route: string;
+}
 
-const messages: Record<Locale, Record<MessageKey, string>> = {
-  en: {
-    'language.english': 'English',
-    'language.japanese': 'Japanese',
-    'nav.about': 'ABOUT',
-    'nav.streaming': 'STREAMING',
-    'nav.gallery': 'GALLERY',
-    'nav.reviews': 'REVIEWS',
-
-    'nav.contact': 'CONTACT',
-    'nav.commission': 'COMMISSION',
-    'nav.donate': 'DONATE',
-  },
-  ja: {
-    'language.english': '英語',
-    'language.japanese': '日本語',
-    'nav.about': '概要',
-    'nav.streaming': '配信',
-    'nav.gallery': 'ギャラリー',
-    'nav.reviews': 'レビュー',
-
-    'nav.contact': 'お問い合わせ',
-    'nav.commission': '依頼',
-    'nav.donate': '寄付',
-  },
-};
+const translations: Record<Locale, Record<string, unknown>> = { en, ja };
 
 @Injectable({ providedIn: 'root' })
 export class I18nService {
@@ -60,8 +32,29 @@ export class I18nService {
     this.localeSignal.set(locale);
   }
 
-  t(key: MessageKey): string {
-    return messages[this.localeSignal()][key];
+  t(key: string): string {
+    const keys = key.split('.');
+    let current: unknown = translations[this.localeSignal()];
+    for (const k of keys) {
+      if (current !== null && typeof current === 'object' && k in (current as object)) {
+        current = (current as Record<string, unknown>)[k];
+      } else {
+        return key;
+      }
+    }
+    return typeof current === 'string' ? current : key;
+  }
+
+  nav(): NavItem[] {
+    const navSection = translations[this.localeSignal()]['nav'] as Record<
+      string,
+      { label: string; route: string }
+    >;
+    return Object.entries(navSection).map(([key, value]) => ({
+      key,
+      label: value.label,
+      route: value.route,
+    }));
   }
 
   private getInitialLocale(): Locale {

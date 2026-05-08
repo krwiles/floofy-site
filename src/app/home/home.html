@@ -31,11 +31,7 @@
       <p
         class="hero-reveal-kicker m-0 text-sm font-bold uppercase tracking-[0.34em] text-on-dark-heading md:text-[1.05rem]"
       >
-        @if (i18n.locale() === 'en') {
-          Illustrator Streamer
-        } @else {
-          イラストレーター 配信者
-        }
+        {{ 'home.hero.kicker' | translate }}
       </p>
       <!-- Main hero heading. -->
       <h1
@@ -46,11 +42,7 @@
       <p
         class="hero-reveal-copy mt-6 text-xs font-bold uppercase tracking-[0.3em] text-on-dark-heading md:text-base"
       >
-        @if (i18n.locale() === 'en') {
-          Art • Streams • Commissions
-        } @else {
-          アート • 配信 • コミッション
-        }
+        {{ 'home.hero.tagline' | translate }}
       </p>
     </div>
   </div>
@@ -71,7 +63,7 @@
   [ariaLabel]="'Gallery section'"
 >
   <div
-    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-48 lg:px-6"
+    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-32 lg:px-6"
   >
     <div class="animate-on-scroll mt-4 md:mt-0 text-center md:text-right">
       <h2
@@ -81,29 +73,16 @@
           class="flourish f-end text-on-dark-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
-        @if (i18n.locale() === 'en') {
-          ART GALLERY
-        } @else {
-          アートギャラリー
-        }
+        {{ 'home.gallery.title' | translate }}
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
-        @if (i18n.locale() === 'en') {
-          Explore a curated collection of illustrations by Floofy, showcasing a variety of styles
-          and techniques. Each piece reflects a unique perspective and creative expression.
-        } @else {
-          厳選されたFloofyのイラストコレクションを探索し、さまざまなスタイルや技法を紹介します。各作品は独自の視点と創造的な表現を反映しています。
-        }
+        {{ 'home.gallery.description' | translate }}
       </p>
       <a
         routerLink="/gallery"
         class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
-        @if (i18n.locale() === 'en') {
-          View Gallery
-        } @else {
-          ギャラリーを見る
-        }
+        {{ 'home.gallery.cta' | translate }}
         <svg
           class="ml-2 -mr-1 w-5 h-5"
           fill="currentColor"
@@ -154,36 +133,20 @@
       <h2
         class="flex items-center justify-center md:justify-start animate-on-scroll mb-4 gap-3 text-4xl tracking-tight font-extrabold text-on-light-heading"
       >
-        @if (i18n.locale() === 'en') {
-          ABOUT FLOOFY
-        } @else {
-          フルーフィについて
-        }
+        {{ 'home.about.title' | translate }}
         <span
           class="flourish f-end flip text-on-light-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-light-body md:text-lg">
-        @if (i18n.locale() === 'en') {
-          Floofy is a talented illustrator and streamer known for captivating artwork and fun live
-          streams. With a passion for creativity and a unique artistic style, Floofy has built a
-          dedicated following in the art community. Whether through digital illustrations or
-          interactive streaming sessions, Floofy continues to inspire and entertain audiences
-          worldwide.
-        } @else {
-          フルーフィは、魅力的なアートワークと楽しいライブストリームで知られる才能あるイラストレーター兼ストリーマーです。創造性への情熱と独自の芸術スタイルを持つフルーフィは、アートコミュニティで熱心なフォロワーを築いています。デジタルイラストやインタラクティブなストリーミングセッションを通じて、フルーフィは世界中の観客に刺激とエンターテインメントを提供し続けています。
-        }
+        {{ 'home.about.description' | translate }}
       </p>
       <a
         routerLink="/about"
         class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
-        @if (i18n.locale() === 'en') {
-          Learn More
-        } @else {
-          詳しく見る
-        }
+        {{ 'home.about.cta' | translate }}
         <svg
           class="ml-2 -mr-1 w-5 h-5"
           fill="currentColor"
@@ -226,29 +189,16 @@
           class="flourish f-end text-on-dark-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
-        @if (i18n.locale() === 'en') {
-          COMMISSION
-        } @else {
-          コミッション
-        }
+        {{ 'home.commission.title' | translate }}
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
-        @if (i18n.locale() === 'en') {
-          Commission your own custom artwork from Floofy, tailored to your preferences and
-          specifications.
-        } @else {
-          Floofyにあなたの好みや仕様に合わせたカスタムアートワークを依頼できます。
-        }
+        {{ 'home.commission.description' | translate }}
       </p>
       <a
         routerLink="/commission"
         class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
-        @if (i18n.locale() === 'en') {
-          Commission Now
-        } @else {
-          コミッションを依頼
-        }
+        {{ 'home.commission.cta' | translate }}
         <svg
           class="ml-2 -mr-1 w-5 h-5"
           fill="currentColor"
@@ -312,33 +262,20 @@
       <h2
         class="flex items-center justify-center md:justify-start animate-on-scroll mb-4 gap-3 text-4xl tracking-tight font-extrabold text-on-light-heading"
       >
-        @if (i18n.locale() === 'en') {
-          STREAMING
-        } @else {
-          ストリーミング
-        }
+        {{ 'home.streaming.title' | translate }}
         <span
           class="flourish f-end flip text-on-light-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-light-body md:text-lg">
-        @if (i18n.locale() === 'en') {
-          Join Floofy live for art streams, Q&A, and community fun! Check out the streaming schedule
-          and never miss a session.
-        } @else {
-          Floofyのライブ配信でアート制作やQ&A、コミュニティとの交流を楽しもう！配信スケジュールをチェックして見逃さないようにしよう。
-        }
+        {{ 'home.streaming.description' | translate }}
       </p>
       <a
         routerLink="/streaming"
         class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
-        @if (i18n.locale() === 'en') {
-          Go to Streaming
-        } @else {
-          ストリーミングを見る
-        }
+        {{ 'home.streaming.cta' | translate }}
         <svg
           class="ml-2 -mr-1 w-5 h-5"
           fill="currentColor"
@@ -381,34 +318,20 @@
           class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
-        @if (i18n.locale() === 'en') {
-          REVIEWS
-        } @else {
-          レビュー
-        }
+        {{ 'home.reviews.title' | translate }}
         <span
           class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
-        @if (i18n.locale() === 'en') {
-          Read what others have to say about their commissions and experiences with Floofy! Your
-          feedback is important—share your own review and help others discover the quality and
-          creativity of Floofy’s work.
-        } @else {
-          他の方のコミッションやFloofyとの体験についてのレビューを読んでみましょう！あなたのフィードバックも大歓迎です。レビューを投稿して、Floofyの作品のクオリティと創造性を広めましょう。
-        }
+        {{ 'home.reviews.description' | translate }}
       </p>
       <a
         routerLink="/reviews"
         class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
-        @if (i18n.locale() === 'en') {
-          See Reviews
-        } @else {
-          レビューを見る
-        }
+        {{ 'home.reviews.cta' | translate }}
         <svg
           class="ml-2 -mr-1 w-5 h-5"
           fill="currentColor"
@@ -431,34 +354,20 @@
           class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
-        @if (i18n.locale() === 'en') {
-          DONATE
-        } @else {
-          寄付
-        }
+        {{ 'home.donate.title' | translate }}
         <span
           class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
-        @if (i18n.locale() === 'en') {
-          Support Floofy’s creative journey! Your donation helps keep the art and streams coming,
-          funds new projects, and shows your appreciation for the work. Every contribution, big or
-          small, makes a difference—thank you for being part of the community!
-        } @else {
-          フルーフィの創作活動を応援してください！あなたのご支援はアートや配信の継続、新しいプロジェクトの実現に役立ち、作品への感謝の気持ちを伝えることにもなります。どんなに小さなご寄付でも大きな力になります。コミュニティの一員でいてくださり、ありがとうございます！
-        }
+        {{ 'home.donate.description' | translate }}
       </p>
       <a
         routerLink="/donate"
         class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
-        @if (i18n.locale() === 'en') {
-          Donate
-        } @else {
-          寄付
-        }
+        {{ 'home.donate.cta' | translate }}
         <svg
           class="ml-2 -mr-1 w-5 h-5"
           fill="currentColor"
@@ -483,34 +392,20 @@
           class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
-        @if (i18n.locale() === 'en') {
-          CONTACT
-        } @else {
-          お問い合わせ
-        }
+        {{ 'home.contact.title' | translate }}
         <span
           class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
           aria-hidden="true"
         ></span>
       </h2>
       <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
-        @if (i18n.locale() === 'en') {
-          Have a question, want to discuss a project, or need info about a special commission? Reach
-          out to Floofy—your message is always welcome! Use the contact page to send your inquiry,
-          and Floofy will get back to you as soon as possible.
-        } @else {
-          ご質問やプロジェクトのご相談、特別なコミッションについてのお問い合わせなど、お気軽にご連絡ください。コンタクトページからメッセージを送信いただければ、できるだけ早くご返信いたします。
-        }
+        {{ 'home.contact.description' | translate }}
       </p>
       <a
         routerLink="/contact"
         class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
       >
-        @if (i18n.locale() === 'en') {
-          Get in touch
-        } @else {
-          お問い合わせ
-        }
+        {{ 'home.contact.cta' | translate }}
         <svg
           class="ml-2 -mr-1 w-5 h-5"
           fill="currentColor"

@@ -1,0 +1,56 @@
+{
+  "language": {
+    "english": "English",
+    "japanese": "Japanese"
+  },
+  "home": {
+    "hero": {
+      "kicker": "Illustrator Streamer",
+      "tagline": "Art • Streams • Commissions"
+    },
+    "gallery": {
+      "title": "ART GALLERY",
+      "description": "Explore a curated collection of illustrations by Floofy, showcasing a variety of styles and techniques. Each piece reflects a unique perspective and creative expression.",
+      "cta": "View Gallery"
+    },
+    "about": {
+      "title": "ABOUT FLOOFY",
+      "description": "Floofy is a talented illustrator and streamer known for captivating artwork and fun live streams. With a passion for creativity and a unique artistic style, Floofy has built a dedicated following in the art community. Whether through digital illustrations or interactive streaming sessions, Floofy continues to inspire and entertain audiences worldwide.",
+      "cta": "Learn More"
+    },
+    "commission": {
+      "title": "COMMISSION",
+      "description": "Commission your own custom artwork from Floofy, tailored to your preferences and specifications.",
+      "cta": "Commission Now"
+    },
+    "streaming": {
+      "title": "STREAMING",
+      "description": "Join Floofy live for art streams, Q&A, and community fun! Check out the streaming schedule and never miss a session.",
+      "cta": "Go to Streaming"
+    },
+    "reviews": {
+      "title": "REVIEWS",
+      "description": "Read what others have to say about their commissions and experiences with Floofy! Your feedback is important—share your own review and help others discover the quality and creativity of Floofy's work.",
+      "cta": "See Reviews"
+    },
+    "donate": {
+      "title": "DONATE",
+      "description": "Support Floofy's creative journey! Your donation helps keep the art and streams coming, funds new projects, and shows your appreciation for the work. Every contribution, big or small, makes a difference—thank you for being part of the community!",
+      "cta": "Donate"
+    },
+    "contact": {
+      "title": "CONTACT",
+      "description": "Have a question, want to discuss a project, or need info about a special commission? Reach out to Floofy—your message is always welcome! Use the contact page to send your inquiry, and Floofy will get back to you as soon as possible.",
+      "cta": "Get in touch"
+    }
+  },
+  "nav": {
+    "gallery": { "label": "GALLERY", "route": "/gallery" },
+    "about": { "label": "ABOUT", "route": "/about" },
+    "commission": { "label": "COMMISSION", "route": "/commission" },
+    "streaming": { "label": "STREAMING", "route": "/streaming" },
+    "reviews": { "label": "REVIEWS", "route": "/reviews" },
+    "donate": { "label": "DONATE", "route": "/donate" },
+    "contact": { "label": "CONTACT", "route": "/contact" }
+  }
+}

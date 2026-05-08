@@ -16,12 +16,12 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Cormorant Garamond', 'Noto Sans JP', sans-serif;
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
 }
 
 body,
 *:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
-  font-family: 'Nunito', 'Noto Sans JP', sans-serif;
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
 }
 
 body {

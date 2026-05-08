@@ -95,15 +95,15 @@
       <ul
         class="nav-links-intro font-medium flex flex-col p-4 lg:p-0 mt-4 border border-border rounded-base bg-bg-subtle lg:flex-row lg:space-x-8 rtl:space-x-reverse lg:mt-0 lg:border-0 lg:bg-bg"
       >
-        @for (key of navKeys; track $index) {
+        @for (item of i18n.nav(); track item.key) {
           <li>
             <a
-              [routerLink]="'/' + key.split('.')[1]"
+              [routerLink]="item.route"
               routerLinkActive="bg-fg-brand-subtle text-fg-brand lg:bg-transparent lg:text-fg-brand"
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="navDropdown.click()"
               class="block rounded px-3 py-2 text-on-light-heading transition-colors hover:fg-brand lg:border-0 lg:p-0 lg:hover:bg-transparent lg:hover:text-fg-brand"
-              >{{ i18n.t(key) }}</a
+              >{{ item.label }}</a
             >
           </li>
         }
