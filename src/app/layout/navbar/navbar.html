@@ -1,23 +1,23 @@
-<nav class="nav-intro bg-bg fixed w-full z-100 top-0 inset-s-0 border-border border-b">
-  <div class="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
+<nav class="nav-intro bg-bg border-border fixed inset-s-0 top-0 z-100 w-full border-b">
+  <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between p-4">
     <a routerLink="/" class="nav-brand-intro flex items-center space-x-3 rtl:space-x-reverse">
       <!--img src="https://flowbite.com/docs/images/logo.svg" class="h-7" alt="Flowbite Logo" /-->
-      <span class="self-center text-2xl text-on-light-heading font-semibold whitespace-nowrap"
+      <span class="text-on-light-heading self-center text-2xl font-semibold whitespace-nowrap"
         >Floofy</span
       >
     </a>
     <div
-      class="nav-actions-intro flex items-center lg:order-2 space-x-1 lg:space-x-0 rtl:space-x-reverse"
+      class="nav-actions-intro flex items-center space-x-1 lg:order-2 lg:space-x-0 rtl:space-x-reverse"
     >
       <button
         type="button"
         (click)="toggleLanguage()"
-        class="flex items-center rounded-base bg-fg-brand-subtle px-3 py-2 text-sm font-semibold leading-5 text-on-light-heading transition-colors hover:bg-fg-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand focus-visible:outline-fg-brand-strong flex items-center px-3 py-2 text-sm leading-5 font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         aria-label="Toggle language"
       >
         @if (i18n.locale() === 'en') {
           <svg
-            class="h-4 w-4 me-1.5"
+            class="me-1.5 h-4 w-4"
             viewBox="0 0 18 18"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@
           EN/日本語
         } @else {
           <svg
-            class="h-4 w-4 me-1.5"
+            class="me-1.5 h-4 w-4"
             viewBox="0 0 18 18"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -65,13 +65,13 @@
         #navDropdown
         data-collapse-toggle="navbar-language"
         type="button"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-base border border-border bg-fg-brand-subtle p-2 text-sm text-on-light-heading transition-colors hover:bg-fg-brand lg:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="rounded-base border-border bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand focus-visible:outline-fg-brand-strong inline-flex h-10 w-10 items-center justify-center border p-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
         aria-controls="navbar-language"
         aria-expanded="false"
       >
         <span class="sr-only">Open main menu</span>
         <svg
-          class="w-6 h-6"
+          class="h-6 w-6"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -89,11 +89,11 @@
       </button>
     </div>
     <div
-      class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1"
+      class="hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto"
       id="navbar-language"
     >
       <ul
-        class="nav-links-intro font-medium flex flex-col p-4 lg:p-0 mt-4 border border-border rounded-base bg-bg-subtle lg:flex-row lg:space-x-8 rtl:space-x-reverse lg:mt-0 lg:border-0 lg:bg-bg"
+        class="nav-links-intro border-border rounded-base bg-bg-subtle lg:bg-bg mt-4 flex flex-col border p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse"
       >
         @for (item of i18n.nav(); track item.key) {
           <li>
@@ -102,7 +102,7 @@
               routerLinkActive="bg-fg-brand-subtle text-fg-brand lg:bg-transparent lg:text-fg-brand"
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="navDropdown.click()"
-              class="block rounded px-3 py-2 text-on-light-heading transition-colors hover:fg-brand lg:border-0 lg:p-0 lg:hover:bg-transparent lg:hover:text-fg-brand"
+              class="text-on-light-heading hover:fg-brand lg:hover:text-fg-brand block rounded px-3 py-2 transition-colors lg:border-0 lg:p-0 lg:hover:bg-transparent"
               >{{ item.label }}</a
             >
           </li>
