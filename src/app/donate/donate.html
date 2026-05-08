@@ -7,9 +7,9 @@
   [parallaxStrength]="0.8"
   [ariaLabel]="'Hero Background'"
 >
-  <div class="absolute inset-0 h-full max-w-7xl mx-auto">
+  <div class="absolute inset-0 mx-auto h-full max-w-7xl">
     <app-parallax-section
-      class="absolute inset-0 h-full max-w-3xl ml-auto lg:mask-fade-x"
+      class="lg:mask-fade-x absolute inset-0 ml-auto h-full max-w-3xl"
       [ariaLabel]="'Hero section'"
       [backgroundImage]="'assets/GyfSzJfaIAAn9qh.jfif'"
       [backgroundPosition]="'center 33%'"
@@ -19,50 +19,34 @@
     </app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto min-h-[80svh] flex w-full max-w-7xl items-end justify-center md:justify-start text-left"
+    class="relative z-10 mx-auto flex min-h-[80svh] w-full max-w-7xl items-end justify-center text-left md:justify-start"
   >
     <div
-      class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 sm:px-7 sm:py-7 mb-16 drop-shadow-md"
+      class="glass-panel hero-reveal-surface mb-16 max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7"
     >
       <span
-        class="flourish h-12 f-full text-on-light-heading absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+        class="flourish f-full text-on-light-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
         aria-hidden="true"
       ></span>
       <p
-        class="hero-reveal-kicker mb-3 text-sm font-bold uppercase tracking-[0.32em] text-on-light-heading sm:text-[0.95rem]"
+        class="hero-reveal-kicker text-on-light-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
       >
-        @if (i18n.locale() === 'en') {
-          SHOW SUPPORT
-        } @else {
-          応援してください
-        }
+        {{ 'donate.hero.kicker' | translate }}
       </p>
       <h1
-        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black uppercase tracking-[0.02em] text-on-light-heading"
+        class="hero-reveal-title text-on-light-heading text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
       >
-        @if (i18n.locale() === 'en') {
-          DONATE
-        } @else {
-          サポート
-        }
+        {{ 'donate.hero.title' | translate }}
       </h1>
       <p
-        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-light-body sm:text-base"
+        class="hero-reveal-copy text-on-light-body mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
       >
-        @if (i18n.locale() === 'en') {
-          Support the art journey and help bring future projects to life.
-        } @else {
-          アート活動を応援し、今後のプロジェクトを実現させましょう。
-        }
+        {{ 'donate.hero.description' | translate }}
       </p>
       <p
-        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-on-light-body sm:text-sm"
+        class="hero-reveal-copy text-on-light-body mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
       >
-        @if (i18n.locale() === 'en') {
-          Ko-fi • Tip Jar • Support
-        } @else {
-          Ko-fi • チップ • サポート
-        }
+        {{ 'donate.hero.tagline' | translate }}
       </p>
     </div>
   </div>

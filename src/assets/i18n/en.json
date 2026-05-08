@@ -44,6 +44,97 @@
       "cta": "Get in touch"
     }
   },
+  "about": {
+    "hero": {
+      "kicker": "MEET THE ARTIST",
+      "title": "ABOUT",
+      "description": "Background, interests, socials, and everything from the artist behind the art.",
+      "tagline": "Artist • Illustrator • Creator"
+    },
+    "news": {
+      "title": "LATEST NEWS",
+      "description": "Stay updated with the latest news and updates from Floofy. Follow on Twitter for real-time updates, behind-the-scenes content, and more."
+    }
+  },
+  "gallery": {
+    "hero": {
+      "kicker": "SELECTED WORKS",
+      "title": "GALLERY",
+      "description": "Original illustrations, character pieces, and style explorations in one curated archive.",
+      "tagline": "Artworks • Characters • Illustrations"
+    }
+  },
+  "commission": {
+    "hero": {
+      "kicker": "OPEN FOR WORK",
+      "title": "COMMISSION",
+      "description": "Custom characters, illustrations, and style explorations. Pricing and details below.",
+      "tagline": "Chibi • Character • Custom"
+    },
+    "pricing": {
+      "title": "Pricing",
+      "subtitle": "Choose the commission type that works best for you."
+    },
+    "tiers": {
+      "chibi": {
+        "name": "Chibi",
+        "subtitle": "Cute, compact style",
+        "feature1": "Half-body illustration",
+        "feature2": "Simple background",
+        "feature3": "3 revisions",
+        "select": "Select"
+      },
+      "emotes": {
+        "name": "Emotes",
+        "subtitle": "For streaming & social media",
+        "feature1": "1 custom emote",
+        "feature2": "PNG & high resolution",
+        "feature3": "3 revisions",
+        "select": "Select"
+      },
+      "illustration": {
+        "name": "Illustration",
+        "subtitle": "Premium thigh-up artwork",
+        "feature1": "Full color artwork",
+        "feature2": "Custom background included",
+        "feature3": "3 revisions",
+        "select": "Select"
+      }
+    },
+    "disclaimer": "Commercial use of any artwork requires a price increase. Please inquire when placing your order."
+  },
+  "streaming": {
+    "hero": {
+      "kicker": "LIVE ON TWITCH",
+      "title": "STREAMING",
+      "description": "Watch live streams and catch recent broadcasts directly from Twitch.",
+      "tagline": "Twitch • Art Streams • Vtuber"
+    }
+  },
+  "reviews": {
+    "hero": {
+      "kicker": "CLIENT VOICES",
+      "title": "REVIEWS",
+      "description": "Testimonials, commission feedback, and community impressions.",
+      "tagline": "Testimonials • Feedback • Community"
+    }
+  },
+  "donate": {
+    "hero": {
+      "kicker": "SHOW SUPPORT",
+      "title": "DONATE",
+      "description": "Support the art journey and help bring future projects to life.",
+      "tagline": "Ko-fi • Tip Jar • Support"
+    }
+  },
+  "contact": {
+    "hero": {
+      "kicker": "SAY HELLO",
+      "title": "CONTACT",
+      "description": "Have a question or just want to say hello? Reach out and I'll get back to you as soon as possible.",
+      "tagline": "DMs • Email • Social"
+    }
+  },
   "nav": {
     "gallery": { "label": "GALLERY", "route": "/gallery" },
     "about": { "label": "ABOUT", "route": "/about" },

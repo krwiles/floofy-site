@@ -7,9 +7,9 @@
   [parallaxStrength]="0.6"
   [ariaLabel]="'Hero Background'"
 >
-  <div class="absolute inset-0 h-full max-w-7xl mx-auto">
+  <div class="absolute inset-0 mx-auto h-full max-w-7xl">
     <app-parallax-section
-      class="absolute inset-0 h-full max-w-5xl lg:mask-fade-x"
+      class="lg:mask-fade-x absolute inset-0 h-full max-w-5xl"
       [ariaLabel]="'Hero section'"
       [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
       [backgroundPosition]="'center 40%'"
@@ -18,29 +18,29 @@
     </app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto min-h-[95svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-left h-full"
+    class="relative z-10 mx-auto flex h-full min-h-[95svh] w-full max-w-7xl items-end justify-center text-left md:justify-end"
   >
     <div
-      class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 sm:px-9 sm:py-9 md:mb-24 drop-shadow-md"
+      class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 drop-shadow-md sm:px-9 sm:py-9 md:mb-24"
     >
       <span
-        class="flourish h-12 f-full text-on-dark-heading absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+        class="flourish f-full text-on-dark-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
         aria-hidden="true"
       ></span>
       <!-- Small intro/kicker text above the main title. -->
       <p
-        class="hero-reveal-kicker m-0 text-sm font-bold uppercase tracking-[0.34em] text-on-dark-heading md:text-[1.05rem]"
+        class="hero-reveal-kicker text-on-dark-heading m-0 text-sm font-bold tracking-[0.34em] uppercase md:text-[1.05rem]"
       >
         {{ 'home.hero.kicker' | translate }}
       </p>
       <!-- Main hero heading. -->
       <h1
-        class="hero-reveal-title mt-3 mb-0 text-[clamp(6.75rem,16vw,12rem)] leading-[0.86] font-black tracking-[-0.045em] text-on-dark-heading"
+        class="hero-reveal-title text-on-dark-heading mt-3 mb-0 text-[clamp(6.75rem,16vw,12rem)] leading-[0.86] font-black tracking-[-0.045em]"
       >
         Floofy
       </h1>
       <p
-        class="hero-reveal-copy mt-6 text-xs font-bold uppercase tracking-[0.3em] text-on-dark-heading md:text-base"
+        class="hero-reveal-copy text-on-dark-heading mt-6 text-xs font-bold tracking-[0.3em] uppercase md:text-base"
       >
         {{ 'home.hero.tagline' | translate }}
       </p>
@@ -49,7 +49,7 @@
 </app-parallax-section>
 
 <span
-  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -63,11 +63,11 @@
   [ariaLabel]="'Gallery section'"
 >
   <div
-    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-32 lg:px-6"
+    class="mx-auto flex max-w-7xl flex-col-reverse items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
-    <div class="animate-on-scroll mt-4 md:mt-0 text-center md:text-right">
+    <div class="animate-on-scroll mt-4 text-center md:mt-0 md:text-right">
       <h2
-        class="flex items-center justify-center md:justify-end gap-3 mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+        class="text-on-dark-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-end"
       >
         <span
           class="flourish f-end text-on-dark-heading hidden md:inline-block"
@@ -75,16 +75,16 @@
         ></span>
         {{ 'home.gallery.title' | translate }}
       </h2>
-      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
         {{ 'home.gallery.description' | translate }}
       </p>
       <a
         routerLink="/gallery"
-        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {{ 'home.gallery.cta' | translate }}
         <svg
-          class="ml-2 -mr-1 w-5 h-5"
+          class="-mr-1 ml-2 h-5 w-5"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +98,7 @@
       </a>
     </div>
     <div
-      class="mt-16 md:mt-0 mx-auto w-full max-w-90 aspect-2/3 max-h-135 overflow-hidden rounded-base"
+      class="rounded-base mx-auto mt-16 aspect-2/3 max-h-135 w-full max-w-90 overflow-hidden md:mt-0"
     >
       <app-carousel class="animate-on-scroll block h-full w-full" [images]="images"></app-carousel>
     </div>
@@ -106,7 +106,7 @@
 </app-parallax-section>
 
 <span
-  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -120,18 +120,18 @@
   [ariaLabel]="'About Section'"
 >
   <div
-    class="flex flex-col md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-32 lg:px-6"
+    class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
     <img
-      class="animate-on-scroll w-full rounded-lg block"
+      class="animate-on-scroll block w-full rounded-lg"
       ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
       alt="Floofy"
       width="1080"
       height="1080"
     />
-    <div class="mt-4 md:mt-0 text-center md:text-left">
+    <div class="mt-4 text-center md:mt-0 md:text-left">
       <h2
-        class="flex items-center justify-center md:justify-start animate-on-scroll mb-4 gap-3 text-4xl tracking-tight font-extrabold text-on-light-heading"
+        class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-start"
       >
         {{ 'home.about.title' | translate }}
         <span
@@ -139,16 +139,16 @@
           aria-hidden="true"
         ></span>
       </h2>
-      <p class="animate-on-scroll mb-6 font-light text-on-light-body md:text-lg">
+      <p class="animate-on-scroll text-on-light-body mb-6 font-light md:text-lg">
         {{ 'home.about.description' | translate }}
       </p>
       <a
         routerLink="/about"
-        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {{ 'home.about.cta' | translate }}
         <svg
-          class="ml-2 -mr-1 w-5 h-5"
+          class="-mr-1 ml-2 h-5 w-5"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +165,7 @@
 </app-parallax-section>
 
 <span
-  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -179,11 +179,11 @@
   [ariaLabel]="'Commission Section'"
 >
   <div
-    class="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-48 lg:px-6"
+    class="mx-auto flex max-w-7xl flex-col-reverse items-center gap-8 px-4 py-8 sm:py-48 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
-    <div class="mt-4 md:mt-0 text-center md:text-right">
+    <div class="mt-4 text-center md:mt-0 md:text-right">
       <h2
-        class="flex items-center justify-center md:justify-end gap-3 mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+        class="text-on-dark-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-end"
       >
         <span
           class="flourish f-end text-on-dark-heading hidden md:inline-block"
@@ -191,16 +191,16 @@
         ></span>
         {{ 'home.commission.title' | translate }}
       </h2>
-      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
         {{ 'home.commission.description' | translate }}
       </p>
       <a
         routerLink="/commission"
-        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {{ 'home.commission.cta' | translate }}
         <svg
-          class="ml-2 -mr-1 w-5 h-5"
+          class="-mr-1 ml-2 h-5 w-5"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -214,28 +214,28 @@
       </a>
     </div>
     <div
-      class="animate-on-scroll w-full flex flex-row gap-4 items-center justify-center pt-4 lg:pt-0 md:pt-0"
+      class="animate-on-scroll flex w-full flex-row items-center justify-center gap-4 pt-4 md:pt-0 lg:pt-0"
     >
       <img
         ngSrc="assets/HE_aWzObYAAc7MN.jpeg"
         width="900"
         height="1200"
         alt="Commission Example 1"
-        class="rounded-lg max-w-[47%]"
+        class="max-w-[47%] rounded-lg"
       />
       <img
         ngSrc="assets/HFT6u19bsAAQG-z.jpeg"
         width="900"
         height="1200"
         alt="Commission Example 2"
-        class="rounded-lg max-w-[47%]"
+        class="max-w-[47%] rounded-lg"
       />
     </div>
   </div>
 </app-parallax-section>
 
 <span
-  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -249,7 +249,7 @@
   [ariaLabel]="'Streaming Section'"
 >
   <div
-    class="flex flex-col md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 mx-auto max-w-7xl xl:gap-16 sm:py-48 lg:px-6"
+    class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-48 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
     <img
       class="animate-on-scroll w-full rounded-lg"
@@ -258,9 +258,9 @@
       width="1080"
       height="1080"
     />
-    <div class="mt-4 md:mt-0 text-center md:text-left">
+    <div class="mt-4 text-center md:mt-0 md:text-left">
       <h2
-        class="flex items-center justify-center md:justify-start animate-on-scroll mb-4 gap-3 text-4xl tracking-tight font-extrabold text-on-light-heading"
+        class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-start"
       >
         {{ 'home.streaming.title' | translate }}
         <span
@@ -268,16 +268,16 @@
           aria-hidden="true"
         ></span>
       </h2>
-      <p class="animate-on-scroll mb-6 font-light text-on-light-body md:text-lg">
+      <p class="animate-on-scroll text-on-light-body mb-6 font-light md:text-lg">
         {{ 'home.streaming.description' | translate }}
       </p>
       <a
         routerLink="/streaming"
-        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {{ 'home.streaming.cta' | translate }}
         <svg
-          class="ml-2 -mr-1 w-5 h-5"
+          class="-mr-1 ml-2 h-5 w-5"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -294,7 +294,7 @@
 </app-parallax-section>
 
 <span
-  class="flourish h-16 f-full-wide text-border-strong absolute left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:inline-block z-10"
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -308,11 +308,11 @@
   [ariaLabel]="'Reviews and Donate Section'"
 >
   <div
-    class="gap-8 items-start py-8 px-4 mx-auto max-w-7xl xl:gap-16 md:grid md:grid-cols-2 sm:pb-16 sm:pt-48 lg:px-6"
+    class="mx-auto max-w-7xl items-start gap-8 px-4 py-8 sm:pt-48 sm:pb-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
-    <div class="mt-4 md:mt-0 text-center">
+    <div class="mt-4 text-center md:mt-0">
       <h2
-        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
       >
         <span
           class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
@@ -324,16 +324,16 @@
           aria-hidden="true"
         ></span>
       </h2>
-      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
         {{ 'home.reviews.description' | translate }}
       </p>
       <a
         routerLink="/reviews"
-        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {{ 'home.reviews.cta' | translate }}
         <svg
-          class="ml-2 -mr-1 w-5 h-5"
+          class="-mr-1 ml-2 h-5 w-5"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -346,9 +346,9 @@
         </svg>
       </a>
     </div>
-    <div class="mt-4 md:mt-0 text-center pt-8 md:pt-0">
+    <div class="mt-4 pt-8 text-center md:mt-0 md:pt-0">
       <h2
-        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
       >
         <span
           class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
@@ -360,16 +360,16 @@
           aria-hidden="true"
         ></span>
       </h2>
-      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
         {{ 'home.donate.description' | translate }}
       </p>
       <a
         routerLink="/donate"
-        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {{ 'home.donate.cta' | translate }}
         <svg
-          class="ml-2 -mr-1 w-5 h-5"
+          class="-mr-1 ml-2 h-5 w-5"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -383,10 +383,10 @@
       </a>
     </div>
   </div>
-  <div class="gap-8 items-center pb-8 px-4 mx-auto max-w-4xl sm:pb-48 lg:px-6">
-    <div class="mt-4 md:mt-0 text-center">
+  <div class="mx-auto max-w-4xl items-center gap-8 px-4 pb-8 sm:pb-48 lg:px-6">
+    <div class="mt-4 text-center md:mt-0">
       <h2
-        class="animate-on-scroll mb-4 text-4xl tracking-tight font-extrabold text-on-dark-heading"
+        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
       >
         <span
           class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
@@ -398,16 +398,16 @@
           aria-hidden="true"
         ></span>
       </h2>
-      <p class="animate-on-scroll mb-6 font-light text-on-dark-body md:text-lg">
+      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
         {{ 'home.contact.description' | translate }}
       </p>
       <a
         routerLink="/contact"
-        class="animate-on-scroll inline-flex items-center rounded-base bg-fg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-brand-strong"
+        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {{ 'home.contact.cta' | translate }}
         <svg
-          class="ml-2 -mr-1 w-5 h-5"
+          class="-mr-1 ml-2 h-5 w-5"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"

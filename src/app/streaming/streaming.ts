@@ -1,18 +1,17 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { I18nService } from '../services/i18n.service';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-streaming',
-  imports: [ParallaxSection],
+  imports: [ParallaxSection, TranslatePipe],
   templateUrl: './streaming.html',
   styleUrl: './streaming.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Streaming implements AfterViewInit {
   private document = inject(DOCUMENT);
-  i18n = inject(I18nService);
 
   // Load the Twitch embed script and initialize the embed after the view has been initialized
   ngAfterViewInit() {

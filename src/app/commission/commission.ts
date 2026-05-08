@@ -1,14 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { I18nService } from '../services/i18n.service';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-commission',
-  imports: [ParallaxSection],
+  imports: [ParallaxSection, TranslatePipe],
   templateUrl: './commission.html',
   styleUrl: './commission.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Commission {
-  readonly i18n = inject(I18nService);
-}
+export class Commission {}

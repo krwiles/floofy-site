@@ -44,6 +44,97 @@
       "cta": "お問い合わせ"
     }
   },
+  "about": {
+    "hero": {
+      "kicker": "アーティストについて",
+      "title": "プロフィール",
+      "description": "作品を生み出すアーティストの経歴、趣味、SNS、その他の情報。",
+      "tagline": "アーティスト • イラストレーター • クリエイター"
+    },
+    "news": {
+      "title": "最新ニュース",
+      "description": "Floofyの最新ニュースやアップデートをチェックしましょう。リアルタイムの更新情報や舞台裏のコンテンツなどをTwitterでフォローしてください。"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "kicker": "作品セレクション",
+      "title": "ギャラリー",
+      "description": "オリジナルイラスト、キャラクター作品、さまざまな画風の表現をまとめたキュレーションです。",
+      "tagline": "アートワーク • キャラクター • イラスト"
+    }
+  },
+  "commission": {
+    "hero": {
+      "kicker": "受注中",
+      "title": "コミッション",
+      "description": "オリジナルキャラクターやイラストのカスタム制作。料金と詳細は下記をご確認ください。",
+      "tagline": "ちびキャラ • キャラクター • カスタム"
+    },
+    "pricing": {
+      "title": "料金",
+      "subtitle": "あなたに最適な依頼の種類をお選びください。"
+    },
+    "tiers": {
+      "chibi": {
+        "name": "ちび",
+        "subtitle": "かわいいコンパクトスタイル",
+        "feature1": "半身イラスト",
+        "feature2": "シンプルな背景",
+        "feature3": "修正3回",
+        "select": "選択"
+      },
+      "emotes": {
+        "name": "エモート",
+        "subtitle": "ストリーミング・SNS向け",
+        "feature1": "カスタムエモート1個",
+        "feature2": "PNG・高解像度",
+        "feature3": "修正3回",
+        "select": "選択"
+      },
+      "illustration": {
+        "name": "イラスト",
+        "subtitle": "プレミアム腰上作品",
+        "feature1": "フルカラー作品",
+        "feature2": "カスタム背景込み",
+        "feature3": "修正3回",
+        "select": "選択"
+      }
+    },
+    "disclaimer": "いかなる作品の商業利用も料金が増加します。ご注文の際にお問い合わせください。"
+  },
+  "streaming": {
+    "hero": {
+      "kicker": "Twitchで配信中",
+      "title": "ライブ配信",
+      "description": "Twitchからライブ配信や最新の放送をご覧ください。",
+      "tagline": "Twitch • アート配信 • Vtuber"
+    }
+  },
+  "reviews": {
+    "hero": {
+      "kicker": "お客様の声",
+      "title": "レビュー",
+      "description": "コミッション依頼のフィードバックとコミュニティからの感想。",
+      "tagline": "感想 • フィードバック • コミュニティ"
+    }
+  },
+  "donate": {
+    "hero": {
+      "kicker": "応援してください",
+      "title": "サポート",
+      "description": "アート活動を応援し、今後のプロジェクトを実現させましょう。",
+      "tagline": "Ko-fi • チップ • サポート"
+    }
+  },
+  "contact": {
+    "hero": {
+      "kicker": "気軽にどうぞ",
+      "title": "コンタクト",
+      "description": "ご質問や挨拶はこちらからどうぞ。できる限り早くお返事します。",
+      "tagline": "DM • メール • SNS"
+    }
+  },
   "nav": {
     "gallery": { "label": "ギャラリー", "route": "/gallery" },
     "about": { "label": "概要", "route": "/about" },

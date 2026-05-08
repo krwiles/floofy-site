@@ -1,20 +1,18 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { I18nService } from '../services/i18n.service';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 // Declare the Twitter widgets object to avoid TypeScript errors
 declare const twttr: { widgets: { load: () => void } };
 
 @Component({
   selector: 'app-about',
-  imports: [ParallaxSection],
+  imports: [ParallaxSection, TranslatePipe],
   templateUrl: './about.html',
   styleUrl: './about.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class About implements AfterViewInit {
-  readonly i18n = inject(I18nService);
-
   ngAfterViewInit(): void {
     // Load Twitter widgets after the view has initialized
     // This is needed to ensure that any embedded tweets are properly rendered after routing
