@@ -2,20 +2,19 @@ import { Component, HostListener, inject, signal } from '@angular/core';
 import { GalleryImageService } from '../services/gallery-image.service';
 import { GalleryImage } from '../models/gallery-image';
 import { DOCUMENT } from '@angular/common';
-import { I18nService } from '../services/i18n.service';
 import { NgOptimizedImage } from '@angular/common';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-gallery',
-  imports: [NgOptimizedImage, ParallaxSection],
+  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe],
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
 })
 export class Gallery {
   private readonly document = inject(DOCUMENT);
 
-  i18n = inject(I18nService);
   galleryImageService = inject(GalleryImageService);
   selectedImage = signal<GalleryImage | null>(null);
   showLightBox = signal<boolean>(false);

@@ -1,14 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { I18nService } from '../services/i18n.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-contact',
-  imports: [ParallaxSection],
+  imports: [ParallaxSection, TranslatePipe],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Contact {
-  readonly i18n = inject(I18nService);
-}
+export class Contact {}

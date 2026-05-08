@@ -1,15 +1,15 @@
 <!-- Commission Hero -->
 <app-parallax-section
-  class="bg-section-light border-t-4 border-border"
+  class="bg-white"
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
   [parallaxStrength]="0.8"
   [ariaLabel]="'Hero Background'"
 >
-  <div class="absolute inset-0 h-full max-w-7xl mx-auto mt-14">
+  <div class="absolute inset-0 mx-auto mt-14 h-full max-w-7xl">
     <app-parallax-section
-      class="absolute inset-0 h-full max-w-6xl ml-auto"
+      class="absolute inset-0 ml-auto h-full max-w-6xl"
       [ariaLabel]="'Hero section'"
       [backgroundImage]="'assets/A6757DF0.jpeg'"
       [backgroundPosition]="'center 50%'"
@@ -19,46 +19,34 @@
     </app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto min-h-[80svh] flex w-full max-w-7xl items-end justify-center md:justify-start text-left"
+    class="relative z-10 mx-auto flex min-h-[80svh] w-full max-w-7xl items-end justify-center text-left md:justify-start"
   >
     <div
-      class="glass-panel hero-reveal-surface max-w-3xl px-6 py-6 sm:px-7 sm:py-7 mb-16 drop-shadow-md"
+      class="glass-panel hero-reveal-surface mb-16 max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7"
     >
+      <span
+        class="flourish f-full text-on-light-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+        aria-hidden="true"
+      ></span>
       <p
-        class="hero-reveal-kicker mb-3 text-sm font-bold uppercase tracking-[0.32em] text-on-light-heading sm:text-[0.95rem]"
+        class="hero-reveal-kicker text-on-light-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
       >
-        @if (i18n.locale() === 'en') {
-          OPEN FOR WORK
-        } @else {
-          受注中
-        }
+        {{ 'commission.hero.kicker' | translate }}
       </p>
       <h1
-        class="hero-reveal-title text-[clamp(3.4rem,10vw,4.75rem)] leading-[0.9] font-black uppercase tracking-[0.02em] text-on-light-heading"
+        class="hero-reveal-title text-on-light-heading text-[clamp(3.4rem,10vw,4.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
       >
-        @if (i18n.locale() === 'en') {
-          COMMISSION
-        } @else {
-          コミッション
-        }
+        {{ 'commission.hero.title' | translate }}
       </h1>
       <p
-        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-light-body sm:text-base"
+        class="hero-reveal-copy text-on-light-body mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
       >
-        @if (i18n.locale() === 'en') {
-          Custom characters, illustrations, and style explorations. Pricing and details below.
-        } @else {
-          オリジナルキャラクターやイラストのカスタム制作。料金と詳細は下記をご確認ください。
-        }
+        {{ 'commission.hero.description' | translate }}
       </p>
       <p
-        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-on-light-body sm:text-sm"
+        class="hero-reveal-copy text-on-light-body mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
       >
-        @if (i18n.locale() === 'en') {
-          Chibi • Character • Custom
-        } @else {
-          ちびキャラ • キャラクター • カスタム
-        }
+        {{ 'commission.hero.tagline' | translate }}
       </p>
     </div>
   </div>
@@ -67,43 +55,27 @@
 <section class="bg-section-dark">
   <div class="mx-auto w-full max-w-7xl px-6 py-16 lg:px-8">
     <div class="mb-12 text-center">
-      <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-on-dark-heading sm:text-4xl">
-        @if (i18n.locale() === 'en') {
-          Pricing
-        } @else {
-          料金
-        }
+      <h2 class="text-on-dark-heading mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+        {{ 'commission.pricing.title' | translate }}
       </h2>
-      <p class="text-lg text-on-dark-body">
-        @if (i18n.locale() === 'en') {
-          Choose the commission type that works best for you.
-        } @else {
-          あなたに最適な依頼の種類をお選びください。
-        }
+      <p class="text-on-dark-body text-lg">
+        {{ 'commission.pricing.subtitle' | translate }}
       </p>
     </div>
 
     <div class="grid gap-8 lg:grid-cols-3">
-      <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
+      <div class="bg-section-dark-alt flex flex-col rounded-2xl p-8">
         <div class="flex-1">
-          <h3 class="text-2xl font-bold text-on-dark-heading">
-            @if (i18n.locale() === 'en') {
-              Chibi
-            } @else {
-              ちび
-            }
+          <h3 class="text-on-dark-heading text-2xl font-bold">
+            {{ 'commission.tiers.chibi.name' | translate }}
           </h3>
-          <p class="mt-2 text-sm text-on-dark-body-subtle">
-            @if (i18n.locale() === 'en') {
-              Cute, compact style
-            } @else {
-              かわいいコンパクトスタイル
-            }
+          <p class="text-on-dark-body-subtle mt-2 text-sm">
+            {{ 'commission.tiers.chibi.subtitle' | translate }}
           </p>
           <p class="mt-6 flex items-baseline">
-            <span class="text-5xl font-extrabold text-on-dark-heading">$27</span>
+            <span class="text-on-dark-heading text-5xl font-extrabold">$27</span>
             <span
-              class="ml-2 text-base font-semibold uppercase tracking-wide text-on-dark-body-subtle"
+              class="text-on-dark-body-subtle ml-2 text-base font-semibold tracking-wide uppercase"
               >USD</span
             >
           </p>
@@ -112,7 +84,7 @@
             <li class="flex items-start">
               <div class="shrink-0">
                 <svg
-                  class="h-5 w-5 text-fg-brand"
+                  class="text-fg-brand h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -125,18 +97,14 @@
                   />
                 </svg>
               </div>
-              <span class="ml-3 text-on-dark-body">
-                @if (i18n.locale() === 'en') {
-                  Half-body illustration
-                } @else {
-                  半身イラスト
-                }
+              <span class="text-on-dark-body ml-3">
+                {{ 'commission.tiers.chibi.feature1' | translate }}
               </span>
             </li>
             <li class="flex items-start">
               <div class="shrink-0">
                 <svg
-                  class="h-5 w-5 text-fg-brand"
+                  class="text-fg-brand h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -149,18 +117,14 @@
                   />
                 </svg>
               </div>
-              <span class="ml-3 text-on-dark-body">
-                @if (i18n.locale() === 'en') {
-                  Simple background
-                } @else {
-                  シンプルな背景
-                }
+              <span class="text-on-dark-body ml-3">
+                {{ 'commission.tiers.chibi.feature2' | translate }}
               </span>
             </li>
             <li class="flex items-start">
               <div class="shrink-0">
                 <svg
-                  class="h-5 w-5 text-fg-brand"
+                  class="text-fg-brand h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -173,12 +137,8 @@
                   />
                 </svg>
               </div>
-              <span class="ml-3 text-on-dark-body">
-                @if (i18n.locale() === 'en') {
-                  3 revisions
-                } @else {
-                  修正3回
-                }
+              <span class="text-on-dark-body ml-3">
+                {{ 'commission.tiers.chibi.feature3' | translate }}
               </span>
             </li>
           </ul>
@@ -186,36 +146,24 @@
 
         <button
           type="button"
-          class="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-fg-brand px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-fg-brand-strong focus:outline-none focus:ring-2 focus:ring-fg-brand focus:ring-offset-2 focus:ring-offset-sky-900"
+          class="bg-fg-brand hover:bg-fg-brand-strong focus:ring-fg-brand mt-8 inline-flex w-full items-center justify-center rounded-lg px-6 py-3 text-base font-semibold text-white transition duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-900 focus:outline-none"
         >
-          @if (i18n.locale() === 'en') {
-            Select
-          } @else {
-            選択
-          }
+          {{ 'commission.tiers.chibi.select' | translate }}
         </button>
       </div>
 
-      <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
+      <div class="bg-section-dark-alt flex flex-col rounded-2xl p-8">
         <div class="flex-1">
-          <h3 class="text-2xl font-bold text-on-dark-heading">
-            @if (i18n.locale() === 'en') {
-              Emotes
-            } @else {
-              エモート
-            }
+          <h3 class="text-on-dark-heading text-2xl font-bold">
+            {{ 'commission.tiers.emotes.name' | translate }}
           </h3>
-          <p class="mt-2 text-sm text-on-dark-body-subtle">
-            @if (i18n.locale() === 'en') {
-              For streaming & social media
-            } @else {
-              ストリーミング・SNS向け
-            }
+          <p class="text-on-dark-body-subtle mt-2 text-sm">
+            {{ 'commission.tiers.emotes.subtitle' | translate }}
           </p>
           <p class="mt-6 flex items-baseline">
-            <span class="text-5xl font-extrabold text-on-dark-heading">$30</span>
+            <span class="text-on-dark-heading text-5xl font-extrabold">$30</span>
             <span
-              class="ml-2 text-base font-semibold uppercase tracking-wide text-on-dark-body-subtle"
+              class="text-on-dark-body-subtle ml-2 text-base font-semibold tracking-wide uppercase"
               >USD</span
             >
           </p>
@@ -224,7 +172,7 @@
             <li class="flex items-start">
               <div class="shrink-0">
                 <svg
-                  class="h-5 w-5 text-fg-brand"
+                  class="text-fg-brand h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -237,18 +185,14 @@
                   />
                 </svg>
               </div>
-              <span class="ml-3 text-on-dark-body">
-                @if (i18n.locale() === 'en') {
-                  1 custom emote
-                } @else {
-                  カスタムエモート1個
-                }
+              <span class="text-on-dark-body ml-3">
+                {{ 'commission.tiers.emotes.feature1' | translate }}
               </span>
             </li>
             <li class="flex items-start">
               <div class="shrink-0">
                 <svg
-                  class="h-5 w-5 text-fg-brand"
+                  class="text-fg-brand h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -261,18 +205,14 @@
                   />
                 </svg>
               </div>
-              <span class="ml-3 text-on-dark-body">
-                @if (i18n.locale() === 'en') {
-                  PNG & high resolution
-                } @else {
-                  PNG・高解像度
-                }
+              <span class="text-on-dark-body ml-3">
+                {{ 'commission.tiers.emotes.feature2' | translate }}
               </span>
             </li>
             <li class="flex items-start">
               <div class="shrink-0">
                 <svg
-                  class="h-5 w-5 text-fg-brand"
+                  class="text-fg-brand h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -285,12 +225,8 @@
                   />
                 </svg>
               </div>
-              <span class="ml-3 text-on-dark-body">
-                @if (i18n.locale() === 'en') {
-                  3 revisions
-                } @else {
-                  修正3回
-                }
+              <span class="text-on-dark-body ml-3">
+                {{ 'commission.tiers.emotes.feature3' | translate }}
               </span>
             </li>
           </ul>
@@ -298,36 +234,24 @@
 
         <button
           type="button"
-          class="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-fg-brand px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-fg-brand-strong focus:outline-none focus:ring-2 focus:ring-fg-brand focus:ring-offset-2 focus:ring-offset-sky-900"
+          class="bg-fg-brand hover:bg-fg-brand-strong focus:ring-fg-brand mt-8 inline-flex w-full items-center justify-center rounded-lg px-6 py-3 text-base font-semibold text-white transition duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-900 focus:outline-none"
         >
-          @if (i18n.locale() === 'en') {
-            Select
-          } @else {
-            選択
-          }
+          {{ 'commission.tiers.emotes.select' | translate }}
         </button>
       </div>
 
-      <div class="flex flex-col rounded-2xl bg-section-dark-alt p-8">
+      <div class="bg-section-dark-alt flex flex-col rounded-2xl p-8">
         <div class="flex-1">
-          <h3 class="text-2xl font-bold text-on-dark-heading">
-            @if (i18n.locale() === 'en') {
-              Illustration
-            } @else {
-              イラスト
-            }
+          <h3 class="text-on-dark-heading text-2xl font-bold">
+            {{ 'commission.tiers.illustration.name' | translate }}
           </h3>
-          <p class="mt-2 text-sm text-on-dark-body-subtle">
-            @if (i18n.locale() === 'en') {
-              Premium thigh-up artwork
-            } @else {
-              プレミアム腰上作品
-            }
+          <p class="text-on-dark-body-subtle mt-2 text-sm">
+            {{ 'commission.tiers.illustration.subtitle' | translate }}
           </p>
           <p class="mt-6 flex items-baseline">
-            <span class="text-5xl font-extrabold text-on-dark-heading">$80</span>
+            <span class="text-on-dark-heading text-5xl font-extrabold">$80</span>
             <span
-              class="ml-2 text-base font-semibold uppercase tracking-wide text-on-dark-body-subtle"
+              class="text-on-dark-body-subtle ml-2 text-base font-semibold tracking-wide uppercase"
               >USD</span
             >
           </p>
@@ -336,7 +260,7 @@
             <li class="flex items-start">
               <div class="shrink-0">
                 <svg
-                  class="h-5 w-5 text-fg-brand"
+                  class="text-fg-brand h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -349,18 +273,14 @@
                   />
                 </svg>
               </div>
-              <span class="ml-3 text-on-dark-body">
-                @if (i18n.locale() === 'en') {
-                  Full color artwork
-                } @else {
-                  フルカラー作品
-                }
+              <span class="text-on-dark-body ml-3">
+                {{ 'commission.tiers.illustration.feature1' | translate }}
               </span>
             </li>
             <li class="flex items-start">
               <div class="shrink-0">
                 <svg
-                  class="h-5 w-5 text-fg-brand"
+                  class="text-fg-brand h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -373,18 +293,14 @@
                   />
                 </svg>
               </div>
-              <span class="ml-3 text-on-dark-body">
-                @if (i18n.locale() === 'en') {
-                  Custom background included
-                } @else {
-                  カスタム背景込み
-                }
+              <span class="text-on-dark-body ml-3">
+                {{ 'commission.tiers.illustration.feature2' | translate }}
               </span>
             </li>
             <li class="flex items-start">
               <div class="shrink-0">
                 <svg
-                  class="h-5 w-5 text-fg-brand"
+                  class="text-fg-brand h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -397,12 +313,8 @@
                   />
                 </svg>
               </div>
-              <span class="ml-3 text-on-dark-body">
-                @if (i18n.locale() === 'en') {
-                  3 revisions
-                } @else {
-                  修正3回
-                }
+              <span class="text-on-dark-body ml-3">
+                {{ 'commission.tiers.illustration.feature3' | translate }}
               </span>
             </li>
           </ul>
@@ -410,24 +322,15 @@
 
         <button
           type="button"
-          class="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-fg-brand px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-fg-brand-strong focus:outline-none focus:ring-2 focus:ring-fg-brand focus:ring-offset-2 focus:ring-offset-sky-900"
+          class="bg-fg-brand hover:bg-fg-brand-strong focus:ring-fg-brand mt-8 inline-flex w-full items-center justify-center rounded-lg px-6 py-3 text-base font-semibold text-white transition duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-900 focus:outline-none"
         >
-          @if (i18n.locale() === 'en') {
-            Select
-          } @else {
-            選択
-          }
+          {{ 'commission.tiers.illustration.select' | translate }}
         </button>
       </div>
     </div>
 
-    <p class="mt-10 text-center text-sm text-on-dark-body-subtle">
-      @if (i18n.locale() === 'en') {
-        Commercial use of any artwork requires a price increase. Please inquire when placing your
-        order.
-      } @else {
-        いかなる作品の商業利用も料金が増加します。ご注文の際にお問い合わせください。
-      }
+    <p class="text-on-dark-body-subtle mt-10 text-center text-sm">
+      {{ 'commission.disclaimer' | translate }}
     </p>
   </div>
 </section>

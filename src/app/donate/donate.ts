@@ -1,14 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { I18nService } from '../services/i18n.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-donate',
   templateUrl: './donate.html',
   styleUrl: './donate.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ParallaxSection],
+  imports: [ParallaxSection, TranslatePipe],
 })
-export class Donate {
-  i18n = inject(I18nService);
-}
+export class Donate {}

@@ -1,15 +1,15 @@
 <!-- Gallery Hero -->
 <app-parallax-section
-  class="bg-section-dark border-t-4 border-border"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
+  class="bg-[#EEDDC3]"
+  [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
   [parallaxStrength]="0.8"
   [ariaLabel]="'Hero Background'"
 >
-  <div class="absolute inset-0 h-full max-w-7xl mx-auto lg:mask-fade-x">
+  <div class="absolute inset-0 mx-auto h-full max-w-7xl">
     <app-parallax-section
-      class="absolute inset-0 h-full max-w-5xl lg:mask-fade-x"
+      class="lg:mask-fade-x absolute inset-0 h-full max-w-5xl"
       [ariaLabel]="'Hero section'"
       [backgroundImage]="'assets/G_CQjK1XkAALluE.jpeg'"
       [backgroundPosition]="'center 40%'"
@@ -19,46 +19,34 @@
     </app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto min-h-[80svh] flex w-full max-w-7xl items-end justify-center md:justify-end text-left"
+    class="relative z-10 mx-auto flex min-h-[80svh] w-full max-w-7xl items-end justify-center text-left md:justify-end"
   >
     <div
-      class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 sm:px-7 sm:py-7 mb-16 drop-shadow-md"
+      class="glass-panel hero-reveal-surface mb-16 max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7"
     >
+      <span
+        class="flourish f-full text-on-dark-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+        aria-hidden="true"
+      ></span>
       <p
-        class="hero-reveal-kicker mb-3 text-sm font-bold uppercase tracking-[0.32em] text-on-dark-heading sm:text-[0.95rem]"
+        class="hero-reveal-kicker text-on-dark-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
       >
-        @if (i18n.locale() === 'en') {
-          SELECTED WORKS
-        } @else {
-          作品セレクション
-        }
+        {{ 'gallery.hero.kicker' | translate }}
       </p>
       <h1
-        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black uppercase tracking-[0.02em] text-on-dark-heading"
+        class="hero-reveal-title text-on-dark-heading text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
       >
-        @if (i18n.locale() === 'en') {
-          GALLERY
-        } @else {
-          ギャラリー
-        }
+        {{ 'gallery.hero.title' | translate }}
       </h1>
       <p
-        class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-dark-heading sm:text-base"
+        class="hero-reveal-copy text-on-dark-heading mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
       >
-        @if (i18n.locale() === 'en') {
-          Original illustrations, character pieces, and style explorations in one curated archive.
-        } @else {
-          オリジナルイラスト、キャラクター作品、さまざまな画風の表現をまとめたキュレーションです。
-        }
+        {{ 'gallery.hero.description' | translate }}
       </p>
       <p
-        class="hero-reveal-copy mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-on-dark-heading sm:text-sm"
+        class="hero-reveal-copy text-on-dark-heading mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
       >
-        @if (i18n.locale() === 'en') {
-          Artworks • Characters • Illustrations
-        } @else {
-          アートワーク • キャラクター • イラスト
-        }
+        {{ 'gallery.hero.tagline' | translate }}
       </p>
     </div>
   </div>
@@ -66,20 +54,20 @@
 
 <!-- Gallery Section -->
 <app-parallax-section
-  class="bg-section-light border-t-4 border-border"
-  [backgroundImage]="'assets/4-point-stars.svg'"
+  class="bg-section-dark border-border border-t-4"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
   [parallaxStrength]="0.6"
   [ariaLabel]="'Streaming Section'"
 >
   <div
-    class="columns-1 md:columns-2 lg:columns-3 gap-8 max-w-7xl mx-auto py-8 px-4 sm:py-16 lg:px-6"
+    class="mx-auto max-w-7xl columns-1 gap-8 px-4 py-8 sm:py-16 md:columns-2 lg:columns-3 lg:px-6"
   >
     @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index) {
       @defer (on viewport) {
         <img
-          class="gallery-image w-full mb-8 break-inside-avoid"
+          class="gallery-image mb-8 w-full break-inside-avoid"
           [ngSrc]="galleryImage.srcThumbnail"
           [alt]="galleryImage.alt"
           [height]="galleryImage.heightThumbnail"
@@ -89,7 +77,7 @@
         />
       } @placeholder {
         <div
-          class="w-full mb-8 break-inside-avoid bg-section-light"
+          class="bg-section-light mb-8 w-full break-inside-avoid"
           [style.aspect-ratio]="galleryImage.widthThumbnail + '/' + galleryImage.heightThumbnail"
         ></div>
       }
@@ -109,13 +97,13 @@
     <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
       <img
         animate.enter="enter-image"
-        class="lightbox-image max-w-screen max-h-screen shadow-[0_0_3rem_rgb(0,0,0)] bg-[#222]"
+        class="lightbox-image max-h-screen max-w-screen bg-[#222] shadow-[0_0_3rem_rgb(0,0,0)]"
         [src]="selectedImage()?.srcFull"
         [alt]="selectedImage()?.alt"
         loading="eager"
       />
       <button
-        class="close-btn absolute right-8 text-[4rem] bg-transparent border-0 text-white lg:text-transparent cursor-pointer"
+        class="close-btn absolute right-8 cursor-pointer border-0 bg-transparent text-[4rem] text-white lg:text-transparent"
         (click)="closeImage()"
       >
         ×
