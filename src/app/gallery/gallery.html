@@ -52,9 +52,14 @@
   </div>
 </app-parallax-section>
 
+<span
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  aria-hidden="true"
+></span>
+
 <!-- Gallery Section -->
 <app-parallax-section
-  class="bg-section-dark border-border border-t-4"
+  class="bg-section-dark"
   [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
@@ -77,7 +82,7 @@
         />
       } @placeholder {
         <div
-          class="bg-section-light mb-8 w-full break-inside-avoid"
+          class="mb-8 w-full break-inside-avoid"
           [style.aspect-ratio]="galleryImage.widthThumbnail + '/' + galleryImage.heightThumbnail"
         ></div>
       }
@@ -85,6 +90,7 @@
   </div>
 </app-parallax-section>
 
+<!-- TODO fix the defer placeholder, just make it invisible. It flashes in and looks odd-->
 <!-- TODO fix the dropdown, also ask about going to a url like /gallery and it doesn't load. Can we fix this? -->
 <!-- Lightbox Modal -->
 @if (showLightBox()) {
