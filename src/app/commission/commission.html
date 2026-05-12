@@ -1,7 +1,7 @@
 <!-- Commission Hero -->
 <app-parallax-section
-  class="bg-white"
-  [backgroundImage]="'assets/4-point-stars.svg'"
+  class="bg-[#4F8585]"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
   [parallaxStrength]="0.8"
@@ -9,12 +9,12 @@
 >
   <div class="absolute inset-0 mx-auto mt-14 h-full max-w-7xl">
     <app-parallax-section
-      class="absolute inset-0 ml-auto h-full max-w-6xl"
+      class="lg:mask-fade-x inset-0 ml-auto h-full max-w-3xl lg:absolute"
       [ariaLabel]="'Hero section'"
-      [backgroundImage]="'assets/A6757DF0.jpeg'"
-      [backgroundPosition]="'center 50%'"
+      [backgroundImage]="'assets/G9bdIEcbEAAFxwd.jpeg'"
+      [backgroundPosition]="'center 30%'"
       [backgroundHeight]="'100%'"
-      [parallaxStrength]="0.6"
+      [parallaxStrength]="0.65"
     >
     </app-parallax-section>
   </div>
@@ -25,26 +25,26 @@
       class="glass-panel hero-reveal-surface mb-16 max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7"
     >
       <span
-        class="flourish f-full text-on-light-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+        class="flourish f-full text-on-dark-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
         aria-hidden="true"
       ></span>
       <p
-        class="hero-reveal-kicker text-on-light-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
+        class="hero-reveal-kicker text-on-dark-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
       >
         {{ 'commission.hero.kicker' | translate }}
       </p>
       <h1
-        class="hero-reveal-title text-on-light-heading text-[clamp(3.4rem,10vw,4.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
+        class="hero-reveal-title text-on-dark-heading text-[clamp(3.4rem,10vw,4.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
       >
         {{ 'commission.hero.title' | translate }}
       </h1>
       <p
-        class="hero-reveal-copy text-on-light-body mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
+        class="hero-reveal-copy text-on-dark-body mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
       >
         {{ 'commission.hero.description' | translate }}
       </p>
       <p
-        class="hero-reveal-copy text-on-light-body mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
+        class="hero-reveal-copy text-on-dark-body mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
       >
         {{ 'commission.hero.tagline' | translate }}
       </p>
