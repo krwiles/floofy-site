@@ -8,7 +8,7 @@
 @import './styles/utilities/motion.css';
 @import './styles/components/glass.css';
 @plugin 'flowbite/plugin';
-@source "../node_modules/flowbite";
+@source '../node_modules/flowbite';
 
 h1,
 h2,

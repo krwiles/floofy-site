@@ -135,6 +135,32 @@
       "tagline": "DM • メール • SNS"
     }
   },
+  "footer": {
+    "brand": {
+      "description": "表情豊かなキャラクターアートを専門とするイラストレーター兼配信者。イラストコミッションを受け付けています。",
+      "reach": "ご連絡はメール、X、またはTwitchチャットがスムーズです。"
+    },
+    "studio": {
+      "title": "制作情報",
+      "availabilityLabel": "コミッション状況",
+      "availabilityValue": "VGenで受付中",
+      "responseLabel": "返信目安",
+      "responseValue": "通常2〜4日以内",
+      "supportLabel": "サポート",
+      "supportValue": "投げ銭・ご支援はKo-fiから受け付けています"
+    },
+    "connect": {
+      "title": "連絡・サポート",
+      "x": "X/Twitter",
+      "twitch": "Twitch",
+      "vgen": "VGen（コミッション）",
+      "kofi": "Ko-fi（寄付）"
+    },
+    "legal": {
+      "copyright": "© 2026 Floofy. 掲載のイラストはすべて私自身の作品です。描かれているキャラクターの著作権は各権利者に帰属する場合があります。",
+      "backToTop": "上へ戻る"
+    }
+  },
   "nav": {
     "gallery": { "label": "ギャラリー", "route": "/gallery" },
     "about": { "label": "概要", "route": "/about" },

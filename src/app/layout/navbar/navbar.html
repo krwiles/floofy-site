@@ -1,7 +1,13 @@
-<nav class="nav-intro bg-bg border-border fixed inset-s-0 top-0 z-100 w-full border-b">
-  <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between p-4">
+<nav class="nav-intro glass-bgx bg-bg border-border fixed inset-s-0 top-0 z-100 w-full border-b">
+  <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between px-4 py-1">
     <a routerLink="/" class="nav-brand-intro flex items-center space-x-3 rtl:space-x-reverse">
-      <!--img src="https://flowbite.com/docs/images/logo.svg" class="h-7" alt="Flowbite Logo" /-->
+      <img
+        class="border-bg-muted block h-14 w-14 rounded-4xl border-2"
+        ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
+        alt="Floofy"
+        width="621"
+        height="621"
+      />
       <span class="text-on-light-heading self-center text-2xl font-semibold whitespace-nowrap"
         >Floofy</span
       >
@@ -93,7 +99,7 @@
       id="navbar-language"
     >
       <ul
-        class="nav-links-intro border-border rounded-base bg-bg-subtle lg:bg-bg mt-4 flex flex-col border p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse"
+        class="nav-links-intro border-border rounded-bas mt-4 flex flex-col border p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse"
       >
         @for (item of i18n.nav(); track item.key) {
           <li>

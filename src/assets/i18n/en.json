@@ -135,6 +135,32 @@
       "tagline": "DMs • Email • Social"
     }
   },
+  "footer": {
+    "brand": {
+      "description": "Illustrator and streamer specializing in expressive character art. Available for illustration commissions.",
+      "reach": "Best way to reach me: email, X, or Twitch chat."
+    },
+    "studio": {
+      "title": "Studio Info",
+      "availabilityLabel": "Commission status",
+      "availabilityValue": "Open via VGen",
+      "responseLabel": "Response time",
+      "responseValue": "Usually within 2-4 days",
+      "supportLabel": "Support",
+      "supportValue": "Tips/Donations available on Ko-fi"
+    },
+    "connect": {
+      "title": "Contact & Support",
+      "x": "X/Twitter",
+      "twitch": "Twitch",
+      "vgen": "VGen (Commissions)",
+      "kofi": "Ko-fi (Donations)"
+    },
+    "legal": {
+      "copyright": "© 2026 Floofy. All original illustrations are my own work. Characters depicted may be owned by their respective copyright holders.",
+      "backToTop": "Back to top"
+    }
+  },
   "nav": {
     "gallery": { "label": "GALLERY", "route": "/gallery" },
     "about": { "label": "ABOUT", "route": "/about" },
