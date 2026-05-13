@@ -14,9 +14,7 @@ import {
   templateUrl: './parallax-section.html',
   styleUrl: './parallax-section.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '(window:scroll)': 'onWindowScroll()',
-  },
+  // host binding for scroll removed; will add manual passive listener
 })
 export class ParallaxSection implements AfterViewInit {
   readonly ariaLabel = input<string>('Parallax section');
@@ -27,17 +25,28 @@ export class ParallaxSection implements AfterViewInit {
   readonly backgroundSize = input<string>('cover');
 
   @ViewChild('parallaxRoot', { static: true }) root!: ElementRef<HTMLElement>;
+  private backgroundEl: HTMLElement | null = null;
 
-  readonly parallaxY = signal(0);
-  readonly backgroundTransform = computed(() => `translate3d(0,${this.parallaxY()}px,0)`);
+  // signals removed for direct DOM update
+
+  private scrollHandler = this.onWindowScroll.bind(this);
 
   ngAfterViewInit(): void {
+    if (this.root) {
+      this.backgroundEl = this.root.nativeElement.querySelector('.parallax-background');
+    }
+    window.addEventListener('scroll', this.scrollHandler, { passive: true });
     this.onWindowScroll();
   }
 
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.scrollHandler);
+  }
+
   onWindowScroll(): void {
-    if (!this.root) return;
+    if (!this.root || !this.backgroundEl) return;
     const rect = this.root.nativeElement.getBoundingClientRect();
-    this.parallaxY.set(-rect.top * this.parallaxStrength());
+    const y = -rect.top * this.parallaxStrength();
+    this.backgroundEl.style.transform = `translate3d(0,${y}px,0)`;
   }
 }
