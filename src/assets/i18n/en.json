@@ -54,6 +54,40 @@
     "news": {
       "title": "LATEST NEWS",
       "description": "Stay updated with the latest news and updates from Floofy. Follow on Twitter for real-time updates, behind-the-scenes content, and more."
+    },
+    "artist": {
+      "kicker": "THE ARTIST",
+      "name": "SummerFloofy",
+      "tagline": "Illustrator & Streamer",
+      "short_desc": "SummerFloofy is an illustrator and streamer who creates fan arts and original works. From beloved character interpretations to wholly original designs, every piece reflects a warm, expressive style that has captured hearts across the internet.",
+      "extended_desc": "With a passion for storytelling through art, SummerFloofy brings characters to life with vibrant colors and emotive detail. Streaming regularly on Twitch, they invite the community into the creative process—from rough sketches to polished finals—building a space that's as much about connection as it is about craft.",
+      "note": "These links point to art posts and socials, where you can follow the latest updates and finished pieces.",
+      "social": {
+        "twitter": "Twitter / X",
+        "bsky": "Bluesky",
+        "pixiv": "Pixiv"
+      },
+      "tweet": {
+        "title": "Latest News",
+        "description": "Follow SummerFloofy for art updates, stream announcements, and community posts."
+      }
+    },
+    "oc": {
+      "kicker": "ORIGINAL CHARACTER",
+      "title": "FLOOFY LORE",
+      "description": "This section focuses on Floofy's lore, art references, and the fan art that celebrates the character.",
+      "lore_title": "About Floofy",
+      "lore_p1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Floofy is a spirited character born from a love of vibrant color and playful expression. With wide, curious eyes and an ever-present warmth, they wander through worlds both fantastical and familiar, guided only by instinct and an unshakeable sense of wonder.",
+      "lore_p2": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Floofy's story began as a sketch in the margins—a small figure with big feelings—and grew into something far beyond what was first expected. Floofy carries the weight of quiet moments and the joy of small discoveries, making them feel as real as any friend you've ever had.",
+      "lore_p3": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Floofy is mischievous but kind, bold but tender, and endlessly curious about the world around them. Those who meet Floofy rarely forget them—they have a way of leaving their mark, softly and sincerely, wherever they go.",
+      "refs": {
+        "title": "Reference Sheets"
+      },
+      "fanart": {
+        "title": "Fan Art",
+        "hashtag": "#floofyfanart",
+        "description": "Love Floofy? We'd love to see your take on them! Share your fan art on Twitter or Bluesky using the tag #floofyfanart and join the growing community of artists who've brought Floofy to life."
+      }
     }
   },
   "gallery": {

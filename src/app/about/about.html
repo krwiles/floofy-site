@@ -52,17 +52,103 @@
   </div>
 </app-parallax-section>
 
-<!-- Twitter Embed -->
+<!-- ── Flourish divider ──────────────────────────────────────────────────── -->
+<span
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  aria-hidden="true"
+></span>
+
+<!-- ── Meet the Artist ──────────────────────────────────────────────────── -->
+<section class="bg-[#FFFFF8]">
+  <div
+    class="mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:py-24 md:grid-cols-2 lg:px-6 xl:gap-20"
+  >
+    <!-- Artist image -->
+    <div class="animate-on-scroll flex justify-center">
+      <img
+        src="assets/0062bdc3-69f5-4380-93d2-d30f82a0d2b9_Floofy-t09.webp"
+        alt="SummerFloofy"
+        class="max-h-135 w-auto object-contain drop-shadow-xl"
+      />
+    </div>
+
+    <!-- Text & Socials -->
+    <div class="animate-on-scroll">
+      <p
+        class="text-on-light-heading mb-2 text-sm font-bold tracking-[0.32em] uppercase"
+      >
+        {{ 'about.artist.kicker' | translate }}
+      </p>
+      <h2 class="text-on-light-heading mb-2 text-5xl font-black tracking-tight">
+        {{ 'about.artist.name' | translate }}
+      </h2>
+      <p class="text-on-light-body-subtle mb-6 text-base font-semibold tracking-wide uppercase">
+        {{ 'about.artist.tagline' | translate }}
+      </p>
+      <p class="text-on-light-body mb-4 leading-7">
+        {{ 'about.artist.short_desc' | translate }}
+      </p>
+      <p class="text-on-light-body mb-8 leading-7">
+        {{ 'about.artist.extended_desc' | translate }}
+      </p>
+      <p class="text-on-light-body-subtle mb-6 text-sm leading-6">
+        {{ 'about.artist.note' | translate }}
+      </p>
+
+      <!-- Social buttons -->
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="https://twitter.com/SummerFloofy"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          <!-- X / Twitter icon -->
+          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          {{ 'about.artist.social.twitter' | translate }}
+        </a>
+        <a
+          href="https://bsky.app/profile/summerfloofy.bsky.social"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-base border border-border bg-transparent text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          <!-- Bluesky icon -->
+          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+          </svg>
+          {{ 'about.artist.social.bsky' | translate }}
+        </a>
+        <a
+          href="https://www.pixiv.net/en/users/SummerFloofy"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-base border border-border bg-transparent text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          <!-- Pixiv icon -->
+          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.935 0A4.924 4.924 0 0 0 0 4.935v14.13A4.924 4.924 0 0 0 4.935 24H14.8a4.924 4.924 0 0 0 4.935-4.935V4.935A4.924 4.924 0 0 0 14.8 0zm7.81 4.547c2.181 0 4.058.676 5.399 1.847a6.307 6.307 0 0 1 2.116 4.773c0 3.915-3.086 6.394-7.515 6.394a8.576 8.576 0 0 1-2.57-.385v3.466H7.483V5.097a13.75 13.75 0 0 1 5.262-.55zm-.105 2.3a6.817 6.817 0 0 0-2.77.55v6.96a6.43 6.43 0 0 0 2.399.422c2.674 0 4.491-1.44 4.491-4.024 0-2.408-1.65-3.908-4.12-3.908z"/>
+          </svg>
+          {{ 'about.artist.social.pixiv' | translate }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Social post / Twitter embed ──────────────────────────────────────── -->
 <section class="bg-section-dark">
   <div
     class="mx-auto max-w-7xl items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
     <div class="mt-4 text-right md:mt-0">
       <h2 class="text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight">
-        {{ 'about.news.title' | translate }}
+        {{ 'about.artist.tweet.title' | translate }}
       </h2>
       <p class="text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'about.news.description' | translate }}
+        {{ 'about.artist.tweet.description' | translate }}
       </p>
       <div class="flex w-full justify-end">
         <a
@@ -92,3 +178,160 @@
     </div>
   </div>
 </section>
+
+<!-- ── Flourish divider ──────────────────────────────────────────────────── -->
+<span
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  aria-hidden="true"
+></span>
+
+<!-- ── Original Character Lore ─────────────────────────────────────────── -->
+<app-parallax-section
+  class="bg-section-dark"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Floofy lore section'"
+>
+  <!-- Section header -->
+  <div class="mx-auto max-w-7xl px-4 pt-16 pb-0 sm:pt-24 lg:px-6">
+    <p
+      class="animate-on-scroll text-on-dark-body-subtle mb-2 text-center text-sm font-bold tracking-[0.32em] uppercase"
+    >
+      {{ 'about.oc.kicker' | translate }}
+    </p>
+    <h2
+      class="animate-on-scroll text-on-dark-heading mb-4 text-center text-5xl font-black tracking-tight"
+    >
+      {{ 'about.oc.title' | translate }}
+    </h2>
+    <p class="text-on-dark-body mx-auto max-w-3xl text-center leading-7">
+      {{ 'about.oc.description' | translate }}
+    </p>
+    <div class="mx-auto mb-12 flex justify-center">
+      <span class="flourish f-full text-on-dark-heading h-8" aria-hidden="true"></span>
+    </div>
+  </div>
+
+  <!-- OC art + lore -->
+  <div
+    class="mx-auto grid max-w-7xl items-start gap-12 px-4 pb-16 sm:pb-24 md:grid-cols-2 lg:px-6 xl:gap-20"
+  >
+    <!-- Prominent OC image -->
+    <div class="animate-on-scroll">
+      <img
+        src="assets/Floofy_Illustration_T03.png"
+        alt="Floofy – SummerFloofy's original character"
+        class="w-full rounded-2xl object-cover shadow-2xl"
+      />
+    </div>
+
+    <!-- Lore -->
+    <div class="animate-on-scroll">
+      <h3 class="text-on-dark-heading mb-6 text-3xl font-black tracking-tight">
+        {{ 'about.oc.lore_title' | translate }}
+      </h3>
+      <p class="text-on-dark-body mb-4 leading-7">
+        {{ 'about.oc.lore_p1' | translate }}
+      </p>
+      <p class="text-on-dark-body mb-4 leading-7">
+        {{ 'about.oc.lore_p2' | translate }}
+      </p>
+      <p class="text-on-dark-body leading-7">
+        {{ 'about.oc.lore_p3' | translate }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Reference sheets -->
+  <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
+    <h3
+      class="animate-on-scroll text-on-dark-heading mb-8 text-2xl font-extrabold tracking-tight"
+    >
+      <span class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block" aria-hidden="true"></span>
+      {{ 'about.oc.refs.title' | translate }}
+    </h3>
+    <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
+        <img
+          src="assets/6BA33836.jpeg"
+          alt="Floofy reference sheet – front"
+          class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+        />
+      </div>
+      <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
+        <img
+          src="assets/A6757DF0.jpeg"
+          alt="Floofy reference sheet – expressions"
+          class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+        />
+      </div>
+      <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
+        <img
+          src="assets/G-Ewq9pagAA7Z-b.jpeg"
+          alt="Floofy reference – color palette"
+          class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+        />
+      </div>
+      <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
+        <img
+          src="assets/G-lXyxKbQAMHkV_.jpeg"
+          alt="Floofy reference – outfit details"
+          class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Fan art -->
+  <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
+    <div class="animate-on-scroll mb-8 flex flex-wrap items-baseline gap-4">
+      <h3 class="text-on-dark-heading text-2xl font-extrabold tracking-tight">
+        <span class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block" aria-hidden="true"></span>
+        {{ 'about.oc.fanart.title' | translate }}
+      </h3>
+      <span
+        class="bg-fg-brand text-on-light-heading rounded-full px-4 py-1 text-sm font-bold tracking-widest"
+      >
+        {{ 'about.oc.fanart.hashtag' | translate }}
+      </span>
+    </div>
+    <p class="animate-on-scroll text-on-dark-body mb-8 max-w-2xl leading-7">
+      {{ 'about.oc.fanart.description' | translate }}
+    </p>
+    <div class="columns-2 gap-4 md:columns-3">
+      <img
+        src="assets/G0iHCdnaIAA5IDY.jpg"
+          alt="Fan art of Floofy"
+        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
+      />
+      <img
+        src="assets/G8oM0YEasAAWxIg.jpeg"
+          alt="Fan art of Floofy"
+        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
+      />
+      <img
+        src="assets/G9bdIEcbEAAFxwd.jpeg"
+          alt="Fan art of Floofy"
+        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
+      />
+      <img
+        src="assets/HE_aWzObYAAc7MN.jpeg"
+          alt="Fan art of Floofy"
+        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
+      />
+      <img
+        src="assets/HFImiOIbkAAPgg6.jpeg"
+          alt="Fan art of Floofy"
+        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
+      />
+      <img
+        src="assets/HFT6u19bsAAQG-z.jpeg"
+          alt="Fan art of Floofy"
+        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
+      />
+    </div>
+  </div>
+</app-parallax-section>
+
