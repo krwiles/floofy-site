@@ -1,0 +1,43 @@
+.footer-social-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.footer-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
+}
+
+.footer-social-icon svg {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+.footer-social-icon--twitch {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.footer-social-icon--twitch svg {
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+}
+
+.footer-social-icon-vgen {
+  background-color: currentColor;
+  width: 1.875rem;
+  height: 1.875rem;
+  mask: url('/assets/VGen Badge - outline.png') no-repeat center / contain;
+  -webkit-mask: url('/assets/VGen Badge - outline.png') no-repeat center / contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+}

@@ -4,7 +4,7 @@
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.8"
+  [parallaxStrength]="0.9"
   [ariaLabel]="'Hero Background'"
 >
   <div class="absolute inset-0 mx-auto h-full max-w-7xl">
@@ -59,7 +59,7 @@
 ></span>
 
 <!-- ── Meet the Artist ──────────────────────────────────────────────────── -->
-<section class="bg-[#FFFFF8]">
+<section class="bg-section-light">
   <div
     class="mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:py-24 md:grid-cols-2 lg:px-6 xl:gap-20"
   >
@@ -74,9 +74,7 @@
 
     <!-- Text & Socials -->
     <div class="animate-on-scroll">
-      <p
-        class="text-on-light-heading mb-2 text-sm font-bold tracking-[0.32em] uppercase"
-      >
+      <p class="text-on-light-heading mb-2 text-sm font-bold tracking-[0.32em] uppercase">
         {{ 'about.artist.kicker' | translate }}
       </p>
       <h2 class="text-on-light-heading mb-2 text-5xl font-black tracking-tight">
@@ -105,7 +103,9 @@
         >
           <!-- X / Twitter icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631Zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+            />
           </svg>
           {{ 'about.artist.social.twitter' | translate }}
         </a>
@@ -113,23 +113,27 @@
           href="https://bsky.app/profile/summerfloofy.bsky.social"
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-base border border-border bg-transparent text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="rounded-base border-border text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 border bg-transparent px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           <!-- Bluesky icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+            <path
+              d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"
+            />
           </svg>
           {{ 'about.artist.social.bsky' | translate }}
         </a>
         <a
-          href="https://www.pixiv.net/en/users/SummerFloofy"
+          href="https://www.pixiv.net/en/users/115468010"
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-base border border-border bg-transparent text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="rounded-base border-border text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 border bg-transparent px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           <!-- Pixiv icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4.935 0A4.924 4.924 0 0 0 0 4.935v14.13A4.924 4.924 0 0 0 4.935 24H14.8a4.924 4.924 0 0 0 4.935-4.935V4.935A4.924 4.924 0 0 0 14.8 0zm7.81 4.547c2.181 0 4.058.676 5.399 1.847a6.307 6.307 0 0 1 2.116 4.773c0 3.915-3.086 6.394-7.515 6.394a8.576 8.576 0 0 1-2.57-.385v3.466H7.483V5.097a13.75 13.75 0 0 1 5.262-.55zm-.105 2.3a6.817 6.817 0 0 0-2.77.55v6.96a6.43 6.43 0 0 0 2.399.422c2.674 0 4.491-1.44 4.491-4.024 0-2.408-1.65-3.908-4.12-3.908z"/>
+            <path
+              d="M4.935 0A4.924 4.924 0 0 0 0 4.935v14.13A4.924 4.924 0 0 0 4.935 24h14.13A4.924 4.924 0 0 0 24 19.065V4.935A4.924 4.924 0 0 0 19.065 0zm7.81 4.547c2.181 0 4.058.676 5.399 1.847a6.118 6.118 0 0 1 2.116 4.66c.005 1.854-.88 3.476-2.257 4.563-1.375 1.092-3.225 1.697-5.258 1.697-2.314 0-4.46-.842-4.46-.842v2.718c.397.116 1.048.365.635.779H5.79c-.41-.41.19-.65.644-.779V7.666c-1.053.81-1.593 1.51-1.868 2.031.32 1.02-.284.969-.284.969l-1.09-1.73s3.868-4.39 9.553-4.39zm-.19.971c-1.423-.003-3.184.473-4.27 1.244v8.646c.988.487 2.484.832 4.26.832h.01c1.596 0 2.98-.593 3.93-1.533.952-.948 1.486-2.183 1.492-3.683-.005-1.54-.504-2.864-1.42-3.86-.918-.992-2.274-1.645-4.002-1.646Z"
+            />
           </svg>
           {{ 'about.artist.social.pixiv' | translate }}
         </a>
@@ -246,10 +250,11 @@
 
   <!-- Reference sheets -->
   <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
-    <h3
-      class="animate-on-scroll text-on-dark-heading mb-8 text-2xl font-extrabold tracking-tight"
-    >
-      <span class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block" aria-hidden="true"></span>
+    <h3 class="animate-on-scroll text-on-dark-heading mb-8 text-2xl font-extrabold tracking-tight">
+      <span
+        class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block"
+        aria-hidden="true"
+      ></span>
       {{ 'about.oc.refs.title' | translate }}
     </h3>
     <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -288,7 +293,10 @@
   <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
     <div class="animate-on-scroll mb-8 flex flex-wrap items-baseline gap-4">
       <h3 class="text-on-dark-heading text-2xl font-extrabold tracking-tight">
-        <span class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block" aria-hidden="true"></span>
+        <span
+          class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block"
+          aria-hidden="true"
+        ></span>
         {{ 'about.oc.fanart.title' | translate }}
       </h3>
       <span
@@ -303,35 +311,34 @@
     <div class="columns-2 gap-4 md:columns-3">
       <img
         src="assets/G0iHCdnaIAA5IDY.jpg"
-          alt="Fan art of Floofy"
+        alt="Fan art of Floofy"
         class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
       />
       <img
         src="assets/G8oM0YEasAAWxIg.jpeg"
-          alt="Fan art of Floofy"
+        alt="Fan art of Floofy"
         class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
       />
       <img
         src="assets/G9bdIEcbEAAFxwd.jpeg"
-          alt="Fan art of Floofy"
+        alt="Fan art of Floofy"
         class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
       />
       <img
         src="assets/HE_aWzObYAAc7MN.jpeg"
-          alt="Fan art of Floofy"
+        alt="Fan art of Floofy"
         class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
       />
       <img
         src="assets/HFImiOIbkAAPgg6.jpeg"
-          alt="Fan art of Floofy"
+        alt="Fan art of Floofy"
         class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
       />
       <img
         src="assets/HFT6u19bsAAQG-z.jpeg"
-          alt="Fan art of Floofy"
+        alt="Fan art of Floofy"
         class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
       />
     </div>
   </div>
 </app-parallax-section>
-

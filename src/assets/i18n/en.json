@@ -46,7 +46,7 @@
   },
   "about": {
     "hero": {
-      "kicker": "MEET THE ARTIST",
+      "kicker": "MEET FLOOFY",
       "title": "ABOUT",
       "description": "Background, interests, socials, and everything from the artist behind the art.",
       "tagline": "Artist • Illustrator • Creator"
@@ -61,7 +61,7 @@
       "tagline": "Illustrator & Streamer",
       "short_desc": "SummerFloofy is an illustrator and streamer who creates fan arts and original works. From beloved character interpretations to wholly original designs, every piece reflects a warm, expressive style that has captured hearts across the internet.",
       "extended_desc": "With a passion for storytelling through art, SummerFloofy brings characters to life with vibrant colors and emotive detail. Streaming regularly on Twitch, they invite the community into the creative process—from rough sketches to polished finals—building a space that's as much about connection as it is about craft.",
-      "note": "These links point to art posts and socials, where you can follow the latest updates and finished pieces.",
+      "note": "Floofy's Art",
       "social": {
         "twitter": "Twitter / X",
         "bsky": "Bluesky",
@@ -74,7 +74,7 @@
     },
     "oc": {
       "kicker": "ORIGINAL CHARACTER",
-      "title": "FLOOFY LORE",
+      "title": "FLOOFY'S LORE",
       "description": "This section focuses on Floofy's lore, art references, and the fan art that celebrates the character.",
       "lore_title": "About Floofy",
       "lore_p1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Floofy is a spirited character born from a love of vibrant color and playful expression. With wide, curious eyes and an ever-present warmth, they wander through worlds both fantastical and familiar, guided only by instinct and an unshakeable sense of wonder.",
@@ -184,7 +184,7 @@
       "supportValue": "Tips/Donations available on Ko-fi"
     },
     "connect": {
-      "title": "Contact & Support",
+      "title": "Contact & Socials",
       "x": "X/Twitter",
       "twitch": "Twitch",
       "vgen": "VGen (Commissions)",
