@@ -19,10 +19,10 @@
     </app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto flex min-h-[80svh] w-full max-w-7xl items-end justify-center text-left md:justify-end"
+    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[80svh] md:justify-end"
   >
     <div
-      class="glass-panel hero-reveal-surface mb-16 max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7"
+      class="glass-panel hero-reveal-surface max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16"
     >
       <span
         class="flourish f-full text-on-light-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
@@ -52,28 +52,25 @@
   </div>
 </app-parallax-section>
 
-<!-- ── Flourish divider ──────────────────────────────────────────────────── -->
 <span
   class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
   aria-hidden="true"
 ></span>
 
-<!-- ── Meet the Artist ──────────────────────────────────────────────────── -->
+<!-- Meet the Artist -->
 <section class="bg-section-light">
   <div
-    class="mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:py-24 md:grid-cols-2 lg:px-6 xl:gap-20"
+    class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
     <!-- Artist image -->
-    <div class="animate-on-scroll flex justify-center">
-      <img
-        src="assets/0062bdc3-69f5-4380-93d2-d30f82a0d2b9_Floofy-t09.webp"
-        alt="SummerFloofy"
-        class="max-h-135 w-auto object-contain drop-shadow-xl"
-      />
-    </div>
+    <img
+      src="assets/0062bdc3-69f5-4380-93d2-d30f82a0d2b9_Floofy-t09.webp"
+      alt="SummerFloofy"
+      class="animate-on-scroll block w-full rounded-lg drop-shadow-xl"
+    />
 
     <!-- Text & Socials -->
-    <div class="animate-on-scroll">
+    <div class="animate-on-scroll text-center md:text-left">
       <p class="text-on-light-heading mb-2 text-sm font-bold tracking-[0.32em] uppercase">
         {{ 'about.artist.kicker' | translate }}
       </p>
@@ -89,26 +86,36 @@
       <p class="text-on-light-body mb-8 leading-7">
         {{ 'about.artist.extended_desc' | translate }}
       </p>
-      <p class="text-on-light-body-subtle mb-6 text-sm leading-6">
-        {{ 'about.artist.note' | translate }}
-      </p>
+    </div>
+  </div>
+</section>
 
-      <!-- Social buttons -->
-      <div class="flex flex-wrap gap-3">
+<!-- Social post / Twitter embed -->
+<section class="bg-section-dark">
+  <div
+    class="mx-auto max-w-7xl items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
+  >
+    <div class="mt-4 min-w-0 text-right md:mt-0">
+      <h2 class="text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight">
+        {{ 'about.artist.tweet.title' | translate }}
+      </h2>
+      <p class="text-on-dark-body mb-6 font-light md:text-lg">
+        {{ 'about.artist.tweet.description' | translate }}
+      </p>
+      <div class="flex w-full justify-end">
         <a
-          href="https://twitter.com/SummerFloofy"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          href="https://twitter.com/SummerFloofy?ref_src=twsrc%5Etfw"
+          class="twitter-follow-button"
+          data-size="large"
+          data-show-screen-name="true"
+          data-show-count="true"
+          >Follow @SummerFloofy</a
         >
-          <!-- X / Twitter icon -->
-          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631Zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-            />
-          </svg>
-          {{ 'about.artist.social.twitter' | translate }}
-        </a>
+      </div>
+      <p class="text-on-dark-body-subtle mt-6 mb-4 text-sm md:text-base">
+        {{ 'about.artist.social.description' | translate }}
+      </p>
+      <div class="flex flex-wrap justify-end gap-3">
         <a
           href="https://bsky.app/profile/summerfloofy.bsky.social"
           target="_blank"
@@ -139,34 +146,8 @@
         </a>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ── Social post / Twitter embed ──────────────────────────────────────── -->
-<section class="bg-section-dark">
-  <div
-    class="mx-auto max-w-7xl items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-  >
-    <div class="mt-4 text-right md:mt-0">
-      <h2 class="text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight">
-        {{ 'about.artist.tweet.title' | translate }}
-      </h2>
-      <p class="text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'about.artist.tweet.description' | translate }}
-      </p>
-      <div class="flex w-full justify-end">
-        <a
-          href="https://twitter.com/SummerFloofy?ref_src=twsrc%5Etfw"
-          class="twitter-follow-button"
-          data-size="large"
-          data-show-screen-name="true"
-          data-show-count="true"
-          >Follow @SummerFloofy</a
-        >
-      </div>
-    </div>
-    <div class="flex w-full justify-center">
-      <blockquote class="twitter-tweet" data-width="600">
+    <div class="flex w-full min-w-0 justify-center">
+      <blockquote class="twitter-tweet w-full max-w-full">
         <p lang="en" dir="ltr">
           My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try
           <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw"
@@ -183,13 +164,12 @@
   </div>
 </section>
 
-<!-- ── Flourish divider ──────────────────────────────────────────────────── -->
 <span
   class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
   aria-hidden="true"
 ></span>
 
-<!-- ── Original Character Lore ─────────────────────────────────────────── -->
+<!-- Original Character Lore -->
 <app-parallax-section
   class="bg-section-dark"
   [backgroundImage]="'assets/intersecting-circles.svg'"
@@ -206,7 +186,7 @@
       {{ 'about.oc.kicker' | translate }}
     </p>
     <h2
-      class="animate-on-scroll text-on-dark-heading mb-4 text-center text-5xl font-black tracking-tight"
+      class="animate-on-scroll text-on-dark-heading mb-4 text-center text-[clamp(2.1rem,9vw,3rem)] leading-tight font-black tracking-tight wrap-break-word"
     >
       {{ 'about.oc.title' | translate }}
     </h2>
@@ -223,7 +203,7 @@
     class="mx-auto grid max-w-7xl items-start gap-12 px-4 pb-16 sm:pb-24 md:grid-cols-2 lg:px-6 xl:gap-20"
   >
     <!-- Prominent OC image -->
-    <div class="animate-on-scroll">
+    <div class="animate-on-scroll min-w-0">
       <img
         src="assets/Floofy_Illustration_T03.png"
         alt="Floofy – SummerFloofy's original character"
@@ -232,7 +212,7 @@
     </div>
 
     <!-- Lore -->
-    <div class="animate-on-scroll">
+    <div class="animate-on-scroll min-w-0">
       <h3 class="text-on-dark-heading mb-6 text-3xl font-black tracking-tight">
         {{ 'about.oc.lore_title' | translate }}
       </h3>
