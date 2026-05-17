@@ -54,33 +54,37 @@
 ></span>
 
 <!-- Gallery Section -->
-<app-parallax-section
-  class="bg-section-dark"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Gallery section'"
->
-  <div
-    class="mx-auto flex max-w-7xl flex-col-reverse items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-  >
-    <div class="animate-on-scroll mt-4 text-center md:mt-0 md:text-right">
-      <h2
-        class="text-on-dark-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-end"
-      >
-        <span
-          class="flourish f-end text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-        {{ 'home.gallery.title' | translate }}
-      </h2>
-      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'home.gallery.description' | translate }}
-      </p>
+<section class="bg-section-dark">
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:py-16 lg:px-6">
+    <!-- Gallery Carousel -->
+    <div class="animate-on-scroll mx-auto aspect-5/2 h-auto max-w-5xl">
+      <app-carousel [images]="images"></app-carousel>
+    </div>
+
+    <!-- Section header -->
+    <div
+      class="border-border mx-auto mt-10 flex max-w-5xl flex-col items-center gap-6 border-t pt-8 text-center md:grid md:grid-cols-[minmax(0,1fr)_auto] md:text-left"
+    >
+      <div>
+        <h2
+          class="animate-on-scroll text-on-dark-heading flex justify-center gap-3 text-[clamp(2.1rem,9vw,3rem)] leading-tight font-black tracking-tight wrap-break-word md:justify-start"
+        >
+          {{ 'home.gallery.title' | translate }}
+          <span
+            class="flourish f-end flip text-on-dark-heading hidden md:inline-block"
+            aria-hidden="true"
+          ></span>
+        </h2>
+
+        <p class="animate-on-scroll text-on-dark-body mt-4 max-w-3xl leading-7">
+          {{ 'home.gallery.description' | translate }}
+        </p>
+      </div>
+
+      <!-- Gallery Button -->
       <a
         routerLink="/gallery"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center justify-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 md:self-start"
       >
         {{ 'home.gallery.cta' | translate }}
         <svg
@@ -97,18 +101,8 @@
         </svg>
       </a>
     </div>
-    <div
-      class="rounded-base mx-auto mt-4 aspect-2/3 max-h-135 w-full max-w-90 overflow-hidden md:mt-0"
-    >
-      <app-carousel class="animate-on-scroll block h-full w-full" [images]="images"></app-carousel>
-    </div>
   </div>
-</app-parallax-section>
-
-<span
-  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
-  aria-hidden="true"
-></span>
+</section>
 
 <!-- About Section -->
 <app-parallax-section
@@ -123,7 +117,7 @@
     class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
     <img
-      class="animate-on-scroll block w-full rounded-lg"
+      class="animate-on-scroll block h-full w-full rounded-lg object-cover"
       ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
       alt="Floofy"
       width="621"
@@ -298,7 +292,7 @@
   aria-hidden="true"
 ></span>
 
-<!-- Reviews and Donate Section -->
+<!-- Reviews, Donate, Contact Section -->
 <app-parallax-section
   class="bg-section-dark"
   [backgroundImage]="'assets/intersecting-circles.svg'"
@@ -307,9 +301,11 @@
   [parallaxStrength]="0.6"
   [ariaLabel]="'Reviews and Donate Section'"
 >
+  <!-- Reviews and Donate Container -->
   <div
     class="mx-auto max-w-7xl items-start gap-8 px-4 py-8 sm:pt-48 sm:pb-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
+    <!-- Reviews -->
     <div class="mt-4 text-center md:mt-0">
       <h2
         class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
@@ -346,6 +342,8 @@
         </svg>
       </a>
     </div>
+
+    <!-- Donate -->
     <div class="mt-4 pt-8 text-center md:mt-0 md:pt-0">
       <h2
         class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
@@ -383,6 +381,8 @@
       </a>
     </div>
   </div>
+
+  <!-- Contact -->
   <div class="mx-auto max-w-4xl items-center gap-8 px-4 pb-8 sm:pb-48 lg:px-6">
     <div class="mt-4 text-center md:mt-0">
       <h2
