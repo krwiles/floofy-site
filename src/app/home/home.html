@@ -1,4 +1,4 @@
-<!-- Hero Section  -->
+<!-- Hero section  -->
 <app-parallax-section
   class="bg-[#DBE0FD]"
   [backgroundImage]="'assets/4-point-stars.svg'"
@@ -53,15 +53,15 @@
   aria-hidden="true"
 ></span>
 
-<!-- Gallery Section -->
+<!-- Gallery section -->
 <section class="bg-section-dark">
-  <div class="mx-auto max-w-7xl px-4 py-10 sm:py-16 lg:px-6">
-    <!-- Gallery Carousel -->
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:py-32 lg:px-6">
+    <!-- Gallery carousel -->
     <div class="animate-on-scroll mx-auto aspect-5/2 h-auto max-w-5xl">
       <app-carousel [images]="images"></app-carousel>
     </div>
 
-    <!-- Section header -->
+    <!-- Section text -->
     <div
       class="border-border mx-auto mt-10 flex max-w-5xl flex-col items-center gap-6 border-t pt-8 text-center md:grid md:grid-cols-[minmax(0,1fr)_auto] md:text-left"
     >
@@ -80,8 +80,6 @@
           {{ 'home.gallery.description' | translate }}
         </p>
       </div>
-
-      <!-- Gallery Button -->
       <a
         routerLink="/gallery"
         class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center justify-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 md:self-start"
@@ -104,7 +102,7 @@
   </div>
 </section>
 
-<!-- About Section -->
+<!-- About section -->
 <app-parallax-section
   class="bg-section-light"
   [backgroundImage]="'assets/4-point-stars.svg'"
@@ -116,13 +114,15 @@
   <div
     class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
+    <!-- About image -->
     <img
-      class="animate-on-scroll block h-full w-full rounded-lg object-cover"
+      class="animate-on-scroll block max-h-90 w-auto justify-self-center rounded-lg object-cover"
       ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
       alt="Floofy"
       width="621"
       height="621"
     />
+    <!-- About text -->
     <div class="mt-4 text-center md:mt-0 md:text-left">
       <h2
         class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-start"
@@ -163,7 +163,7 @@
   aria-hidden="true"
 ></span>
 
-<!-- Commission Section -->
+<!-- Commission section -->
 <app-parallax-section
   class="bg-section-dark"
   [backgroundImage]="'assets/intersecting-circles.svg'"
@@ -190,7 +190,7 @@
       </p>
       <a
         routerLink="/commission"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {{ 'home.commission.cta' | translate }}
         <svg
@@ -293,132 +293,64 @@
 ></span>
 
 <!-- Reviews, Donate, Contact Section -->
-<app-parallax-section
-  class="bg-section-dark"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Reviews and Donate Section'"
->
-  <!-- Reviews and Donate Container -->
-  <div
-    class="mx-auto max-w-7xl items-start gap-8 px-4 py-8 sm:pt-48 sm:pb-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-  >
-    <!-- Reviews -->
-    <div class="mt-4 text-center md:mt-0">
-      <h2
-        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
-      >
-        <span
-          class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-        {{ 'home.reviews.title' | translate }}
-        <span
-          class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-      </h2>
-      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'home.reviews.description' | translate }}
+<section class="bg-section-dark">
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="animate-on-scroll mb-12 text-center">
+      <p class="text-fg-brand-subtle text-sm font-semibold tracking-[0.35em] uppercase">
+        Ready to connect?
       </p>
-      <a
-        routerLink="/reviews"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
-        {{ 'home.reviews.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </a>
+      <h2 class="text-on-dark-heading mt-4 text-4xl font-black">More ways to explore Floofy</h2>
+      <p class="text-on-dark-body mx-auto mt-4 max-w-3xl">
+        Choose the next experience that fits your mood: reader favorites, giving back, or dropping a
+        message.
+      </p>
     </div>
 
-    <!-- Donate -->
-    <div class="mt-4 pt-8 text-center md:mt-0 md:pt-0">
-      <h2
-        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
+    <div class="grid gap-6 lg:grid-cols-3">
+      <article
+        class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_30px_80px_rgba(15,23,42,0.15)]"
       >
-        <span
-          class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-        {{ 'home.donate.title' | translate }}
-        <span
-          class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-      </h2>
-      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'home.donate.description' | translate }}
-      </p>
-      <a
-        routerLink="/donate"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
-        {{ 'home.donate.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
+        <h3 class="text-on-dark-heading text-2xl font-black">
+          {{ 'home.reviews.title' | translate }}
+        </h3>
+        <p class="text-on-dark-body mt-4 leading-7">{{ 'home.reviews.description' | translate }}</p>
+        <a
+          routerLink="/reviews"
+          class="rounded-base bg-fg-brand text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </a>
-    </div>
-  </div>
+          {{ 'home.reviews.cta' | translate }}
+        </a>
+      </article>
 
-  <!-- Contact -->
-  <div class="mx-auto max-w-4xl items-center gap-8 px-4 pb-8 sm:pb-48 lg:px-6">
-    <div class="mt-4 text-center md:mt-0">
-      <h2
-        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
+      <article
+        class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_30px_80px_rgba(15,23,42,0.15)]"
       >
-        <span
-          class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-        {{ 'home.contact.title' | translate }}
-        <span
-          class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-      </h2>
-      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'home.contact.description' | translate }}
-      </p>
-      <a
-        routerLink="/contact"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
-        {{ 'home.contact.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
+        <h3 class="text-on-dark-heading text-2xl font-black">
+          {{ 'home.donate.title' | translate }}
+        </h3>
+        <p class="text-on-dark-body mt-4 leading-7">{{ 'home.donate.description' | translate }}</p>
+        <a
+          routerLink="/donate"
+          class="rounded-base bg-fg-brand text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </a>
+          {{ 'home.donate.cta' | translate }}
+        </a>
+      </article>
+
+      <article
+        class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_30px_80px_rgba(15,23,42,0.15)]"
+      >
+        <h3 class="text-on-dark-heading text-2xl font-black">
+          {{ 'home.contact.title' | translate }}
+        </h3>
+        <p class="text-on-dark-body mt-4 leading-7">{{ 'home.contact.description' | translate }}</p>
+        <a
+          routerLink="/contact"
+          class="rounded-base bg-fg-brand text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          {{ 'home.contact.cta' | translate }}
+        </a>
+      </article>
     </div>
   </div>
-</app-parallax-section>
+</section>
