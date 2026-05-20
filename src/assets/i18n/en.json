@@ -9,7 +9,7 @@
       "tagline": "Art • Streams • Commissions"
     },
     "gallery": {
-      "title": "Gallery",
+      "title": "Art Gallery",
       "description": "Explore a curated collection of SummerFloofy’s illustrations featuring character art, VTuber fanart, and artwork of her original character, Floofy. With expressive posing, soft rendering, and carefully balanced color palettes, each piece reflects her distinct artistic style and attention to detail.",
       "cta": "View Gallery"
     },
@@ -72,10 +72,11 @@
       "tagline": "Illustrator & Streamer",
       "short_desc": "SummerFloofy is an illustrator and streamer who creates fan arts and original works. From beloved character interpretations to wholly original designs, every piece reflects a warm, expressive style that has captured hearts across the internet.",
       "extended_desc": "With a passion for storytelling through art, SummerFloofy brings characters to life with vibrant colors and emotive detail. Streaming regularly on Twitch, they invite the community into the creative process—from rough sketches to polished finals—building a space that's as much about connection as it is about craft.",
+      "contact": "Contact",
       "social": {
         "bsky": "Bluesky",
         "pixiv": "Pixiv",
-        "description": "Prefer community posts? Follow the account above, then catch extra sketches and art drops on Bluesky and Pixiv."
+        "description": "Additional art posts and alternate accounts."
       },
       "tweet": {
         "title": "Latest News",

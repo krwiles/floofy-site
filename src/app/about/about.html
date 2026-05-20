@@ -19,7 +19,7 @@
     </app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[80svh] md:justify-end"
+    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
     <div
       class="glass-panel hero-reveal-surface max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16"
@@ -66,7 +66,7 @@
     <img
       src="assets/0062bdc3-69f5-4380-93d2-d30f82a0d2b9_Floofy-t09.webp"
       alt="SummerFloofy"
-      class="animate-on-scroll block w-full rounded-lg drop-shadow-xl"
+      class="animate-on-scroll card-shadow block w-full rounded-lg drop-shadow-xl"
     />
 
     <!-- Text & Socials -->
@@ -107,10 +107,10 @@
       >
         {{ 'about.artist.tweet.title' | translate }}
       </h2>
-      <p class="animate-on-scroll text-on-middle-body mb-6 leading-7">
+      <p class="animate-on-scroll text-on-middle-body mb-4 leading-7">
         {{ 'about.artist.tweet.description' | translate }}
       </p>
-      <div class="flex w-full justify-end">
+      <div class="mb-4 flex w-full justify-end">
         <a
           href="https://twitter.com/SummerFloofy?ref_src=twsrc%5Etfw"
           class="twitter-follow-button"
@@ -120,7 +120,7 @@
           >Follow @SummerFloofy</a
         >
       </div>
-      <p class="animate-on-scroll text-on-middle-body mb-6 leading-7">
+      <p class="animate-on-scroll text-on-middle-body mb-4 leading-7">
         {{ 'about.artist.social.description' | translate }}
       </p>
       <div class="flex flex-wrap justify-end gap-3">
@@ -128,7 +128,7 @@
           href="https://bsky.app/profile/summerfloofy.bsky.social"
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           <!-- Bluesky icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -142,7 +142,7 @@
           href="https://www.pixiv.net/en/users/115468010"
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           <!-- Pixiv icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -156,20 +156,22 @@
     </div>
 
     <!-- Twitter embed -->
-    <div class="flex w-full min-w-0 justify-center">
-      <blockquote class="twitter-tweet card-shadow w-full max-w-full">
-        <p lang="en" dir="ltr">
-          My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try
-          <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw"
-            >#nimagery</a
+    <div class="w-fill flex justify-center">
+      <div class="card-shadow border-border rounded-xl border bg-white">
+        <blockquote class="twitter-tweet">
+          <p lang="en" dir="ltr">
+            My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try
+            <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw"
+              >#nimagery</a
+            >
+            <a href="https://t.co/GaeMJxpWRb">pic.twitter.com/GaeMJxpWRb</a>
+          </p>
+          &mdash; Summer Floofy🍊 (@SummerFloofy)
+          <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw"
+            >December 29, 2025</a
           >
-          <a href="https://t.co/GaeMJxpWRb">pic.twitter.com/GaeMJxpWRb</a>
-        </p>
-        &mdash; Summer Floofy🍊 (@SummerFloofy)
-        <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw"
-          >December 29, 2025</a
-        >
-      </blockquote>
+        </blockquote>
+      </div>
     </div>
   </div>
 </section>
@@ -215,9 +217,9 @@
     <!-- Prominent OC image -->
     <div class="animate-on-scroll min-w-0">
       <img
-        src="assets/Floofy_Illustration_T03.png"
+        src="assets/GkuDuFAbwAAMiur.jfif"
         alt="Floofy – SummerFloofy's original character"
-        class="w-full rounded-2xl object-cover shadow-2xl"
+        class="card-shadow w-full rounded-2xl object-cover shadow-2xl"
       />
     </div>
 
@@ -238,7 +240,7 @@
     </div>
   </div>
 
-  <!-- Reference sheets -->
+  <!-- Reference sheet -->
   <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
     <h3 class="animate-on-scroll text-on-dark-heading mb-8 text-2xl font-extrabold tracking-tight">
       <span
@@ -247,33 +249,12 @@
       ></span>
       {{ 'about.oc.refs.title' | translate }}
     </h3>
-    <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+    <div class="flex justify-center">
       <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
         <img
-          src="assets/6BA33836.jpeg"
-          alt="Floofy reference sheet – front"
-          class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-        />
-      </div>
-      <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
-        <img
-          src="assets/A6757DF0.jpeg"
-          alt="Floofy reference sheet – expressions"
-          class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-        />
-      </div>
-      <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
-        <img
-          src="assets/G-Ewq9pagAA7Z-b.jpeg"
-          alt="Floofy reference – color palette"
-          class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-        />
-      </div>
-      <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
-        <img
-          src="assets/G-lXyxKbQAMHkV_.jpeg"
-          alt="Floofy reference – outfit details"
-          class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+          src="assets/G3CEwsxbwAAvo2n.jfif"
+          alt="Floofy reference sheet"
+          class="card-shadow max-h-[90svh] w-auto"
         />
       </div>
     </div>
@@ -298,37 +279,6 @@
     <p class="animate-on-scroll text-on-dark-body mb-8 max-w-2xl leading-7">
       {{ 'about.oc.fanart.description' | translate }}
     </p>
-    <div class="columns-2 gap-4 md:columns-3">
-      <img
-        src="assets/G0iHCdnaIAA5IDY.jpg"
-        alt="Fan art of Floofy"
-        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
-      />
-      <img
-        src="assets/G8oM0YEasAAWxIg.jpeg"
-        alt="Fan art of Floofy"
-        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
-      />
-      <img
-        src="assets/G9bdIEcbEAAFxwd.jpeg"
-        alt="Fan art of Floofy"
-        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
-      />
-      <img
-        src="assets/HE_aWzObYAAc7MN.jpeg"
-        alt="Fan art of Floofy"
-        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
-      />
-      <img
-        src="assets/HFImiOIbkAAPgg6.jpeg"
-        alt="Fan art of Floofy"
-        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
-      />
-      <img
-        src="assets/HFT6u19bsAAQG-z.jpeg"
-        alt="Fan art of Floofy"
-        class="animate-on-scroll mb-4 w-full break-inside-avoid rounded-xl object-cover shadow-md"
-      />
-    </div>
+    <!-- Fan images here -->
   </div>
 </app-parallax-section>
