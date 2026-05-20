@@ -5,45 +5,56 @@
   },
   "home": {
     "hero": {
-      "kicker": "Illustrator Streamer",
+      "kicker": "Illustrator • Streamer",
       "tagline": "Art • Streams • Commissions"
     },
     "gallery": {
-      "title": "ART GALLERY",
-      "description": "Explore a curated collection of illustrations by Floofy, showcasing a variety of styles and techniques. Each piece reflects a unique perspective and creative expression.",
+      "title": "Gallery",
+      "description": "Explore a curated collection of SummerFloofy’s illustrations featuring character art, VTuber fanart, and artwork of her original character, Floofy. With expressive posing, soft rendering, and carefully balanced color palettes, each piece reflects her distinct artistic style and attention to detail.",
       "cta": "View Gallery"
     },
+    "learn": {
+      "kicker": "Art, streams, and commissions",
+      "title": "Discover SummerFloofy",
+      "description": "Learn more about SummerFloofy, explore commission opportunities, and join live streams with the Tangerine community."
+    },
     "about": {
-      "title": "ABOUT FLOOFY",
-      "description": "Floofy is a talented illustrator and streamer known for captivating artwork and fun live streams. With a passion for creativity and a unique artistic style, Floofy has built a dedicated following in the art community. Whether through digital illustrations or interactive streaming sessions, Floofy continues to inspire and entertain audiences worldwide.",
+      "title": "About",
+      "description": "SummerFloofy is a digital illustrator and streamer known for expressive character artwork and a welcoming creative community. Her work includes VTuber fanart and illustrations of her original character, Floofy, blending personality, color, and detail. She is supported by her community of fans, known as the Tangerines, who play a big part in shaping the positive and creative space around her work.",
       "cta": "Learn More"
     },
     "commission": {
-      "title": "COMMISSION",
-      "description": "Commission your own custom artwork from Floofy, tailored to your preferences and specifications.",
+      "title": "Commissions",
+      "description": "Bring your ideas to life with custom artwork created in SummerFloofy’s signature style. Whether you’re looking for character art, VTuber-inspired illustrations, or personalized artwork, each commission is crafted with care and attention to detail.",
       "cta": "Commission Now"
     },
     "streaming": {
-      "title": "STREAMING",
-      "description": "Join Floofy live for art streams, Q&A, and community fun! Check out the streaming schedule and never miss a session.",
+      "title": "Streaming",
+      "description": "Join SummerFloofy live for drawing sessions, creative chats, and community interaction with the Tangerines. Streams offer a behind-the-scenes look at the artistic process and a space to connect, relax, and create together.",
       "cta": "Go to Streaming"
     },
+    "support": {
+      "kicker": "Show your support",
+      "title": "Support SummerFloofy’s journey",
+      "description": "Whether you’re sharing artwork, leaving a review, donating, or stopping by a stream, every bit of support helps SummerFloofy continue creating and growing."
+    },
     "reviews": {
-      "title": "REVIEWS",
-      "description": "Read what others have to say about their commissions and experiences with Floofy! Your feedback is important—share your own review and help others discover the quality and creativity of Floofy's work.",
+      "title": "Reviews",
+      "description": "See what clients and members of the Tangerine community have shared about their experiences with SummerFloofy’s artwork and commissions. Feedback helps others understand the process and highlights the support behind each piece.",
       "cta": "See Reviews"
     },
     "donate": {
-      "title": "DONATE",
-      "description": "Support Floofy's creative journey! Your donation helps keep the art and streams coming, funds new projects, and shows your appreciation for the work. Every contribution, big or small, makes a difference—thank you for being part of the community!",
+      "title": "Donate",
+      "description": "Support SummerFloofy’s art, streams, and future projects. Every contribution helps fund new creative work, improve content, and keep the community thriving.",
       "cta": "Donate"
     },
     "contact": {
-      "title": "CONTACT",
-      "description": "Have a question, want to discuss a project, or need info about a special commission? Reach out to Floofy—your message is always welcome! Use the contact page to send your inquiry, and Floofy will get back to you as soon as possible.",
-      "cta": "Get in touch"
+      "title": "Contact",
+      "description": "Have a question, collaboration idea, or commission inquiry? Reach out anytime through the contact page — SummerFloofy would love to hear from you.",
+      "cta": "Get in Touch"
     }
   },
+
   "about": {
     "hero": {
       "kicker": "MEET FLOOFY",
@@ -73,7 +84,7 @@
     },
     "oc": {
       "kicker": "ORIGINAL CHARACTER",
-      "title": "FLOOFY'S LORE",
+      "title": "FLOOFY'S STORY",
       "description": "This section focuses on Floofy's lore, art references, and the fan art that celebrates the character.",
       "lore_title": "Lorem ipsum dolor,",
       "lore_p1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",

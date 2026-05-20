@@ -86,20 +86,28 @@
       <p class="text-on-light-body mb-8 leading-7">
         {{ 'about.artist.extended_desc' | translate }}
       </p>
+      <a
+        routerLink="/streaming"
+        class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        {{ 'about.artist.contact' | translate }}
+      </a>
     </div>
   </div>
 </section>
 
 <!-- Social post / Twitter embed -->
-<section class="bg-section-dark">
+<section class="bg-section-middle">
   <div
     class="mx-auto max-w-7xl items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
     <div class="mt-4 min-w-0 text-right md:mt-0">
-      <h2 class="text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight">
+      <h2
+        class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-end"
+      >
         {{ 'about.artist.tweet.title' | translate }}
       </h2>
-      <p class="text-on-dark-body mb-6 font-light md:text-lg">
+      <p class="animate-on-scroll text-on-middle-body mb-6 leading-7">
         {{ 'about.artist.tweet.description' | translate }}
       </p>
       <div class="flex w-full justify-end">
@@ -112,7 +120,7 @@
           >Follow @SummerFloofy</a
         >
       </div>
-      <p class="text-on-dark-body-subtle mt-6 mb-4 text-sm md:text-base">
+      <p class="animate-on-scroll text-on-middle-body mb-6 leading-7">
         {{ 'about.artist.social.description' | translate }}
       </p>
       <div class="flex flex-wrap justify-end gap-3">
@@ -120,7 +128,7 @@
           href="https://bsky.app/profile/summerfloofy.bsky.social"
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-base border-border text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 border bg-transparent px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           <!-- Bluesky icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -134,7 +142,7 @@
           href="https://www.pixiv.net/en/users/115468010"
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-base border-border text-on-light-heading hover:bg-fg-brand-subtle focus-visible:outline-fg-brand-strong inline-flex items-center gap-2 border bg-transparent px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           <!-- Pixiv icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -146,8 +154,10 @@
         </a>
       </div>
     </div>
+
+    <!-- Twitter embed -->
     <div class="flex w-full min-w-0 justify-center">
-      <blockquote class="twitter-tweet w-full max-w-full">
+      <blockquote class="twitter-tweet card-shadow w-full max-w-full">
         <p lang="en" dir="ltr">
           My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try
           <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw"
@@ -179,21 +189,21 @@
   [ariaLabel]="'Floofy lore section'"
 >
   <!-- Section header -->
-  <div class="mx-auto max-w-7xl px-4 pt-16 pb-0 sm:pt-24 lg:px-6">
+  <div class="mx-auto max-w-7xl px-4 pt-16 pb-0 text-center sm:pt-24 lg:px-6">
     <p
-      class="animate-on-scroll text-on-dark-body-subtle mb-2 text-center text-sm font-bold tracking-[0.32em] uppercase"
+      class="animate-on-scroll text-on-dark-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
     >
       {{ 'about.oc.kicker' | translate }}
     </p>
     <h2
-      class="animate-on-scroll text-on-dark-heading mb-4 text-center text-[clamp(2.1rem,9vw,3rem)] leading-tight font-black tracking-tight wrap-break-word"
+      class="animate-on-scroll text-on-dark-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
     >
       {{ 'about.oc.title' | translate }}
     </h2>
-    <p class="text-on-dark-body mx-auto max-w-3xl text-center leading-7">
+    <p class="animate-on-scroll text-on-dark-body mx-auto mb-2 max-w-3xl leading-7">
       {{ 'about.oc.description' | translate }}
     </p>
-    <div class="mx-auto mb-12 flex justify-center">
+    <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
       <span class="flourish f-full text-on-dark-heading h-8" aria-hidden="true"></span>
     </div>
   </div>
@@ -280,7 +290,7 @@
         {{ 'about.oc.fanart.title' | translate }}
       </h3>
       <span
-        class="bg-fg-brand text-on-light-heading rounded-full px-4 py-1 text-sm font-bold tracking-widest"
+        class="bg-brand text-on-light-heading rounded-full px-4 py-1 text-sm font-bold tracking-widest"
       >
         {{ 'about.oc.fanart.hashtag' | translate }}
       </span>

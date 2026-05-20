@@ -37,11 +37,20 @@ body {
   /* ── Section – Light ─────────────────────────────────────────────────────
      Light-background sections (hero intros, alternating content rows, etc.)
   ── */
-  --color-section-light: #eaebf3; /* section background */
-  --color-section-light-alt: #e3e6ee; /* alternate / zebra-stripe light section */
+  --color-section-light: #f0f2f8; /* section background */
+  --color-section-light-alt: #e9edf5; /* alternate / zebra-stripe light section */
   --color-on-light-heading: #464c70; /* headings on light bg */
   --color-on-light-body: #606692; /* body text on light bg */
   --color-on-light-body-subtle: #8287b0; /* secondary text on light bg */
+
+  /* ── Section – Middle ────────────────────────────────────────────────────
+     Midtone sections for cards, groupings, and subtle separators.
+  ── */
+  --color-section-middle: #bccbe0; /* section background */
+  --color-section-middle-alt: #cbd8e8; /* alternate / zebra-stripe middle section */
+  --color-on-middle-heading: #2b3150; /* headings on middle bg */
+  --color-on-middle-body: #3a4163; /* body text on middle bg */
+  --color-on-middle-body-subtle: #555d80; /* secondary text on middle bg */
 
   /* ── Section – Dark ──────────────────────────────────────────────────────
      Dark-background sections (feature bands, CTAs, footers, etc.)
@@ -55,12 +64,9 @@ body {
   /* ── Brand accent ────────────────────────────────────────────────────────
      Buttons, badges, highlights — works on both light and dark sections.
   ── */
-  --color-bg-brand-dark: #2a3062; /* dark brand band */
-  --color-bg-brand: #4a5198; /* brand band */
-  --color-bg-brand-light: #7a82be; /* light brand band */
-  --color-fg-brand-subtle: #e3e6ee; /* very light brand tint */
-  --color-fg-brand: #bac3e2; /* default brand accent */
-  --color-fg-brand-strong: #7686c0; /* prominent brand accent */
+  --color-brand-subtle: #dbe5f2; /* light interactive fill */
+  --color-brand: #a9bedb; /* default interactive accent */
+  --color-brand-strong: #7d9ec8; /* hover / focus accent */
 
   /* ── Border ──────────────────────────────────────────────────────────────
      Dividers and outlines; use border-border, border-border-subtle, etc.
@@ -82,4 +88,8 @@ body {
   --color-warning: var(--color-amber-500);
   --color-error: var(--color-red-600);
   --color-info: #7686c0;
+}
+
+.card-shadow {
+  box-shadow: 0 20px 20px rgba(15, 23, 42, 0.15);
 }

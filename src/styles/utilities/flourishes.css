@@ -1,7 +1,7 @@
 /* Reusable flourish masks. Color comes from currentColor. */
 .flourish {
   --flourish-src: url('../../assets/flourish-end.svg');
-  --flourish-ratio: 368 / 54;
+  --flourish-ratio: 241 / 54;
   width: auto;
   min-height: 1em;
   aspect-ratio: var(--flourish-ratio);
@@ -20,12 +20,12 @@
 
 .f-end {
   --flourish-src: url('../../assets/flourish-end.svg');
-  --flourish-ratio: 368 / 54;
+  --flourish-ratio: 241 / 54;
 }
 
 .f-end-short {
   --flourish-src: url('../../assets/flourish-end-short.svg');
-  --flourish-ratio: 207 / 54;
+  --flourish-ratio: 144 / 54;
 }
 
 .f-full {

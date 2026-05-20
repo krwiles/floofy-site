@@ -18,7 +18,7 @@
       <button
         type="button"
         (click)="toggleLanguage()"
-        class="rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand focus-visible:outline-fg-brand-strong flex items-center px-3 py-2 text-sm leading-5 font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand focus-visible:outline-brand-strong flex items-center px-3 py-2 text-sm leading-5 font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         aria-label="Toggle language"
       >
         @if (i18n.locale() === 'en') {
@@ -71,7 +71,7 @@
         #navDropdown
         data-collapse-toggle="navbar-language"
         type="button"
-        class="rounded-base border-border bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand focus-visible:outline-fg-brand-strong inline-flex h-10 w-10 items-center justify-center border p-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
+        class="rounded-base border-border bg-brand-subtle text-on-light-heading hover:bg-brand focus-visible:outline-brand-strong inline-flex h-10 w-10 items-center justify-center border p-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
         aria-controls="navbar-language"
         aria-expanded="false"
       >
@@ -105,10 +105,10 @@
           <li>
             <a
               [routerLink]="item.route"
-              routerLinkActive="bg-fg-brand-subtle text-fg-brand lg:bg-transparent lg:text-fg-brand"
+              routerLinkActive="bg-brand-subtle text-brand lg:bg-transparent lg:text-brand"
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="navDropdown.click()"
-              class="text-on-light-heading hover:fg-brand lg:hover:text-fg-brand block rounded px-3 py-2 transition-colors lg:border-0 lg:p-0 lg:hover:bg-transparent"
+              class="text-on-light-heading hover:text-brand lg:hover:text-brand block rounded px-3 py-2 transition-colors lg:border-0 lg:p-0 lg:hover:bg-transparent"
               >{{ item.label }}</a
             >
           </li>
