@@ -69,7 +69,6 @@
     "artist": {
       "kicker": "THE ARTIST",
       "name": "Summer Floofy",
-      "tagline": "Illustrator & Streamer",
       "short_desc": "SummerFloofy is an illustrator and streamer who creates fan arts and original works. From beloved character interpretations to wholly original designs, every piece reflects a warm, expressive style that has captured hearts across the internet.",
       "extended_desc": "With a passion for storytelling through art, SummerFloofy brings characters to life with vibrant colors and emotive detail. Streaming regularly on Twitch, they invite the community into the creative process—from rough sketches to polished finals—building a space that's as much about connection as it is about craft.",
       "contact": "Contact",
@@ -86,7 +85,7 @@
     "oc": {
       "kicker": "ORIGINAL CHARACTER",
       "title": "FLOOFY'S STORY",
-      "description": "This section focuses on Floofy's lore, art references, and the fan art that celebrates the character.",
+      "description": "Character lore, art references, and fan art.",
       "lore_title": "Lorem ipsum dolor,",
       "lore_p1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       "lore_p2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -96,8 +95,8 @@
       },
       "fanart": {
         "title": "Fan Art",
-        "hashtag": "#floofyfanart",
-        "description": "Love Floofy? We'd love to see your take on them! Share your fan art on Twitter or Bluesky using the tag #floofyfanart and join the growing community of artists who've brought Floofy to life."
+        "hashtag": "#Floofyllust",
+        "description": "Love Floofy? We'd love to see your take on them! Share your fan art on Twitter or Bluesky using the tag #Floofyllust."
       }
     }
   },

@@ -64,22 +64,25 @@
   >
     <!-- Artist image -->
     <img
-      src="assets/0062bdc3-69f5-4380-93d2-d30f82a0d2b9_Floofy-t09.webp"
+      ngSrc="assets/0062bdc3-69f5-4380-93d2-d30f82a0d2b9_Floofy-t09.webp"
       alt="SummerFloofy"
+      height="600"
+      width="600"
       class="animate-on-scroll card-shadow block w-full rounded-lg drop-shadow-xl"
     />
 
-    <!-- Text & Socials -->
+    <!-- Artist text -->
     <div class="animate-on-scroll text-center md:text-left">
-      <p class="text-on-light-heading mb-2 text-sm font-bold tracking-[0.32em] uppercase">
+      <p
+        class="animate-on-scroll text-on-light-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
+      >
         {{ 'about.artist.kicker' | translate }}
       </p>
-      <h2 class="text-on-light-heading mb-2 text-5xl font-black tracking-tight">
+      <h2
+        class="animate-on-scroll text-on-light-heading wrap-break-word- mb-4 gap-3 text-5xl font-black tracking-tight"
+      >
         {{ 'about.artist.name' | translate }}
       </h2>
-      <p class="text-on-light-body-subtle mb-6 text-base font-semibold tracking-wide uppercase">
-        {{ 'about.artist.tagline' | translate }}
-      </p>
       <p class="text-on-light-body mb-4 leading-7">
         {{ 'about.artist.short_desc' | translate }}
       </p>
@@ -87,7 +90,7 @@
         {{ 'about.artist.extended_desc' | translate }}
       </p>
       <a
-        routerLink="/streaming"
+        routerLink="/contact"
         class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {{ 'about.artist.contact' | translate }}
@@ -103,8 +106,12 @@
   >
     <div class="mt-4 min-w-0 text-right md:mt-0">
       <h2
-        class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-end"
+        class="animate-on-scroll text-on-middle-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-end"
       >
+        <span
+          class="flourish f-end text-on-middle-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
         {{ 'about.artist.tweet.title' | translate }}
       </h2>
       <p class="animate-on-scroll text-on-middle-body mb-4 leading-7">
@@ -113,7 +120,7 @@
       <div class="mb-4 flex w-full justify-end">
         <a
           href="https://twitter.com/SummerFloofy?ref_src=twsrc%5Etfw"
-          class="twitter-follow-button"
+          class="animate-on-scroll twitter-follow-button"
           data-size="large"
           data-show-screen-name="true"
           data-show-count="true"
@@ -128,7 +135,7 @@
           href="https://bsky.app/profile/summerfloofy.bsky.social"
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="animate-on-scroll rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           <!-- Bluesky icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -142,7 +149,7 @@
           href="https://www.pixiv.net/en/users/115468010"
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="animate-on-scroll rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           <!-- Pixiv icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -181,7 +188,7 @@
   aria-hidden="true"
 ></span>
 
-<!-- Original Character Lore -->
+<!-- Original Character -->
 <app-parallax-section
   class="bg-section-dark"
   [backgroundImage]="'assets/intersecting-circles.svg'"
@@ -217,8 +224,10 @@
     <!-- Prominent OC image -->
     <div class="animate-on-scroll min-w-0">
       <img
-        src="assets/GkuDuFAbwAAMiur.jfif"
+        ngSrc="assets/GkuDuFAbwAAMiur.jfif"
         alt="Floofy – SummerFloofy's original character"
+        height="600"
+        width="600"
         class="card-shadow w-full rounded-2xl object-cover shadow-2xl"
       />
     </div>
@@ -252,8 +261,10 @@
     <div class="flex justify-center">
       <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
         <img
-          src="assets/G3CEwsxbwAAvo2n.jfif"
+          ngSrc="assets/G3CEwsxbwAAvo2n.jfif"
           alt="Floofy reference sheet"
+          height="2048"
+          width="1536"
           class="card-shadow max-h-[90svh] w-auto"
         />
       </div>
@@ -270,11 +281,17 @@
         ></span>
         {{ 'about.oc.fanart.title' | translate }}
       </h3>
-      <span
-        class="bg-brand text-on-light-heading rounded-full px-4 py-1 text-sm font-bold tracking-widest"
+      <a
+        href="https://twitter.com/hashtag/{{
+          ('about.oc.fanart.hashtag' | translate).replace('#', '')
+        }}?src=hash"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center rounded-full px-4 py-1 text-sm font-bold tracking-widest transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        aria-label="View fan art hashtag on X/Twitter"
       >
         {{ 'about.oc.fanart.hashtag' | translate }}
-      </span>
+      </a>
     </div>
     <p class="animate-on-scroll text-on-dark-body mb-8 max-w-2xl leading-7">
       {{ 'about.oc.fanart.description' | translate }}
