@@ -9,7 +9,7 @@
     @for (group of images(); track $index) {
       <!-- Image Group -->
       <div
-        class="flex hidden w-full min-w-full flex-row justify-center overflow-hidden duration-2000 ease-in-out"
+        class="flex hidden w-full min-w-full flex-row justify-center overflow-hidden duration-1000 ease-in-out"
         data-carousel-item
       >
         @for (image of group; track $index) {
@@ -28,12 +28,12 @@
   @if (controls()) {
     <!-- Slider indicators -->
     <div
-      class="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse"
+      class="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 space-x-2 rtl:space-x-reverse"
     >
       @for (group of images(); track $index) {
         <button
           type="button"
-          class="rounded-base h-3 w-3"
+          class="rounded-base h-2.5 w-2.5 bg-black/40 hover:bg-black/60"
           [attr.aria-current]="$index === 0 ? 'true' : 'false'"
           [attr.aria-label]="'Slide ' + ($index + 1)"
           [attr.data-carousel-slide-to]="$index"
@@ -43,14 +43,14 @@
     <!-- Slider controls -->
     <button
       type="button"
-      class="group absolute inset-s-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+      class="group absolute inset-s-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-2 focus:outline-none"
       data-carousel-prev
     >
       <span
-        class="rounded-base inline-flex h-10 w-10 items-center justify-center bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none"
+        class="rounded-base inline-flex h-8 w-8 items-center justify-center bg-black/20 group-hover:bg-black/35 group-focus:ring-4 group-focus:ring-black/20 group-focus:outline-none"
       >
         <svg
-          class="h-5 w-5 text-white rtl:rotate-180"
+          class="h-4 w-4 text-black rtl:rotate-180"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -71,14 +71,14 @@
     </button>
     <button
       type="button"
-      class="group absolute inset-e-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+      class="group absolute inset-e-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-2 focus:outline-none"
       data-carousel-next
     >
       <span
-        class="rounded-base inline-flex h-10 w-10 items-center justify-center bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none"
+        class="rounded-base inline-flex h-8 w-8 items-center justify-center bg-black/20 group-hover:bg-black/35 group-focus:ring-4 group-focus:ring-black/20 group-focus:outline-none"
       >
         <svg
-          class="h-5 w-5 text-white rtl:rotate-180"
+          class="h-4 w-4 text-black rtl:rotate-180"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
