@@ -75,7 +75,7 @@
       "social": {
         "bsky": "Bluesky",
         "pixiv": "Pixiv",
-        "description": "Additional art posts and alternate accounts."
+        "description": "You can find additional Floofy art on other platforms."
       },
       "tweet": {
         "title": "Latest News",
@@ -84,7 +84,7 @@
     },
     "oc": {
       "kicker": "ORIGINAL CHARACTER",
-      "title": "FLOOFY'S STORY",
+      "title": "Floofy's Story",
       "description": "Character lore, art references, and fan art.",
       "lore_title": "Lorem ipsum dolor,",
       "lore_p1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -118,32 +118,8 @@
     "pricing": {
       "title": "Pricing",
       "subtitle": "Choose the commission type that works best for you."
-    },
-    "tiers": {
-      "chibi": {
-        "name": "Chibi",
-        "subtitle": "Cute, compact style",
-        "feature1": "Half-body illustration",
-        "feature2": "Simple background",
-        "feature3": "3 revisions",
-        "select": "Select"
-      },
-      "emotes": {
-        "name": "Emotes",
-        "subtitle": "For streaming & social media",
-        "feature1": "1 custom emote",
-        "feature2": "PNG & high resolution",
-        "feature3": "3 revisions",
-        "select": "Select"
-      },
-      "illustration": {
-        "name": "Illustration",
-        "subtitle": "Premium thigh-up artwork",
-        "feature1": "Full color artwork",
-        "feature2": "Custom background included",
-        "feature3": "3 revisions",
-        "select": "Select"
-      }
+    }
+    
     },
     "disclaimer": "Commercial use of any artwork requires a price increase. Please inquire when placing your order."
   },
