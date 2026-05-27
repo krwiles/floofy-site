@@ -11,7 +11,8 @@ import { CarouselImage } from '../../models/carousel-image.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Carousel implements AfterViewInit {
-  readonly images = input.required<CarouselImage[]>();
+  readonly images = input.required<CarouselImage[][]>();
+  readonly controls = input<boolean>();
 
   ngAfterViewInit(): void {
     // Initialize Flowbite carousels after routing to ensure they work correctly

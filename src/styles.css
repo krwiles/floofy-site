@@ -1,6 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import 'flowbite/src/themes/default';
 @import 'tailwindcss';
 @import './styles/utilities/masks.css';
@@ -32,50 +30,56 @@ body {
   /* ── Page background ─────────────────────────────────────────────────────
      The root canvas. Choose pure white OR a subtle tint — swap here only.
   ── */
-  --color-bg: #f3f8ff; /* ← tweak this one line */
-  --color-bg-subtle: #e7f2ff; /* inset / card surface on light bg */
-  --color-bg-muted: #d5e7fa; /* deeply recessed surface on light bg */
+  --color-bg: #eff0f6; /* ← tweak this one line */
+  --color-bg-subtle: #e3e6ee; /* inset / card surface on light bg */
+  --color-bg-muted: #d4d8e4; /* deeply recessed surface on light bg */
 
   /* ── Section – Light ─────────────────────────────────────────────────────
      Light-background sections (hero intros, alternating content rows, etc.)
   ── */
-  --color-section-light: #f0f7ff; /* section background */
-  --color-section-light-alt: #e7ecff; /* alternate / zebra-stripe light section */
-  --color-on-light-heading: #496182; /* headings on light bg */
-  --color-on-light-body: #627ea2; /* body text on light bg */
-  --color-on-light-body-subtle: #7f9ec0; /* secondary text on light bg */
+  --color-section-light: #f0f2f8; /* section background */
+  --color-section-light-alt: #e9edf5; /* alternate / zebra-stripe light section */
+  --color-on-light-heading: #464c70; /* headings on light bg */
+  --color-on-light-body: #606692; /* body text on light bg */
+  --color-on-light-body-subtle: #8287b0; /* secondary text on light bg */
+
+  /* ── Section – Middle ────────────────────────────────────────────────────
+     Midtone sections for cards, groupings, and subtle separators.
+  ── */
+  --color-section-middle: #bccbe0; /* section background */
+  --color-section-middle-alt: #cbd8e8; /* alternate / zebra-stripe middle section */
+  --color-on-middle-heading: #2b3150; /* headings on middle bg */
+  --color-on-middle-body: #3a4163; /* body text on middle bg */
+  --color-on-middle-body-subtle: #555d80; /* secondary text on middle bg */
 
   /* ── Section – Dark ──────────────────────────────────────────────────────
      Dark-background sections (feature bands, CTAs, footers, etc.)
   ── */
-  --color-section-dark: #37557b; /* section background */
-  --color-section-dark-alt: #2f496d; /* alternate dark section */
+  --color-section-dark: #373e64; /* section background */
+  --color-section-dark-alt: #2d3358; /* alternate dark section */
   --color-on-dark-heading: white; /* headings on dark bg */
-  --color-on-dark-body: #dbe9fb; /* body text on dark bg */
-  --color-on-dark-body-subtle: #b8cbe8; /* secondary text on dark bg */
+  --color-on-dark-body: #dcdfec; /* body text on dark bg */
+  --color-on-dark-body-subtle: #b8bcd4; /* secondary text on dark bg */
 
   /* ── Brand accent ────────────────────────────────────────────────────────
      Buttons, badges, highlights — works on both light and dark sections.
   ── */
-  --color-bg-brand-dark: #2a466f; /* dark brand band */
-  --color-bg-brand: #4272a8; /* brand band */
-  --color-bg-brand-light: #6ea3d6; /* light brand band */
-  --color-fg-brand-subtle: #dbe7fd; /* very light brand tint */
-  --color-fg-brand: #b7cdf9; /* default brand accent */
-  --color-fg-brand-strong: #6d8fca; /* prominent brand accent */
+  --color-brand-subtle: #dbe5f2; /* light interactive fill */
+  --color-brand: #a9bedb; /* default interactive accent */
+  --color-brand-strong: #7d9ec8; /* hover / focus accent */
 
   /* ── Border ──────────────────────────────────────────────────────────────
      Dividers and outlines; use border-border, border-border-subtle, etc.
   ── */
-  --color-border: #a8c6e6; /* default border */
-  --color-border-subtle: #d3e4f7; /* hairline / subtle border */
-  --color-border-strong: #789ac8; /* prominent border */
+  --color-border: #bbc5e4; /* default border */
+  --color-border-subtle: #dcdfec; /* hairline / subtle border */
+  --color-border-strong: #878fbc; /* prominent border */
 
   /* ── Interactive ─────────────────────────────────────────────────────────
      Links and focusable elements; use text-link, hover:text-link-hover.
   ── */
-  --color-link: #3f73ac; /* default link */
-  --color-link-hover: #325d90; /* hovered / active link */
+  --color-link: #4859a4; /* default link */
+  --color-link-hover: #3a4990; /* hovered / active link */
 
   /* ── State ───────────────────────────────────────────────────────────────
      Semantic feedback colors for alerts, badges, and form validation.
@@ -83,5 +87,9 @@ body {
   --color-success: var(--color-emerald-600);
   --color-warning: var(--color-amber-500);
   --color-error: var(--color-red-600);
-  --color-info: #6d8fca;
+  --color-info: #7686c0;
+}
+
+.card-shadow {
+  box-shadow: 0 20px 20px rgba(15, 23, 42, 0.15);
 }

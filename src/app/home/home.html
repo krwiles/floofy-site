@@ -1,4 +1,4 @@
-<!-- Hero Section  -->
+<!-- Hero section  -->
 <app-parallax-section
   class="bg-[#DBE0FD]"
   [backgroundImage]="'assets/4-point-stars.svg'"
@@ -18,13 +18,13 @@
     </app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto flex h-full min-h-[105svh] w-full max-w-7xl items-end justify-center text-left md:justify-end"
+    class="relative z-10 mx-auto flex h-full min-h-[95svh] w-full max-w-7xl items-end justify-center text-left md:justify-end"
   >
     <div
-      class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 drop-shadow-md sm:px-9 sm:py-9 md:mb-32"
+      class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 drop-shadow-md sm:px-9 sm:py-9 md:mb-16"
     >
       <span
-        class="flourish f-full text-on-dark-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+        class="flourish f-full text-on-dark-heading absolute top-0 left-1/2 z-10 h-8 -translate-x-1/2 -translate-y-1/2 md:h-12"
         aria-hidden="true"
       ></span>
       <!-- Small intro/kicker text above the main title. -->
@@ -37,7 +37,8 @@
       <h1
         class="hero-reveal-title text-on-dark-heading mt-3 mb-0 text-[clamp(6.75rem,16vw,12rem)] leading-[0.86] font-black tracking-[-0.045em]"
       >
-        Floofy
+        <span class="block text-[clamp(4.25rem,11vw,8rem)] tracking-[-0.04em]">Summer</span>
+        <span class="block">Floofy</span>
       </h1>
       <p
         class="hero-reveal-copy text-on-dark-heading mt-6 text-xs font-bold tracking-[0.3em] uppercase md:text-base"
@@ -53,64 +54,51 @@
   aria-hidden="true"
 ></span>
 
-<!-- Gallery Section -->
-<app-parallax-section
-  class="bg-section-dark"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Gallery section'"
->
-  <div
-    class="mx-auto flex max-w-7xl flex-col-reverse items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-  >
-    <div class="animate-on-scroll mt-4 text-center md:mt-0 md:text-right">
-      <h2
-        class="text-on-dark-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-end"
-      >
-        <span
-          class="flourish f-end text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-        {{ 'home.gallery.title' | translate }}
-      </h2>
-      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'home.gallery.description' | translate }}
-      </p>
+<!-- Gallery section -->
+<section class="bg-section-dark">
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:py-24 lg:px-6">
+    <!-- Gallery carousel -->
+    <div
+      class="animate-on-scroll card-shadow mx-auto aspect-5/2 h-auto max-w-5xl rounded-3xl border-white/10 bg-white/5 sm:p-4 md:border"
+    >
+      <app-carousel [images]="images"></app-carousel>
+    </div>
+
+    <!-- Gallery text -->
+    <div
+      class="border-border mx-auto mt-10 flex max-w-5xl flex-col items-center gap-6 border-t pt-8 text-center md:grid md:grid-cols-[minmax(0,1fr)_auto] md:text-left"
+    >
+      <div>
+        <h2
+          class="animate-on-scroll text-on-dark-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-start"
+        >
+          {{ 'home.gallery.title' | translate }}
+          <span
+            class="flourish f-end flip text-on-dark-heading hidden md:inline-block"
+            aria-hidden="true"
+          ></span>
+        </h2>
+
+        <p class="animate-on-scroll text-on-dark-body mt-4 max-w-3xl leading-7">
+          {{ 'home.gallery.description' | translate }}
+        </p>
+      </div>
       <a
         routerLink="/gallery"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="animate-on-scroll rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 md:self-start"
       >
         {{ 'home.gallery.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
       </a>
     </div>
-    <div
-      class="rounded-base mx-auto mt-16 aspect-2/3 max-h-135 w-full max-w-90 overflow-hidden md:mt-0"
-    >
-      <app-carousel class="animate-on-scroll block h-full w-full" [images]="images"></app-carousel>
-    </div>
   </div>
-</app-parallax-section>
+</section>
 
 <span
   class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
   aria-hidden="true"
 ></span>
 
-<!-- About Section -->
+<!-- About, commission, streaming section -->
 <app-parallax-section
   class="bg-section-light"
   [backgroundImage]="'assets/4-point-stars.svg'"
@@ -119,117 +107,137 @@
   [parallaxStrength]="0.6"
   [ariaLabel]="'About Section'"
 >
-  <div
-    class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-  >
-    <img
-      class="animate-on-scroll block w-full rounded-lg"
-      ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
-      alt="Floofy"
-      width="621"
-      height="621"
-    />
-    <div class="mt-4 text-center md:mt-0 md:text-left">
-      <h2
-        class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-start"
+  <div class="py-24">
+    <!-- Section header -->
+    <div class="mb-12 text-center">
+      <p
+        class="animate-on-scroll text-on-light-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
       >
-        {{ 'home.about.title' | translate }}
-        <span
-          class="flourish f-end flip text-on-light-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-      </h2>
-      <p class="animate-on-scroll text-on-light-body mb-6 font-light md:text-lg">
-        {{ 'home.about.description' | translate }}
+        {{ 'home.learn.kicker' | translate }}
       </p>
-      <a
-        routerLink="/about"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
-        {{ 'home.about.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </a>
-    </div>
-  </div>
-</app-parallax-section>
-
-<span
-  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
-  aria-hidden="true"
-></span>
-
-<!-- Commission Section -->
-<app-parallax-section
-  class="bg-section-dark"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Commission Section'"
->
-  <div
-    class="mx-auto flex max-w-7xl flex-col-reverse items-center gap-8 px-4 py-8 sm:py-48 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-  >
-    <div class="mt-4 text-center md:mt-0 md:text-right">
       <h2
-        class="text-on-dark-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-end"
+        class="animate-on-scroll text-on-light-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
       >
-        <span
-          class="flourish f-end text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-        {{ 'home.commission.title' | translate }}
+        {{ 'home.learn.title' | translate }}
       </h2>
-      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'home.commission.description' | translate }}
+      <p class="animate-on-scroll text-on-light-body mx-auto mb-2 max-w-3xl leading-7">
+        {{ 'home.learn.description' | translate }}
       </p>
-      <a
-        routerLink="/commission"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-headivg focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
-        {{ 'home.commission.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </a>
+      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+        <span class="flourish f-full text-on-light-heading h-8" aria-hidden="true"></span>
+      </div>
     </div>
+
+    <!-- About -->
     <div
-      class="animate-on-scroll flex w-full flex-row items-center justify-center gap-4 pt-4 md:pt-0 lg:pt-0"
+      class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
+    >
+      <!-- About image -->
+      <img
+        class="animate-on-scroll card-shadow block max-h-90 w-auto justify-self-end rounded-lg object-cover"
+        ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
+        alt="Floofy"
+        width="621"
+        height="621"
+      />
+      <!-- About text -->
+      <div class="mt-4 text-center md:mt-0 md:text-left">
+        <h2
+          class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-start"
+        >
+          {{ 'home.about.title' | translate }}
+          <span
+            class="flourish f-end flip text-on-light-heading hidden md:inline-block"
+            aria-hidden="true"
+          ></span>
+        </h2>
+        <p class="animate-on-scroll text-on-light-body mb-6 leading-7">
+          {{ 'home.about.description' | translate }}
+        </p>
+        <a
+          routerLink="/about"
+          class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          {{ 'home.about.cta' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Commission -->
+    <div
+      class="mx-auto flex max-w-7xl flex-col-reverse items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
+    >
+      <div class="mt-4 text-center md:mt-0 md:text-right">
+        <h2
+          class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-end"
+        >
+          <span
+            class="flourish f-end text-on-light-heading hidden md:inline-block"
+            aria-hidden="true"
+          ></span>
+          {{ 'home.commission.title' | translate }}
+        </h2>
+        <p class="animate-on-scroll text-on-light-body mb-6 leading-7">
+          {{ 'home.commission.description' | translate }}
+        </p>
+        <a
+          routerLink="/commission"
+          class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          {{ 'home.commission.cta' | translate }}
+        </a>
+      </div>
+      <div
+        class="animate-on-scroll flex w-full flex-row items-center justify-center gap-4 pt-4 md:pt-0 lg:pt-0"
+      >
+        <img
+          ngSrc="assets/HE_aWzObYAAc7MN.jpeg"
+          width="900"
+          height="1200"
+          alt="Commission Example 1"
+          class="card-shadow max-w-[47%] rounded-lg"
+        />
+        <img
+          ngSrc="assets/HFT6u19bsAAQG-z.jpeg"
+          width="900"
+          height="1200"
+          alt="Commission Example 2"
+          class="card-shadow max-w-[47%] rounded-lg"
+        />
+      </div>
+    </div>
+
+    <!-- Streaming -->
+    <div
+      class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
     >
       <img
-        ngSrc="assets/HE_aWzObYAAc7MN.jpeg"
-        width="900"
-        height="1200"
-        alt="Commission Example 1"
-        class="max-w-[47%] rounded-lg"
+        class="animate-on-scroll card-shadow w-full rounded-lg"
+        ngSrc="assets/6BA33836.jpeg"
+        alt="Floofy"
+        width="1718"
+        height="966"
       />
-      <img
-        ngSrc="assets/HFT6u19bsAAQG-z.jpeg"
-        width="900"
-        height="1200"
-        alt="Commission Example 2"
-        class="max-w-[47%] rounded-lg"
-      />
+      <div class="mt-4 text-center md:mt-0 md:text-left">
+        <h2
+          class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-start"
+        >
+          {{ 'home.streaming.title' | translate }}
+          <span
+            class="flourish f-end flip text-on-light-heading hidden md:inline-block"
+            aria-hidden="true"
+          ></span>
+        </h2>
+        <p class="animate-on-scroll text-on-light-body mb-6 leading-7">
+          {{ 'home.streaming.description' | translate }}
+        </p>
+        <a
+          routerLink="/streaming"
+          class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          {{ 'home.streaming.cta' | translate }}
+        </a>
+      </div>
     </div>
   </div>
 </app-parallax-section>
@@ -239,186 +247,95 @@
   aria-hidden="true"
 ></span>
 
-<!-- Streaming Section -->
-<app-parallax-section
-  class="bg-section-light"
-  [backgroundImage]="'assets/4-point-stars.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Streaming Section'"
->
-  <div
-    class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-48 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-  >
-    <img
-      class="animate-on-scroll w-full rounded-lg"
-      ngSrc="assets/6BA33836.jpeg"
-      alt="Floofy"
-      width="1718"
-      height="966"
-    />
-    <div class="mt-4 text-center md:mt-0 md:text-left">
-      <h2
-        class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-extrabold tracking-tight md:justify-start"
+<!-- Reviews, donate, contact section -->
+<section class="bg-section-middle">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <!-- Section header -->
+    <div class="mb-12 text-center">
+      <p
+        class="animate-on-scroll text-on-middle-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
       >
-        {{ 'home.streaming.title' | translate }}
-        <span
-          class="flourish f-end flip text-on-light-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-      </h2>
-      <p class="animate-on-scroll text-on-light-body mb-6 font-light md:text-lg">
-        {{ 'home.streaming.description' | translate }}
+        {{ 'home.support.kicker' | translate }}
       </p>
-      <a
-        routerLink="/streaming"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+      <h2
+        class="animate-on-scroll text-on-middle-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
       >
-        {{ 'home.streaming.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </a>
+        {{ 'home.support.title' | translate }}
+      </h2>
+      <p class="animate-on-scroll text-on-middle-body mx-auto mb-2 max-w-3xl leading-7">
+        {{ 'home.support.description' | translate }}
+      </p>
+      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+        <span class="flourish f-full text-on-middle-heading h-8" aria-hidden="true"></span>
+      </div>
     </div>
-  </div>
-</app-parallax-section>
 
-<span
-  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
-  aria-hidden="true"
-></span>
+    <div class="grid gap-6 lg:grid-cols-3">
+      <!-- Reviews -->
+      <div class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+        <h3
+          class="animate-on-scroll text-on-middle-heading mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word md:justify-start"
+        >
+          {{ 'home.reviews.title' | translate }}
+          <span
+            class="flourish f-end-short flip text-on-middle-heading hidden md:inline-block"
+            aria-hidden="true"
+          ></span>
+        </h3>
+        <p class="text-on-middle-body mt-4 leading-7">
+          {{ 'home.reviews.description' | translate }}
+        </p>
+        <a
+          routerLink="/reviews"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          {{ 'home.reviews.cta' | translate }}
+        </a>
+      </div>
 
-<!-- Reviews and Donate Section -->
-<app-parallax-section
-  class="bg-section-dark"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Reviews and Donate Section'"
->
-  <div
-    class="mx-auto max-w-7xl items-start gap-8 px-4 py-8 sm:pt-48 sm:pb-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-  >
-    <div class="mt-4 text-center md:mt-0">
-      <h2
-        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
-      >
-        <span
-          class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-        {{ 'home.reviews.title' | translate }}
-        <span
-          class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-      </h2>
-      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'home.reviews.description' | translate }}
-      </p>
-      <a
-        routerLink="/reviews"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
-        {{ 'home.reviews.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
+      <!-- Donate -->
+      <div class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+        <h3
+          class="animate-on-scroll text-on-middle-heading mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word md:justify-start"
         >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </a>
-    </div>
-    <div class="mt-4 pt-8 text-center md:mt-0 md:pt-0">
-      <h2
-        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
-      >
-        <span
-          class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-        {{ 'home.donate.title' | translate }}
-        <span
-          class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-      </h2>
-      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'home.donate.description' | translate }}
-      </p>
-      <a
-        routerLink="/donate"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
-        {{ 'home.donate.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
+          {{ 'home.donate.title' | translate }}
+          <span
+            class="flourish f-end-short flip text-on-middle-heading hidden md:inline-block"
+            aria-hidden="true"
+          ></span>
+        </h3>
+        <p class="text-on-middle-body mt-4 leading-7">
+          {{ 'home.donate.description' | translate }}
+        </p>
+        <a
+          routerLink="/donate"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </a>
+          {{ 'home.donate.cta' | translate }}
+        </a>
+      </div>
+
+      <!-- Contact -->
+      <div class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+        <h3
+          class="animate-on-scroll text-on-middle-heading mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word md:justify-start"
+        >
+          {{ 'home.contact.title' | translate }}
+          <span
+            class="flourish f-end-short flip text-on-middle-heading hidden md:inline-block"
+            aria-hidden="true"
+          ></span>
+        </h3>
+        <p class="text-on-middle-body mt-4 leading-7">
+          {{ 'home.contact.description' | translate }}
+        </p>
+        <a
+          routerLink="/contact"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          {{ 'home.contact.cta' | translate }}
+        </a>
+      </div>
     </div>
   </div>
-  <div class="mx-auto max-w-4xl items-center gap-8 px-4 pb-8 sm:pb-48 lg:px-6">
-    <div class="mt-4 text-center md:mt-0">
-      <h2
-        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight"
-      >
-        <span
-          class="flourish f-end-short text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-        {{ 'home.contact.title' | translate }}
-        <span
-          class="flourish f-end-short flip text-on-dark-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
-      </h2>
-      <p class="animate-on-scroll text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'home.contact.description' | translate }}
-      </p>
-      <a
-        routerLink="/contact"
-        class="animate-on-scroll rounded-base bg-fg-brand-subtle text-on-light-heading hover:bg-fg-brand hover:text-on-light-heading focus-visible:outline-fg-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
-        {{ 'home.contact.cta' | translate }}
-        <svg
-          class="-mr-1 ml-2 h-5 w-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </a>
-    </div>
-  </div>
-</app-parallax-section>
+</section>

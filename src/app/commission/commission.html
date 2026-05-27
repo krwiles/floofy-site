@@ -1,7 +1,7 @@
 <!-- Commission Hero -->
 <app-parallax-section
-  class="bg-[#4F8585]"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
+  class="bg-[#FEFEFE]"
+  [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
   [parallaxStrength]="0.8"
@@ -11,40 +11,40 @@
     <app-parallax-section
       class="lg:mask-fade-x inset-0 ml-auto h-full max-w-3xl lg:absolute"
       [ariaLabel]="'Hero section'"
-      [backgroundImage]="'assets/G9bdIEcbEAAFxwd.jpeg'"
-      [backgroundPosition]="'center 30%'"
+      [backgroundImage]="'assets/HJLDmNTbgAAbNwI.jfif'"
+      [backgroundPosition]="'center 20%'"
       [backgroundHeight]="'100%'"
       [parallaxStrength]="0.65"
     >
     </app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto flex min-h-[80svh] w-full max-w-7xl items-end justify-center text-left md:justify-start"
+    class="relative z-10 mx-auto flex min-h-[95svh] w-full max-w-7xl items-end justify-center text-left md:justify-start"
   >
     <div
       class="glass-panel hero-reveal-surface mb-16 max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7"
     >
       <span
-        class="flourish f-full text-on-dark-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+        class="flourish f-full text-on-light-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
         aria-hidden="true"
       ></span>
       <p
-        class="hero-reveal-kicker text-on-dark-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
+        class="hero-reveal-kicker text-on-light-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
       >
         {{ 'commission.hero.kicker' | translate }}
       </p>
       <h1
-        class="hero-reveal-title text-on-dark-heading text-[clamp(3.4rem,10vw,4.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
+        class="hero-reveal-title text-on-light-heading text-[clamp(3.4rem,10vw,4.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
       >
         {{ 'commission.hero.title' | translate }}
       </h1>
       <p
-        class="hero-reveal-copy text-on-dark-body mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
+        class="hero-reveal-copy text-on-light-body mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
       >
         {{ 'commission.hero.description' | translate }}
       </p>
       <p
-        class="hero-reveal-copy text-on-dark-body mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
+        class="hero-reveal-copy text-on-light-body mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
       >
         {{ 'commission.hero.tagline' | translate }}
       </p>
@@ -52,285 +52,428 @@
   </div>
 </app-parallax-section>
 
+<span
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  aria-hidden="true"
+></span>
+
+<!-- Pricing -->
 <section class="bg-section-dark">
-  <div class="mx-auto w-full max-w-7xl px-6 py-16 lg:px-8">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div class="mb-12 text-center">
-      <h2 class="text-on-dark-heading mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-        {{ 'commission.pricing.title' | translate }}
-      </h2>
-      <p class="text-on-dark-body text-lg">
-        {{ 'commission.pricing.subtitle' | translate }}
+      <p
+        class="animate-on-scroll text-on-dark-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
+      >
+        Commission Types
       </p>
-    </div>
-
-    <div class="grid gap-8 lg:grid-cols-3">
-      <div class="bg-section-dark-alt flex flex-col rounded-2xl p-8">
-        <div class="flex-1">
-          <h3 class="text-on-dark-heading text-2xl font-bold">
-            {{ 'commission.tiers.chibi.name' | translate }}
-          </h3>
-          <p class="text-on-dark-body-subtle mt-2 text-sm">
-            {{ 'commission.tiers.chibi.subtitle' | translate }}
-          </p>
-          <p class="mt-6 flex items-baseline">
-            <span class="text-on-dark-heading text-5xl font-extrabold">$27</span>
-            <span
-              class="text-on-dark-body-subtle ml-2 text-base font-semibold tracking-wide uppercase"
-              >USD</span
-            >
-          </p>
-
-          <ul role="list" class="mt-8 space-y-4">
-            <li class="flex items-start">
-              <div class="shrink-0">
-                <svg
-                  class="text-fg-brand h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span class="text-on-dark-body ml-3">
-                {{ 'commission.tiers.chibi.feature1' | translate }}
-              </span>
-            </li>
-            <li class="flex items-start">
-              <div class="shrink-0">
-                <svg
-                  class="text-fg-brand h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span class="text-on-dark-body ml-3">
-                {{ 'commission.tiers.chibi.feature2' | translate }}
-              </span>
-            </li>
-            <li class="flex items-start">
-              <div class="shrink-0">
-                <svg
-                  class="text-fg-brand h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span class="text-on-dark-body ml-3">
-                {{ 'commission.tiers.chibi.feature3' | translate }}
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <button
-          type="button"
-          class="bg-fg-brand hover:bg-fg-brand-strong focus:ring-fg-brand mt-8 inline-flex w-full items-center justify-center rounded-lg px-6 py-3 text-base font-semibold text-white transition duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-900 focus:outline-none"
-        >
-          {{ 'commission.tiers.chibi.select' | translate }}
-        </button>
-      </div>
-
-      <div class="bg-section-dark-alt flex flex-col rounded-2xl p-8">
-        <div class="flex-1">
-          <h3 class="text-on-dark-heading text-2xl font-bold">
-            {{ 'commission.tiers.emotes.name' | translate }}
-          </h3>
-          <p class="text-on-dark-body-subtle mt-2 text-sm">
-            {{ 'commission.tiers.emotes.subtitle' | translate }}
-          </p>
-          <p class="mt-6 flex items-baseline">
-            <span class="text-on-dark-heading text-5xl font-extrabold">$30</span>
-            <span
-              class="text-on-dark-body-subtle ml-2 text-base font-semibold tracking-wide uppercase"
-              >USD</span
-            >
-          </p>
-
-          <ul role="list" class="mt-8 space-y-4">
-            <li class="flex items-start">
-              <div class="shrink-0">
-                <svg
-                  class="text-fg-brand h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span class="text-on-dark-body ml-3">
-                {{ 'commission.tiers.emotes.feature1' | translate }}
-              </span>
-            </li>
-            <li class="flex items-start">
-              <div class="shrink-0">
-                <svg
-                  class="text-fg-brand h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span class="text-on-dark-body ml-3">
-                {{ 'commission.tiers.emotes.feature2' | translate }}
-              </span>
-            </li>
-            <li class="flex items-start">
-              <div class="shrink-0">
-                <svg
-                  class="text-fg-brand h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span class="text-on-dark-body ml-3">
-                {{ 'commission.tiers.emotes.feature3' | translate }}
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <button
-          type="button"
-          class="bg-fg-brand hover:bg-fg-brand-strong focus:ring-fg-brand mt-8 inline-flex w-full items-center justify-center rounded-lg px-6 py-3 text-base font-semibold text-white transition duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-900 focus:outline-none"
-        >
-          {{ 'commission.tiers.emotes.select' | translate }}
-        </button>
-      </div>
-
-      <div class="bg-section-dark-alt flex flex-col rounded-2xl p-8">
-        <div class="flex-1">
-          <h3 class="text-on-dark-heading text-2xl font-bold">
-            {{ 'commission.tiers.illustration.name' | translate }}
-          </h3>
-          <p class="text-on-dark-body-subtle mt-2 text-sm">
-            {{ 'commission.tiers.illustration.subtitle' | translate }}
-          </p>
-          <p class="mt-6 flex items-baseline">
-            <span class="text-on-dark-heading text-5xl font-extrabold">$80</span>
-            <span
-              class="text-on-dark-body-subtle ml-2 text-base font-semibold tracking-wide uppercase"
-              >USD</span
-            >
-          </p>
-
-          <ul role="list" class="mt-8 space-y-4">
-            <li class="flex items-start">
-              <div class="shrink-0">
-                <svg
-                  class="text-fg-brand h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span class="text-on-dark-body ml-3">
-                {{ 'commission.tiers.illustration.feature1' | translate }}
-              </span>
-            </li>
-            <li class="flex items-start">
-              <div class="shrink-0">
-                <svg
-                  class="text-fg-brand h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span class="text-on-dark-body ml-3">
-                {{ 'commission.tiers.illustration.feature2' | translate }}
-              </span>
-            </li>
-            <li class="flex items-start">
-              <div class="shrink-0">
-                <svg
-                  class="text-fg-brand h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span class="text-on-dark-body ml-3">
-                {{ 'commission.tiers.illustration.feature3' | translate }}
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <button
-          type="button"
-          class="bg-fg-brand hover:bg-fg-brand-strong focus:ring-fg-brand mt-8 inline-flex w-full items-center justify-center rounded-lg px-6 py-3 text-base font-semibold text-white transition duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-900 focus:outline-none"
-        >
-          {{ 'commission.tiers.illustration.select' | translate }}
-        </button>
+      <h2
+        class="animate-on-scroll text-on-dark-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
+      >
+        Pricing
+      </h2>
+      <p class="animate-on-scroll text-on-dark-body mx-auto mb-2 max-w-3xl leading-7">
+        Base pricing includes one character. See each card below for what is included and excluded.
+      </p>
+      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+        <span class="flourish f-full text-on-dark-heading h-8" aria-hidden="true"></span>
       </div>
     </div>
 
-    <p class="text-on-dark-body-subtle mt-10 text-center text-sm">
-      {{ 'commission.disclaimer' | translate }}
-    </p>
+    <div class="grid gap-6 lg:grid-cols-3">
+      <!-- Pricing Card: Chibi -->
+      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
+        <h3 class="text-on-dark-heading text-2xl font-black">Chibi</h3>
+        <p class="mt-6 flex items-baseline">
+          <span class="text-on-dark-heading text-5xl font-extrabold">$27</span>
+          <span
+            class="text-on-dark-body-subtle ml-2 text-base font-semibold tracking-wide uppercase"
+            >USD</span
+          >
+        </p>
+        <!-- Carousel -->
+        <div
+          class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
+        >
+          <app-carousel [images]="chibiCarouselImages" [controls]="true"></app-carousel>
+        </div>
+        <div class="text-on-dark-body mt-6 space-y-4 text-sm leading-7">
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Includes
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>One half-body chibi character</li>
+              <li>Basic two-tone background</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Excludes
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Props</li>
+              <li>Detailed backgrounds/effects</li>
+              <li>Highly intricate character details</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Details
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>HD PNG</li>
+              <li>1080 x 1080 px</li>
+              <li>300 DPI</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Notes
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Please provide pose/expression references if possible</li>
+              <li>Credit is appreciated when reposting</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Turnaround Time
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Usually within 2 weeks</li>
+              <li>May take longer depending on complexity</li>
+            </ul>
+          </div>
+        </div>
+        <a
+          routerLink="/contact"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          Request Chibi
+        </a>
+      </div>
+
+      <!-- Pricing Card: Emotes -->
+      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
+        <h3 class="text-on-dark-heading text-2xl font-black">Emotes</h3>
+        <p class="mt-6 flex items-baseline">
+          <span class="text-on-dark-heading text-5xl font-extrabold">$30</span>
+          <span
+            class="text-on-dark-body-subtle ml-2 text-base font-semibold tracking-wide uppercase"
+            >USD</span
+          >
+        </p>
+
+        <!-- Carousel -->
+        <div
+          class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
+        >
+          <app-carousel [images]="emoteCarouselImages" [controls]="true"></app-carousel>
+        </div>
+        <div class="text-on-dark-body mt-6 space-y-4 text-sm leading-7">
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Includes
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>One half-body chibi character</li>
+              <li>Basic props (eating, sleeping, holding a heart or flower, etc.)</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Excludes
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Highly intricate character details</li>
+              <li>Secondary characters (+USD 5)</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Details
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>HD PNG</li>
+              <li>1080 x 1080 px</li>
+              <li>300 DPI</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Notes
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Please provide pose/expression references if possible</li>
+              <li>
+                Using it as emotes on your Twitch or YouTube is considered personal usage and not
+                commercial (no extra 50% charge)
+              </li>
+              <li>
+                You are welcome to post the illustration anywhere as long as you credit Summer
+                Floofy
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Turnaround Time
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Usually within 1 week</li>
+              <li>May take longer depending on complexity</li>
+            </ul>
+          </div>
+        </div>
+        <a
+          routerLink="/contact"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          Request Emotes
+        </a>
+      </div>
+
+      <!-- Pricing Card: Illustration -->
+      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
+        <h3 class="text-on-dark-heading text-2xl font-black">Illustration</h3>
+        <p class="mt-6 flex items-baseline">
+          <span class="text-on-dark-heading text-5xl font-extrabold">$80</span>
+          <span
+            class="text-on-dark-body-subtle ml-2 text-base font-semibold tracking-wide uppercase"
+            >USD</span
+          >
+        </p>
+
+        <!-- Carousel -->
+        <div
+          class="card-shadow mt-6 aspect-3/4 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
+        >
+          <app-carousel [images]="illustrationCarouselImages" [controls]="true"></app-carousel>
+        </div>
+        <div class="text-on-dark-body mt-6 space-y-4 text-sm leading-7">
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Includes
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>One character (thigh-up)</li>
+              <li>Solid color background</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Excludes
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Props and detailed backgrounds</li>
+              <li>Secondary characters</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Details
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Standard 3:4 ratio (or any requested size)</li>
+              <li>400 DPI</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Notes
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Complex character designs may incur additional fees</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-on-dark-heading text-xs font-semibold tracking-[0.2em] uppercase">
+              Turnaround Time
+            </p>
+            <ul class="mt-1 list-disc space-y-1 pl-5">
+              <li>Usually within 2 weeks</li>
+              <li>May take up to 1 month during busy periods or for highly detailed pieces</li>
+            </ul>
+          </div>
+        </div>
+        <a
+          routerLink="/contact"
+          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          Request Illustration
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- General Info -->
+<section class="bg-section-middle">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div class="mb-12 text-center">
+      <p
+        class="animate-on-scroll text-on-middle-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
+      >
+        Important Details
+      </p>
+      <h2
+        class="animate-on-scroll text-on-middle-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
+      >
+        General Information
+      </h2>
+      <p class="animate-on-scroll text-on-middle-body mx-auto mb-2 max-w-3xl text-sm leading-7">
+        Policies, workflow, and terms for all commission requests.
+      </p>
+      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+        <span class="flourish f-full text-on-middle-heading h-8" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+      <div class="space-y-6">
+        <!-- Pricing -->
+        <article
+          class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
+        >
+          <h3 class="text-on-middle-heading text-2xl font-black">Pricing</h3>
+          <ul class="text-on-middle-body mt-4 list-disc space-y-2 pl-5 text-sm leading-7">
+            <li>Base pricing includes one character only</li>
+            <li>
+              Additional characters, props, and backgrounds cost extra depending on complexity
+            </li>
+            <li>Complex character designs may incur additional fees</li>
+            <li>Prices do not include 5% sales tax</li>
+          </ul>
+        </article>
+
+        <!-- Revisions -->
+        <article
+          class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
+        >
+          <h3 class="text-on-middle-heading text-2xl font-black">Revisions</h3>
+          <ul class="text-on-middle-body mt-4 list-disc space-y-2 pl-5 text-sm leading-7">
+            <li>1 major revision during sketch phase</li>
+            <li>2 minor revisions during coloring phase</li>
+            <li>Additional revisions may incur extra charges</li>
+            <li>Major revision examples: pose changes, expression changes</li>
+          </ul>
+        </article>
+
+        <!-- Communication -->
+        <article
+          class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
+        >
+          <h3 class="text-on-middle-heading text-2xl font-black">Communication</h3>
+          <p class="text-on-middle-body mt-4 text-sm leading-7">
+            If you have questions, updates, or simply want to chat about your commission, contact me
+            through VGen or email. I normally send a follow-up email after one day if there is no
+            reply on messaging platforms.
+          </p>
+        </article>
+      </div>
+
+      <div class="space-y-6">
+        <!-- General Card: Commercial Usage -->
+        <article
+          class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
+        >
+          <h3 class="text-on-middle-heading text-2xl font-black">Commercial Usage</h3>
+          <div class="text-on-middle-body mt-4 space-y-4 text-sm leading-7">
+            <div>
+              <p class="text-on-middle-heading text-xs font-semibold">Tier 1 (+50%)</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Twitch screens</li>
+                <li>YouTube thumbnails</li>
+                <li>Personal websites</li>
+                <li>Convention handouts</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-on-middle-heading text-xs font-semibold">Tier 2 (+200%)</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Merchandise</li>
+                <li>Digital sales</li>
+                <li>Reproduction/resale</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Workflow -->
+        <article
+          class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
+        >
+          <h3 class="text-on-middle-heading text-2xl font-black">Workflow</h3>
+          <ol class="text-on-middle-body mt-4 list-decimal space-y-2 pl-5 text-sm leading-7">
+            <li>Request discussion and quotation</li>
+            <li>Sketch and color draft approval</li>
+            <li>Final illustration process</li>
+            <li>Finished artwork delivered via email</li>
+          </ol>
+        </article>
+
+        <!-- Payment -->
+        <article
+          class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
+        >
+          <h3 class="text-on-middle-heading text-2xl font-black">Payment</h3>
+          <ul class="text-on-middle-body mt-4 list-disc space-y-2 pl-5 text-sm leading-7">
+            <li>Full payment upfront</li>
+            <li>Work begins only after payment is received</li>
+          </ul>
+        </article>
+      </div>
+
+      <div>
+        <!-- Terms of Service -->
+        <article
+          class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
+        >
+          <h3 class="text-on-middle-heading text-2xl font-black">Terms of Service</h3>
+          <div class="text-on-middle-body mt-4 space-y-4 text-sm leading-7">
+            <div>
+              <p class="text-on-middle-heading text-xs font-semibold">Usage</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Please use commissions for your own exclusive personal use</li>
+                <li>Do not use commissions for commercial use or distribution unless discussed</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-on-middle-heading text-xs font-semibold">Intellectual Property</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>
+                  Some commissioned works may be used in my portfolio. If you want your piece to
+                  remain private, please mention it during discussion.
+                </li>
+                <li>
+                  Extensive external modifications (painting over or AI modifications) are not
+                  allowed without permission.
+                </li>
+                <li>You may not use my artwork for AI training.</li>
+                <li>
+                  My artworks are not authorized for blockchain-related technologies such as NFTs or
+                  cryptocurrency.
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-on-middle-heading text-xs font-semibold">Refunds</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>No refunds</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-on-middle-heading text-xs font-semibold">Conduct</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>
+                  Harassment, spam, or repeated rule violations may result in blacklist/rejection
+                </li>
+                <li>I reserve the right to reject any commission request</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
   </div>
 </section>

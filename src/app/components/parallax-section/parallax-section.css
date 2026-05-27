@@ -4,6 +4,7 @@
 
 .parallax-background {
   background-repeat: repeat;
+  pointer-events: none;
 }
 
 .parallax-root {

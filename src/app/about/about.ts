@@ -1,13 +1,15 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { NgOptimizedImage } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 // Declare the Twitter widgets object to avoid TypeScript errors
 declare const twttr: { widgets: { load: () => void } };
 
 @Component({
   selector: 'app-about',
-  imports: [ParallaxSection, TranslatePipe],
+  imports: [ParallaxSection, TranslatePipe, NgOptimizedImage, RouterLink],
   templateUrl: './about.html',
   styleUrl: './about.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

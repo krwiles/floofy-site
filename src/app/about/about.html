@@ -4,7 +4,7 @@
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.8"
+  [parallaxStrength]="0.9"
   [ariaLabel]="'Hero Background'"
 >
   <div class="absolute inset-0 mx-auto h-full max-w-7xl">
@@ -19,10 +19,10 @@
     </app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto flex min-h-[80svh] w-full max-w-7xl items-end justify-center text-left md:justify-end"
+    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
     <div
-      class="glass-panel hero-reveal-surface mb-16 max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7"
+      class="glass-panel hero-reveal-surface max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16"
     >
       <span
         class="flourish f-full text-on-light-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
@@ -52,43 +52,250 @@
   </div>
 </app-parallax-section>
 
-<!-- Twitter Embed -->
-<section class="bg-section-dark">
+<span
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  aria-hidden="true"
+></span>
+
+<!-- Meet the Artist -->
+<section class="bg-section-light">
+  <div
+    class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
+  >
+    <!-- Artist image -->
+    <img
+      ngSrc="assets/0062bdc3-69f5-4380-93d2-d30f82a0d2b9_Floofy-t09.webp"
+      alt="SummerFloofy"
+      height="600"
+      width="600"
+      class="animate-on-scroll card-shadow block w-full rounded-lg drop-shadow-xl"
+    />
+
+    <!-- Artist text -->
+    <div class="animate-on-scroll text-left">
+      <p
+        class="animate-on-scroll text-on-light-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
+      >
+        {{ 'about.artist.kicker' | translate }}
+      </p>
+      <h2
+        class="animate-on-scroll text-on-light-heading wrap-break-word- mb-4 gap-3 text-5xl font-black tracking-tight"
+      >
+        {{ 'about.artist.name' | translate }}
+      </h2>
+      <p class="text-on-light-body mb-4 leading-7">
+        {{ 'about.artist.short_desc' | translate }}
+      </p>
+      <p class="text-on-light-body mb-8 leading-7">
+        {{ 'about.artist.extended_desc' | translate }}
+      </p>
+      <a
+        routerLink="/contact"
+        class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        {{ 'about.artist.contact' | translate }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Social post / Twitter embed -->
+<section class="bg-section-middle">
   <div
     class="mx-auto max-w-7xl items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
-    <div class="mt-4 text-right md:mt-0">
-      <h2 class="text-on-dark-heading mb-4 text-4xl font-extrabold tracking-tight">
-        {{ 'about.news.title' | translate }}
+    <div class="mt-4 min-w-0 text-center md:mt-0 md:text-right">
+      <h2
+        class="animate-on-scroll text-on-middle-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-end"
+      >
+        <span
+          class="flourish f-end text-on-middle-heading hidden md:inline-block"
+          aria-hidden="true"
+        ></span>
+        {{ 'about.artist.tweet.title' | translate }}
       </h2>
-      <p class="text-on-dark-body mb-6 font-light md:text-lg">
-        {{ 'about.news.description' | translate }}
+      <p class="animate-on-scroll text-on-middle-body mb-4 leading-7">
+        {{ 'about.artist.tweet.description' | translate }}
       </p>
-      <div class="flex w-full justify-end">
+      <div class="mb-4 flex w-full justify-center md:justify-end">
         <a
           href="https://twitter.com/SummerFloofy?ref_src=twsrc%5Etfw"
-          class="twitter-follow-button"
+          class="animate-on-scroll twitter-follow-button"
           data-size="large"
           data-show-screen-name="true"
           data-show-count="true"
           >Follow @SummerFloofy</a
         >
       </div>
-    </div>
-    <div class="flex w-full justify-center">
-      <blockquote class="twitter-tweet" data-width="600">
-        <p lang="en" dir="ltr">
-          My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try
-          <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw"
-            >#nimagery</a
-          >
-          <a href="https://t.co/GaeMJxpWRb">pic.twitter.com/GaeMJxpWRb</a>
-        </p>
-        &mdash; Summer Floofy🍊 (@SummerFloofy)
-        <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw"
-          >December 29, 2025</a
+      <p class="animate-on-scroll text-on-middle-body mb-4 leading-7">
+        {{ 'about.artist.social.description' | translate }}
+      </p>
+      <div class="flex flex-wrap justify-center gap-3 md:justify-end">
+        <a
+          href="https://bsky.app/profile/summerfloofy.bsky.social"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="animate-on-scroll rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         >
-      </blockquote>
+          <!-- Bluesky icon -->
+          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"
+            />
+          </svg>
+          {{ 'about.artist.social.bsky' | translate }}
+        </a>
+        <a
+          href="https://www.pixiv.net/en/users/115468010"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="animate-on-scroll rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        >
+          <!-- Pixiv icon -->
+          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M4.935 0A4.924 4.924 0 0 0 0 4.935v14.13A4.924 4.924 0 0 0 4.935 24h14.13A4.924 4.924 0 0 0 24 19.065V4.935A4.924 4.924 0 0 0 19.065 0zm7.81 4.547c2.181 0 4.058.676 5.399 1.847a6.118 6.118 0 0 1 2.116 4.66c.005 1.854-.88 3.476-2.257 4.563-1.375 1.092-3.225 1.697-5.258 1.697-2.314 0-4.46-.842-4.46-.842v2.718c.397.116 1.048.365.635.779H5.79c-.41-.41.19-.65.644-.779V7.666c-1.053.81-1.593 1.51-1.868 2.031.32 1.02-.284.969-.284.969l-1.09-1.73s3.868-4.39 9.553-4.39zm-.19.971c-1.423-.003-3.184.473-4.27 1.244v8.646c.988.487 2.484.832 4.26.832h.01c1.596 0 2.98-.593 3.93-1.533.952-.948 1.486-2.183 1.492-3.683-.005-1.54-.504-2.864-1.42-3.86-.918-.992-2.274-1.645-4.002-1.646Z"
+            />
+          </svg>
+          {{ 'about.artist.social.pixiv' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Twitter embed -->
+    <div class="max-w-fill mt-4 flex justify-center md:mt-0">
+      <div class="card-shadow border-border rounded-xl border bg-white">
+        <blockquote class="twitter-tweet">
+          <p lang="en" dir="ltr">
+            My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try
+            <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw"
+              >#nimagery</a
+            >
+            <a href="https://t.co/GaeMJxpWRb">pic.twitter.com/GaeMJxpWRb</a>
+          </p>
+          &mdash; Summer Floofy🍊 (@SummerFloofy)
+          <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw"
+            >December 29, 2025</a
+          >
+        </blockquote>
+      </div>
     </div>
   </div>
 </section>
+
+<span
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  aria-hidden="true"
+></span>
+
+<!-- Original Character -->
+<app-parallax-section
+  class="bg-section-dark"
+  [backgroundImage]="'assets/intersecting-circles.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Floofy lore section'"
+>
+  <!-- Section header -->
+  <div class="mx-auto max-w-7xl px-4 pt-16 pb-0 text-center sm:pt-24 lg:px-6">
+    <p
+      class="animate-on-scroll text-on-dark-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
+    >
+      {{ 'about.oc.kicker' | translate }}
+    </p>
+    <h2
+      class="animate-on-scroll text-on-dark-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
+    >
+      {{ 'about.oc.title' | translate }}
+    </h2>
+    <p class="animate-on-scroll text-on-dark-body mx-auto mb-2 max-w-3xl leading-7">
+      {{ 'about.oc.description' | translate }}
+    </p>
+    <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+      <span class="flourish f-full text-on-dark-heading h-8" aria-hidden="true"></span>
+    </div>
+  </div>
+
+  <!-- OC art + lore -->
+  <div
+    class="mx-auto grid max-w-7xl items-start gap-12 px-4 pb-16 sm:pb-24 md:grid-cols-2 lg:px-6 xl:gap-20"
+  >
+    <!-- Prominent OC image -->
+    <div class="animate-on-scroll min-w-0">
+      <img
+        ngSrc="assets/GkuDuFAbwAAMiur.jfif"
+        alt="Floofy – SummerFloofy's original character"
+        height="600"
+        width="600"
+        class="card-shadow w-full rounded-2xl object-cover shadow-2xl"
+      />
+    </div>
+
+    <!-- Lore -->
+    <div class="animate-on-scroll min-w-0">
+      <h3 class="text-on-dark-heading mb-6 text-3xl font-black tracking-tight">
+        {{ 'about.oc.lore_title' | translate }}
+      </h3>
+      <p class="text-on-dark-body mb-4 leading-7">
+        {{ 'about.oc.lore_p1' | translate }}
+      </p>
+      <p class="text-on-dark-body mb-4 leading-7">
+        {{ 'about.oc.lore_p2' | translate }}
+      </p>
+      <p class="text-on-dark-body leading-7">
+        {{ 'about.oc.lore_p3' | translate }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Reference sheet -->
+  <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
+    <h3 class="animate-on-scroll text-on-dark-heading mb-8 text-2xl font-extrabold tracking-tight">
+      <span
+        class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block"
+        aria-hidden="true"
+      ></span>
+      {{ 'about.oc.refs.title' | translate }}
+    </h3>
+    <div class="flex justify-center">
+      <div class="animate-on-scroll overflow-hidden rounded-xl shadow-lg">
+        <img
+          ngSrc="assets/G3CEwsxbwAAvo2n.jfif"
+          alt="Floofy reference sheet"
+          height="2048"
+          width="1536"
+          class="card-shadow max-h-[90svh] w-auto"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Fan art -->
+  <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
+    <div class="animate-on-scroll mb-8 flex flex-wrap items-baseline gap-4">
+      <h3 class="text-on-dark-heading text-2xl font-extrabold tracking-tight">
+        <span
+          class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block"
+          aria-hidden="true"
+        ></span>
+        {{ 'about.oc.fanart.title' | translate }}
+      </h3>
+      <a
+        href="https://twitter.com/hashtag/{{
+          ('about.oc.fanart.hashtag' | translate).replace('#', '')
+        }}?src=hash"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center rounded-full px-4 py-1 text-sm font-bold tracking-widest transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        aria-label="View fan art hashtag on X/Twitter"
+      >
+        {{ 'about.oc.fanart.hashtag' | translate }}
+      </a>
+    </div>
+    <p class="animate-on-scroll text-on-dark-body mb-8 max-w-2xl leading-7">
+      {{ 'about.oc.fanart.description' | translate }}
+    </p>
+    <!-- Fan images here -->
+  </div>
+</app-parallax-section>
