@@ -22,7 +22,7 @@
     class="relative z-10 mx-auto flex min-h-[95svh] w-full max-w-7xl items-end justify-center text-left md:justify-start"
   >
     <div
-      class="glass-panel hero-reveal-surface mb-16 max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7"
+      class="glass-panel hero-reveal-surface max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16"
     >
       <span
         class="flourish f-full text-on-light-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
@@ -310,6 +310,7 @@
 <!-- General Info -->
 <section class="bg-section-middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <!-- Section heading -->
     <div class="mb-12 text-center">
       <p
         class="animate-on-scroll text-on-middle-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
@@ -331,7 +332,7 @@
 
     <div class="grid gap-6 lg:grid-cols-3">
       <div class="space-y-6">
-        <!-- Pricing -->
+        <!-- General Card: Pricing -->
         <article
           class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
         >
@@ -346,7 +347,7 @@
           </ul>
         </article>
 
-        <!-- Revisions -->
+        <!-- General Card: Revisions -->
         <article
           class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
         >
@@ -359,7 +360,7 @@
           </ul>
         </article>
 
-        <!-- Communication -->
+        <!-- General Card: Communication -->
         <article
           class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
         >
@@ -399,7 +400,7 @@
           </div>
         </article>
 
-        <!-- Workflow -->
+        <!-- General Card: Workflow -->
         <article
           class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
         >
@@ -412,7 +413,7 @@
           </ol>
         </article>
 
-        <!-- Payment -->
+        <!-- General Card: Payment -->
         <article
           class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
         >
@@ -425,7 +426,7 @@
       </div>
 
       <div>
-        <!-- Terms of Service -->
+        <!-- General Card: Terms of Service -->
         <article
           class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
         >
@@ -475,5 +476,218 @@
         </article>
       </div>
     </div>
+  </div>
+</section>
+
+<span
+  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  aria-hidden="true"
+></span>
+
+<section class="bg-section-light">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <!-- Section heading -->
+    <div class="mb-12 text-center">
+      <p
+        class="animate-on-scroll text-on-middle-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
+      >
+        Inquire
+      </p>
+      <h2
+        class="animate-on-scroll text-on-middle-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
+      >
+        Submit a Request
+      </h2>
+      <p class="animate-on-scroll text-on-middle-body mx-auto mb-2 max-w-3xl text-sm leading-7">
+        Let's bring your ideas into reality!
+      </p>
+      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+        <span class="flourish f-full text-on-middle-heading h-8" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <!-- Commission form -->
+    <form
+      class="commission-form bg-section-middle-alt text-on-middle-heading card-shadow mx-auto max-w-3xl rounded-4xl border border-white/70 px-6 py-12"
+    >
+      <div class="grid grid-cols-1 gap-6">
+        <div>
+          <label class="text-sm font-semibold">
+            Name
+            <input
+              type="text"
+              [formField]="commissionForm.name"
+              class="rounded-base border-border bg-bg placeholder:text-on-middle-body-subtle focus-visible:outline-brand-strong mt-2 w-full border p-3 focus-visible:outline-2"
+            />
+          </label>
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold">
+            Email
+            <input
+              type="email"
+              [formField]="commissionForm.email"
+              class="rounded-base border-border bg-bg-subtle placeholder:text-on-middle-body-subtle focus-visible:outline-brand-strong mt-2 w-full border p-3 focus-visible:outline-2"
+            />
+          </label>
+        </div>
+
+        <div>
+          <p class="text-sm font-semibold">Commission Type</p>
+          <div class="mt-2 flex flex-wrap gap-3">
+            <label class="block min-w-40 cursor-pointer">
+              <input
+                type="radio"
+                [formField]="commissionForm.commissionType"
+                value="illustration"
+                class="peer sr-only"
+              />
+              <span
+                class="rounded-base border-border bg-bg-subtle text-on-middle-heading peer-checked:bg-brand peer-checked:text-on-light-heading peer-checked:border-brand-strong block border px-4 py-3 text-center text-sm font-semibold transition-colors"
+                >Illustration</span
+              >
+            </label>
+
+            <label class="block min-w-40 cursor-pointer">
+              <input
+                type="radio"
+                [formField]="commissionForm.commissionType"
+                value="chibi"
+                class="peer sr-only"
+              />
+              <span
+                class="rounded-base border-border bg-bg-subtle text-on-middle-heading peer-checked:bg-brand peer-checked:text-on-light-heading peer-checked:border-brand-strong block border px-4 py-3 text-center text-sm font-semibold transition-colors"
+                >Chibi</span
+              >
+            </label>
+
+            <label class="block min-w-40 cursor-pointer">
+              <input
+                type="radio"
+                [formField]="commissionForm.commissionType"
+                value="emote"
+                class="peer sr-only"
+              />
+              <span
+                class="rounded-base border-border bg-bg-subtle text-on-middle-heading peer-checked:bg-brand peer-checked:text-on-light-heading peer-checked:border-brand-strong block border px-4 py-3 text-center text-sm font-semibold transition-colors"
+                >Emote</span
+              >
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold">
+            Description
+            <textarea
+              [formField]="commissionForm.description"
+              rows="5"
+              class="rounded-base border-border bg-bg-subtle placeholder:text-on-middle-body-subtle focus-visible:outline-brand-strong mt-2 w-full border p-3 focus-visible:outline-2"
+            ></textarea>
+          </label>
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold">
+            Reference Links
+            <input
+              type="text"
+              [formField]="commissionForm.referenceLinks"
+              placeholder="URLs, image links, etc."
+              class="rounded-base border-border bg-bg-subtle placeholder:text-on-middle-body-subtle focus-visible:outline-brand-strong mt-2 w-full border p-3 focus-visible:outline-2"
+            />
+          </label>
+        </div>
+
+        <div>
+          <p class="text-sm font-semibold">Usage Type</p>
+          <div class="mt-2 flex flex-wrap gap-3">
+            <label class="block min-w-40 cursor-pointer">
+              <input
+                type="radio"
+                [formField]="commissionForm.usageType"
+                value="personal"
+                class="peer sr-only"
+              />
+              <span
+                class="rounded-base border-border bg-bg-subtle text-on-middle-heading peer-checked:bg-brand peer-checked:text-on-light-heading peer-checked:border-brand-strong block border px-4 py-3 text-center text-sm font-semibold transition-colors"
+                >Personal</span
+              >
+            </label>
+
+            <label class="block min-w-40 cursor-pointer">
+              <input
+                type="radio"
+                [formField]="commissionForm.usageType"
+                value="commercial"
+                class="peer sr-only"
+              />
+              <span
+                class="rounded-base border-border bg-bg-subtle text-on-middle-heading peer-checked:bg-brand peer-checked:text-on-light-heading peer-checked:border-brand-strong block border px-4 py-3 text-center text-sm font-semibold transition-colors"
+                >Commercial</span
+              >
+            </label>
+
+            <label class="block min-w-40 cursor-pointer">
+              <input
+                type="radio"
+                [formField]="commissionForm.usageType"
+                value="unsure"
+                class="peer sr-only"
+              />
+              <span
+                class="rounded-base border-border bg-bg-subtle text-on-middle-heading peer-checked:bg-brand peer-checked:text-on-light-heading peer-checked:border-brand-strong block border px-4 py-3 text-center text-sm font-semibold transition-colors"
+                >Unsure</span
+              >
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold">
+            Deadline (optional)
+            <input
+              type="date"
+              [formField]="commissionForm.deadline"
+              class="rounded-base border-border bg-bg-subtle focus-visible:outline-brand-strong mt-2 w-full border p-3 focus-visible:outline-2"
+            />
+          </label>
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold">
+            Additional Notes
+            <textarea
+              [formField]="commissionForm.additionalNotes"
+              rows="3"
+              class="rounded-base border-border bg-bg-subtle placeholder:text-on-middle-body-subtle focus-visible:outline-brand-strong mt-2 w-full border p-3 focus-visible:outline-2"
+            ></textarea>
+          </label>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <label class="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              [formField]="commissionForm.tosAccepted"
+              id="tos"
+              class="h-4 w-4"
+            />
+            <span class="text-sm">I accept the terms of service</span>
+          </label>
+        </div>
+
+        <div class="pt-4">
+          <button
+            type="button"
+            (click)="$event.preventDefault()"
+            class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle inline-flex items-center justify-center px-6 py-3 text-sm font-semibold"
+          >
+            Submit Request
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
 </section>
