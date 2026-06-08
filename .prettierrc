@@ -1,8 +1,11 @@
 {
-  "printWidth": 100,
+  "printWidth": 120,
   "tabWidth": 2,
   "useTabs": false,
   "singleQuote": true,
+  "htmlWhitespaceSensitivity": "ignore",
+  "bracketSameLine": false,
+  "tailwindStylesheet": "./src/styles.css",
   "overrides": [
     {
       "files": "*.html",

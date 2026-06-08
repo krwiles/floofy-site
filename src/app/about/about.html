@@ -9,43 +9,36 @@
 >
   <div class="absolute inset-0 mx-auto h-full max-w-7xl">
     <app-parallax-section
-      class="lg:mask-fade-x absolute inset-0 h-full max-w-2xl"
+      class="absolute inset-0 h-full max-w-2xl lg:mask-fade-x"
       [ariaLabel]="'Hero section'"
       [backgroundImage]="'assets/Floofy_Illustration_T03.png'"
       [backgroundPosition]="'center 31%'"
       [backgroundHeight]="'110%'"
       [parallaxStrength]="0.7"
-    >
-    </app-parallax-section>
+    ></app-parallax-section>
   </div>
   <div
     class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
-    <div
-      class="glass-panel hero-reveal-surface max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16"
-    >
+    <div class="glass-panel hero-reveal-surface max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
       <span
-        class="flourish f-full text-on-light-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+        class="flourish f-full absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block"
         aria-hidden="true"
       ></span>
       <p
-        class="hero-reveal-kicker text-on-light-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
+        class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-light-heading uppercase sm:text-[0.95rem]"
       >
         {{ 'about.hero.kicker' | translate }}
       </p>
       <h1
-        class="hero-reveal-title text-on-light-heading text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
+        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] text-on-light-heading uppercase"
       >
         {{ 'about.hero.title' | translate }}
       </h1>
-      <p
-        class="hero-reveal-copy text-on-light-body mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
-      >
+      <p class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-light-body sm:text-base">
         {{ 'about.hero.description' | translate }}
       </p>
-      <p
-        class="hero-reveal-copy text-on-light-body mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
-      >
+      <p class="hero-reveal-copy mt-6 text-xs font-semibold tracking-[0.28em] text-on-light-body uppercase sm:text-sm">
         {{ 'about.hero.tagline' | translate }}
       </p>
     </div>
@@ -53,7 +46,7 @@
 </app-parallax-section>
 
 <span
-  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -73,25 +66,23 @@
 
     <!-- Artist text -->
     <div class="animate-on-scroll text-left">
-      <p
-        class="animate-on-scroll text-on-light-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
-      >
+      <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-light-body-subtle uppercase">
         {{ 'about.artist.kicker' | translate }}
       </p>
       <h2
-        class="animate-on-scroll text-on-light-heading wrap-break-word- mb-4 gap-3 text-5xl font-black tracking-tight"
+        class="animate-on-scroll wrap-break-word- mb-4 gap-3 text-5xl font-black tracking-tight text-on-light-heading"
       >
         {{ 'about.artist.name' | translate }}
       </h2>
-      <p class="text-on-light-body mb-4 leading-7">
+      <p class="mb-4 leading-7 text-on-light-body">
         {{ 'about.artist.short_desc' | translate }}
       </p>
-      <p class="text-on-light-body mb-8 leading-7">
+      <p class="mb-8 leading-7 text-on-light-body">
         {{ 'about.artist.extended_desc' | translate }}
       </p>
       <a
         routerLink="/contact"
-        class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="animate-on-scroll inline-flex items-center rounded-base bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
       >
         {{ 'about.artist.contact' | translate }}
       </a>
@@ -101,20 +92,15 @@
 
 <!-- Social post / Twitter embed -->
 <section class="bg-section-middle">
-  <div
-    class="mx-auto max-w-7xl items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-  >
+  <div class="mx-auto max-w-7xl items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
     <div class="mt-4 min-w-0 text-center md:mt-0 md:text-right">
       <h2
-        class="animate-on-scroll text-on-middle-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-end"
+        class="animate-on-scroll mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-end"
       >
-        <span
-          class="flourish f-end text-on-middle-heading hidden md:inline-block"
-          aria-hidden="true"
-        ></span>
+        <span class="flourish f-end hidden text-on-middle-heading md:inline-block" aria-hidden="true"></span>
         {{ 'about.artist.tweet.title' | translate }}
       </h2>
-      <p class="animate-on-scroll text-on-middle-body mb-4 leading-7">
+      <p class="animate-on-scroll mb-4 leading-7 text-on-middle-body">
         {{ 'about.artist.tweet.description' | translate }}
       </p>
       <div class="mb-4 flex w-full justify-center md:justify-end">
@@ -124,10 +110,11 @@
           data-size="large"
           data-show-screen-name="true"
           data-show-count="true"
-          >Follow @SummerFloofy</a
         >
+          Follow @SummerFloofy
+        </a>
       </div>
-      <p class="animate-on-scroll text-on-middle-body mb-4 leading-7">
+      <p class="animate-on-scroll mb-4 leading-7 text-on-middle-body">
         {{ 'about.artist.social.description' | translate }}
       </p>
       <div class="flex flex-wrap justify-center gap-3 md:justify-end">
@@ -135,7 +122,7 @@
           href="https://bsky.app/profile/summerfloofy.bsky.social"
           target="_blank"
           rel="noopener noreferrer"
-          class="animate-on-scroll rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="animate-on-scroll inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           <!-- Bluesky icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -149,7 +136,7 @@
           href="https://www.pixiv.net/en/users/115468010"
           target="_blank"
           rel="noopener noreferrer"
-          class="animate-on-scroll rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="animate-on-scroll inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           <!-- Pixiv icon -->
           <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -164,19 +151,17 @@
 
     <!-- Twitter embed -->
     <div class="max-w-fill mt-4 flex justify-center md:mt-0">
-      <div class="card-shadow border-border rounded-xl border bg-white">
+      <div class="card-shadow rounded-xl border border-border bg-white">
         <blockquote class="twitter-tweet">
           <p lang="en" dir="ltr">
             My Nimi art progress of 2025 💚 I&#39;m thankful that I was brave enough to actually try
-            <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw"
-              >#nimagery</a
-            >
+            <a href="https://twitter.com/hashtag/nimagery?src=hash&amp;ref_src=twsrc%5Etfw">#nimagery</a>
             <a href="https://t.co/GaeMJxpWRb">pic.twitter.com/GaeMJxpWRb</a>
           </p>
           &mdash; Summer Floofy🍊 (@SummerFloofy)
-          <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw"
-            >December 29, 2025</a
-          >
+          <a href="https://twitter.com/SummerFloofy/status/2005637043716857932?ref_src=twsrc%5Etfw">
+            December 29, 2025
+          </a>
         </blockquote>
       </div>
     </div>
@@ -184,7 +169,7 @@
 </section>
 
 <span
-  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -199,28 +184,24 @@
 >
   <!-- Section header -->
   <div class="mx-auto max-w-7xl px-4 pt-16 pb-0 text-center sm:pt-24 lg:px-6">
-    <p
-      class="animate-on-scroll text-on-dark-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
-    >
+    <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
       {{ 'about.oc.kicker' | translate }}
     </p>
     <h2
-      class="animate-on-scroll text-on-dark-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
+      class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading"
     >
       {{ 'about.oc.title' | translate }}
     </h2>
-    <p class="animate-on-scroll text-on-dark-body mx-auto mb-2 max-w-3xl leading-7">
+    <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
       {{ 'about.oc.description' | translate }}
     </p>
     <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
-      <span class="flourish f-full text-on-dark-heading h-8" aria-hidden="true"></span>
+      <span class="flourish f-full h-8 text-on-dark-heading" aria-hidden="true"></span>
     </div>
   </div>
 
   <!-- OC art + lore -->
-  <div
-    class="mx-auto grid max-w-7xl items-start gap-12 px-4 pb-16 sm:pb-24 md:grid-cols-2 lg:px-6 xl:gap-20"
-  >
+  <div class="mx-auto grid max-w-7xl items-start gap-12 px-4 pb-16 sm:pb-24 md:grid-cols-2 lg:px-6 xl:gap-20">
     <!-- Prominent OC image -->
     <div class="animate-on-scroll min-w-0">
       <img
@@ -234,16 +215,16 @@
 
     <!-- Lore -->
     <div class="animate-on-scroll min-w-0">
-      <h3 class="text-on-dark-heading mb-6 text-3xl font-black tracking-tight">
+      <h3 class="mb-6 text-3xl font-black tracking-tight text-on-dark-heading">
         {{ 'about.oc.lore_title' | translate }}
       </h3>
-      <p class="text-on-dark-body mb-4 leading-7">
+      <p class="mb-4 leading-7 text-on-dark-body">
         {{ 'about.oc.lore_p1' | translate }}
       </p>
-      <p class="text-on-dark-body mb-4 leading-7">
+      <p class="mb-4 leading-7 text-on-dark-body">
         {{ 'about.oc.lore_p2' | translate }}
       </p>
-      <p class="text-on-dark-body leading-7">
+      <p class="leading-7 text-on-dark-body">
         {{ 'about.oc.lore_p3' | translate }}
       </p>
     </div>
@@ -251,11 +232,8 @@
 
   <!-- Reference sheet -->
   <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
-    <h3 class="animate-on-scroll text-on-dark-heading mb-8 text-2xl font-extrabold tracking-tight">
-      <span
-        class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block"
-        aria-hidden="true"
-      ></span>
+    <h3 class="animate-on-scroll mb-8 text-2xl font-extrabold tracking-tight text-on-dark-heading">
+      <span class="flourish f-end-short mr-3 hidden h-6 text-on-dark-heading md:inline-block" aria-hidden="true"></span>
       {{ 'about.oc.refs.title' | translate }}
     </h3>
     <div class="flex justify-center">
@@ -274,26 +252,24 @@
   <!-- Fan art -->
   <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
     <div class="animate-on-scroll mb-8 flex flex-wrap items-baseline gap-4">
-      <h3 class="text-on-dark-heading text-2xl font-extrabold tracking-tight">
+      <h3 class="text-2xl font-extrabold tracking-tight text-on-dark-heading">
         <span
-          class="flourish f-end-short text-on-dark-heading mr-3 hidden h-6 md:inline-block"
+          class="flourish f-end-short mr-3 hidden h-6 text-on-dark-heading md:inline-block"
           aria-hidden="true"
         ></span>
         {{ 'about.oc.fanart.title' | translate }}
       </h3>
       <a
-        href="https://twitter.com/hashtag/{{
-          ('about.oc.fanart.hashtag' | translate).replace('#', '')
-        }}?src=hash"
+        href="https://twitter.com/hashtag/{{ ('about.oc.fanart.hashtag' | translate).replace('#', '') }}?src=hash"
         target="_blank"
         rel="noopener noreferrer"
-        class="bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center rounded-full px-4 py-1 text-sm font-bold tracking-widest transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="inline-flex items-center justify-center rounded-full bg-brand px-4 py-1 text-sm font-bold tracking-widest text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         aria-label="View fan art hashtag on X/Twitter"
       >
         {{ 'about.oc.fanart.hashtag' | translate }}
       </a>
     </div>
-    <p class="animate-on-scroll text-on-dark-body mb-8 max-w-2xl leading-7">
+    <p class="animate-on-scroll mb-8 max-w-2xl leading-7 text-on-dark-body">
       {{ 'about.oc.fanart.description' | translate }}
     </p>
     <!-- Fan images here -->

@@ -15,7 +15,7 @@ interface CommissionData {
 
   referenceLinks: string;
 
-  usageType: 'personal' | 'commercial' | 'unsure';
+  usageType: 'personal' | 'commercial-tier-1' | 'commercial-tier-2' | 'unsure';
 
   deadline: string;
 
@@ -33,6 +33,7 @@ interface CommissionData {
 })
 export class Commission {
   private readonly galleryImageService = inject(GalleryImageService);
+  private readonly scrollOffset = 120;
 
   readonly chibiCarouselImages = this.galleryImageService.chibiImages.map((image) => [image]);
   readonly emoteCarouselImages = this.galleryImageService.emoteImages.map((image) => [image]);
@@ -60,4 +61,52 @@ export class Commission {
   });
 
   commissionForm = form(this.commissionModel);
+
+  scrollToCommissionTypes(): void {
+    this.scrollToElement('commission-types');
+  }
+
+  scrollToCommercialUsage(): void {
+    this.scrollToElement('commercial-usage');
+  }
+
+  scrollToTermsOfService(): void {
+    this.scrollToElement('terms-of-service');
+  }
+
+  private scrollToElement(elementId: string): void {
+    const target = document.getElementById(elementId);
+
+    if (!target) {
+      return;
+    }
+
+    const top = target.getBoundingClientRect().top + window.scrollY - this.scrollOffset;
+
+    window.scrollTo({
+      top,
+      behavior: 'smooth',
+    });
+
+    const focusTarget = target as HTMLElement;
+    const hadTabIndex = focusTarget.hasAttribute('tabindex');
+
+    if (!hadTabIndex) {
+      focusTarget.setAttribute('tabindex', '-1');
+    }
+
+    // Delay focus slightly so the element is visible when the outline appears.
+    window.setTimeout(() => {
+      focusTarget.focus({ preventScroll: true });
+
+      if (!hadTabIndex) {
+        const cleanup = () => {
+          focusTarget.removeAttribute('tabindex');
+          focusTarget.removeEventListener('blur', cleanup);
+        };
+
+        focusTarget.addEventListener('blur', cleanup);
+      }
+    }, 220);
+  }
 }

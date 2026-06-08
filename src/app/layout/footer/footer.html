@@ -1,69 +1,60 @@
-<footer class="border-border bg-bg-subtle border-t text-sm">
+<footer class="border-t border-border bg-bg-subtle text-sm">
   <div class="mx-auto w-full max-w-7xl px-4 py-8 lg:py-10">
     <div class="grid gap-10 lg:grid-cols-12 lg:gap-6 xl:gap-8">
       <section aria-labelledby="footer-brand" class="lg:col-span-5 lg:pr-6">
         <a routerLink="/" class="flex items-center space-x-3 rtl:space-x-reverse">
           <img
-            class="border-bg-muted block h-14 w-14 rounded-4xl border-2"
+            class="block h-14 w-14 rounded-4xl border-2 border-bg-muted"
             ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
             alt="Floofy"
             width="621"
             height="621"
           />
-          <h2 id="footer-brand" class="text-on-light-heading text-2xl font-semibold">Floofy</h2>
+          <h2 id="footer-brand" class="text-2xl font-semibold text-on-light-heading">Floofy</h2>
         </a>
-        <p class="text-on-light-body mt-4 text-sm leading-6">
+        <p class="mt-4 text-sm leading-6 text-on-light-body">
           {{ 'footer.brand.description' | translate }}
         </p>
-        <p class="text-on-light-body mt-4 text-sm leading-6">
+        <p class="mt-4 text-sm leading-6 text-on-light-body">
           {{ 'footer.brand.reach' | translate }}
         </p>
       </section>
 
       <div class="grid gap-8 sm:grid-cols-2 lg:col-span-7 lg:col-start-7">
         <section aria-labelledby="footer-studio-info">
-          <h2
-            id="footer-studio-info"
-            class="text-on-light-heading text-sm font-semibold tracking-wide uppercase"
-          >
+          <h2 id="footer-studio-info" class="text-sm font-semibold tracking-wide text-on-light-heading uppercase">
             {{ 'footer.studio.title' | translate }}
           </h2>
-          <ul class="text-on-light-body mt-4 space-y-2">
+          <ul class="mt-4 space-y-2 text-on-light-body">
             <li>
-              <span class="text-on-light-heading font-semibold"
-                >{{ 'footer.studio.availabilityLabel' | translate }}:</span
-              >
+              <span class="font-semibold text-on-light-heading">
+                {{ 'footer.studio.availabilityLabel' | translate }}:
+              </span>
               {{ 'footer.studio.availabilityValue' | translate }}
             </li>
             <li>
-              <span class="text-on-light-heading font-semibold"
-                >{{ 'footer.studio.responseLabel' | translate }}:</span
-              >
+              <span class="font-semibold text-on-light-heading">{{ 'footer.studio.responseLabel' | translate }}:</span>
               {{ 'footer.studio.responseValue' | translate }}
             </li>
             <li>
-              <span class="text-on-light-heading font-semibold"
-                >{{ 'footer.studio.supportLabel' | translate }}:</span
-              >
+              <span class="font-semibold text-on-light-heading">{{ 'footer.studio.supportLabel' | translate }}:</span>
               {{ 'footer.studio.supportValue' | translate }}
             </li>
           </ul>
         </section>
 
         <section aria-labelledby="footer-connect-support">
-          <h2
-            id="footer-connect-support"
-            class="text-on-light-heading text-sm font-semibold tracking-wide uppercase"
-          >
+          <h2 id="footer-connect-support" class="text-sm font-semibold tracking-wide text-on-light-heading uppercase">
             {{ 'footer.connect.title' | translate }}
           </h2>
-          <ul class="text-on-light-body mt-4 space-y-2">
+          <ul class="mt-4 space-y-2 text-on-light-body">
             <li>
               <a
                 href="mailto:Summerfluffball@gmail.com"
-                class="hover:text-on-light-heading focus-visible:outline-brand-strong underline-offset-2 transition-colors hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
-                >Summerfluffball@gmail.com</a
+                class="underline-offset-2 transition-colors hover:text-on-light-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
               >
+                Summerfluffball@gmail.com
+              </a>
             </li>
           </ul>
           <div class="footer-social-icons mt-6 flex flex-wrap items-center gap-3">
@@ -72,7 +63,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="SummerFloofy on X"
-              class="footer-social-icon text-on-light-heading hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+              class="footer-social-icon inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path
@@ -85,7 +76,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="SummerFloofy on Bluesky"
-              class="footer-social-icon text-on-light-heading hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+              class="footer-social-icon inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path
@@ -98,7 +89,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="SummerFloofy on Pixiv"
-              class="footer-social-icon text-on-light-heading hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+              class="footer-social-icon inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path
@@ -111,7 +102,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="SummerFloofy on Twitch"
-              class="footer-social-icon footer-social-icon--twitch text-on-light-heading hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+              class="footer-social-icon footer-social-icon--twitch inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
             >
               <svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
                 <path
@@ -124,7 +115,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="SummerFloofy on Vgen"
-              class="footer-social-icon footer-social-icon-vgen text-on-light-heading hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+              class="footer-social-icon footer-social-icon-vgen inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
             >
               <span class="sr-only">Vgen</span>
             </a>
@@ -133,7 +124,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="SummerFloofy on Ko-fi"
-              class="footer-social-icon text-on-light-heading hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+              class="footer-social-icon inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path
@@ -146,18 +137,16 @@
       </div>
     </div>
 
-    <hr class="border-border my-6 lg:my-8" />
+    <hr class="my-6 border-border lg:my-8" />
 
-    <div
-      class="text-on-light-body flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between"
-    >
+    <div class="flex flex-col gap-3 text-sm text-on-light-body sm:flex-row sm:items-center sm:justify-between">
       <p>
         {{ 'footer.legal.copyright' | translate }}
       </p>
       <button
         type="button"
         (click)="scrollToTop()"
-        class="hover:text-on-light-heading focus-visible:outline-brand-strong underline-offset-2 transition-colors hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="underline-offset-2 transition-colors hover:text-on-light-heading hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
       >
         {{ 'footer.legal.backToTop' | translate }}
       </button>

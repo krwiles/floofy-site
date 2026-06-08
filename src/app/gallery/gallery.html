@@ -9,42 +9,37 @@
 >
   <div class="absolute inset-0 mx-auto h-full max-w-7xl">
     <app-parallax-section
-      class="lg:mask-fade-x absolute inset-0 h-full max-w-5xl"
+      class="absolute inset-0 h-full max-w-5xl lg:mask-fade-x"
       [ariaLabel]="'Hero section'"
       [backgroundImage]="'assets/G_CQjK1XkAALluE.jpeg'"
       [backgroundPosition]="'center 40%'"
       [backgroundHeight]="'150%'"
       [parallaxStrength]="0.65"
-    >
-    </app-parallax-section>
+    ></app-parallax-section>
   </div>
   <div
     class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
-    <div
-      class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16"
-    >
+    <div class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
       <span
-        class="flourish f-full text-on-dark-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+        class="flourish f-full absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:inline-block"
         aria-hidden="true"
       ></span>
       <p
-        class="hero-reveal-kicker text-on-dark-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
+        class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-dark-heading uppercase sm:text-[0.95rem]"
       >
         {{ 'gallery.hero.kicker' | translate }}
       </p>
       <h1
-        class="hero-reveal-title text-on-dark-heading text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
+        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] text-on-dark-heading uppercase"
       >
         {{ 'gallery.hero.title' | translate }}
       </h1>
-      <p
-        class="hero-reveal-copy text-on-dark-heading mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
-      >
+      <p class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-dark-heading sm:text-base">
         {{ 'gallery.hero.description' | translate }}
       </p>
       <p
-        class="hero-reveal-copy text-on-dark-heading mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
+        class="hero-reveal-copy mt-6 text-xs font-semibold tracking-[0.28em] text-on-dark-heading uppercase sm:text-sm"
       >
         {{ 'gallery.hero.tagline' | translate }}
       </p>
@@ -53,7 +48,7 @@
 </app-parallax-section>
 
 <span
-  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -66,9 +61,7 @@
   [parallaxStrength]="0.6"
   [ariaLabel]="'Streaming Section'"
 >
-  <div
-    class="mx-auto max-w-7xl columns-1 gap-8 px-4 py-8 sm:py-16 md:columns-2 lg:columns-3 lg:px-6"
-  >
+  <div class="mx-auto max-w-7xl columns-1 gap-8 px-4 py-8 sm:py-16 md:columns-2 lg:columns-3 lg:px-6">
     @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index) {
       @defer (on viewport) {
         <img

@@ -1,33 +1,24 @@
-<nav class="nav-intro glass-bgx bg-bg border-border fixed inset-s-0 top-0 z-100 w-full border-b">
+<nav class="nav-intro glass-bgx fixed inset-s-0 top-0 z-100 w-full border-b border-border bg-bg">
   <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between px-4 py-1">
     <a routerLink="/" class="nav-brand-intro flex items-center space-x-3 rtl:space-x-reverse">
       <img
-        class="border-bg-muted block h-14 w-14 rounded-4xl border-2"
+        class="block h-14 w-14 rounded-4xl border-2 border-bg-muted"
         ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
         alt="Floofy"
         width="621"
         height="621"
       />
-      <span class="text-on-light-heading self-center text-2xl font-semibold whitespace-nowrap"
-        >Floofy</span
-      >
+      <span class="self-center text-2xl font-semibold whitespace-nowrap text-on-light-heading">Floofy</span>
     </a>
-    <div
-      class="nav-actions-intro flex items-center space-x-1 lg:order-2 lg:space-x-0 rtl:space-x-reverse"
-    >
+    <div class="nav-actions-intro flex items-center space-x-1 lg:order-2 lg:space-x-0 rtl:space-x-reverse">
       <button
         type="button"
         (click)="toggleLanguage()"
-        class="rounded-base border-border bg-brand-subtle text-on-light-heading hover:bg-brand focus-visible:outline-brand-strong inline-flex h-10 items-center justify-center gap-2 border px-3 text-sm leading-5 font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+        class="inline-flex h-10 items-center justify-center gap-2 rounded-base border border-border bg-brand-subtle px-3 text-sm leading-5 font-semibold text-on-light-heading transition-colors hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         aria-label="Toggle language"
       >
         @if (i18n.locale() === 'en') {
-          <svg
-            class="h-4 w-4 md:me-1.5"
-            viewBox="0 0 18 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg class="h-4 w-4 md:me-1.5" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M9.00023 16.5C13.1425 16.5 16.5005 13.1421 16.5005 9C16.5005 4.85786 13.1425 1.5 9.00023 1.5C4.85797 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85797 16.5 9.00023 16.5Z"
               fill="white"
@@ -51,25 +42,22 @@
             <path
               d="M4.97397 2.67114H5.65741L5.0217 3.13297L5.26453 3.88024L4.62884 3.41841L3.99316 3.88024L4.20292 3.23468C3.6432 3.7009 3.15262 4.24713 2.74834 4.85575H2.96732L2.56266 5.14972C2.49962 5.25489 2.43915 5.36173 2.38121 5.47015L2.57444 6.06485L2.21393 5.80293C2.12432 5.99279 2.04235 6.18692 1.96867 6.3851L2.18156 7.04036H2.96732L2.33161 7.50219L2.57444 8.24947L1.93876 7.78764L1.55798 8.0643C1.51986 8.37066 1.5 8.6827 1.5 8.99941H8.99964C8.99964 4.85763 8.99964 4.36934 8.99964 1.5C7.51811 1.5 6.13703 1.92975 4.97397 2.67114ZM5.26453 8.24947L4.62884 7.78764L3.99316 8.24947L4.23599 7.50219L3.60028 7.04036H4.38604L4.62884 6.29309L4.87165 7.04036H5.65741L5.0217 7.50219L5.26453 8.24947ZM5.0217 5.31758L5.26453 6.06485L4.62884 5.60303L3.99316 6.06485L4.23599 5.31758L3.60028 4.85575H4.38604L4.62884 4.10848L4.87165 4.85575H5.65741L5.0217 5.31758ZM7.95461 8.24947L7.31893 7.78764L6.68325 8.24947L6.92608 7.50219L6.29037 7.04036H7.07613L7.31893 6.29309L7.56173 7.04036H8.34749L7.71178 7.50219L7.95461 8.24947ZM7.71178 5.31758L7.95461 6.06485L7.31893 5.60303L6.68325 6.06485L6.92608 5.31758L6.29037 4.85575H7.07613L7.31893 4.10848L7.56173 4.85575H8.34749L7.71178 5.31758ZM7.71178 3.13297L7.95461 3.88024L7.31893 3.41841L6.68325 3.88024L6.92608 3.13297L6.29037 2.67114H7.07613L7.31893 1.92386L7.56173 2.67114H8.34749L7.71178 3.13297Z"
               fill="#1A47B8"
-            /></svg
-          ><span class="hidden md:inline">EN/日本語</span>
+            />
+          </svg>
+          <span class="hidden md:inline">EN/日本語</span>
         } @else {
-          <svg
-            class="h-4 w-4 md:me-1.5"
-            viewBox="0 0 18 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg class="h-4 w-4 md:me-1.5" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="9" cy="9" r="9" fill="white" />
-            <circle cx="9" cy="9" r="4.5" fill="#BC002D" /></svg
-          ><span class="hidden md:inline">日本語/EN</span>
+            <circle cx="9" cy="9" r="4.5" fill="#BC002D" />
+          </svg>
+          <span class="hidden md:inline">日本語/EN</span>
         }
       </button>
       <button
         #navDropdown
         data-collapse-toggle="navbar-language"
         type="button"
-        class="rounded-base border-border bg-brand-subtle text-on-light-heading hover:bg-brand focus-visible:outline-brand-strong inline-flex h-10 w-10 items-center justify-center border p-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-base border border-border bg-brand-subtle p-2 text-sm text-on-light-heading transition-colors hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong lg:hidden"
         aria-controls="navbar-language"
         aria-expanded="false"
       >
@@ -83,21 +71,13 @@
           fill="none"
           viewBox="0 0 24 24"
         >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-width="2"
-            d="M5 7h14M5 12h14M5 17h14"
-          />
+          <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
         </svg>
       </button>
     </div>
-    <div
-      class="hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto"
-      id="navbar-language"
-    >
+    <div class="hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto" id="navbar-language">
       <ul
-        class="nav-links-intro border-border rounded-bas mt-4 flex flex-col border p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse"
+        class="nav-links-intro rounded-bas mt-4 flex flex-col border border-border p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse"
       >
         @for (item of i18n.nav(); track item.key) {
           <li>
@@ -106,9 +86,10 @@
               routerLinkActive="bg-brand-subtle text-brand lg:bg-transparent lg:text-brand"
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="navDropdown.click()"
-              class="text-on-light-heading hover:text-brand lg:hover:text-brand block rounded px-3 py-2 transition-colors lg:border-0 lg:p-0 lg:hover:bg-transparent"
-              >{{ item.label }}</a
+              class="block rounded px-3 py-2 text-on-light-heading transition-colors hover:text-brand lg:border-0 lg:p-0 lg:hover:bg-transparent lg:hover:text-brand"
             >
+              {{ item.label }}
+            </a>
           </li>
         }
       </ul>
