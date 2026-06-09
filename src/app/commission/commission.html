@@ -53,358 +53,376 @@
 <!-- Pricing -->
 <section class="bg-section-dark">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-    <div class="mb-12 text-center">
-      <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
-        Pricing and Options
-      </p>
-      <h2
-        id="commission-types"
-        class="animate-on-scroll mb-4 scroll-mt-32 rounded-sm text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-      >
-        Commission Types
-      </h2>
-      <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
-        Base pricing includes one character. See each card below for what is included and excluded.
-      </p>
-      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
-        <span class="flourish f-full h-8 text-on-dark-heading" aria-hidden="true"></span>
-      </div>
-    </div>
-
-    <div class="grid gap-6 lg:grid-cols-3">
-      <!-- Pricing Card: Chibi -->
-      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
-        <h3 class="text-2xl font-black text-on-dark-heading">Chibi</h3>
-        <p class="mt-6 flex items-baseline">
-          <span class="text-5xl font-extrabold text-on-dark-heading">$27</span>
-          <span class="ml-2 text-base font-semibold tracking-wide text-on-dark-body-subtle uppercase">USD</span>
+    <div id="commission-types" class="rounded-4xl">
+      <!-- Section heading -->
+      <div class="mb-12 text-center">
+        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
+          Pricing and Options
         </p>
-        <!-- Carousel -->
-        <div class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2">
-          <app-carousel [images]="chibiCarouselImages" [controls]="true"></app-carousel>
-        </div>
-        <div class="mt-6 space-y-4 text-sm leading-7 text-on-dark-body">
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Includes</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>One half-body chibi character</li>
-              <li>Basic two-tone background</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Excludes</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Props</li>
-              <li>Detailed backgrounds/effects</li>
-              <li>Highly intricate character details</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Details</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>HD PNG</li>
-              <li>1080 x 1080 px</li>
-              <li>300 DPI</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Notes</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Please provide pose/expression references if possible</li>
-              <li>Credit is appreciated when reposting</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Turnaround Time</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Usually within 2 weeks</li>
-              <li>May take longer depending on complexity</li>
-            </ul>
-          </div>
-        </div>
-        <a
-          routerLink="/contact"
-          class="mt-8 inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+        <h2
+          class="animate-on-scroll mb-4 scroll-mt-32 rounded-sm text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
-          Request Chibi
-        </a>
+          Commission Types
+        </h2>
+        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
+          Base pricing includes one character. See each card below for what is included and excluded.
+        </p>
+        <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+          <span class="flourish f-full h-8 text-on-dark-heading" aria-hidden="true"></span>
+        </div>
       </div>
 
-      <!-- Pricing Card: Emotes -->
-      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
-        <h3 class="text-2xl font-black text-on-dark-heading">Emotes</h3>
-        <p class="mt-6 flex items-baseline">
-          <span class="text-5xl font-extrabold text-on-dark-heading">$30</span>
-          <span class="ml-2 text-base font-semibold tracking-wide text-on-dark-body-subtle uppercase">USD</span>
-        </p>
+      <div class="grid gap-6 lg:grid-cols-3">
+        <!-- Pricing Card: Chibi -->
+        <div class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
+          <h3 class="text-2xl font-black text-on-dark-heading">Chibi</h3>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-dark-heading">
+              {{ pricingService.getBasePriceUsd('chibi') | currency: 'USD' : 'symbol' : '2.0-0' }}
+            </span>
+            <span class="ml-2 text-base font-semibold tracking-wide text-on-dark-body-subtle uppercase">USD</span>
+          </p>
+          <!-- Carousel -->
+          <div class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2">
+            <app-carousel [images]="chibiCarouselImages" [controls]="true"></app-carousel>
+          </div>
+          <div class="mt-6 space-y-4 text-sm leading-7 text-on-dark-body">
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Includes</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>One half-body chibi character</li>
+                <li>Basic two-tone background</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Excludes</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Props</li>
+                <li>Detailed backgrounds/effects</li>
+                <li>Highly intricate character details</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Details</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>HD PNG</li>
+                <li>1080 x 1080 px</li>
+                <li>300 DPI</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Notes</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Please provide pose/expression references if possible</li>
+                <li>Credit is appreciated when reposting</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Turnaround Time</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Usually within 2 weeks</li>
+                <li>May take longer depending on complexity</li>
+              </ul>
+            </div>
+          </div>
+          <a
+            routerLink="/contact"
+            class="mt-8 inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          >
+            Request Chibi
+          </a>
+        </div>
 
-        <!-- Carousel -->
-        <div class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2">
-          <app-carousel [images]="emoteCarouselImages" [controls]="true"></app-carousel>
-        </div>
-        <div class="mt-6 space-y-4 text-sm leading-7 text-on-dark-body">
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Includes</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>One half-body chibi character</li>
-              <li>Basic props (eating, sleeping, holding a heart or flower, etc.)</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Excludes</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Highly intricate character details</li>
-              <li>Secondary characters (+USD 5)</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Details</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>HD PNG</li>
-              <li>1080 x 1080 px</li>
-              <li>300 DPI</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Notes</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Please provide pose/expression references if possible</li>
-              <li>
-                Using it as emotes on your Twitch or YouTube is considered personal usage and not commercial (no extra
-                50% charge)
-              </li>
-              <li>You are welcome to post the illustration anywhere as long as you credit Summer Floofy</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Turnaround Time</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Usually within 1 week</li>
-              <li>May take longer depending on complexity</li>
-            </ul>
-          </div>
-        </div>
-        <a
-          routerLink="/contact"
-          class="mt-8 inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-        >
-          Request Emotes
-        </a>
-      </div>
+        <!-- Pricing Card: Emotes -->
+        <div class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
+          <h3 class="text-2xl font-black text-on-dark-heading">Emotes</h3>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-dark-heading">
+              {{ pricingService.getBasePriceUsd('emotes') | currency: 'USD' : 'symbol' : '2.0-0' }}
+            </span>
+            <span class="ml-2 text-base font-semibold tracking-wide text-on-dark-body-subtle uppercase">USD</span>
+          </p>
 
-      <!-- Pricing Card: Illustration -->
-      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
-        <h3 class="text-2xl font-black text-on-dark-heading">Illustration</h3>
-        <p class="mt-6 flex items-baseline">
-          <span class="text-5xl font-extrabold text-on-dark-heading">$80</span>
-          <span class="ml-2 text-base font-semibold tracking-wide text-on-dark-body-subtle uppercase">USD</span>
-        </p>
+          <!-- Carousel -->
+          <div class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2">
+            <app-carousel [images]="emoteCarouselImages" [controls]="true"></app-carousel>
+          </div>
+          <div class="mt-6 space-y-4 text-sm leading-7 text-on-dark-body">
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Includes</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>One half-body chibi character</li>
+                <li>Basic props (eating, sleeping, holding a heart or flower, etc.)</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Excludes</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Highly intricate character details</li>
+                <li>Secondary characters (+USD 5)</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Details</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>HD PNG</li>
+                <li>1080 x 1080 px</li>
+                <li>300 DPI</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Notes</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Please provide pose/expression references if possible</li>
+                <li>
+                  Using it as emotes on your Twitch or YouTube is considered personal usage and not commercial (no extra
+                  50% charge)
+                </li>
+                <li>You are welcome to post the illustration anywhere as long as you credit Summer Floofy</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Turnaround Time</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Usually within 1 week</li>
+                <li>May take longer depending on complexity</li>
+              </ul>
+            </div>
+          </div>
+          <a
+            routerLink="/contact"
+            class="mt-8 inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          >
+            Request Emotes
+          </a>
+        </div>
 
-        <!-- Carousel -->
-        <div class="card-shadow mt-6 aspect-3/4 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2">
-          <app-carousel [images]="illustrationCarouselImages" [controls]="true"></app-carousel>
+        <!-- Pricing Card: Illustration -->
+        <div class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
+          <h3 class="text-2xl font-black text-on-dark-heading">Illustration</h3>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-dark-heading">
+              {{ pricingService.getBasePriceUsd('illustration') | currency: 'USD' : 'symbol' : '2.0-0' }}
+            </span>
+            <span class="ml-2 text-base font-semibold tracking-wide text-on-dark-body-subtle uppercase">USD</span>
+          </p>
+
+          <!-- Carousel -->
+          <div class="card-shadow mt-6 aspect-3/4 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2">
+            <app-carousel [images]="illustrationCarouselImages" [controls]="true"></app-carousel>
+          </div>
+          <div class="mt-6 space-y-4 text-sm leading-7 text-on-dark-body">
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Includes</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>One character (thigh-up)</li>
+                <li>Solid color background</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Excludes</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Props and detailed backgrounds</li>
+                <li>Secondary characters</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Details</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Standard 3:4 ratio (or any requested size)</li>
+                <li>400 DPI</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Notes</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Complex character designs may incur additional fees</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Turnaround Time</p>
+              <ul class="mt-1 list-disc space-y-1 pl-5">
+                <li>Usually within 2 weeks</li>
+                <li>May take up to 1 month during busy periods or for highly detailed pieces</li>
+              </ul>
+            </div>
+          </div>
+          <a
+            routerLink="/contact"
+            class="mt-8 inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          >
+            Request Illustration
+          </a>
         </div>
-        <div class="mt-6 space-y-4 text-sm leading-7 text-on-dark-body">
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Includes</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>One character (thigh-up)</li>
-              <li>Solid color background</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Excludes</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Props and detailed backgrounds</li>
-              <li>Secondary characters</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Details</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Standard 3:4 ratio (or any requested size)</li>
-              <li>400 DPI</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Notes</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Complex character designs may incur additional fees</li>
-            </ul>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">Turnaround Time</p>
-            <ul class="mt-1 list-disc space-y-1 pl-5">
-              <li>Usually within 2 weeks</li>
-              <li>May take up to 1 month during busy periods or for highly detailed pieces</li>
-            </ul>
-          </div>
-        </div>
-        <a
-          routerLink="/contact"
-          class="mt-8 inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-        >
-          Request Illustration
-        </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- General Info -->
+<!-- Terms -->
 <section class="bg-section-middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-    <!-- Section heading -->
-    <div class="mb-12 text-center">
-      <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
-        Important Details
-      </p>
-      <h2
-        class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
-      >
-        Commission Terms
-      </h2>
-      <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
-        Policies, workflow, and terms for all commission requests.
-      </p>
-      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
-        <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
-      </div>
-    </div>
-
-    <div class="grid gap-6 lg:grid-cols-3">
-      <div class="space-y-6">
-        <!-- General Card: Pricing -->
-        <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
-          <h3 class="text-2xl font-black text-on-middle-heading">Pricing</h3>
-          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-on-middle-body">
-            <li>Base pricing includes one character only</li>
-            <li>Additional characters, props, and backgrounds cost extra depending on complexity</li>
-            <li>Complex character designs may incur additional fees</li>
-            <li>Prices do not include 5% sales tax</li>
-          </ul>
-        </article>
-
-        <!-- General Card: Revisions -->
-        <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
-          <h3 class="text-2xl font-black text-on-middle-heading">Revisions</h3>
-          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-on-middle-body">
-            <li>1 major revision during sketch phase</li>
-            <li>2 minor revisions during coloring phase</li>
-            <li>Additional revisions may incur extra charges</li>
-            <li>Major revision examples: pose changes, expression changes</li>
-          </ul>
-        </article>
-
-        <!-- General Card: Communication -->
-        <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
-          <h3 class="text-2xl font-black text-on-middle-heading">Communication</h3>
-          <p class="mt-4 text-sm leading-7 text-on-middle-body">
-            If you have questions, updates, or simply want to chat about your commission, contact me through VGen or
-            email. I normally send a follow-up email after one day if there is no reply on messaging platforms.
-          </p>
-        </article>
+    <div id="commission-terms" class="rounded-4xl">
+      <!-- Section heading -->
+      <div class="mb-12 text-center">
+        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+          Important Details
+        </p>
+        <h2
+          class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
+        >
+          Commission Terms
+        </h2>
+        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
+          Policies, workflow, and terms for all commission requests.
+        </p>
+        <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+          <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
+        </div>
       </div>
 
-      <div class="space-y-6">
-        <!-- General Card: Commercial Usage -->
-        <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
-          <h3
+      <div class="grid gap-6 lg:grid-cols-3">
+        <div class="space-y-6">
+          <!-- Terms Card: Pricing -->
+          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+            <h3 class="text-2xl font-black text-on-middle-heading">Pricing</h3>
+            <ul class="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-on-middle-body">
+              <li>Base pricing includes one character only</li>
+              <li>Additional characters, props, and backgrounds cost extra depending on complexity</li>
+              <li>Complex character designs may incur additional fees</li>
+              <li>Prices do not include 5% sales tax</li>
+            </ul>
+          </article>
+
+          <!-- Terms Card: Revisions -->
+          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+            <h3 class="text-2xl font-black text-on-middle-heading">Revisions</h3>
+            <ul class="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-on-middle-body">
+              <li>1 major revision during sketch phase</li>
+              <li>2 minor revisions during coloring phase</li>
+              <li>Additional revisions may incur extra charges</li>
+              <li>Major revision examples: pose changes, expression changes</li>
+            </ul>
+          </article>
+
+          <!-- Terms Card: Communication -->
+          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+            <h3 class="text-2xl font-black text-on-middle-heading">Communication</h3>
+            <p class="mt-4 text-sm leading-7 text-on-middle-body">
+              If you have questions, updates, or simply want to chat about your commission, contact me through VGen or
+              email. I normally send a follow-up email after one day if there is no reply on messaging platforms.
+            </p>
+          </article>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Terms Card: Commercial Usage -->
+          <article
             id="commercial-usage"
-            class="scroll-mt-32 rounded-sm text-2xl font-black text-on-middle-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+            class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
           >
-            Commercial Usage
-          </h3>
-          <div class="mt-4 space-y-4 text-sm leading-7 text-on-middle-body">
-            <div>
-              <p class="text-xs font-semibold text-on-middle-heading">Tier 1 (+50%)</p>
-              <ul class="mt-1 list-disc space-y-1 pl-5">
-                <li>Twitch screens</li>
-                <li>YouTube thumbnails</li>
-                <li>Personal websites</li>
-                <li>Convention handouts</li>
-              </ul>
+            <h3
+              class="scroll-mt-32 rounded-sm text-2xl font-black text-on-middle-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+            >
+              Commercial Usage
+            </h3>
+            <div class="mt-4 space-y-4 text-sm leading-7 text-on-middle-body">
+              <div>
+                <p class="text-xs font-semibold text-on-middle-heading">
+                  Tier 1 (+{{ (pricingService.getPercentAddon('commercial-tier-1') ?? 0) * 100 }}%)
+                </p>
+                <ul class="mt-1 list-disc space-y-1 pl-5">
+                  <li>Twitch screens</li>
+                  <li>YouTube thumbnails</li>
+                  <li>Personal websites</li>
+                  <li>Convention handouts</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-on-middle-heading">
+                  Tier 2 (+{{ (pricingService.getPercentAddon('commercial-tier-2') ?? 0) * 100 }}%)
+                </p>
+                <ul class="mt-1 list-disc space-y-1 pl-5">
+                  <li>Merchandise</li>
+                  <li>Digital sales</li>
+                  <li>Reproduction/resale</li>
+                </ul>
+              </div>
             </div>
-            <div>
-              <p class="text-xs font-semibold text-on-middle-heading">Tier 2 (+200%)</p>
-              <ul class="mt-1 list-disc space-y-1 pl-5">
-                <li>Merchandise</li>
-                <li>Digital sales</li>
-                <li>Reproduction/resale</li>
-              </ul>
-            </div>
-          </div>
-        </article>
+          </article>
 
-        <!-- General Card: Workflow -->
-        <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
-          <h3 class="text-2xl font-black text-on-middle-heading">Workflow</h3>
-          <ol class="mt-4 list-decimal space-y-2 pl-5 text-sm leading-7 text-on-middle-body">
-            <li>Request discussion and quotation</li>
-            <li>Sketch and color draft approval</li>
-            <li>Final illustration process</li>
-            <li>Finished artwork delivered via email</li>
-          </ol>
-        </article>
+          <!-- Terms Card: Workflow -->
+          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+            <h3 class="text-2xl font-black text-on-middle-heading">Workflow</h3>
+            <ol class="mt-4 list-decimal space-y-2 pl-5 text-sm leading-7 text-on-middle-body">
+              <li>Request discussion and quotation</li>
+              <li>Sketch and color draft approval</li>
+              <li>Final illustration process</li>
+              <li>Finished artwork delivered via email</li>
+            </ol>
+          </article>
 
-        <!-- General Card: Payment -->
-        <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
-          <h3 class="text-2xl font-black text-on-middle-heading">Payment</h3>
-          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-on-middle-body">
-            <li>Full payment upfront</li>
-            <li>Work begins only after payment is received</li>
-          </ul>
-        </article>
-      </div>
+          <!-- Terms Card: Payment -->
+          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+            <h3 class="text-2xl font-black text-on-middle-heading">Payment</h3>
+            <ul class="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-on-middle-body">
+              <li>Full payment upfront</li>
+              <li>Work begins only after payment is received</li>
+            </ul>
+          </article>
+        </div>
 
-      <div>
-        <!-- General Card: Terms of Service -->
-        <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
-          <h3
-            class="scroll-mt-32 rounded-sm text-2xl font-black text-on-middle-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+        <div>
+          <!-- Terms Card: Terms of Service -->
+          <article
+            class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8 focus-visible:outline-2 focus-visible:outline-brand-strong"
           >
-            Terms of Service
-          </h3>
-          <div class="mt-4 space-y-4 text-sm leading-7 text-on-middle-body">
-            <div>
-              <p class="text-xs font-semibold text-on-middle-heading">Usage</p>
-              <ul class="mt-1 list-disc space-y-1 pl-5">
-                <li>Please use commissions for your own exclusive personal use</li>
-                <li>Do not use commissions for commercial use or distribution unless discussed</li>
-              </ul>
+            <h3
+              class="scroll-mt-32 rounded-sm text-2xl font-black text-on-middle-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+            >
+              Terms of Service
+            </h3>
+            <div class="mt-4 space-y-4 text-sm leading-7 text-on-middle-body">
+              <div>
+                <p class="text-xs font-semibold text-on-middle-heading">Usage</p>
+                <ul class="mt-1 list-disc space-y-1 pl-5">
+                  <li>Please use commissions for your own exclusive personal use</li>
+                  <li>Do not use commissions for commercial use or distribution unless discussed</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-on-middle-heading">Intellectual Property</p>
+                <ul class="mt-1 list-disc space-y-1 pl-5">
+                  <li>
+                    Some commissioned works may be used in my portfolio. If you want your piece to remain private,
+                    please mention it during discussion.
+                  </li>
+                  <li>
+                    Extensive external modifications (painting over or AI modifications) are not allowed without
+                    permission.
+                  </li>
+                  <li>You may not use my artwork for AI training.</li>
+                  <li>
+                    My artworks are not authorized for blockchain-related technologies such as NFTs or cryptocurrency.
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-on-middle-heading">Refunds</p>
+                <ul class="mt-1 list-disc space-y-1 pl-5">
+                  <li>No refunds</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-on-middle-heading">Conduct</p>
+                <ul class="mt-1 list-disc space-y-1 pl-5">
+                  <li>Harassment, spam, or repeated rule violations may result in blacklist/rejection</li>
+                  <li>I reserve the right to reject any commission request</li>
+                </ul>
+              </div>
             </div>
-            <div>
-              <p class="text-xs font-semibold text-on-middle-heading">Intellectual Property</p>
-              <ul class="mt-1 list-disc space-y-1 pl-5">
-                <li>
-                  Some commissioned works may be used in my portfolio. If you want your piece to remain private, please
-                  mention it during discussion.
-                </li>
-                <li>
-                  Extensive external modifications (painting over or AI modifications) are not allowed without
-                  permission.
-                </li>
-                <li>You may not use my artwork for AI training.</li>
-                <li>
-                  My artworks are not authorized for blockchain-related technologies such as NFTs or cryptocurrency.
-                </li>
-              </ul>
-            </div>
-            <div>
-              <p class="text-xs font-semibold text-on-middle-heading">Refunds</p>
-              <ul class="mt-1 list-disc space-y-1 pl-5">
-                <li>No refunds</li>
-              </ul>
-            </div>
-            <div>
-              <p class="text-xs font-semibold text-on-middle-heading">Conduct</p>
-              <ul class="mt-1 list-disc space-y-1 pl-5">
-                <li>Harassment, spam, or repeated rule violations may result in blacklist/rejection</li>
-                <li>I reserve the right to reject any commission request</li>
-              </ul>
-            </div>
-          </div>
-        </article>
+          </article>
+        </div>
       </div>
     </div>
   </div>
@@ -415,6 +433,7 @@
   aria-hidden="true"
 ></span>
 
+<!-- Inquire -->
 <section class="bg-section-light">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <!-- Section heading -->
@@ -433,17 +452,22 @@
       <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
         <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
       </div>
+      <p class="animate-on-scroll mx-auto mb-2 max-w-2xl leading-7 text-on-middle-body">
+        Fill out this form to start a request, and Floofy will reach out to discusss and continue the commission
+        proccess with you ASAP!
+      </p>
     </div>
 
     <!-- Commission form -->
     <form
-      class="commission-form card-shadow mx-auto max-w-3xl rounded-4xl border border-white/70 bg-section-middle-alt px-6 py-12 text-on-middle-heading"
+      class="commission-form card-shadow mx-auto max-w-3xl rounded-4xl border border-white/70 bg-section-middle-alt px-8 py-12 text-on-middle-heading"
     >
       <div class="grid grid-cols-1 gap-6">
         <!-- Requester info -->
         <p class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
           Requester Information
         </p>
+
         <!-- Name field -->
         <div>
           <label class="text-sm font-semibold">
@@ -494,6 +518,24 @@
 
           <div class="mt-2 flex flex-wrap gap-3">
             <label class="block min-w-40 cursor-pointer">
+              <input type="radio" [formField]="commissionForm.commissionType" value="chibi" class="peer sr-only" />
+              <span
+                class="block rounded-base border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
+              >
+                Chibi
+              </span>
+            </label>
+
+            <label class="block min-w-40 cursor-pointer">
+              <input type="radio" [formField]="commissionForm.commissionType" value="emotes" class="peer sr-only" />
+              <span
+                class="block rounded-base border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
+              >
+                Emote
+              </span>
+            </label>
+
+            <label class="block min-w-40 cursor-pointer">
               <input
                 type="radio"
                 [formField]="commissionForm.commissionType"
@@ -504,24 +546,6 @@
                 class="block rounded-base border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
               >
                 Illustration
-              </span>
-            </label>
-
-            <label class="block min-w-40 cursor-pointer">
-              <input type="radio" [formField]="commissionForm.commissionType" value="chibi" class="peer sr-only" />
-              <span
-                class="block rounded-base border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-              >
-                Chibi
-              </span>
-            </label>
-
-            <label class="block min-w-40 cursor-pointer">
-              <input type="radio" [formField]="commissionForm.commissionType" value="emote" class="peer sr-only" />
-              <span
-                class="block rounded-base border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-              >
-                Emote
               </span>
             </label>
           </div>
@@ -618,10 +642,33 @@
           </div>
         </div>
 
+        <!-- Price estimate -->
+        <div>
+          <p class="text-sm font-semibold">
+            Price Estimate
+            <i>(final quote may vary)</i>
+          </p>
+          <p class="mt-6 flex items-baseline">
+            <span class="text-5xl font-extrabold text-on-light-heading">
+              {{
+                totalPriceUsd(commissionForm.commissionType().value(), commissionForm.usageType().value())
+                  | currency: 'USD' : 'symbol' : '2.0-0'
+              }}
+            </span>
+            <span class="ml-2 text-base font-semibold tracking-wide text-on-middle-body-subtle uppercase">USD</span>
+          </p>
+        </div>
+
+        <!-- Additional info -->
+        <p class="mt-8 mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+          Additional Information
+        </p>
+
         <!-- Deadline -->
         <div>
           <label class="text-sm font-semibold">
-            Deadline (optional)
+            Deadline
+            <i>(optional and not guaranteed)</i>
             <input
               type="date"
               [formField]="commissionForm.deadline"
@@ -634,8 +681,10 @@
         <div>
           <label class="text-sm font-semibold">
             Additional Notes
+            <i>(optional)</i>
             <textarea
               [formField]="commissionForm.additionalNotes"
+              placeholder="Please specify any additional concerns or requirements regarding the commission if needed, such as deadline."
               rows="3"
               class="mt-2 w-full rounded-base border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
             ></textarea>
@@ -647,13 +696,13 @@
           <label class="flex items-center space-x-3">
             <input type="checkbox" [formField]="commissionForm.tosAccepted" id="tos" class="h-4 w-4" />
             <span class="text-sm leading-6">
-              I have read and accept the terms of service
+              I have read and accept the commission terms
               <span class="text-error" aria-hidden="true">*</span>
             </span>
           </label>
           <button
             type="button"
-            (click)="scrollToTermsOfService()"
+            (click)="scrollToTerms()"
             class="mt-px inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border text-xs leading-none font-bold text-on-middle-body transition-colors hover:bg-section-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
             aria-label="Jump to Terms of Service section"
             title="Jump to Terms of Service"

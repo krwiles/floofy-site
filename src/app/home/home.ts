@@ -1,7 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Carousel } from '../components/carousel/carousel';
 import { NgOptimizedImage } from '@angular/common';
-import { I18nService } from '../services/i18n.service';
 import { CarouselImage } from '../models/carousel-image.model';
 import { RouterLink } from '@angular/router';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
@@ -15,7 +14,6 @@ import { TranslatePipe } from '../pipes/translate.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
-  readonly i18n = inject(I18nService);
   readonly images: CarouselImage[][] = [
     [
       { src: 'assets/G_CQjK1XkAALluE.jpeg', alt: 'Image 1', width: 1200, height: 1800 },

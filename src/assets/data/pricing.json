@@ -1,0 +1,30 @@
+{
+  "commissionTypes": [
+    {
+      "id": "chibi",
+      "basePriceUsd": 27
+    },
+    {
+      "id": "emotes",
+      "basePriceUsd": 30
+    },
+    {
+      "id": "illustration",
+      "basePriceUsd": 80
+    }
+  ],
+  "commercialTypes": [
+    {
+      "id": "personal",
+      "percentAddon": 0
+    },
+    {
+      "id": "commercial-tier-1",
+      "percentAddon": 0.5
+    },
+    {
+      "id": "commercial-tier-2",
+      "percentAddon": 2.0
+    }
+  ]
+}

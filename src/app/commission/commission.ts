@@ -4,12 +4,14 @@ import { TranslatePipe } from '../pipes/translate.pipe';
 import { Carousel } from '../components/carousel/carousel';
 import { GalleryImageService } from '../services/gallery-image.service';
 import { form, FormField } from '@angular/forms/signals';
+import { PricingService } from '../services/pricing.service';
+import { CurrencyPipe } from '@angular/common';
 
 interface CommissionData {
   name: string;
   email: string;
 
-  commissionType: 'illustration' | 'chibi' | 'emote';
+  commissionType: 'illustration' | 'chibi' | 'emotes';
 
   description: string;
 
@@ -26,26 +28,29 @@ interface CommissionData {
 
 @Component({
   selector: 'app-commission',
-  imports: [Carousel, ParallaxSection, TranslatePipe, FormField],
+  imports: [Carousel, ParallaxSection, TranslatePipe, FormField, CurrencyPipe],
   templateUrl: './commission.html',
   styleUrl: './commission.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Commission {
   private readonly galleryImageService = inject(GalleryImageService);
-  private readonly scrollOffset = 120;
+  readonly pricingService = inject(PricingService);
+
+  private readonly scrollOffset = 108;
+  private readonly scrollFocusClass = 'scroll-focus-highlight';
+  private readonly scrollFocusDurationMs = 1600;
+  private readonly focusDelay = 1000;
 
   readonly chibiCarouselImages = this.galleryImageService.chibiImages.map((image) => [image]);
   readonly emoteCarouselImages = this.galleryImageService.emoteImages.map((image) => [image]);
-  readonly illustrationCarouselImages = this.galleryImageService.illustrationImages.map((image) => [
-    image,
-  ]);
+  readonly illustrationCarouselImages = this.galleryImageService.illustrationImages.map((image) => [image]);
 
   private readonly commissionModel = signal<CommissionData>({
     name: '',
     email: '',
 
-    commissionType: 'illustration',
+    commissionType: 'chibi',
 
     description: '',
 
@@ -70,8 +75,8 @@ export class Commission {
     this.scrollToElement('commercial-usage');
   }
 
-  scrollToTermsOfService(): void {
-    this.scrollToElement('terms-of-service');
+  scrollToTerms(): void {
+    this.scrollToElement('commission-terms');
   }
 
   private scrollToElement(elementId: string): void {
@@ -98,15 +103,25 @@ export class Commission {
     // Delay focus slightly so the element is visible when the outline appears.
     window.setTimeout(() => {
       focusTarget.focus({ preventScroll: true });
+      focusTarget.classList.add(this.scrollFocusClass);
+
+      window.setTimeout(() => {
+        focusTarget.classList.remove(this.scrollFocusClass);
+      }, this.scrollFocusDurationMs);
 
       if (!hadTabIndex) {
-        const cleanup = () => {
+        const cleanupTabIndex = () => {
           focusTarget.removeAttribute('tabindex');
-          focusTarget.removeEventListener('blur', cleanup);
+          focusTarget.removeEventListener('blur', cleanupTabIndex);
         };
 
-        focusTarget.addEventListener('blur', cleanup);
+        focusTarget.addEventListener('blur', cleanupTabIndex);
       }
-    }, 220);
+    }, this.focusDelay);
+  }
+
+  totalPriceUsd(commission: string, commercial: string): number {
+    const multiplier = (this.pricingService.getPercentAddon(commercial) ?? 0) + 1;
+    return (this.pricingService.getBasePriceUsd(commission) ?? 0) * multiplier;
   }
 }
