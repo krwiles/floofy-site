@@ -79,7 +79,12 @@ export class Commission {
     this.scrollToElement('commission-terms');
   }
 
-  private scrollToElement(elementId: string): void {
+  scrollToForm(type: 'illustration' | 'chibi' | 'emotes'): void {
+    this.scrollToElement('commission-form', false);
+    this.commissionForm.commissionType().value.set(type);
+  }
+
+  private scrollToElement(elementId: string, shouldFocus = true): void {
     const target = document.getElementById(elementId);
 
     if (!target) {
@@ -92,6 +97,10 @@ export class Commission {
       top,
       behavior: 'smooth',
     });
+
+    if (!shouldFocus) {
+      return;
+    }
 
     const focusTarget = target as HTMLElement;
     const hadTabIndex = focusTarget.hasAttribute('tabindex');

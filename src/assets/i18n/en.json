@@ -113,13 +113,197 @@
       "kicker": "OPEN FOR WORK",
       "title": "COMMISSION",
       "description": "Custom characters, illustrations, and style explorations. Pricing and details below.",
-      "tagline": "Chibi • Character • Custom"
+      "tagline": "Chibi • Character • Custom",
+      "background_aria": "Commission hero background",
+      "section_aria": "Commission hero section"
     },
-    "pricing": {
-      "title": "Pricing",
-      "subtitle": "Choose the commission type that works best for you."
+    "pricing_section": {
+      "kicker": "Pricing and Options",
+      "title": "Commission Types",
+      "description": "Base pricing includes one character. See each card below for what is included and excluded."
     },
-    "disclaimer": "Commercial use of any artwork requires a price increase. Please inquire when placing your order."
+    "labels": {
+      "includes": "Includes",
+      "excludes": "Excludes",
+      "details": "Details",
+      "notes": "Notes",
+      "turnaround": "Turnaround Time"
+    },
+    "cards": {
+      "chibi": {
+        "title": "Chibi",
+        "includes_1": "One half-body chibi character",
+        "includes_2": "Basic two-tone background",
+        "excludes_1": "Props",
+        "excludes_2": "Detailed backgrounds/effects",
+        "excludes_3": "Highly intricate character details",
+        "details_1": "HD PNG",
+        "details_2": "1080 x 1080 px",
+        "details_3": "300 DPI",
+        "notes_1": "Please provide pose/expression references if possible",
+        "notes_2": "Credit is appreciated when reposting",
+        "turnaround_1": "Usually within 2 weeks",
+        "turnaround_2": "May take longer depending on complexity",
+        "cta": "Request Chibi"
+      },
+      "emotes": {
+        "title": "Emotes",
+        "includes_1": "One half-body chibi character",
+        "includes_2": "Basic props (eating, sleeping, holding a heart or flower, etc.)",
+        "excludes_1": "Highly intricate character details",
+        "excludes_2": "Secondary characters (+USD 5)",
+        "details_1": "HD PNG",
+        "details_2": "1080 x 1080 px",
+        "details_3": "300 DPI",
+        "notes_1": "Please provide pose/expression references if possible",
+        "notes_2": "Using it as emotes on your Twitch or YouTube is considered personal usage and not commercial (no extra 50% charge)",
+        "notes_3": "You are welcome to post the illustration anywhere as long as you credit Summer Floofy",
+        "turnaround_1": "Usually within 1 week",
+        "turnaround_2": "May take longer depending on complexity",
+        "cta": "Request Emotes"
+      },
+      "illustration": {
+        "title": "Illustration",
+        "includes_1": "One character (thigh-up)",
+        "includes_2": "Solid color background",
+        "excludes_1": "Props and detailed backgrounds",
+        "excludes_2": "Secondary characters",
+        "details_1": "Standard 3:4 ratio (or any requested size)",
+        "details_2": "400 DPI",
+        "notes_1": "Complex character designs may incur additional fees",
+        "turnaround_1": "Usually within 2 weeks",
+        "turnaround_2": "May take up to 1 month during busy periods or for highly detailed pieces",
+        "cta": "Request Illustration"
+      }
+    },
+    "terms": {
+      "kicker": "Important Details",
+      "title": "Commission Terms",
+      "description": "Policies, workflow, and terms for all commission requests.",
+      "pricing": {
+        "title": "Pricing",
+        "item_1": "Base pricing includes one character only",
+        "item_2": "Additional characters, props, and backgrounds cost extra depending on complexity",
+        "item_3": "Complex character designs may incur additional fees",
+        "item_4": "Prices do not include 5% sales tax"
+      },
+      "revisions": {
+        "title": "Revisions",
+        "item_1": "1 major revision during sketch phase",
+        "item_2": "2 minor revisions during coloring phase",
+        "item_3": "Additional revisions may incur extra charges",
+        "item_4": "Major revision examples: pose changes, expression changes"
+      },
+      "communication": {
+        "title": "Communication",
+        "body": "If you have questions, updates, or simply want to chat about your commission, contact me through VGen or email. I normally send a follow-up email after one day if there is no reply on messaging platforms."
+      },
+      "commercial": {
+        "title": "Commercial Usage",
+        "tier_1": "Tier 1",
+        "tier_1_item_1": "Twitch screens",
+        "tier_1_item_2": "YouTube thumbnails",
+        "tier_1_item_3": "Personal websites",
+        "tier_1_item_4": "Convention handouts",
+        "tier_2": "Tier 2",
+        "tier_2_item_1": "Merchandise",
+        "tier_2_item_2": "Digital sales",
+        "tier_2_item_3": "Reproduction/resale"
+      },
+      "workflow": {
+        "title": "Workflow",
+        "item_1": "Request discussion and quotation",
+        "item_2": "Sketch and color draft approval",
+        "item_3": "Final illustration process",
+        "item_4": "Finished artwork delivered via email"
+      },
+      "payment": {
+        "title": "Payment",
+        "item_1": "Full payment upfront",
+        "item_2": "Work begins only after payment is received"
+      },
+      "tos": {
+        "title": "Terms of Service",
+        "usage": "Usage",
+        "usage_item_1": "Please use commissions for your own exclusive personal use",
+        "usage_item_2": "Do not use commissions for commercial use or distribution unless discussed",
+        "ip": "Intellectual Property",
+        "ip_item_1": "Some commissioned works may be used in my portfolio. If you want your piece to remain private, please mention it during discussion.",
+        "ip_item_2": "Extensive external modifications (painting over or AI modifications) are not allowed without permission.",
+        "ip_item_3": "You may not use my artwork for AI training.",
+        "ip_item_4": "My artworks are not authorized for blockchain-related technologies such as NFTs or cryptocurrency.",
+        "refunds": "Refunds",
+        "refunds_item_1": "No refunds",
+        "conduct": "Conduct",
+        "conduct_item_1": "Harassment, spam, or repeated rule violations may result in blacklist/rejection",
+        "conduct_item_2": "I reserve the right to reject any commission request"
+      }
+    },
+    "inquire": {
+      "kicker": "Inquire",
+      "title": "Submit a Request",
+      "subtitle": "Let's bring your ideas into reality!",
+      "description": "Fill out this form to inquire about a commission, and Floofy will reach out to discuss the process with you ASAP!"
+    },
+    "form": {
+      "sections": {
+        "requester": "Requester Information",
+        "details": "Commission Details",
+        "additional": "Additional Information"
+      },
+      "name": {
+        "label": "Name",
+        "placeholder": "Your name or username you go by online."
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Your email address for communication."
+      },
+      "commission_type": {
+        "label": "Commission Type",
+        "jump_aria": "Jump to Commission Types section",
+        "jump_title": "Jump to Commission Types",
+        "chibi": "Chibi",
+        "emote": "Emote",
+        "illustration": "Illustration"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Details of your request go here."
+      },
+      "reference_links": {
+        "label": "Reference Links",
+        "placeholder": "URLs, image links, etc."
+      },
+      "usage_type": {
+        "label": "Usage Type",
+        "jump_aria": "Jump to Commercial Usage section",
+        "jump_title": "Jump to Commercial Usage",
+        "personal": "Personal",
+        "commercial_tier_1": "Commercial Tier 1",
+        "commercial_tier_2": "Commercial Tier 2",
+        "unsure": "Unsure"
+      },
+      "price_estimate": {
+        "label": "Price Estimate",
+        "note": "(final quote may vary)"
+      },
+      "deadline": {
+        "label": "Deadline",
+        "note": "(optional and not guaranteed)"
+      },
+      "additional_notes": {
+        "label": "Additional Notes",
+        "note": "(optional)",
+        "placeholder": "Please specify any additional concerns or requirements regarding the commission if needed, such as deadline."
+      },
+      "tos": {
+        "checkbox": "I have read and accept the commission terms",
+        "jump_aria": "Jump to Terms of Service section",
+        "jump_title": "Jump to Terms of Service"
+      },
+      "submit": "Submit Request"
+    }
   },
   "streaming": {
     "hero": {
