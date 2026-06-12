@@ -1,9 +1,4 @@
-<div
-  id="default-carousel"
-  class="relative h-full w-full"
-  data-carousel="slide"
-  data-carousel-interval="5000"
->
+<div id="default-carousel" class="relative h-full w-full" data-carousel="slide" data-carousel-interval="5000">
   <!-- Carousel wrapper -->
   <div class="relative h-full w-full overflow-hidden">
     @for (group of images(); track $index) {
@@ -27,13 +22,11 @@
   </div>
   @if (controls()) {
     <!-- Slider indicators -->
-    <div
-      class="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 space-x-2 rtl:space-x-reverse"
-    >
+    <div class="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 space-x-2 rtl:space-x-reverse">
       @for (group of images(); track $index) {
         <button
           type="button"
-          class="rounded-base h-2.5 w-2.5 bg-black/40 hover:bg-black/60"
+          class="h-2.5 w-2.5 rounded-base bg-black/40 hover:bg-black/60"
           [attr.aria-current]="$index === 0 ? 'true' : 'false'"
           [attr.aria-label]="'Slide ' + ($index + 1)"
           [attr.data-carousel-slide-to]="$index"
@@ -47,7 +40,7 @@
       data-carousel-prev
     >
       <span
-        class="rounded-base inline-flex h-8 w-8 items-center justify-center bg-black/20 group-hover:bg-black/35 group-focus:ring-4 group-focus:ring-black/20 group-focus:outline-none"
+        class="inline-flex h-8 w-8 items-center justify-center rounded-base bg-black/20 group-hover:bg-black/35 group-focus:ring-4 group-focus:ring-black/20 group-focus:outline-none"
       >
         <svg
           class="h-4 w-4 text-black rtl:rotate-180"
@@ -75,7 +68,7 @@
       data-carousel-next
     >
       <span
-        class="rounded-base inline-flex h-8 w-8 items-center justify-center bg-black/20 group-hover:bg-black/35 group-focus:ring-4 group-focus:ring-black/20 group-focus:outline-none"
+        class="inline-flex h-8 w-8 items-center justify-center rounded-base bg-black/20 group-hover:bg-black/35 group-focus:ring-4 group-focus:ring-black/20 group-focus:outline-none"
       >
         <svg
           class="h-4 w-4 text-black rtl:rotate-180"

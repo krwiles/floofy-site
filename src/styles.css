@@ -26,6 +26,13 @@ body {
   background-color: var(--color-bg);
 }
 
+/* Reduce mobile typography scale without affecting desktop sizes */
+@media (max-width: 767px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 @theme {
   /* ── Page background ─────────────────────────────────────────────────────
      The root canvas. Choose pure white OR a subtle tint — swap here only.

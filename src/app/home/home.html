@@ -9,40 +9,36 @@
 >
   <div class="absolute inset-0 mx-auto h-full max-w-7xl">
     <app-parallax-section
-      class="lg:mask-fade-x absolute inset-0 h-full max-w-5xl"
+      class="absolute inset-0 h-full max-w-5xl lg:mask-fade-x"
       [ariaLabel]="'Hero section'"
       [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
       [backgroundPosition]="'center 40%'"
+      [backgroundHeight]="'100%'"
       [parallaxStrength]="0.65"
-    >
-    </app-parallax-section>
+    ></app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto flex h-full min-h-[95svh] w-full max-w-7xl items-end justify-center text-left md:justify-end"
+    class="relative z-10 mx-auto flex h-full min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
-    <div
-      class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 drop-shadow-md sm:px-9 sm:py-9 md:mb-16"
-    >
+    <div class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 drop-shadow-md sm:px-9 sm:py-9 md:mb-16">
       <span
-        class="flourish f-full text-on-dark-heading absolute top-0 left-1/2 z-10 h-8 -translate-x-1/2 -translate-y-1/2 md:h-12"
+        class="flourish f-full absolute top-0 left-1/2 z-10 h-8 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:h-12"
         aria-hidden="true"
       ></span>
       <!-- Small intro/kicker text above the main title. -->
       <p
-        class="hero-reveal-kicker text-on-dark-heading m-0 text-sm font-bold tracking-[0.34em] uppercase md:text-[1.05rem]"
+        class="hero-reveal-kicker m-0 text-sm font-bold tracking-[0.34em] text-on-dark-heading uppercase md:text-[1.05rem]"
       >
         {{ 'home.hero.kicker' | translate }}
       </p>
       <!-- Main hero heading. -->
       <h1
-        class="hero-reveal-title text-on-dark-heading mt-3 mb-0 text-[clamp(6.75rem,16vw,12rem)] leading-[0.86] font-black tracking-[-0.045em]"
+        class="hero-reveal-title mt-3 mb-0 text-[clamp(6rem,16vw,12rem)] leading-[0.86] font-black tracking-[-0.045em] text-on-dark-heading"
       >
-        <span class="block text-[clamp(4.25rem,11vw,8rem)] tracking-[-0.04em]">Summer</span>
-        <span class="block">Floofy</span>
+        <span class="block text-[clamp(4rem,11vw,8rem)] tracking-[-0.04em]">{{ 'home.hero.name_1' | translate }}</span>
+        <span class="block">{{ 'home.hero.name_2' | translate }}</span>
       </h1>
-      <p
-        class="hero-reveal-copy text-on-dark-heading mt-6 text-xs font-bold tracking-[0.3em] uppercase md:text-base"
-      >
+      <p class="hero-reveal-copy mt-6 text-xs font-bold tracking-[0.3em] text-on-dark-heading uppercase md:text-base">
         {{ 'home.hero.tagline' | translate }}
       </p>
     </div>
@@ -50,7 +46,7 @@
 </app-parallax-section>
 
 <span
-  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -66,26 +62,23 @@
 
     <!-- Gallery text -->
     <div
-      class="border-border mx-auto mt-10 flex max-w-5xl flex-col items-center gap-6 border-t pt-8 text-center md:grid md:grid-cols-[minmax(0,1fr)_auto] md:text-left"
+      class="mx-auto mt-10 flex max-w-5xl flex-col items-center gap-6 border-t border-border pt-8 text-center md:grid md:grid-cols-[minmax(0,1fr)_auto] md:text-left"
     >
       <div>
         <h2
-          class="animate-on-scroll text-on-dark-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-start"
+          class="animate-on-scroll mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-dark-heading md:justify-start"
         >
           {{ 'home.gallery.title' | translate }}
-          <span
-            class="flourish f-end flip text-on-dark-heading hidden md:inline-block"
-            aria-hidden="true"
-          ></span>
+          <span class="flourish f-end flip hidden text-on-dark-heading md:inline-block" aria-hidden="true"></span>
         </h2>
 
-        <p class="animate-on-scroll text-on-dark-body mt-4 max-w-3xl leading-7">
+        <p class="animate-on-scroll mt-4 max-w-3xl leading-7 text-on-dark-body">
           {{ 'home.gallery.description' | translate }}
         </p>
       </div>
       <a
         routerLink="/gallery"
-        class="animate-on-scroll rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 md:self-start"
+        class="animate-on-scroll inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong md:self-start"
       >
         {{ 'home.gallery.cta' | translate }}
       </a>
@@ -94,7 +87,7 @@
 </section>
 
 <span
-  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -110,28 +103,24 @@
   <div class="py-24">
     <!-- Section header -->
     <div class="mb-12 text-center">
-      <p
-        class="animate-on-scroll text-on-light-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
-      >
-        {{ 'home.learn.kicker' | translate }}
+      <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-light-body-subtle uppercase">
+        {{ 'home.discover.kicker' | translate }}
       </p>
       <h2
-        class="animate-on-scroll text-on-light-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
+        class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-light-heading"
       >
-        {{ 'home.learn.title' | translate }}
+        {{ 'home.discover.title' | translate }}
       </h2>
-      <p class="animate-on-scroll text-on-light-body mx-auto mb-2 max-w-3xl leading-7">
-        {{ 'home.learn.description' | translate }}
+      <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-light-body">
+        {{ 'home.discover.description' | translate }}
       </p>
       <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
-        <span class="flourish f-full text-on-light-heading h-8" aria-hidden="true"></span>
+        <span class="flourish f-full h-8 text-on-light-heading" aria-hidden="true"></span>
       </div>
     </div>
 
     <!-- About -->
-    <div
-      class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-    >
+    <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
       <!-- About image -->
       <img
         class="animate-on-scroll card-shadow block max-h-90 w-auto justify-self-end rounded-lg object-cover"
@@ -143,20 +132,17 @@
       <!-- About text -->
       <div class="mt-4 text-center md:mt-0 md:text-left">
         <h2
-          class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-start"
+          class="animate-on-scroll mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
         >
           {{ 'home.about.title' | translate }}
-          <span
-            class="flourish f-end flip text-on-light-heading hidden md:inline-block"
-            aria-hidden="true"
-          ></span>
+          <span class="flourish f-end flip hidden text-on-light-heading md:inline-block" aria-hidden="true"></span>
         </h2>
-        <p class="animate-on-scroll text-on-light-body mb-6 leading-7">
+        <p class="animate-on-scroll mb-6 leading-7 text-on-light-body">
           {{ 'home.about.description' | translate }}
         </p>
         <a
           routerLink="/about"
-          class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="animate-on-scroll inline-flex items-center rounded-base bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'home.about.cta' | translate }}
         </a>
@@ -169,27 +155,22 @@
     >
       <div class="mt-4 text-center md:mt-0 md:text-right">
         <h2
-          class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-end"
+          class="animate-on-scroll mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-end"
         >
-          <span
-            class="flourish f-end text-on-light-heading hidden md:inline-block"
-            aria-hidden="true"
-          ></span>
+          <span class="flourish f-end hidden text-on-light-heading md:inline-block" aria-hidden="true"></span>
           {{ 'home.commission.title' | translate }}
         </h2>
-        <p class="animate-on-scroll text-on-light-body mb-6 leading-7">
+        <p class="animate-on-scroll mb-6 leading-7 text-on-light-body">
           {{ 'home.commission.description' | translate }}
         </p>
         <a
           routerLink="/commission"
-          class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="animate-on-scroll inline-flex items-center rounded-base bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'home.commission.cta' | translate }}
         </a>
       </div>
-      <div
-        class="animate-on-scroll flex w-full flex-row items-center justify-center gap-4 pt-4 md:pt-0 lg:pt-0"
-      >
+      <div class="animate-on-scroll flex w-full flex-row items-center justify-center gap-4 pt-4 md:pt-0 lg:pt-0">
         <img
           ngSrc="assets/HE_aWzObYAAc7MN.jpeg"
           width="900"
@@ -208,9 +189,7 @@
     </div>
 
     <!-- Streaming -->
-    <div
-      class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
-    >
+    <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
       <img
         class="animate-on-scroll card-shadow w-full rounded-lg"
         ngSrc="assets/6BA33836.jpeg"
@@ -220,20 +199,17 @@
       />
       <div class="mt-4 text-center md:mt-0 md:text-left">
         <h2
-          class="animate-on-scroll text-on-light-heading mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word md:justify-start"
+          class="animate-on-scroll mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
         >
           {{ 'home.streaming.title' | translate }}
-          <span
-            class="flourish f-end flip text-on-light-heading hidden md:inline-block"
-            aria-hidden="true"
-          ></span>
+          <span class="flourish f-end flip hidden text-on-light-heading md:inline-block" aria-hidden="true"></span>
         </h2>
-        <p class="animate-on-scroll text-on-light-body mb-6 leading-7">
+        <p class="animate-on-scroll mb-6 leading-7 text-on-light-body">
           {{ 'home.streaming.description' | translate }}
         </p>
         <a
           routerLink="/streaming"
-          class="animate-on-scroll rounded-base bg-brand-subtle text-on-light-heading hover:bg-brand hover:text-on-light-heading focus-visible:outline-brand-strong inline-flex items-center px-5 py-2.5 text-center text-sm font-semibold underline-offset-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="animate-on-scroll inline-flex items-center rounded-base bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'home.streaming.cta' | translate }}
         </a>
@@ -243,7 +219,7 @@
 </app-parallax-section>
 
 <span
-  class="flourish f-full-wide text-border-strong absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+  class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
   aria-hidden="true"
 ></span>
 
@@ -252,86 +228,84 @@
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <!-- Section header -->
     <div class="mb-12 text-center">
-      <p
-        class="animate-on-scroll text-on-middle-body-subtle mb-2 text-sm font-semibold tracking-[0.35em] uppercase"
-      >
+      <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
         {{ 'home.support.kicker' | translate }}
       </p>
       <h2
-        class="animate-on-scroll text-on-middle-heading mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word"
+        class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
       >
         {{ 'home.support.title' | translate }}
       </h2>
-      <p class="animate-on-scroll text-on-middle-body mx-auto mb-2 max-w-3xl leading-7">
+      <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-middle-body">
         {{ 'home.support.description' | translate }}
       </p>
       <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
-        <span class="flourish f-full text-on-middle-heading h-8" aria-hidden="true"></span>
+        <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
       </div>
     </div>
 
     <div class="grid gap-6 lg:grid-cols-3">
       <!-- Reviews -->
-      <div class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
         <h3
-          class="animate-on-scroll text-on-middle-heading mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word md:justify-start"
+          class="mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-start"
         >
           {{ 'home.reviews.title' | translate }}
           <span
-            class="flourish f-end-short flip text-on-middle-heading hidden md:inline-block"
+            class="flourish f-end-short flip hidden text-on-middle-heading md:inline-block"
             aria-hidden="true"
           ></span>
         </h3>
-        <p class="text-on-middle-body mt-4 leading-7">
+        <p class="mt-4 leading-7 text-on-middle-body">
           {{ 'home.reviews.description' | translate }}
         </p>
         <a
           routerLink="/reviews"
-          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="mt-8 inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'home.reviews.cta' | translate }}
         </a>
       </div>
 
       <!-- Donate -->
-      <div class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
         <h3
-          class="animate-on-scroll text-on-middle-heading mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word md:justify-start"
+          class="mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-start"
         >
           {{ 'home.donate.title' | translate }}
           <span
-            class="flourish f-end-short flip text-on-middle-heading hidden md:inline-block"
+            class="flourish f-end-short flip hidden text-on-middle-heading md:inline-block"
             aria-hidden="true"
           ></span>
         </h3>
-        <p class="text-on-middle-body mt-4 leading-7">
+        <p class="mt-4 leading-7 text-on-middle-body">
           {{ 'home.donate.description' | translate }}
         </p>
         <a
           routerLink="/donate"
-          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="mt-8 inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'home.donate.cta' | translate }}
         </a>
       </div>
 
       <!-- Contact -->
-      <div class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
         <h3
-          class="animate-on-scroll text-on-middle-heading mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word md:justify-start"
+          class="mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-start"
         >
           {{ 'home.contact.title' | translate }}
           <span
-            class="flourish f-end-short flip text-on-middle-heading hidden md:inline-block"
+            class="flourish f-end-short flip hidden text-on-middle-heading md:inline-block"
             aria-hidden="true"
           ></span>
         </h3>
-        <p class="text-on-middle-body mt-4 leading-7">
+        <p class="mt-4 leading-7 text-on-middle-body">
           {{ 'home.contact.description' | translate }}
         </p>
         <a
           routerLink="/contact"
-          class="rounded-base bg-brand text-on-light-heading hover:bg-brand-subtle focus-visible:outline-brand-strong mt-8 inline-flex items-center justify-center px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+          class="mt-8 inline-flex items-center justify-center rounded-base bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'home.contact.cta' | translate }}
         </a>

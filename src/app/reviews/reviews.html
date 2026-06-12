@@ -9,43 +9,36 @@
 >
   <div class="absolute inset-0 mx-auto h-full max-w-7xl">
     <app-parallax-section
-      class="lg:mask-fade-x absolute inset-0 h-full max-w-4xl"
+      class="absolute inset-0 h-full max-w-4xl lg:mask-fade-x"
       [ariaLabel]="'Hero section'"
       [backgroundImage]="'assets/G8oM0YEasAAWxIg.jpeg'"
       [backgroundPosition]="'center 35%'"
       [backgroundHeight]="'110%'"
       [parallaxStrength]="0.65"
-    >
-    </app-parallax-section>
+    ></app-parallax-section>
   </div>
   <div
     class="relative z-10 mx-auto flex min-h-[80svh] w-full max-w-7xl items-end justify-center text-left md:justify-end"
   >
-    <div
-      class="glass-panel hero-reveal-surface mb-16 max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7"
-    >
+    <div class="glass-panel hero-reveal-surface mb-16 max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7">
       <span
-        class="flourish f-full text-on-light-heading absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 md:inline-block"
+        class="flourish f-full absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block"
         aria-hidden="true"
       ></span>
       <p
-        class="hero-reveal-kicker text-on-light-heading mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]"
+        class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-light-heading uppercase sm:text-[0.95rem]"
       >
         {{ 'reviews.hero.kicker' | translate }}
       </p>
       <h1
-        class="hero-reveal-title text-on-light-heading text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
+        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] text-on-light-heading uppercase"
       >
         {{ 'reviews.hero.title' | translate }}
       </h1>
-      <p
-        class="hero-reveal-copy text-on-light-body mt-4 max-w-[56ch] text-sm leading-7 sm:text-base"
-      >
+      <p class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-light-body sm:text-base">
         {{ 'reviews.hero.description' | translate }}
       </p>
-      <p
-        class="hero-reveal-copy text-on-light-body mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm"
-      >
+      <p class="hero-reveal-copy mt-6 text-xs font-semibold tracking-[0.28em] text-on-light-body uppercase sm:text-sm">
         {{ 'reviews.hero.tagline' | translate }}
       </p>
     </div>
