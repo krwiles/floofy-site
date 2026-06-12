@@ -3,9 +3,12 @@
     "english": "English",
     "japanese": "Japanese"
   },
+
   "home": {
     "hero": {
-      "kicker": "Illustrator • Streamer",
+      "kicker": "Illustrator • Vtuber",
+      "name_1": "Summer",
+      "name_2": "Floofy",
       "tagline": "Art • Streams • Commissions"
     },
     "gallery": {
@@ -13,24 +16,24 @@
       "description": "Explore a curated collection of SummerFloofy’s illustrations featuring character art, VTuber fanart, and artwork of her original character, Floofy. With expressive posing, soft rendering, and carefully balanced color palettes, each piece reflects her distinct artistic style and attention to detail.",
       "cta": "View Gallery"
     },
-    "learn": {
+    "discover": {
       "kicker": "Art, streams, and commissions",
       "title": "Discover SummerFloofy",
-      "description": "Learn more about SummerFloofy, explore commission opportunities, and join live streams with the Tangerine community."
+      "description": "Learn more about SummerFloofy, explore commission opportunities, and join live streams with the Floofy and the Tangerines!"
     },
     "about": {
       "title": "About",
-      "description": "SummerFloofy is a digital illustrator and streamer known for expressive character artwork and a welcoming creative community. Her work includes VTuber fanart and illustrations of her original character, Floofy, blending personality, color, and detail. She is supported by her community of fans, known as the Tangerines, who play a big part in shaping the positive and creative space around her work.",
+      "description": "SummerFloofy is a digital illustrator and streamer known for her soft, elegant character artwork. Her work includes VTuber fanart, character art, and illustrations of her original character, Floofy. She is supported by her community of fans, known as the Tangerines, who play a big part in shaping the positive and creative space around her work.",
       "cta": "Learn More"
     },
     "commission": {
       "title": "Commissions",
-      "description": "Bring your ideas to life with custom artwork created in SummerFloofy’s signature style. Whether you’re looking for character art, VTuber-inspired illustrations, or personalized artwork, each commission is crafted with care and attention to detail.",
+      "description": "Bring your ideas to life with custom artwork created in SummerFloofy’s delicate signature style. Whether you’re looking for character art, VTuber-inspired illustrations, or personalized artwork, each commission is crafted with care and attention to detail.",
       "cta": "Commission Now"
     },
     "streaming": {
       "title": "Streaming",
-      "description": "Join SummerFloofy live for drawing sessions, creative chats, and community interaction with the Tangerines. Streams offer a behind-the-scenes look at the artistic process and a space to connect, relax, and create together.",
+      "description": "Join SummerFloofy live for drawing sessions, creative chats, and community interaction with the Tangerines. Streams offer a behind-the-scenes look at the artistic process, often with lots of nonsense and fun sprinkled in.",
       "cta": "Go to Streaming"
     },
     "support": {
@@ -40,7 +43,7 @@
     },
     "reviews": {
       "title": "Reviews",
-      "description": "See what clients and members of the Tangerine community have shared about their experiences with SummerFloofy’s artwork and commissions. Feedback helps others understand the process and highlights the support behind each piece.",
+      "description": "See what clients and members of the Tangerine community have shared about their experiences with SummerFloofy’s artwork and commissions. You can leave your own feedback and share your experience with other visitors!",
       "cta": "See Reviews"
     },
     "donate": {
@@ -50,32 +53,37 @@
     },
     "contact": {
       "title": "Contact",
-      "description": "Have a question, collaboration idea, or commission inquiry? Reach out anytime through the contact page — SummerFloofy would love to hear from you.",
+      "description": "Have a question, collaboration idea, or unique commission inquiry? Reach out anytime through the contact page — SummerFloofy would love to hear from you!",
       "cta": "Get in Touch"
+    }
+  },
+
+  "gallery": {
+    "hero": {
+      "kicker": "SummerFloofy's Collection",
+      "title": "Gallery",
+      "description": "Explore delicate depictions of characters that showcase SummerFloofy's signature soft and elegant aesthetic.",
+      "tagline": "Illustrations • Characters • Original Art"
     }
   },
 
   "about": {
     "hero": {
-      "kicker": "MEET FLOOFY",
-      "title": "ABOUT",
-      "description": "Background, interests, socials, and everything from the artist behind the art.",
-      "tagline": "Artist • Illustrator • Creator"
-    },
-    "news": {
-      "title": "LATEST NEWS",
-      "description": "Stay updated with the latest news and updates from Floofy. Follow on Twitter for real-time updates, behind-the-scenes content, and more."
+      "kicker": "Meet SummeryFloofy",
+      "title": "About",
+      "description": "Background, socials, lore, and everything from the artist behind the art.",
+      "tagline": "Artist • Illustrator • Vtuber"
     },
     "artist": {
-      "kicker": "THE ARTIST",
+      "kicker": "The Artist",
       "name": "Summer Floofy",
-      "short_desc": "SummerFloofy is an illustrator and streamer who creates fan arts and original works. From beloved character interpretations to wholly original designs, every piece reflects a warm, expressive style that has captured hearts across the internet.",
-      "extended_desc": "With a passion for storytelling through art, SummerFloofy brings characters to life with vibrant colors and emotive detail. Streaming regularly on Twitch, they invite the community into the creative process—from rough sketches to polished finals—building a space that's as much about connection as it is about craft.",
+      "short_desc": "SummerFloofy is an illustrator and streamer known for creating soft, delicate character artwork filled with warmth and charm. From VTuber fanart to illustrations featuring her original character, Floofy, each piece is thoughtfully crafted with graceful details, gentle colors, and a distinctly feminine touch.",
+      "extended_desc": "Beyond her illustrations, SummerFloofy shares her world through art and gaming streams, where creativity, kindness, and community take center stage. Together with her fans, the Tangerines, she has built a warm and welcoming corner of the internet filled with laughter, encouragement, and the occasional courtroom drama. Whether she's drawing elegant characters, joined by her sibling Poofy, or sentencing mischievous Tangerines to the blender for their latest offenses, she brings a thoughtful and lighthearted spirit to everything she does. As she continues to grow as an artist, her goal remains simple: to create beautiful artwork and memorable experiences that brighten someone's day.",
       "contact": "Contact",
       "social": {
         "bsky": "Bluesky",
         "pixiv": "Pixiv",
-        "description": "You can find additional Floofy art on other platforms."
+        "description": "You can find additional art and posts on other platforms."
       },
       "tweet": {
         "title": "Latest News",
@@ -83,7 +91,7 @@
       }
     },
     "oc": {
-      "kicker": "ORIGINAL CHARACTER",
+      "kicker": "Original Character",
       "title": "Floofy's Story",
       "description": "Character lore, art references, and fan art.",
       "lore_title": "Lorem ipsum dolor,",
@@ -100,27 +108,18 @@
       }
     }
   },
-  "gallery": {
-    "hero": {
-      "kicker": "SELECTED WORKS",
-      "title": "GALLERY",
-      "description": "Original illustrations, character pieces, and style explorations in one curated archive.",
-      "tagline": "Artworks • Characters • Illustrations"
-    }
-  },
+
   "commission": {
     "hero": {
-      "kicker": "OPEN FOR WORK",
-      "title": "COMMISSION",
+      "kicker": "Open For Work",
+      "title": "Commission",
       "description": "Custom characters, illustrations, and style explorations. Pricing and details below.",
-      "tagline": "Chibi • Character • Custom",
-      "background_aria": "Commission hero background",
-      "section_aria": "Commission hero section"
+      "tagline": "Chibi • Emotes • Illustrations"
     },
     "pricing_section": {
       "kicker": "Pricing and Options",
       "title": "Commission Types",
-      "description": "Base pricing includes one character. See each card below for what is included and excluded."
+      "description": "See each card below for what is included and excluded."
     },
     "labels": {
       "includes": "Includes",

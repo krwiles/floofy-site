@@ -13,6 +13,7 @@
       [ariaLabel]="'Hero section'"
       [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
       [backgroundPosition]="'center 40%'"
+      [backgroundHeight]="'100%'"
       [parallaxStrength]="0.65"
     ></app-parallax-section>
   </div>
@@ -34,8 +35,8 @@
       <h1
         class="hero-reveal-title mt-3 mb-0 text-[clamp(6rem,16vw,12rem)] leading-[0.86] font-black tracking-[-0.045em] text-on-dark-heading"
       >
-        <span class="block text-[clamp(4rem,11vw,8rem)] tracking-[-0.04em]">Summer</span>
-        <span class="block">Floofy</span>
+        <span class="block text-[clamp(4rem,11vw,8rem)] tracking-[-0.04em]">{{ 'home.hero.name_1' | translate }}</span>
+        <span class="block">{{ 'home.hero.name_2' | translate }}</span>
       </h1>
       <p class="hero-reveal-copy mt-6 text-xs font-bold tracking-[0.3em] text-on-dark-heading uppercase md:text-base">
         {{ 'home.hero.tagline' | translate }}
@@ -103,15 +104,15 @@
     <!-- Section header -->
     <div class="mb-12 text-center">
       <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-light-body-subtle uppercase">
-        {{ 'home.learn.kicker' | translate }}
+        {{ 'home.discover.kicker' | translate }}
       </p>
       <h2
         class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-light-heading"
       >
-        {{ 'home.learn.title' | translate }}
+        {{ 'home.discover.title' | translate }}
       </h2>
       <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-light-body">
-        {{ 'home.learn.description' | translate }}
+        {{ 'home.discover.description' | translate }}
       </p>
       <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
         <span class="flourish f-full h-8 text-on-light-heading" aria-hidden="true"></span>
