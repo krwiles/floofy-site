@@ -1,0 +1,24 @@
+.review-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.review-quote {
+  text-wrap: pretty;
+}
+
+.review-quote::before {
+  content: '“';
+  margin-right: 0.12em;
+  font-size: 1.35em;
+  line-height: 0;
+  color: color-mix(in srgb, var(--color-brand-strong) 72%, white);
+}
+
+.review-quote::after {
+  content: '”';
+  margin-left: 0.08em;
+  font-size: 1.1em;
+  line-height: 0;
+  color: color-mix(in srgb, var(--color-brand-strong) 68%, white);
+}
