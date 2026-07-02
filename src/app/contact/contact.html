@@ -46,3 +46,133 @@
     </div>
   </div>
 </app-parallax-section>
+
+<section>
+  <!-- Social links section -->
+</section>
+
+<!-- Post Form -->
+<app-parallax-section
+  class="bg-section-light"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Request Form'"
+>
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div id="commission-form" class="mx-auto max-w-3xl rounded-4xl">
+      <!-- Section heading -->
+      <div class="mb-12 text-center">
+        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+          Let's Chat
+        </p>
+        <h2
+          class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
+        >
+          Contact Form
+        </h2>
+        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
+          Any special inquiries, questions, or requests are welcome!
+        </p>
+        <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+          <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
+        </div>
+        <p class="animate-on-scroll mx-auto mb-2 max-w-2xl leading-7 text-on-middle-body">
+          Fill out the form below and I will get back to you as soon as possible. Please allow 1-4 business days for a
+          response.
+        </p>
+      </div>
+
+      <!-- Contact form -->
+      <form
+        class="card-shadow mx-auto max-w-3xl rounded-4xl border border-white/70 bg-section-middle-alt px-8 py-12 text-on-middle-heading"
+        [formRoot]="contactForm"
+      >
+        <div class="grid grid-cols-1 gap-6">
+          <!-- name field -->
+          <div>
+            <label class="text-sm font-semibold">
+              <p class="flex gap-2">
+                Name
+                <span class="text-error" aria-hidden="true">*</span>
+                @if (contactForm.name().invalid() && contactForm.name().touched()) {
+                  <div class="text-error">
+                    @for (error of contactForm.name().errors(); track error.kind) {
+                      <span>{{ error.message }}</span>
+                    }
+                  </div>
+                }
+              </p>
+              <input
+                type="text"
+                [formField]="contactForm.name"
+                placeholder="Enter your name or username"
+                class="mt-2 w-full rounded-base border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
+              />
+            </label>
+          </div>
+
+          <!-- email field -->
+          <div>
+            <label class="text-sm font-semibold">
+              <p class="flex gap-2">
+                Email
+                <span class="text-error" aria-hidden="true">*</span>
+                @if (contactForm.email().invalid() && contactForm.email().touched()) {
+                  <div class="text-error">
+                    @for (error of contactForm.email().errors(); track error.kind) {
+                      <span>{{ error.message }}</span>
+                    }
+                  </div>
+                }
+              </p>
+              <input
+                type="email"
+                [formField]="contactForm.email"
+                placeholder="Enter your email address"
+                class="mt-2 w-full rounded-base border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
+              />
+            </label>
+          </div>
+
+          <!-- Message field -->
+          <div>
+            <label class="text-sm font-semibold">
+              <p class="flex gap-2">
+                Message
+                <span class="text-error" aria-hidden="true">*</span>
+                @if (contactForm.message().invalid() && contactForm.message().touched()) {
+                  <div class="text-error">
+                    @for (error of contactForm.message().errors(); track error.kind) {
+                      <span>{{ error.message }}</span>
+                    }
+                  </div>
+                }
+              </p>
+              <textarea
+                [formField]="contactForm.message"
+                placeholder="Write your message for Floofy."
+                rows="5"
+                class="mt-2 w-full rounded-base border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
+              ></textarea>
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <div class="flex items-center gap-5 pt-4 text-on-middle-body">
+          <button
+            type="submit"
+            class="inline-flex shrink-0 items-center justify-center rounded-base bg-brand px-6 py-3 text-sm font-semibold whitespace-nowrap text-on-light-heading hover:bg-brand-subtle"
+          >
+            Send Message
+          </button>
+          <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="contact-status">
+            {{ status() }}
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-parallax-section>
