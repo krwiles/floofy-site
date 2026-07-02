@@ -50,6 +50,7 @@
   aria-hidden="true"
 ></span>
 
+<!-- Reviews Section-->
 <section class="bg-section-dark">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <!-- Section heading -->
@@ -71,7 +72,7 @@
     </div>
 
     @if (reviews().length === 0) {
-      <div class="card-shadow rounded-4xl border border-white/10 bg-white/5 px-6 py-6 sm:px-7 sm:py-7">
+      <div class="card-shadow rounded-4xl border border-white/10 bg-white/5 px-6 py-6 text-center sm:px-7 sm:py-7">
         <p class="text-lg font-semibold text-on-dark-heading">Reviews loading...</p>
         <p class="mt-2 text-on-dark-body">Check back soon for new feedback from the community.</p>
       </div>
@@ -96,3 +97,123 @@
     }
   </div>
 </section>
+
+<!-- Post Form -->
+<app-parallax-section
+  class="bg-section-light"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'Request Form'"
+>
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div id="commission-form" class="mx-auto max-w-3xl rounded-4xl">
+      <!-- Section heading -->
+      <div class="mb-12 text-center">
+        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+          Share your experience
+        </p>
+        <h2
+          class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
+        >
+          Post a review
+        </h2>
+        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
+          Leave your thoughts and feedback for the community to see. Your input helps us improve and grow together.
+        </p>
+        <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+          <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
+        </div>
+        <p class="animate-on-scroll mx-auto mb-2 max-w-2xl leading-7 text-on-middle-body">
+          Fill out this form to submit your review. All fields are required, and your review will be publicly visible on
+          this page.
+        </p>
+      </div>
+
+      <!-- Review form -->
+      <form
+        class="card-shadow mx-auto max-w-3xl rounded-4xl border border-white/70 bg-section-middle-alt px-8 py-12 text-on-middle-heading"
+        [formRoot]="reviewForm"
+      >
+        <div class="grid grid-cols-1 gap-6">
+          <!-- author field -->
+          <div>
+            <label class="text-sm font-semibold">
+              <p class="flex gap-2">
+                Name
+                <span class="text-error" aria-hidden="true">*</span>
+                @if (reviewForm.author().invalid() && reviewForm.author().touched()) {
+                  <div class="text-error">
+                    @for (error of reviewForm.author().errors(); track error.kind) {
+                      <span>{{ error.message }}</span>
+                    }
+                  </div>
+                }
+              </p>
+              <input
+                type="text"
+                [formField]="reviewForm.author"
+                placeholder="Enter your name or username"
+                class="mt-2 w-full rounded-base border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
+              />
+            </label>
+          </div>
+          <!-- Comment field -->
+          <div>
+            <label class="text-sm font-semibold">
+              <p class="flex gap-2">
+                Review
+                <span class="text-error" aria-hidden="true">*</span>
+                @if (reviewForm.comment().invalid() && reviewForm.comment().touched()) {
+                  <div class="text-error">
+                    @for (error of reviewForm.comment().errors(); track error.kind) {
+                      <span>{{ error.message }}</span>
+                    }
+                  </div>
+                }
+              </p>
+              <textarea
+                [formField]="reviewForm.comment"
+                placeholder="Write about your experience or feedback."
+                rows="5"
+                class="mt-2 w-full rounded-base border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
+              ></textarea>
+            </label>
+          </div>
+        </div>
+
+        <!-- Agreement -->
+        <div class="flex items-start gap-2">
+          <label class="flex items-center space-x-3">
+            <input type="checkbox" [formField]="reviewForm.agreement" class="h-4 w-4" />
+            <span class="text-sm leading-6">
+              I agree to post my review publicly on this page and understand that it will be visible to all visitors.
+              <span class="text-error" aria-hidden="true">*</span>
+            </span>
+          </label>
+        </div>
+        @if (reviewForm.agreement().invalid() && reviewForm.agreement().touched()) {
+          <div class="text-error">
+            @for (error of reviewForm.agreement().errors(); track error.kind) {
+              <span>{{ error.message }}</span>
+            }
+          </div>
+        }
+
+        <!-- Submit button -->
+        <div class="flex items-center gap-5 pt-4 text-on-middle-body">
+          <button
+            type="submit"
+            class="inline-flex shrink-0 items-center justify-center rounded-base bg-brand px-6 py-3 text-sm font-semibold whitespace-nowrap text-on-light-heading hover:bg-brand-subtle"
+          >
+            Submit Review
+          </button>
+          <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="review-status">
+            {{ status() }}
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-parallax-section>

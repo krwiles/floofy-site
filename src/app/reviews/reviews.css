@@ -1,8 +1,3 @@
-.review-card {
-  position: relative;
-  overflow: hidden;
-}
-
 .review-quote {
   text-wrap: pretty;
 }
