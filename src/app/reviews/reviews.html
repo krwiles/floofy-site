@@ -77,10 +77,10 @@
         <p class="mt-2 text-on-dark-body">Check back soon for new feedback from the community.</p>
       </div>
     } @else {
-      <ol class="grid gap-5 sm:gap-6 lg:grid-cols-2" aria-label="Client reviews">
+      <ol class="columns-1 gap-x-6 sm:columns-2" aria-label="Client reviews">
         @for (review of reviews(); track review.id) {
           <li
-            class="animate-on-scroll card-shadow rounded-4xl border border-white/10 bg-white/5 px-6 py-6 sm:px-7 sm:py-7"
+            class="animate-on-scroll card-shadow mb-6 break-inside-avoid rounded-4xl border border-white/10 bg-white/5 px-6 py-6 sm:px-7 sm:py-7"
           >
             <article class="flex h-full flex-col">
               <p class="review-quote mb-5 text-lg leading-8 text-on-dark-heading">{{ review.comment }}</p>
