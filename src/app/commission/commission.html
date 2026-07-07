@@ -528,6 +528,7 @@
       <!-- Commission form -->
       <form
         class="card-shadow mx-auto max-w-3xl rounded-4xl border border-white/70 bg-section-middle-alt px-8 py-12 text-on-middle-heading"
+        [formField]="commissionForm"
       >
         <div class="grid grid-cols-1 gap-6">
           <!-- Requester info -->
@@ -779,7 +780,7 @@
           </div>
 
           <!-- Submit button -->
-          <div class="pt-4">
+        <div class="flex items-center gap-5 pt-4 text-on-middle-body">
             <button
               type="button"
               (click)="$event.preventDefault()"
@@ -787,6 +788,9 @@
             >
               {{ 'commission.form.submit' | translate }}
             </button>
+            <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="commission-form-status">
+              {{ status() }}
+            </p>
           </div>
         </div>
       </form>
