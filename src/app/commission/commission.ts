@@ -67,7 +67,8 @@ export class Commission implements OnInit {
     tosAccepted: false,
   });
 
-  commissionForm = form(this.commissionModel,
+  commissionForm = form(
+    this.commissionModel,
     (schemaPath) => {
       required(schemaPath.name, { message: 'Name is required.' });
       required(schemaPath.email, { message: 'Email is required.' });
@@ -89,9 +90,9 @@ export class Commission implements OnInit {
           );
 
           console.log('Commission form submitted:', this.commissionModel());
-        }
-      }
-    }
+        },
+      },
+    },
   );
 
   ngOnInit(): void {

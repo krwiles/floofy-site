@@ -46,10 +46,7 @@ export class I18nService {
   }
 
   nav(): NavItem[] {
-    const navSection = translations[this.localeSignal()]['nav'] as Record<
-      string,
-      { label: string; route: string }
-    >;
+    const navSection = translations[this.localeSignal()]['nav'] as Record<string, { label: string; route: string }>;
     return Object.entries(navSection).map(([key, value]) => ({
       key,
       label: value.label,
