@@ -42,3 +42,9 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# AWS Lambda bundles: ignore everything except handler/deps manifests
+aws_lambda/**
+!aws_lambda/**/
+!aws_lambda/**/lambda_function.py
+!aws_lambda/**/requirements.txt

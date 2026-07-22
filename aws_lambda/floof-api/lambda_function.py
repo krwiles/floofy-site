@@ -2,6 +2,7 @@ import json
 import datetime
 import os
 
+# NOTE: for lambda you must include the binaries AND ensure they are the linux versions not
 import psycopg
 from psycopg.rows import dict_row
 
