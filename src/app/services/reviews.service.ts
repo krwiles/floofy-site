@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Review, ReviewSubmission, ServerResponse } from '../models/review';
+import { CreateReviewRequest, CreateReviewResponse, Review } from '../models/review.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class ReviewsService {
     return this.http.get<Review[]>(this.backendUrl);
   }
 
-  submitReview(reviewSubmission: ReviewSubmission): Observable<ServerResponse> {
-    return this.http.post<ServerResponse>(this.backendUrl, reviewSubmission);
+  submitReview(reviewRequest: CreateReviewRequest): Observable<CreateReviewResponse> {
+    return this.http.post<CreateReviewResponse>(this.backendUrl, reviewRequest);
   }
 }

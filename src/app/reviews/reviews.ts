@@ -3,12 +3,12 @@ import { ParallaxSection } from '../components/parallax-section/parallax-section
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { ReviewsService } from '../services/reviews.service';
 import { DatePipe } from '@angular/common';
-import { Review, ReviewSubmission, ServerResponse } from '../models/review';
+import { CreateReviewRequest, CreateReviewResponse, Review } from '../models/review.model';
 import { App } from '../app';
 import { form, FormField, FormRoot, max, maxLength, required, submit } from '@angular/forms/signals';
 import { HttpErrorResponse } from '@angular/common/http';
 
-interface ReviewData {
+interface ReviewFormValue {
   author: string;
   comment: string;
   agreement: boolean;
@@ -28,7 +28,7 @@ export class Reviews implements OnInit {
   readonly status = signal<string>('');
   statusElement: HTMLElement | null = null;
 
-  private readonly reviewModel = signal<ReviewData>({
+  private readonly reviewModel = signal<ReviewFormValue>({
     author: '',
     comment: '',
     agreement: false,
@@ -54,19 +54,18 @@ export class Reviews implements OnInit {
           this.statusElement?.classList.remove('text-success', 'text-error');
 
           // Prepare the review submission data to be sent to the backend service
-          const reviewSubmission: ReviewSubmission = {
+          const reviewRequest: CreateReviewRequest = {
             author: this.reviewModel().author,
             comment: this.reviewModel().comment,
           };
 
           // Send the review submission to the backend service (HttpClient returns an Observable that we subscribe to)
-          this.reviewsService.submitReview(reviewSubmission).subscribe({
-            next: (reply: ServerResponse) => {
+          this.reviewsService.submitReview(reviewRequest).subscribe({
+            next: (reply: CreateReviewResponse) => {
               console.log('server response:', reply);
               // Update the status message and UI to indicate successful submission
               this.status.set(reply.message);
               this.statusElement?.classList.add('text-success');
-              this.statusElement?.classList.remove('text-error');
               this.requestReviews(); // Refresh the reviews list after successful submission to display the newly added review
             },
             error: (err: HttpErrorResponse) => {
@@ -74,7 +73,6 @@ export class Reviews implements OnInit {
               // Update the status message and UI to indicate an error from the server
               this.status.set(err.error?.message ?? err.message);
               this.statusElement?.classList.add('text-error');
-              this.statusElement?.classList.remove('text-success');
             },
           });
 

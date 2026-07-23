@@ -5,11 +5,11 @@ export interface Review {
   created_at: string;
 }
 
-export interface ReviewSubmission {
+export interface CreateReviewRequest {
   author: string;
   comment: string;
 }
 
-export interface ServerResponse {
+export interface CreateReviewResponse {
   message: string;
 }
