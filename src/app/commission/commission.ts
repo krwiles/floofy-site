@@ -5,30 +5,24 @@ import { Carousel } from '../components/carousel/carousel';
 import { GalleryImageService } from '../services/gallery-image.service';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { PricingService } from '../services/pricing.service';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, PercentPipe } from '@angular/common';
 
-interface CommissionData {
+interface CommissionFormValue {
   name: string;
   email: string;
-
   commissionType: 'illustration' | 'chibi' | 'emotes';
-
   description: string;
-
   referenceLinks: string;
-
-  usageType: 'personal' | 'commercial-tier-1' | 'commercial-tier-2' | 'unsure';
-
+  usageType: 'personal' | 'promotion' | 'distribution' | 'products' | 'unsure';
+  usageExplanation: string;
   deadline: string;
-
   additionalNotes: string;
-
   tosAccepted: boolean;
 }
 
 @Component({
   selector: 'app-commission',
-  imports: [Carousel, ParallaxSection, TranslatePipe, FormField, CurrencyPipe, FormRoot],
+  imports: [Carousel, ParallaxSection, TranslatePipe, FormField, CurrencyPipe, PercentPipe, FormRoot],
   templateUrl: './commission.html',
   styleUrl: './commission.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,22 +42,16 @@ export class Commission implements OnInit {
   readonly emoteCarouselImages = this.galleryImageService.emoteImages.map((image) => [image]);
   readonly illustrationCarouselImages = this.galleryImageService.illustrationImages.map((image) => [image]);
 
-  private readonly commissionModel = signal<CommissionData>({
+  private readonly commissionModel = signal<CommissionFormValue>({
     name: '',
     email: '',
-
     commissionType: 'chibi',
-
     description: '',
-
     referenceLinks: '',
-
     usageType: 'personal',
-
+    usageExplanation: '',
     deadline: '',
-
     additionalNotes: '',
-
     tosAccepted: false,
   });
 
@@ -75,21 +63,31 @@ export class Commission implements OnInit {
       required(schemaPath.description, { message: 'Description is required.' });
       required(schemaPath.usageType, { message: 'Usage type is required.' });
       required(schemaPath.tosAccepted, { message: 'You must accept the terms of service to submit the form.' });
-
+      required(schemaPath.usageExplanation, { message: 'Usage explanation is required.' });
       maxLength(schemaPath.email, 100, { message: 'Email cannot exceed 100 characters.' });
       maxLength(schemaPath.description, 2000, { message: 'Description cannot exceed 2000 characters.' });
-      maxLength(schemaPath.referenceLinks, 1000, { message: 'Reference links cannot exceed 1000 characters.' });
+      maxLength(schemaPath.referenceLinks, 2000, { message: 'Reference links cannot exceed 2000 characters.' });
       maxLength(schemaPath.additionalNotes, 2000, { message: 'Additional notes cannot exceed 2000 characters.' });
       email(schemaPath.email, { message: 'Please enter a valid email address.' });
     },
     {
       submission: {
         action: async () => {
+          // Indicate to UI that the review submission is in progress
+          this.status.set('Submitting review...');
+          this.statusElement?.classList.remove('text-success', 'text-error');
+
           this.status.set(
             'Form submitted! Thank you for your commission request. I will review the details and get back to you as soon as possible.',
           );
+          this.statusElement?.classList.add('text-success');
 
           console.log('Commission form submitted:', this.commissionModel());
+        },
+        onInvalid: () => {
+          this.status.set('Please correct the errors in the form before submitting.');
+          this.statusElement?.classList.add('text-error');
+          this.statusElement?.classList.remove('text-success');
         },
       },
     },
@@ -103,8 +101,8 @@ export class Commission implements OnInit {
     this.scrollToElement('commission-types');
   }
 
-  scrollToCommercialUsage(): void {
-    this.scrollToElement('commercial-usage');
+  scrollToArtworkUsage(): void {
+    this.scrollToElement('artwork-usage');
   }
 
   scrollToTerms(): void {
