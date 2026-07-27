@@ -8,7 +8,7 @@ import { CreateCommissionRequest, CreateCommissionResponse } from '../models/com
 })
 export class CommissionService {
   private readonly http = inject(HttpClient);
-  private readonly backendUrl = 'https://isaytzssxo6crcwmqfyoqp54py0yjiyt.lambda-url.us-east-1.on.aws/';
+  private readonly backendUrl = 'https://2nffhwsijx3tjkmylifc7sr64e0tugqt.lambda-url.us-east-1.on.aws/';
 
   submitCommission(commissionRequest: CreateCommissionRequest): Observable<CreateCommissionResponse> {
     return this.http.post<CreateCommissionResponse>(this.backendUrl, commissionRequest);

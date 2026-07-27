@@ -6,6 +6,8 @@ import { GalleryImageService } from '../services/gallery-image.service';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { PricingService } from '../services/pricing.service';
 import { CurrencyPipe, PercentPipe } from '@angular/common';
+import { CreateCommissionRequest } from '../models/commission.model';
+import { CommissionService } from '../services/commission.service';
 
 interface CommissionFormValue {
   name: string;
@@ -29,6 +31,7 @@ interface CommissionFormValue {
 })
 export class Commission implements OnInit {
   private readonly galleryImageService = inject(GalleryImageService);
+  private readonly commissionService = inject(CommissionService);
   readonly pricingService = inject(PricingService);
   readonly status = signal<string>('');
   statusElement: HTMLElement | null = null;
@@ -64,26 +67,55 @@ export class Commission implements OnInit {
       required(schemaPath.usageType, { message: 'Usage type is required.' });
       required(schemaPath.tosAccepted, { message: 'You must accept the terms of service to submit the form.' });
       required(schemaPath.usageExplanation, { message: 'Usage explanation is required.' });
-      maxLength(schemaPath.email, 100, { message: 'Email cannot exceed 100 characters.' });
+      maxLength(schemaPath.email, 50, { message: 'Email cannot exceed 50 characters.' });
+      maxLength(schemaPath.name, 50, { message: 'Name cannot exceed 50 characters.' });
       maxLength(schemaPath.description, 2000, { message: 'Description cannot exceed 2000 characters.' });
       maxLength(schemaPath.referenceLinks, 2000, { message: 'Reference links cannot exceed 2000 characters.' });
       maxLength(schemaPath.additionalNotes, 2000, { message: 'Additional notes cannot exceed 2000 characters.' });
+      maxLength(schemaPath.usageExplanation, 1000, { message: 'Usage explanation cannot exceed 1000 characters.' });
       email(schemaPath.email, { message: 'Please enter a valid email address.' });
     },
     {
       submission: {
         action: async () => {
-          // Indicate to UI that the review submission is in progress
-          this.status.set('Submitting review...');
+          // Indicate to UI that the commission submission is in progress
+          this.status.set('Submitting commission...');
           this.statusElement?.classList.remove('text-success', 'text-error');
 
-          this.status.set(
-            'Form submitted! Thank you for your commission request. I will review the details and get back to you as soon as possible.',
-          );
-          this.statusElement?.classList.add('text-success');
+          // Prepare the commission submission data to be sent to the backend service
+          const commissionRequest: CreateCommissionRequest = {
+            name: this.commissionModel().name,
+            email: this.commissionModel().email,
+            commissionType: this.commissionModel().commissionType,
+            description: this.commissionModel().description,
+            referenceLinks: this.commissionModel().referenceLinks,
+            usageType: this.commissionModel().usageType,
+            usageExplanation: this.commissionModel().usageExplanation,
+            estimatedPrice: this.totalPriceUsd(this.commissionModel().commissionType, this.commissionModel().usageType),
+            deadline: this.commissionModel().deadline,
+            additionalNotes: this.commissionModel().additionalNotes,
+          };
 
-          console.log('Commission form submitted:', this.commissionModel());
+          // Send the commission submission to the backend service (HttpClient returns an Observable that we subscribe to)
+          this.commissionService.submitCommission(commissionRequest).subscribe({
+            next: (reply) => {
+              console.log('server response:', reply);
+              // Update the status message and UI to indicate successful submission
+              this.status.set(reply.message);
+              this.statusElement?.classList.add('text-success');
+            },
+            error: (err) => {
+              console.log('server error:', err.error ?? err.message);
+              // Update the status message and UI to indicate an error from the server
+              this.status.set(err.error?.message ?? err.message);
+              this.statusElement?.classList.add('text-error');
+            },
+          });
+
+          // Log to console that the POST request has been sent (the actual response will be handled in the subscription above)
+          console.log('Backend POST sent');
         },
+        // When the user submits the form but it is invalid, we update the status message and UI to indicate that there are errors in the form.
         onInvalid: () => {
           this.status.set('Please correct the errors in the form before submitting.');
           this.statusElement?.classList.add('text-error');
