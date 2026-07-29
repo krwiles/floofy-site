@@ -67,12 +67,12 @@ export class Commission implements OnInit {
       required(schemaPath.usageType, { message: 'Usage type is required.' });
       required(schemaPath.tosAccepted, { message: 'You must accept the terms of service to submit the form.' });
       required(schemaPath.usageExplanation, { message: 'Usage explanation is required.' });
-      maxLength(schemaPath.email, 50, { message: 'Email cannot exceed 50 characters.' });
+      maxLength(schemaPath.email, 100, { message: 'Email cannot exceed 100 characters.' });
       maxLength(schemaPath.name, 50, { message: 'Name cannot exceed 50 characters.' });
       maxLength(schemaPath.description, 2000, { message: 'Description cannot exceed 2000 characters.' });
       maxLength(schemaPath.referenceLinks, 2000, { message: 'Reference links cannot exceed 2000 characters.' });
       maxLength(schemaPath.additionalNotes, 2000, { message: 'Additional notes cannot exceed 2000 characters.' });
-      maxLength(schemaPath.usageExplanation, 1000, { message: 'Usage explanation cannot exceed 1000 characters.' });
+      maxLength(schemaPath.usageExplanation, 2000, { message: 'Usage explanation cannot exceed 2000 characters.' });
       email(schemaPath.email, { message: 'Please enter a valid email address.' });
     },
     {
