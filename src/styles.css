@@ -5,6 +5,7 @@
 @import './styles/utilities/flourishes.css';
 @import './styles/utilities/motion.css';
 @import './styles/components/glass.css';
+@import './styles/utilities/icons.css';
 @plugin 'flowbite/plugin';
 @source '../node_modules/flowbite';
 
