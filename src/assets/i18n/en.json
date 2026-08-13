@@ -53,8 +53,22 @@
     },
     "contact": {
       "title": "Contact",
-      "description": "Have a question, collaboration idea, or unique commission inquiry? Reach out anytime through the contact page — SummerFloofy would love to hear from you!",
+      "description": "Use this page for collaborations, business questions, press, fan mail, and other messages that are not commissions.",
       "cta": "Get in Touch"
+    },
+    "contact_page": {
+      "form": {
+        "kicker": "Let’s Talk",
+        "title": "Send a Message",
+        "description": "Share a collaboration idea, business question, press request, fan message, or anything else that fits outside of commissions.",
+        "note": "If you’re looking for a commission, please use the commissions page instead.",
+        "submit": "Send Inquiry"
+      },
+      "socials": {
+        "kicker": "Elsewhere",
+        "title": "Direct Contact",
+        "description": "If email is easier, this section gives you the fastest ways to reach me."
+      }
     }
   },
 
@@ -352,8 +366,19 @@
     "hero": {
       "kicker": "SAY HELLO",
       "title": "CONTACT",
-      "description": "Have a question or just want to say hello? Reach out and I'll get back to you as soon as possible.",
-      "tagline": "DMs • Email • Social"
+      "description": "Questions, collaborations, or just want to say hello? I'd love to hear from you.",
+      "tagline": "Email • Social • DMs"
+    },
+    "form": {
+      "kicker": "LET'S TALK",
+      "title": "Send a Message",
+      "description": "Have a business question, collaboration idea, press request, or fan message? Send it my way.",
+      "submit": "Send Message"
+    },
+    "socials": {
+      "kicker": "ELSEWHERE",
+      "title": "Reach Out Online",
+      "description": "Message me on other social platforms~"
     }
   },
   "footer": {

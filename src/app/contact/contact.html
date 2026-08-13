@@ -47,41 +47,32 @@
   </div>
 </app-parallax-section>
 
-<section>
-  <!-- Social links section -->
-</section>
-
-<!-- Post Form -->
 <app-parallax-section
   class="bg-section-light"
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
   [parallaxStrength]="0.6"
-  [ariaLabel]="'Request Form'"
+  [ariaLabel]="'General Inquiry Form'"
 >
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-    <div id="commission-form" class="mx-auto max-w-3xl rounded-4xl">
+    <div class="mx-auto max-w-3xl rounded-4xl">
       <!-- Section heading -->
       <div class="mb-12 text-center">
         <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
-          Let's Chat
+          {{ 'contact.form.kicker' | translate }}
         </p>
         <h2
           class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
         >
-          Contact Form
+          {{ 'contact.form.title' | translate }}
         </h2>
         <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
-          Any special inquiries, questions, or requests are welcome!
+          {{ 'contact.form.description' | translate }}
         </p>
         <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
           <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
         </div>
-        <p class="animate-on-scroll mx-auto mb-2 max-w-2xl leading-7 text-on-middle-body">
-          Fill out the form below and I will get back to you as soon as possible. Please allow 1-4 business days for a
-          response.
-        </p>
       </div>
 
       <!-- Contact form -->
@@ -166,7 +157,7 @@
             type="submit"
             class="inline-flex shrink-0 items-center justify-center rounded-base bg-brand px-6 py-3 text-sm font-semibold whitespace-nowrap text-on-light-heading hover:bg-brand-subtle"
           >
-            Send Message
+            {{ 'contact.form.submit' | translate }}
           </button>
           <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="contact-status">
             {{ status() }}
@@ -176,3 +167,71 @@
     </div>
   </div>
 </app-parallax-section>
+
+<!-- Contact Socials -->
+<section class="bg-section-dark">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div class="glass-panel mx-auto max-w-4xl rounded-4xl border border-white/30 px-5 py-8 sm:px-7">
+      <span
+        class="flourish f-full absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:inline-block"
+        aria-hidden="true"
+      ></span>
+
+      <!-- Section heading -->
+      <div class="mb-12 text-center">
+        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
+          {{ 'contact.socials.kicker' | translate }}
+        </p>
+        <h2
+          class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading"
+        >
+          {{ 'contact.socials.title' | translate }}
+        </h2>
+        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-dark-body">
+          {{ 'contact.socials.description' | translate }}
+        </p>
+      </div>
+
+      <div
+        class="footer-social-icons grid grid-cols-2 gap-3 text-on-light-heading sm:grid-cols-2 md:grid-cols-4 md:gap-4"
+        role="list"
+        aria-label="Social links"
+      >
+        <a
+          href="https://x.com/SummerFloofy"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SummerFloofy on X"
+          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
+        >
+          <span class="social-icon social-icon--x" aria-hidden="true"></span>
+        </a>
+        <a
+          href="https://bsky.app/profile/summerfloofy.bsky.social"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SummerFloofy on Bluesky"
+          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
+        >
+          <span class="social-icon social-icon--bsky" aria-hidden="true"></span>
+        </a>
+        <a
+          href="https://vgen.co/SummerFloofy"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SummerFloofy on Vgen"
+          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
+        >
+          <span class="social-icon social-icon--vgen" aria-hidden="true"></span>
+        </a>
+        <a
+          href="mailto:Summerfluffball@gmail.com"
+          aria-label="Email SummerFloofy"
+          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
+        >
+          <span class="social-icon social-icon--email" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

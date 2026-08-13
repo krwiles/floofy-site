@@ -46,3 +46,8 @@
   --icon-src: url('../../assets/kofi-svgrepo-com.svg');
   --icon-ratio: 1 / 1;
 }
+
+.social-icon--email {
+  --icon-src: url('../../assets/email.svg');
+  --icon-ratio: 1 / 1;
+}
