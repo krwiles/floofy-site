@@ -1,6 +1,6 @@
 /* Frosted panel surface */
 .glass-panel {
-  border-radius: 1rem;
+  border-radius: 2rem;
   border: 1px solid color-mix(in srgb, var(--color-border) 75%, transparent);
   background: linear-gradient(
     135deg,
