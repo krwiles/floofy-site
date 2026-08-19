@@ -19,4 +19,12 @@ describe('Streaming', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should include the streaming schedule and Twitch call to action', () => {
+    const content = fixture.nativeElement.textContent;
+
+    expect(content).toContain('11:00 AM EST');
+    expect(content).toContain('Watch on Twitch');
+    expect(content).toContain('SummerFloofy');
+  });
 });

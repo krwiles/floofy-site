@@ -1,0 +1,92 @@
+.stream-schedule-card {
+  border: 1px solid rgb(190 212 255 / 0.55);
+  background: rgba(255, 255, 255, 0.48);
+  box-shadow: 0 20px 20px rgba(15, 23, 42, 0.08);
+  border-radius: 1.75rem;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+}
+
+.stream-schedule-card--highlight {
+  background: linear-gradient(135deg, rgba(169, 190, 219, 0.52), rgba(255, 255, 255, 0.7));
+  border-color: rgba(125, 158, 200, 0.7);
+}
+
+.stream-label {
+  margin: 0 0 0.8rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-on-light-body-subtle);
+}
+
+.stream-time {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--color-on-light-heading);
+}
+
+.stream-detail {
+  margin: 0.75rem 0 0;
+  color: var(--color-on-light-body);
+  line-height: 1.6;
+}
+
+.stream-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.85rem 1.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.stream-cta:hover {
+  transform: translateY(-1px);
+}
+
+.stream-cta--primary {
+  background: linear-gradient(135deg, #a9bedb, #7d9ec8);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 12px 24px rgba(125, 158, 200, 0.28);
+}
+
+.stream-cta--secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-on-dark-heading);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+#twitch-embed {
+  min-height: 430px;
+  width: 100%;
+}
+
+#twitch-embed iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 1.4rem;
+}
+
+@media (max-width: 640px) {
+  .stream-schedule-card {
+    padding: 1.2rem 1rem;
+  }
+
+  #twitch-embed {
+    min-height: 320px;
+  }
+}
