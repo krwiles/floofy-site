@@ -53,8 +53,22 @@
     },
     "contact": {
       "title": "Contact",
-      "description": "Have a question, collaboration idea, or unique commission inquiry? Reach out anytime through the contact page — SummerFloofy would love to hear from you!",
+      "description": "Use this page for collaborations, business questions, press, fan mail, and other messages that are not commissions.",
       "cta": "Get in Touch"
+    },
+    "contact_page": {
+      "form": {
+        "kicker": "Let’s Talk",
+        "title": "Send a Message",
+        "description": "Share a collaboration idea, business question, press request, fan message, or anything else that fits outside of commissions.",
+        "note": "If you’re looking for a commission, please use the commissions page instead.",
+        "submit": "Send Inquiry"
+      },
+      "socials": {
+        "kicker": "Elsewhere",
+        "title": "Direct Contact",
+        "description": "If email is easier, this section gives you the fastest ways to reach me."
+      }
     }
   },
 
@@ -181,61 +195,76 @@
       "description": "Policies, workflow, and terms for all commission requests.",
       "pricing": {
         "title": "Pricing",
-        "item_1": "Base pricing includes one character only",
-        "item_2": "Additional characters, props, and backgrounds cost extra depending on complexity",
-        "item_3": "Complex character designs may incur additional fees",
-        "item_4": "Prices do not include 5% sales tax"
+        "item_1": "Base pricing includes one character.",
+        "item_2": "Additional characters, props, backgrounds, and complex character designs may incur additional fees."
       },
       "revisions": {
         "title": "Revisions",
-        "item_1": "1 major revision during sketch phase",
-        "item_2": "2 minor revisions during coloring phase",
-        "item_3": "Additional revisions may incur extra charges",
-        "item_4": "Major revision examples: pose changes, expression changes"
+        "item_1": "1 major revision during the sketch phase.",
+        "item_2": "2 minor revisions during the coloring phase.",
+        "item_3": "Additional revisions may incur extra charges.",
+        "item_4": "Major revisions include significant changes such as pose or expression adjustments."
       },
       "communication": {
         "title": "Communication",
-        "body": "If you have questions, updates, or simply want to chat about your commission, contact me through VGen or email. I normally send a follow-up email after one day if there is no reply on messaging platforms."
+        "body": "If you have questions or would like updates on your commission, feel free to contact me by email or through the contact page on this website. I'll do my best to respond as soon as possible."
       },
-      "commercial": {
-        "title": "Commercial Usage",
-        "tier_1": "Tier 1",
-        "tier_1_item_1": "Twitch screens",
-        "tier_1_item_2": "YouTube thumbnails",
-        "tier_1_item_3": "Personal websites",
-        "tier_1_item_4": "Convention handouts",
-        "tier_2": "Tier 2",
-        "tier_2_item_1": "Merchandise",
-        "tier_2_item_2": "Digital sales",
-        "tier_2_item_3": "Reproduction/resale"
+      "artwork_usage": {
+        "title": "Artwork Usage",
+        "personal": "Personal (Included)",
+        "personal_item_1": "Personal use only.",
+        "personal_item_2": "No business, distribution, or resale.",
+        "promotion": "Promotion",
+        "promotion_item_1": "Streams & content creation.",
+        "promotion_item_2": "Websites & advertising.",
+        "promotion_item_3": "Business branding.",
+        "distribution": "Distribution",
+        "distribution_item_1": "Free stickers & giveaways.",
+        "distribution_item_2": "Convention handouts.",
+        "distribution_item_3": "Digital or printed copies.",
+        "products": "Products",
+        "products_item_1": "Merchandise.",
+        "products_item_2": "Digital products.",
+        "products_item_3": "Reproduction & resale.",
+        "unsure": "Not sure? Tell me how you plan to use the artwork, and I'll recommend the appropriate license."
       },
       "workflow": {
         "title": "Workflow",
-        "item_1": "Request discussion and quotation",
-        "item_2": "Sketch and color draft approval",
-        "item_3": "Final illustration process",
-        "item_4": "Finished artwork delivered via email"
+        "item_1": "Discussion & quotation.",
+        "item_2": "Sketch approval.",
+        "item_3": "Coloring approval.",
+        "item_4": "Final illustration.",
+        "item_5": "Delivery via email."
       },
       "payment": {
         "title": "Payment",
-        "item_1": "Full payment upfront",
-        "item_2": "Work begins only after payment is received"
+        "item_1": "Full payment is required before work begins.",
+        "item_2": "After your request has been reviewed and discussed, you'll be able to complete payment through Stripe or Ko-fi."
       },
       "tos": {
         "title": "Terms of Service",
         "usage": "Usage",
-        "usage_item_1": "Please use commissions for your own exclusive personal use",
-        "usage_item_2": "Do not use commissions for commercial use or distribution unless discussed",
-        "ip": "Intellectual Property",
-        "ip_item_1": "Some commissioned works may be used in my portfolio. If you want your piece to remain private, please mention it during discussion.",
-        "ip_item_2": "Extensive external modifications (painting over or AI modifications) are not allowed without permission.",
-        "ip_item_3": "You may not use my artwork for AI training.",
-        "ip_item_4": "My artworks are not authorized for blockchain-related technologies such as NFTs or cryptocurrency.",
+        "usage_item_1": "Your commission may only be used according to the usage license selected at the time of purchase.",
+        "usage_item_2": "If you're unsure whether a particular use is covered, please contact me before using the artwork.",
+        "ownership_licensing": "Ownership & Licensing",
+        "ownership_licensing_item_1": "I retain the copyright to all commissioned artwork unless otherwise agreed in writing.",
+        "ownership_licensing_item_2": "Purchasing a commission grants you a non-exclusive, non-transferable license to use the artwork according to the selected usage license. Copyright ownership is not transferred.",
+        "ownership_licensing_item_3": "Any use beyond the selected license requires prior written permission and may require an additional licensing fee.",
+        "portfolio": "Portfolio",
+        "portfolio_item_1": "I may display commissioned artwork in my portfolio, gallery, or on social media.",
+        "portfolio_item_2": "If you'd like your commission to remain private, please let me know before work begins.",
+        "modifications": "Modifications",
+        "modifications_item_1": "Editing, painting over, or AI-generated modifications of the artwork are not permitted without permission.",
+        "ai_blockchain": "AI & Blockchain",
+        "ai_blockchain_item_1": "My artwork may not be used for AI training, machine learning datasets, or similar technologies.",
+        "ai_blockchain_item_2": "My artwork may not be used for NFTs, cryptocurrency, or other blockchain-related technologies.",
+        "delivery": "Delivery",
+        "delivery_item_1": "Final artwork will be delivered in its original resolution via email or another agreed-upon method.",
         "refunds": "Refunds",
-        "refunds_item_1": "No refunds",
+        "refunds_item_1": "Payments are non-refundable once work has begun.",
         "conduct": "Conduct",
-        "conduct_item_1": "Harassment, spam, or repeated rule violations may result in blacklist/rejection",
-        "conduct_item_2": "I reserve the right to reject any commission request"
+        "conduct_item_1": "I reserve the right to decline any commission request.",
+        "conduct_item_2": "Harassment, abusive behavior, spam, or repeated violations of these terms may result in rejection of future commissions or placement on my blacklist."
       }
     },
     "inquire": {
@@ -252,7 +281,7 @@
       },
       "name": {
         "label": "Name",
-        "placeholder": "Your name or username you go by online."
+        "placeholder": "Your name or username."
       },
       "email": {
         "label": "Email",
@@ -272,16 +301,21 @@
       },
       "reference_links": {
         "label": "Reference Links",
-        "placeholder": "URLs, image links, etc."
+        "placeholder": "URLs, image links, etc. of material that can help with the commission."
       },
       "usage_type": {
         "label": "Usage Type",
-        "jump_aria": "Jump to Commercial Usage section",
-        "jump_title": "Jump to Commercial Usage",
+        "jump_aria": "Jump to Artwork Usage section",
+        "jump_title": "Jump to Artwork Usage",
         "personal": "Personal",
-        "commercial_tier_1": "Commercial Tier 1",
-        "commercial_tier_2": "Commercial Tier 2",
+        "promotion": "Promotion",
+        "distribution": "Distribution",
+        "products": "Products",
         "unsure": "Unsure"
+      },
+      "usage_explanation": {
+        "label": "Usage Explanation",
+        "placeholder": "(In this box, briefly explain how you plan to use the artwork. This will help confirm the appropriate usage license.)"
       },
       "price_estimate": {
         "label": "Price Estimate",
@@ -332,8 +366,19 @@
     "hero": {
       "kicker": "SAY HELLO",
       "title": "CONTACT",
-      "description": "Have a question or just want to say hello? Reach out and I'll get back to you as soon as possible.",
-      "tagline": "DMs • Email • Social"
+      "description": "Questions, collaborations, or just want to say hello? I'd love to hear from you.",
+      "tagline": "Email • Social • DMs"
+    },
+    "form": {
+      "kicker": "LET'S TALK",
+      "title": "Send a Message",
+      "description": "Have a business question, collaboration idea, press request, or fan message? Send it my way.",
+      "submit": "Send Message"
+    },
+    "socials": {
+      "kicker": "ELSEWHERE",
+      "title": "Reach Out Online",
+      "description": "Message me on other social platforms~"
     }
   },
   "footer": {
@@ -344,7 +389,7 @@
     "studio": {
       "title": "Studio Info",
       "availabilityLabel": "Commission status",
-      "availabilityValue": "Open via VGen",
+      "availabilityValue": "Open",
       "responseLabel": "Response time",
       "responseValue": "Usually within 2-4 days",
       "supportLabel": "Support",

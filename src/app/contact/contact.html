@@ -18,9 +18,9 @@
     ></app-parallax-section>
   </div>
   <div
-    class="relative z-10 mx-auto flex min-h-[80svh] w-full max-w-7xl items-end justify-center text-left md:justify-end"
+    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
-    <div class="glass-panel hero-reveal-surface mb-16 max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7">
+    <div class="glass-panel hero-reveal-surface max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
       <span
         class="flourish f-full absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:inline-block"
         aria-hidden="true"
@@ -46,3 +46,198 @@
     </div>
   </div>
 </app-parallax-section>
+
+<span
+  class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
+  aria-hidden="true"
+></span>
+
+<!-- Contact Form Section -->
+<app-parallax-section
+  class="bg-section-light"
+  [backgroundImage]="'assets/4-point-stars.svg'"
+  [backgroundSize]="'100px'"
+  [backgroundHeight]="'200%'"
+  [parallaxStrength]="0.6"
+  [ariaLabel]="'General Inquiry Form'"
+>
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <!-- Section heading -->
+      <div class="mb-12 text-center">
+        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+          {{ 'contact.form.kicker' | translate }}
+        </p>
+        <h2
+          class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
+        >
+          {{ 'contact.form.title' | translate }}
+        </h2>
+        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
+          {{ 'contact.form.description' | translate }}
+        </p>
+        <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+          <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <!-- Contact form -->
+      <form
+        class="card-shadow mx-auto max-w-3xl rounded-4xl border border-white/70 bg-section-middle-alt px-8 py-12 text-on-middle-heading"
+        [formRoot]="contactForm"
+      >
+        <div class="grid grid-cols-1 gap-6">
+          <!-- name field -->
+          <div>
+            <label class="text-sm font-semibold">
+              <p class="flex gap-2">
+                Name
+                <span class="text-error" aria-hidden="true">*</span>
+                @if (contactForm.name().invalid() && contactForm.name().touched()) {
+                  <div class="text-error">
+                    @for (error of contactForm.name().errors(); track error.kind) {
+                      <span>{{ error.message }}</span>
+                    }
+                  </div>
+                }
+              </p>
+              <input
+                type="text"
+                [formField]="contactForm.name"
+                placeholder="Enter your name or username"
+                class="mt-2 w-full rounded-base border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
+              />
+            </label>
+          </div>
+
+          <!-- email field -->
+          <div>
+            <label class="text-sm font-semibold">
+              <p class="flex gap-2">
+                Email
+                <span class="text-error" aria-hidden="true">*</span>
+                @if (contactForm.email().invalid() && contactForm.email().touched()) {
+                  <div class="text-error">
+                    @for (error of contactForm.email().errors(); track error.kind) {
+                      <span>{{ error.message }}</span>
+                    }
+                  </div>
+                }
+              </p>
+              <input
+                type="email"
+                [formField]="contactForm.email"
+                placeholder="Enter your email address"
+                class="mt-2 w-full rounded-base border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
+              />
+            </label>
+          </div>
+
+          <!-- Message field -->
+          <div>
+            <label class="text-sm font-semibold">
+              <p class="flex gap-2">
+                Message
+                <span class="text-error" aria-hidden="true">*</span>
+                @if (contactForm.message().invalid() && contactForm.message().touched()) {
+                  <div class="text-error">
+                    @for (error of contactForm.message().errors(); track error.kind) {
+                      <span>{{ error.message }}</span>
+                    }
+                  </div>
+                }
+              </p>
+              <textarea
+                [formField]="contactForm.message"
+                placeholder="Write your message for Floofy."
+                rows="5"
+                class="mt-2 w-full rounded-base border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
+              ></textarea>
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <div class="flex items-center gap-5 pt-4 text-on-middle-body">
+          <button
+            type="submit"
+            class="inline-flex shrink-0 items-center justify-center rounded-base bg-brand px-6 py-3 text-sm font-semibold whitespace-nowrap text-on-light-heading hover:bg-brand-subtle"
+          >
+            {{ 'contact.form.submit' | translate }}
+          </button>
+          <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="contact-status">
+            {{ status() }}
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-parallax-section>
+
+<!-- Contact Socials -->
+<section class="bg-section-middle">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div class="glass-panel mx-auto max-w-3xl border border-white/30 px-5 py-8 sm:px-7">
+      <span
+        class="flourish f-full absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block"
+        aria-hidden="true"
+      ></span>
+
+      <!-- Section heading -->
+      <div class="mb-12 text-center">
+        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+          {{ 'contact.socials.kicker' | translate }}
+        </p>
+        <h2
+          class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
+        >
+          {{ 'contact.socials.title' | translate }}
+        </h2>
+        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
+          {{ 'contact.socials.description' | translate }}
+        </p>
+      </div>
+
+      <div
+        class="grid grid-cols-2 gap-3 text-on-light-heading sm:grid-cols-2 md:grid-cols-4 md:gap-4"
+        role="list"
+        aria-label="Social links"
+      >
+        <a
+          href="https://x.com/SummerFloofy"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SummerFloofy on X"
+          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
+        >
+          <span class="social-icon social-icon--x" aria-hidden="true"></span>
+        </a>
+        <a
+          href="https://bsky.app/profile/summerfloofy.bsky.social"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SummerFloofy on Bluesky"
+          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
+        >
+          <span class="social-icon social-icon--bsky" aria-hidden="true"></span>
+        </a>
+        <a
+          href="https://vgen.co/SummerFloofy"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SummerFloofy on Vgen"
+          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
+        >
+          <span class="social-icon social-icon--vgen" aria-hidden="true"></span>
+        </a>
+        <a
+          href="mailto:Summerfluffball@gmail.com"
+          aria-label="Email SummerFloofy"
+          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
+        >
+          <span class="social-icon social-icon--email" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

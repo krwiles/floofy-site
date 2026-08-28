@@ -1,6 +1,6 @@
 export type CommissionTypeId = 'chibi' | 'emotes' | 'illustration';
 
-export type CommercialTypeId = 'personal' | 'commercial-tier-1' | 'commercial-tier-2';
+export type CommercialTypeId = 'personal' | 'promotion' | 'distribution' | 'products';
 
 export interface CommissionTypePricing {
   id: CommissionTypeId;

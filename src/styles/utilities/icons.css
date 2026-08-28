@@ -1,0 +1,53 @@
+.social-icon {
+  --icon-src: url('../../assets/x-twitter.svg');
+  --icon-ratio: 1 / 1;
+  width: auto;
+  min-height: 1em;
+  aspect-ratio: var(--icon-ratio);
+  flex-shrink: 0;
+  vertical-align: -0.08em;
+  background-color: currentColor;
+  -webkit-mask-image: var(--icon-src);
+  mask-image: var(--icon-src);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.social-icon--x {
+  --icon-src: url('../../assets/x-twitter.svg');
+  --icon-ratio: 1 / 1;
+}
+
+.social-icon--bsky {
+  --icon-src: url('../../assets/bluesky.svg');
+  --icon-ratio: 1 / 1;
+}
+
+.social-icon--pixiv {
+  --icon-src: url('../../assets/pixiv-svgrepo-com.svg');
+  --icon-ratio: 1 / 1;
+}
+
+.social-icon--twitch {
+  --icon-src: url('../../assets/twitch-svgrepo-com.svg');
+  --icon-ratio: 1 / 1;
+}
+
+.social-icon--vgen {
+  --icon-src: url('../../assets/VGen Badge - outline.png');
+  --icon-ratio: 1 / 1;
+}
+
+.social-icon--kofi {
+  --icon-src: url('../../assets/kofi-svgrepo-com.svg');
+  --icon-ratio: 1 / 1;
+}
+
+.social-icon--email {
+  --icon-src: url('../../assets/email.svg');
+  --icon-ratio: 1 / 1;
+}
