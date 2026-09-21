@@ -1,0 +1,144 @@
+/* Frosted panel surface */
+.glass-panel {
+  border-radius: 2rem;
+  border: 1px solid color-mix(in srgb, var(--color-border) 75%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-section-light-alt) 30%, transparent),
+    color-mix(in srgb, var(--color-section-dark) 15%, transparent)
+  );
+  box-shadow:
+    0 0.65rem 1.6rem color-mix(in srgb, var(--color-section-dark-alt) 25%, transparent),
+    0 0.1rem 0.5rem color-mix(in srgb, var(--color-section-dark-alt) 15%, transparent);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
+}
+
+/* Fallback for browsers that do not support backdrop-filter */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-panel {
+    background: color-mix(in srgb, var(--color-section-dark) 66%, transparent);
+  }
+}
+
+.card-on-section-light,
+.card-on-section-light-special {
+  /* Base card for light sections: soft depth, with surface and border painted via ::before. */
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow:
+    0 0.75rem 1.9rem color-mix(in srgb, var(--color-section-dark-alt) 20%, transparent),
+    0 0.15rem 0.6rem color-mix(in srgb, var(--color-section-dark-alt) 10%, transparent);
+}
+
+.card-on-section-middle,
+.card-on-section-middle-special {
+  /* Base card for middle-tone sections: brighter edge and heavier shadow for midtone contrast. */
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow:
+    0 0.75rem 1.9rem color-mix(in srgb, var(--color-section-dark-alt) 30%, transparent),
+    0 0.15rem 0.6rem color-mix(in srgb, var(--color-section-dark-alt) 20%, transparent);
+}
+
+.card-on-section-dark,
+.card-on-section-dark-special {
+  /* Base card for middle-tone sections: brighter edge and heavier shadow for midtone contrast. */
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow:
+    0 0.75rem 1.9rem color-mix(in srgb, var(--color-section-dark-alt) 80%, black),
+    0 0.15rem 0.6rem color-mix(in srgb, var(--color-section-dark-alt) 90%, black);
+}
+
+.card-on-section-light::before,
+.card-on-section-light-special::before,
+.card-on-section-middle::before,
+.card-on-section-middle-special::before,
+.card-on-section-dark::before,
+.card-on-section-dark-special::before {
+  /* Shared background layer so saturation applies only to the painted surface, not content. */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  border-radius: inherit;
+  filter: saturate(130%);
+}
+
+.card-on-section-light::before {
+  /* Light variant gradient: airy top-left to deeper bottom-right. */
+  border: 1px solid color-mix(in srgb, var(--color-section-light) 30%, white);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-section-light) 30%, white),
+    color-mix(in srgb, var(--color-section-light-alt) 60%, var(--color-section-middle-alt))
+  );
+}
+
+.card-on-section-light-special::before,
+.card-on-section-middle-special::before {
+  /* Special light gradient: starts richer for a subtle featured feel. */
+  border: 1px solid color-mix(in srgb, var(--color-section-dark) 15%, var(--color-section-middle));
+  background: linear-gradient(
+    135deg,
+    var(--color-section-middle),
+    color-mix(in srgb, var(--color-section-light) 90%, white)
+  );
+}
+
+.card-on-section-middle::before {
+  /* Middle variant gradient: brighter lead with darker trailing stop for depth. */
+  border: 1px solid color-mix(in srgb, var(--color-section-middle) 60%, white);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-section-middle) 60%, white),
+    color-mix(in srgb, var(--color-section-middle) 90%, var(--color-section-dark-alt))
+  );
+}
+
+.card-on-section-dark::before {
+  /* Dark variant gradient: deep and moody for contrast. */
+  border: 1px solid color-mix(in srgb, var(--color-section-dark) 90%, white);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-section-dark) 90%, white),
+    var(--color-section-dark-alt)
+  );
+}
+
+.card-on-section-dark-special::before {
+  /* Special dark gradient: starts richer for a subtle featured feel. */
+  border: 1px solid color-mix(in srgb, var(--color-section-dark) 70%, var(--color-section-middle));
+  background: linear-gradient(
+    135deg,
+    var(--color-section-dark),
+    color-mix(in srgb, var(--color-section-dark) 70%, var(--color-section-middle))
+  );
+}
+
+.card-on-section-light > *,
+.card-on-section-light-special > *,
+.card-on-section-middle > *,
+.card-on-section-middle-special > *,
+.card-on-section-dark > *,
+.card-on-section-dark-special > * {
+  /* Keep card content above the pseudo-element background layer. */
+  position: relative;
+  z-index: 1;
+}
+
+.card-shadow {
+  /* Utility depth shadow for elements that need elevation without a full card surface style. */
+  box-shadow:
+    0 0.65rem 1.6rem color-mix(in srgb, var(--color-section-dark-alt) 25%, transparent),
+    0 0.1rem 0.5rem color-mix(in srgb, var(--color-section-dark-alt) 15%, transparent);
+}
