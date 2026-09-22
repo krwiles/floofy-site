@@ -1,6 +1,6 @@
 <!-- Gallery Hero -->
 <app-parallax-section
-  class="bg-[#D3DCC7]"
+  class="bg-hero-gallery"
   [backgroundImage]="'assets/4-point-stars.svg'"
   [backgroundSize]="'100px'"
   [backgroundHeight]="'200%'"
@@ -96,7 +96,7 @@
     <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
       <img
         animate.enter="enter-image"
-        class="lightbox-image max-h-screen max-w-screen bg-[#222] shadow-[0_0_3rem_rgb(0,0,0)]"
+        class="lightbox-image max-h-screen max-w-screen bg-lightbox-backdrop shadow-[0_0_3rem_rgb(0,0,0)]"
         [src]="$safeNavigationMigration(selectedImage()?.srcFull)"
         [alt]="$safeNavigationMigration(selectedImage()?.alt)"
         loading="eager"
