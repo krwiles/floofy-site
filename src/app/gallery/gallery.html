@@ -21,10 +21,7 @@
     class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
     <div class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
-      <span
-        class="flourish f-full absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:inline-block"
-        aria-hidden="true"
-      ></span>
+      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:inline-block" />
       <p
         class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-dark-heading uppercase sm:text-[0.95rem]"
       >
@@ -47,20 +44,10 @@
   </div>
 </app-parallax-section>
 
-<span
-  class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
-  aria-hidden="true"
-></span>
+<app-section-divider />
 
 <!-- Gallery Section -->
-<app-parallax-section
-  class="bg-section-dark"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Streaming Section'"
->
+<app-section tone="dark" pattern="circles" ariaLabel="Streaming Section">
   <div class="mx-auto max-w-7xl columns-1 gap-8 px-4 py-8 sm:py-16 md:columns-2 lg:columns-3 lg:px-6">
     @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index) {
       @defer (on viewport) {
@@ -81,7 +68,7 @@
       }
     }
   </div>
-</app-parallax-section>
+</app-section>
 
 <!-- TODO fix the defer placeholder, just make it invisible. It flashes in and looks odd-->
 <!-- TODO fix the dropdown, also ask about going to a url like /gallery and it doesn't load. Can we fix this? -->
