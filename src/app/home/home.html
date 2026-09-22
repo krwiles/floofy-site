@@ -55,7 +55,7 @@
   <div class="mx-auto max-w-7xl px-4 py-10 sm:py-24 lg:px-6">
     <!-- Gallery carousel -->
     <div
-      class="animate-on-scroll card-shadow mx-auto aspect-5/2 h-auto max-w-5xl rounded-3xl border-white/10 bg-white/5 sm:p-4 md:border"
+      appReveal class="card-shadow mx-auto aspect-5/2 h-auto max-w-5xl rounded-3xl border-white/10 bg-white/5 sm:p-4 md:border"
     >
       <app-carousel [images]="images"></app-carousel>
     </div>
@@ -66,19 +66,19 @@
     >
       <div>
         <h2
-          class="animate-on-scroll mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-dark-heading md:justify-start"
+          appReveal class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-dark-heading md:justify-start"
         >
           {{ 'home.gallery.title' | translate }}
           <span class="flourish f-end flip hidden text-on-dark-heading md:inline-block" aria-hidden="true"></span>
         </h2>
 
-        <p class="animate-on-scroll mt-4 max-w-3xl leading-7 text-on-dark-body">
+        <p appReveal class="mt-4 max-w-3xl leading-7 text-on-dark-body">
           {{ 'home.gallery.description' | translate }}
         </p>
       </div>
       <a
         routerLink="/gallery"
-        class="animate-on-scroll inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong md:self-start"
+        appReveal class="inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong md:self-start"
       >
         {{ 'home.gallery.cta' | translate }}
       </a>
@@ -103,18 +103,18 @@
   <div class="py-24">
     <!-- Section header -->
     <div class="mb-12 text-center">
-      <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-light-body-subtle uppercase">
+      <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-light-body-subtle uppercase">
         {{ 'home.discover.kicker' | translate }}
       </p>
       <h2
-        class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-light-heading"
+        appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-light-heading"
       >
         {{ 'home.discover.title' | translate }}
       </h2>
-      <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-light-body">
+      <p appReveal class="mx-auto mb-2 max-w-3xl leading-7 text-on-light-body">
         {{ 'home.discover.description' | translate }}
       </p>
-      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+      <div appReveal class="mx-auto mb-12 flex justify-center">
         <span class="flourish f-full h-8 text-on-light-heading" aria-hidden="true"></span>
       </div>
     </div>
@@ -123,7 +123,7 @@
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
       <!-- About image -->
       <img
-        class="animate-on-scroll card-shadow block max-h-90 w-auto justify-self-end rounded-2xl object-cover"
+        appReveal class="card-shadow block max-h-90 w-auto justify-self-end rounded-2xl object-cover"
         ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
         alt="Floofy"
         width="621"
@@ -132,17 +132,17 @@
       <!-- About text -->
       <div class="mt-4 text-center md:mt-0 md:text-left">
         <h2
-          class="animate-on-scroll mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
+          appReveal class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
         >
           {{ 'home.about.title' | translate }}
           <span class="flourish f-end flip hidden text-on-light-heading md:inline-block" aria-hidden="true"></span>
         </h2>
-        <p class="animate-on-scroll mb-6 leading-7 text-on-light-body">
+        <p appReveal class="mb-6 leading-7 text-on-light-body">
           {{ 'home.about.description' | translate }}
         </p>
         <a
           routerLink="/about"
-          class="animate-on-scroll inline-flex items-center rounded-xl bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appReveal class="inline-flex items-center rounded-xl bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'home.about.cta' | translate }}
         </a>
@@ -155,22 +155,22 @@
     >
       <div class="mt-4 text-center md:mt-0 md:text-right">
         <h2
-          class="animate-on-scroll mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-end"
+          appReveal class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-end"
         >
           <span class="flourish f-end hidden text-on-light-heading md:inline-block" aria-hidden="true"></span>
           {{ 'home.commission.title' | translate }}
         </h2>
-        <p class="animate-on-scroll mb-6 leading-7 text-on-light-body">
+        <p appReveal class="mb-6 leading-7 text-on-light-body">
           {{ 'home.commission.description' | translate }}
         </p>
         <a
           routerLink="/commission"
-          class="animate-on-scroll inline-flex items-center rounded-xl bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appReveal class="inline-flex items-center rounded-xl bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'home.commission.cta' | translate }}
         </a>
       </div>
-      <div class="animate-on-scroll flex w-full flex-row items-center justify-center gap-4 pt-4 md:pt-0 lg:pt-0">
+      <div appReveal class="flex w-full flex-row items-center justify-center gap-4 pt-4 md:pt-0 lg:pt-0">
         <img
           ngSrc="assets/HE_aWzObYAAc7MN.jpeg"
           width="900"
@@ -191,7 +191,7 @@
     <!-- Streaming -->
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
       <img
-        class="animate-on-scroll card-shadow w-full rounded-2xl"
+        appReveal class="card-shadow w-full rounded-2xl"
         ngSrc="assets/6BA33836.jpeg"
         alt="Floofy"
         width="1718"
@@ -199,17 +199,17 @@
       />
       <div class="mt-4 text-center md:mt-0 md:text-left">
         <h2
-          class="animate-on-scroll mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
+          appReveal class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
         >
           {{ 'home.streaming.title' | translate }}
           <span class="flourish f-end flip hidden text-on-light-heading md:inline-block" aria-hidden="true"></span>
         </h2>
-        <p class="animate-on-scroll mb-6 leading-7 text-on-light-body">
+        <p appReveal class="mb-6 leading-7 text-on-light-body">
           {{ 'home.streaming.description' | translate }}
         </p>
         <a
           routerLink="/streaming"
-          class="animate-on-scroll inline-flex items-center rounded-xl bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appReveal class="inline-flex items-center rounded-xl bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'home.streaming.cta' | translate }}
         </a>
@@ -228,25 +228,25 @@
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <!-- Section header -->
     <div class="mb-12 text-center">
-      <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+      <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
         {{ 'home.support.kicker' | translate }}
       </p>
       <h2
-        class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
+        appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
       >
         {{ 'home.support.title' | translate }}
       </h2>
-      <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-middle-body">
+      <p appReveal class="mx-auto mb-2 max-w-3xl leading-7 text-on-middle-body">
         {{ 'home.support.description' | translate }}
       </p>
-      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+      <div appReveal class="mx-auto mb-12 flex justify-center">
         <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
       </div>
     </div>
 
     <div class="grid gap-6 lg:grid-cols-3">
       <!-- Reviews -->
-      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+      <div appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
         <h3
           class="mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-start"
         >
@@ -268,7 +268,7 @@
       </div>
 
       <!-- Donate -->
-      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+      <div appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
         <h3
           class="mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-start"
         >
@@ -290,7 +290,7 @@
       </div>
 
       <!-- Contact -->
-      <div class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+      <div appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
         <h3
           class="mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-start"
         >

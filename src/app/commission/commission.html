@@ -56,18 +56,18 @@
     <div id="commission-types" class="rounded-4xl">
       <!-- Section heading -->
       <div class="mb-12 text-center">
-        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
+        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
           {{ 'commission.pricing_section.kicker' | translate }}
         </p>
         <h2
-          class="animate-on-scroll mb-4 scroll-mt-32 rounded-md text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appReveal class="mb-4 scroll-mt-32 rounded-md text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         >
           {{ 'commission.pricing_section.title' | translate }}
         </h2>
-        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
+        <p appReveal class="mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
           {{ 'commission.pricing_section.description' | translate }}
         </p>
-        <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+        <div appReveal class="mx-auto mb-12 flex justify-center">
           <span class="flourish f-full h-8 text-on-dark-heading" aria-hidden="true"></span>
         </div>
       </div>
@@ -75,10 +75,10 @@
       <div class="grid gap-6 lg:grid-cols-3">
         <!-- Pricing Card: Chibi -->
         <div class="card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
-          <h3 class="animate-on-scroll text-2xl font-black text-on-dark-heading">
+          <h3 appReveal class="text-2xl font-black text-on-dark-heading">
             {{ 'commission.cards.chibi.title' | translate }}
           </h3>
-          <p class="animate-on-scroll mt-6 flex items-baseline">
+          <p appReveal class="mt-6 flex items-baseline">
             <span class="text-5xl font-extrabold text-on-dark-heading">
               {{ pricingService.getBasePriceUsd('chibi') | currency: 'USD' : 'symbol' : '2.0-0' }}
             </span>
@@ -86,12 +86,12 @@
           </p>
           <!-- Carousel -->
           <div
-            class="animate-on-scroll card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
+            appReveal class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
           >
             <app-carousel [images]="chibiCarouselImages" [controls]="true"></app-carousel>
           </div>
           <div class="mt-6 space-y-4 text-sm leading-7 text-on-dark-body">
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.includes' | translate }}
               </p>
@@ -100,7 +100,7 @@
                 <li>{{ 'commission.cards.chibi.includes_2' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.excludes' | translate }}
               </p>
@@ -110,7 +110,7 @@
                 <li>{{ 'commission.cards.chibi.excludes_3' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.details' | translate }}
               </p>
@@ -120,7 +120,7 @@
                 <li>{{ 'commission.cards.chibi.details_3' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.notes' | translate }}
               </p>
@@ -129,7 +129,7 @@
                 <li>{{ 'commission.cards.chibi.notes_2' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.turnaround' | translate }}
               </p>
@@ -141,7 +141,7 @@
           </div>
           <a
             (click)="scrollToForm('chibi')"
-            class="animate-on-scroll mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+            appReveal class="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
           >
             {{ 'commission.cards.chibi.cta' | translate }}
           </a>
@@ -149,10 +149,10 @@
 
         <!-- Pricing Card: Emotes -->
         <div class="card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
-          <h3 class="animate-on-scroll text-2xl font-black text-on-dark-heading">
+          <h3 appReveal class="text-2xl font-black text-on-dark-heading">
             {{ 'commission.cards.emotes.title' | translate }}
           </h3>
-          <p class="animate-on-scroll mt-6 flex items-baseline">
+          <p appReveal class="mt-6 flex items-baseline">
             <span class="text-5xl font-extrabold text-on-dark-heading">
               {{ pricingService.getBasePriceUsd('emotes') | currency: 'USD' : 'symbol' : '2.0-0' }}
             </span>
@@ -161,12 +161,12 @@
 
           <!-- Carousel -->
           <div
-            class="animate-on-scroll card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
+            appReveal class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
           >
             <app-carousel [images]="emoteCarouselImages" [controls]="true"></app-carousel>
           </div>
           <div class="mt-6 space-y-4 text-sm leading-7 text-on-dark-body">
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.includes' | translate }}
               </p>
@@ -175,7 +175,7 @@
                 <li>{{ 'commission.cards.emotes.includes_2' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.excludes' | translate }}
               </p>
@@ -184,7 +184,7 @@
                 <li>{{ 'commission.cards.emotes.excludes_2' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.details' | translate }}
               </p>
@@ -194,7 +194,7 @@
                 <li>{{ 'commission.cards.emotes.details_3' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.notes' | translate }}
               </p>
@@ -206,7 +206,7 @@
                 <li>{{ 'commission.cards.emotes.notes_3' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.turnaround' | translate }}
               </p>
@@ -218,7 +218,7 @@
           </div>
           <a
             (click)="scrollToForm('emotes')"
-            class="animate-on-scroll mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+            appReveal class="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
           >
             {{ 'commission.cards.emotes.cta' | translate }}
           </a>
@@ -226,10 +226,10 @@
 
         <!-- Pricing Card: Illustration -->
         <div class="card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
-          <h3 class="animate-on-scroll text-2xl font-black text-on-dark-heading">
+          <h3 appReveal class="text-2xl font-black text-on-dark-heading">
             {{ 'commission.cards.illustration.title' | translate }}
           </h3>
-          <p class="animate-on-scroll mt-6 flex items-baseline">
+          <p appReveal class="mt-6 flex items-baseline">
             <span class="text-5xl font-extrabold text-on-dark-heading">
               {{ pricingService.getBasePriceUsd('illustration') | currency: 'USD' : 'symbol' : '2.0-0' }}
             </span>
@@ -238,12 +238,12 @@
 
           <!-- Carousel -->
           <div
-            class="animate-on-scroll card-shadow mt-6 aspect-3/4 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
+            appReveal class="card-shadow mt-6 aspect-3/4 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
           >
             <app-carousel [images]="illustrationCarouselImages" [controls]="true"></app-carousel>
           </div>
           <div class="mt-6 space-y-4 text-sm leading-7 text-on-dark-body">
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.includes' | translate }}
               </p>
@@ -252,7 +252,7 @@
                 <li>{{ 'commission.cards.illustration.includes_2' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.excludes' | translate }}
               </p>
@@ -261,7 +261,7 @@
                 <li>{{ 'commission.cards.illustration.excludes_2' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.details' | translate }}
               </p>
@@ -270,7 +270,7 @@
                 <li>{{ 'commission.cards.illustration.details_2' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.notes' | translate }}
               </p>
@@ -278,7 +278,7 @@
                 <li>{{ 'commission.cards.illustration.notes_1' | translate }}</li>
               </ul>
             </div>
-            <div class="animate-on-scroll">
+            <div appReveal>
               <p class="text-xs font-semibold tracking-[0.2em] text-on-dark-heading uppercase">
                 {{ 'commission.labels.turnaround' | translate }}
               </p>
@@ -290,7 +290,7 @@
           </div>
           <a
             (click)="scrollToForm('illustration')"
-            class="animate-on-scroll mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+            appReveal class="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
           >
             {{ 'commission.cards.illustration.cta' | translate }}
           </a>
@@ -306,18 +306,18 @@
     <div id="commission-terms" class="rounded-4xl">
       <!-- Section heading -->
       <div class="mb-12 text-center">
-        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
           {{ 'commission.terms.kicker' | translate }}
         </p>
         <h2
-          class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
+          appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
         >
           {{ 'commission.terms.title' | translate }}
         </h2>
-        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
+        <p appReveal class="mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
           {{ 'commission.terms.description' | translate }}
         </p>
-        <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+        <div appReveal class="mx-auto mb-12 flex justify-center">
           <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
         </div>
       </div>
@@ -325,7 +325,7 @@
       <div class="grid gap-6 lg:grid-cols-3">
         <div class="space-y-6">
           <!-- Terms Card: Revisions -->
-          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.revisions.title' | translate }}
             </h3>
@@ -338,7 +338,7 @@
           </article>
 
           <!-- Terms Card: Workflow -->
-          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.workflow.title' | translate }}
             </h3>
@@ -352,7 +352,7 @@
           </article>
 
           <!-- Terms Card: Communication -->
-          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.communication.title' | translate }}
             </h3>
@@ -364,7 +364,7 @@
 
         <div class="space-y-6">
           <!-- Terms Card: Pricing -->
-          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.pricing.title' | translate }}
             </h3>
@@ -377,7 +377,7 @@
           <!-- Terms Card: Artwork Usage -->
           <article
             id="artwork-usage"
-            class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
+            appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
           >
             <h3
               class="scroll-mt-32 rounded-md text-2xl font-black text-on-middle-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
@@ -434,7 +434,7 @@
           </article>
 
           <!-- Terms Card: Payment -->
-          <article class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.payment.title' | translate }}
             </h3>
@@ -448,7 +448,7 @@
         <div>
           <!-- Terms Card: Terms of Service -->
           <article
-            class="animate-on-scroll card-shadow rounded-4xl border border-white/60 bg-white/30 p-8 focus-visible:outline-2 focus-visible:outline-brand-strong"
+            appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8 focus-visible:outline-2 focus-visible:outline-brand-strong"
           >
             <h3
               class="scroll-mt-32 rounded-md text-2xl font-black text-on-middle-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
@@ -558,21 +558,21 @@
     <div id="commission-form" class="mx-auto max-w-3xl rounded-4xl">
       <!-- Section heading -->
       <div class="mb-12 text-center">
-        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
           {{ 'commission.inquire.kicker' | translate }}
         </p>
         <h2
-          class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
+          appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
         >
           {{ 'commission.inquire.title' | translate }}
         </h2>
-        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
+        <p appReveal class="mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
           {{ 'commission.inquire.subtitle' | translate }}
         </p>
-        <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+        <div appReveal class="mx-auto mb-12 flex justify-center">
           <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
         </div>
-        <p class="animate-on-scroll mx-auto mb-2 max-w-2xl leading-7 text-on-middle-body">
+        <p appReveal class="mx-auto mb-2 max-w-2xl leading-7 text-on-middle-body">
           {{ 'commission.inquire.description' | translate }}
         </p>
       </div>

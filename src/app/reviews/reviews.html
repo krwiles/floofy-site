@@ -55,18 +55,18 @@
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <!-- Section heading -->
     <div class="mb-12 text-center">
-      <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
+      <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
         Community Feedback
       </p>
       <h2
-        class="animate-on-scroll mb-4 scroll-mt-32 rounded-md text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+        appReveal class="mb-4 scroll-mt-32 rounded-md text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
       >
         Recent Reviews
       </h2>
-      <p class="animate-on-scroll mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
+      <p appReveal class="mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
         Kind words from tangerines who want to share their experiences.
       </p>
-      <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+      <div appReveal class="mx-auto mb-12 flex justify-center">
         <span class="flourish f-full h-8 text-on-dark-heading" aria-hidden="true"></span>
       </div>
     </div>
@@ -80,7 +80,7 @@
       <ol class="columns-1 gap-x-6 sm:columns-2" aria-label="Client reviews">
         @for (review of reviews(); track review.id) {
           <li
-            class="animate-on-scroll card-shadow mb-6 break-inside-avoid rounded-4xl border border-white/10 bg-white/5 px-6 py-6 sm:px-7 sm:py-7"
+            appReveal class="card-shadow mb-6 break-inside-avoid rounded-4xl border border-white/10 bg-white/5 px-6 py-6 sm:px-7 sm:py-7"
           >
             <article class="flex h-full flex-col">
               <p class="review-quote mb-5 text-lg leading-8 text-on-dark-heading">{{ review.comment }}</p>
@@ -111,18 +111,18 @@
     <div id="commission-form" class="mx-auto max-w-3xl rounded-4xl">
       <!-- Section heading -->
       <div class="mb-12 text-center">
-        <p class="animate-on-scroll mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
+        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
           Share your experience
         </p>
         <h2
-          class="animate-on-scroll mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
+          appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
         >
           Post a review
         </h2>
-        <p class="animate-on-scroll mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
+        <p appReveal class="mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
           Leave your thoughts and feedback for the community to see. Your input helps us improve and grow together.
         </p>
-        <div class="animate-on-scroll mx-auto mb-12 flex justify-center">
+        <div appReveal class="mx-auto mb-12 flex justify-center">
           <span class="flourish f-full h-8 text-on-middle-heading" aria-hidden="true"></span>
         </div>
       </div>

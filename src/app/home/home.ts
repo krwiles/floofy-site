@@ -5,10 +5,11 @@ import { CarouselImage } from '../models/carousel-image.model';
 import { RouterLink } from '@angular/router';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { Reveal } from '../directives/reveal';
 
 @Component({
   selector: 'app-home',
-  imports: [Carousel, NgOptimizedImage, RouterLink, ParallaxSection, TranslatePipe],
+  imports: [Carousel, NgOptimizedImage, RouterLink, ParallaxSection, TranslatePipe, Reveal],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -4,9 +4,9 @@ import { TranslatePipe } from '../pipes/translate.pipe';
 import { ReviewsService } from '../services/reviews.service';
 import { DatePipe } from '@angular/common';
 import { CreateReviewRequest, CreateReviewResponse, Review } from '../models/review.model';
-import { App } from '../app';
 import { form, FormField, FormRoot, max, maxLength, required, submit } from '@angular/forms/signals';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Reveal } from '../directives/reveal';
 
 interface ReviewFormValue {
   author: string;
@@ -16,14 +16,13 @@ interface ReviewFormValue {
 
 @Component({
   selector: 'app-reviews',
-  imports: [ParallaxSection, TranslatePipe, DatePipe, FormField, FormRoot],
+  imports: [ParallaxSection, TranslatePipe, DatePipe, FormField, FormRoot, Reveal],
   templateUrl: './reviews.html',
   styleUrl: './reviews.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Reviews implements OnInit {
   private readonly reviewsService = inject(ReviewsService);
-  private readonly app = inject(App, { optional: true });
   readonly reviews = signal<Review[]>([]);
   readonly status = signal<string>('');
   statusElement: HTMLElement | null = null;
@@ -99,12 +98,9 @@ export class Reviews implements OnInit {
     this.reviewsService.getReviews().subscribe({
       next: (reviews) => {
         console.log('GET reviews:', reviews);
+        // Each review card carries appReveal, which registers itself with
+        // RevealService on creation -- no manual re-scan needed here.
         this.reviews.set(reviews);
-
-        // Re-scan animate-on-scroll elements after Angular renders the fetched reviews.
-        setTimeout(() => {
-          this.app?.observerInit();
-        }, 0);
       },
       error: (err) => {
         console.log('GET error:', err);
