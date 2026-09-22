@@ -2,6 +2,8 @@
 
 Planning documents for restructuring the site for readability, consistency and ease of development.
 **Status: planning only. No application code has been changed.** Written 2026-09-21 on branch `working`.
+Card styles (`src/styles/components/cards.css`) are finished and committed. Phase 0 has a concrete, ready-to-execute
+plan (`06-phase-0-plan.md`), settled via a `/grilling` session — awaiting the owner's go-ahead to execute.
 
 ## Goals (from the owner)
 
@@ -20,6 +22,7 @@ Planning documents for restructuring the site for readability, consistency and e
 | [03-target-architecture.md](03-target-architecture.md) | Target folder layout, styling layers, data, i18n, forms, testing conventions |
 | [04-upgrade-plan.md](04-upgrade-plan.md) | Angular 22 / TypeScript / Node / Tailwind upgrade and the Flowbite removal analysis |
 | [05-roadmap.md](05-roadmap.md) | Phased, checkable work plan, risks, and open decisions |
+| [06-phase-0-plan.md](06-phase-0-plan.md) | Concrete, commit-by-commit execution plan for Phase 0 (baseline), ready to run |
 
 ## Ground rules while this is in progress
 

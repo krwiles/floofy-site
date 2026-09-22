@@ -13,16 +13,21 @@ otherwise, does not change how the site looks.
 
 ## Phase 0 — Baseline and safety net
 
-- [ ] **⏸** Owner finishes `src/styles/components/cards.css` (card design) and commits the WIP on `working`
-      (`cards.css` added, `glass.css` deleted, `contact.html` new section).
-- [ ] Decide what to do with the unfinished "Reviews, donate, contact" section in `contact.html` (~180 lines).
-- [ ] Fix the 7 failing spec files so `ng test` is green (see findings: `ParallaxSection` required input, missing
-      HTTP/router providers, …).
-- [ ] Add `.gitattributes` (`* text=auto eol=lf`) to end CRLF warnings.
-- [ ] Capture baseline screenshots for every route at 375 / 768 / 1280 px (both locales for a couple of pages) and
-      record `ng build` bundle sizes.
-- [ ] Create `CLAUDE.md` with the commands, conventions and a link to `docs/refactor/`.
-- [ ] Owner upgrades Node to ≥ 24.15 (required for Angular 22).
+Concrete, commit-by-commit plan: **[06-phase-0-plan.md](06-phase-0-plan.md)** (settled 2026-09-21). Checklist below
+kept for status tracking; see that document for exact diffs.
+
+- [x] Owner finished `src/styles/components/cards.css` (card design) — committed.
+- [x] Owner upgraded Node to 24.21.0 (Angular 22 requires ≥ 24.15).
+- [ ] Decide what to do with the unfinished "Reviews, donate, contact" section in `contact.html` (~180 lines) —
+      still open, not part of the 06 plan; ask the owner before Phase 6 touches `contact.html`.
+- [ ] Branch `refactor/phase-0-baseline` off `working`.
+- [ ] Fix the 7 failing spec files (12 commits, see `06-phase-0-plan.md`).
+- [ ] `.gitattributes` (`* text=auto eol=lf`) + renormalize existing CRLF files.
+- [ ] Remove the unused `RouterLink` import in `About`.
+- [ ] Create `CLAUDE.md` (short version — commands, naming convention, pointer to `docs/refactor/`).
+- [ ] Add scripted visual baseline (Playwright + pixelmatch), capture 24 screenshots (8 routes × 3 widths, English
+      only). Claude never views the images — only file paths/sizes and diff percentages. See [[feedback-art-privacy]].
+- [ ] Verify `ng build` + `ng test` green, merge directly into `working` (no PR).
 
 ## Phase 1 — Upgrade (see `04-upgrade-plan.md`)
 
@@ -74,7 +79,9 @@ otherwise, does not change how the site looks.
 
 - [ ] Move pages into `features/`, shared UI into `shared/`, singletons into `core/` (mechanical moves, one commit
       per folder, imports fixed by the build).
-- [ ] Split assets into `images/`, `icons/`, `patterns/` (mechanical, dedicated commit).
+- [ ] **Name and organise all image/media assets by type** (owner-requested; details in `03-target-architecture.md`):
+      generate a manifest → owner supplies names/alt text → scripted `git mv` + reference rewrite → `ng build`. Decide
+      the 3 unreferenced files. Do together with the next item.
 - [ ] Extract `gallery.json`; derive home carousel, commission carousels and gallery page from it; real alt text.
 - [ ] Split `commission.html` into pricing card ×3, terms card ×7, form, usage picker.
 - [ ] Lightbox + gallery grid (a11y, focus trap, keyboard, `ScrollLockService`, invisible defer placeholder).
@@ -105,7 +112,10 @@ otherwise, does not change how the site looks.
 3. **i18n approach** — keep custom (lazy-loaded, signal-friendly; proposed) vs a library.
 4. **Flowbite removal** — confirm removing entirely (proposed) rather than keeping the CSS theme/plugin.
 5. **Folder layout** — `features/ shared/ core/` (proposed) vs staying flat.
-6. **Visual regression tooling** — Playwright script (adds a dev dependency) vs manual before/after checks in a browser.
+6. **Visual regression tooling** — must keep the art out of Claude's view (owner request). Options: local Playwright
+   capture + pixel-diff that reports only numbers (adds dev dependencies), or headless Chrome CLI screenshots + a
+   small diff script, or the owner eyeballs before/after themselves. The Claude-in-Chrome tool is fine for non-visual
+   checks (DOM, console, network, computed styles) but its screenshots are returned to Claude, so not for art pages.
 7. **Deployment targets** — GitHub Pages only, or also Vercel / custom domain? (drives Twitch `parent`, base-href and
    404 fallback handling.)
 8. **Fonts** — keep Google Fonts (link tags) or self-host.
