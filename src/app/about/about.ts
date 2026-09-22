@@ -3,13 +3,14 @@ import { ParallaxSection } from '../components/parallax-section/parallax-section
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { NgOptimizedImage } from '@angular/common';
 import { Reveal } from '../directives/reveal';
+import { Flourish } from '../components/flourish/flourish';
 
 // Declare the Twitter widgets object to avoid TypeScript errors
 declare const twttr: { widgets: { load: () => void } };
 
 @Component({
   selector: 'app-about',
-  imports: [ParallaxSection, TranslatePipe, NgOptimizedImage, Reveal],
+  imports: [ParallaxSection, TranslatePipe, NgOptimizedImage, Reveal, Flourish],
   templateUrl: './about.html',
   styleUrl: './about.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

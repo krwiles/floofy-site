@@ -5,6 +5,7 @@ import { TranslatePipe } from '../pipes/translate.pipe';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { ContactService } from '../services/contact.service';
 import { Reveal } from '../directives/reveal';
+import { Flourish } from '../components/flourish/flourish';
 
 interface ContactFormData {
   name: string;
@@ -14,7 +15,7 @@ interface ContactFormData {
 
 @Component({
   selector: 'app-contact',
-  imports: [ParallaxSection, TranslatePipe, FormRoot, FormField, Reveal],
+  imports: [ParallaxSection, TranslatePipe, FormRoot, FormField, Reveal, Flourish],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

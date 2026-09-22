@@ -9,6 +9,7 @@ import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { CreateCommissionRequest } from '../models/commission.model';
 import { CommissionService } from '../services/commission.service';
 import { Reveal } from '../directives/reveal';
+import { Flourish } from '../components/flourish/flourish';
 
 interface CommissionFormValue {
   name: string;
@@ -25,7 +26,7 @@ interface CommissionFormValue {
 
 @Component({
   selector: 'app-commission',
-  imports: [Carousel, ParallaxSection, TranslatePipe, FormField, CurrencyPipe, PercentPipe, FormRoot, Reveal],
+  imports: [Carousel, ParallaxSection, TranslatePipe, FormField, CurrencyPipe, PercentPipe, FormRoot, Reveal, Flourish],
   templateUrl: './commission.html',
   styleUrl: './commission.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

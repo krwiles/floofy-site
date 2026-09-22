@@ -6,10 +6,11 @@ import { RouterLink } from '@angular/router';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { Reveal } from '../directives/reveal';
+import { Flourish } from '../components/flourish/flourish';
 
 @Component({
   selector: 'app-home',
-  imports: [Carousel, NgOptimizedImage, RouterLink, ParallaxSection, TranslatePipe, Reveal],
+  imports: [Carousel, NgOptimizedImage, RouterLink, ParallaxSection, TranslatePipe, Reveal, Flourish],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

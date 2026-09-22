@@ -1,10 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { Flourish } from '../components/flourish/flourish';
 
 @Component({
   selector: 'app-streaming',
-  imports: [ParallaxSection],
+  imports: [ParallaxSection, Flourish],
   templateUrl: './streaming.html',
   styleUrl: './streaming.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

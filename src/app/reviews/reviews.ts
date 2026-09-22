@@ -7,6 +7,7 @@ import { CreateReviewRequest, CreateReviewResponse, Review } from '../models/rev
 import { form, FormField, FormRoot, max, maxLength, required, submit } from '@angular/forms/signals';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Reveal } from '../directives/reveal';
+import { Flourish } from '../components/flourish/flourish';
 
 interface ReviewFormValue {
   author: string;
@@ -16,7 +17,7 @@ interface ReviewFormValue {
 
 @Component({
   selector: 'app-reviews',
-  imports: [ParallaxSection, TranslatePipe, DatePipe, FormField, FormRoot, Reveal],
+  imports: [ParallaxSection, TranslatePipe, DatePipe, FormField, FormRoot, Reveal, Flourish],
   templateUrl: './reviews.html',
   styleUrl: './reviews.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

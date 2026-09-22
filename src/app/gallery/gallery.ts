@@ -5,10 +5,11 @@ import { DOCUMENT } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { Flourish } from '../components/flourish/flourish';
 
 @Component({
   selector: 'app-gallery',
-  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe],
+  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe, Flourish],
   templateUrl: './gallery.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './gallery.css',
