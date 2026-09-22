@@ -136,6 +136,16 @@
   z-index: 1;
 }
 
+.card-shadow {
+  /* Kept for streaming.html, deliberately not migrated in Phase 3b (explicit owner exclusion -- see
+     docs/refactor/10-phase-3b-plan.md). Every other usage of this flat, non-tone-aware utility has moved to
+     [appCard noBackground], which uses the tone-aware .card-shadow-{tone} classes below instead. Remove this
+     once streaming gets its own pass and no longer needs it. */
+  box-shadow:
+    0 0.65rem 1.6rem color-mix(in srgb, var(--color-section-dark-alt) 25%, transparent),
+    0 0.1rem 0.5rem color-mix(in srgb, var(--color-section-dark-alt) 15%, transparent);
+}
+
 .card-shadow-light {
   /* Shadow-only, tone-aware: same depth as .card-on-section-light, no fill/border. For images and other
      elements that need elevation without becoming a full card. Standardized radius -- the images this

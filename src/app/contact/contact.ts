@@ -8,6 +8,8 @@ import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
+import { Card } from '../directives/card';
+import { Button } from '../directives/button';
 
 interface ContactFormData {
   name: string;
@@ -17,7 +19,18 @@ interface ContactFormData {
 
 @Component({
   selector: 'app-contact',
-  imports: [ParallaxSection, TranslatePipe, FormRoot, FormField, Flourish, SectionDivider, SectionHeader, Section],
+  imports: [
+    ParallaxSection,
+    TranslatePipe,
+    FormRoot,
+    FormField,
+    Flourish,
+    SectionDivider,
+    SectionHeader,
+    Section,
+    Card,
+    Button,
+  ],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
