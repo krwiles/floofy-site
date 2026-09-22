@@ -11,23 +11,32 @@ otherwise, does not change how the site looks.
 
 ---
 
-## Phase 0 — Baseline and safety net
+## Phase 0 — Baseline and safety net ✅ done (2026-09-21)
 
-Concrete, commit-by-commit plan: **[06-phase-0-plan.md](06-phase-0-plan.md)** (settled 2026-09-21). Checklist below
-kept for status tracking; see that document for exact diffs.
+Executed via **[06-phase-0-plan.md](06-phase-0-plan.md)** on branch `refactor/phase-0-baseline`, fast-forward merged
+into `working` at `5d54109`. `ng build` and `ng test` both exit 0 (20/20 spec files, 27/27 tests).
 
 - [x] Owner finished `src/styles/components/cards.css` (card design) — committed.
 - [x] Owner upgraded Node to 24.21.0 (Angular 22 requires ≥ 24.15).
-- [ ] Decide what to do with the unfinished "Reviews, donate, contact" section in `contact.html` (~180 lines) —
-      still open, not part of the 06 plan; ask the owner before Phase 6 touches `contact.html`.
-- [ ] Branch `refactor/phase-0-baseline` off `working`.
-- [ ] Fix the 7 failing spec files (12 commits, see `06-phase-0-plan.md`).
-- [ ] `.gitattributes` (`* text=auto eol=lf`) + renormalize existing CRLF files.
-- [ ] Remove the unused `RouterLink` import in `About`.
-- [ ] Create `CLAUDE.md` (short version — commands, naming convention, pointer to `docs/refactor/`).
-- [ ] Add scripted visual baseline (Playwright + pixelmatch), capture 24 screenshots (8 routes × 3 widths, English
-      only). Claude never views the images — only file paths/sizes and diff percentages. See [[feedback-art-privacy]].
-- [ ] Verify `ng build` + `ng test` green, merge directly into `working` (no PR).
+- [x] Branch `refactor/phase-0-baseline` off `working`, fast-forward merged, branch deleted.
+- [x] Fixed all 7 failing spec files (11 commits — one more than planned; see note below).
+- [x] `.gitattributes` (`* text=auto eol=lf`); `--renormalize` found nothing to change (files were already LF).
+- [x] Removed the unused `RouterLink` import in `About`.
+- [x] `CLAUDE.md` created (short version).
+- [x] Scripted visual baseline (Playwright + pixelmatch) added and run: 24 screenshots captured
+      (8 routes × 3 widths, English only) to `__screenshots__/baseline/` (gitignored, not committed). Diff script
+      self-tested (baseline vs. baseline → 0.00% everywhere). Claude only ever saw file paths/sizes and the diff
+      percent table — never the images. See [[feedback-art-privacy]].
+- [ ] Still open, not part of Phase 0: decide what to do with the unfinished "Reviews, donate, contact" section in
+      `contact.html` (~180 lines) — ask the owner before Phase 6 touches `contact.html`.
+
+**Found during execution, not in the original plan**: fixing `App`'s router-provider issue let `App`'s lifecycle run
+for the first time in a test, which exposed that `ngAfterViewInit` → `observerInit()` calls
+`new IntersectionObserver(...)`, undefined in jsdom — an unhandled exception that made `ng test` exit 1 even though
+all tests "passed". Fixed with a `vi.stubGlobal('IntersectionObserver', …)` shim scoped to `app.spec.ts`
+(`beforeAll`, not `beforeEach`/`afterEach` — a per-test stub raced the deferred `setTimeout` and didn't work). Zero
+change to `App`'s real behavior. The underlying scroll-reveal design (`App.observerInit`) is unchanged and is still
+slated for replacement by `appReveal`/`RevealService` in Phase 3.
 
 ## Phase 1 — Upgrade (see `04-upgrade-plan.md`)
 
