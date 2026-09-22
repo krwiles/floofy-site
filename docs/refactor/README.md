@@ -2,10 +2,15 @@
 
 Planning documents for restructuring the site for readability, consistency and ease of development.
 **Status: planning only. No application code has been changed.** Written 2026-09-21 on branch `working`.
-Card styles (`src/styles/components/cards.css`) are finished and committed. **Phase 0 and Phase 1 (Angular 22
-upgrade) are both done**, merged into `working` (Phase 1 via
-[PR #20](https://github.com/krwiles/floofy-site/pull/20)). Phase 2 (design foundations / style layering) has a
-concrete, ready-to-execute plan — awaiting the owner's go-ahead to execute.
+Card styles (`src/styles/components/cards.css`) are finished and committed. **Phases 0, 1 (Angular 22 upgrade) and
+2 (design foundations) are all done**, merged into `working` (Phase 1 via
+[PR #20](https://github.com/krwiles/floofy-site/pull/20); Phase 2 direct-merged, clean visual diff and code review).
+Next up is Phase 3 (primitives).
+
+**A real, live bug was found during Phase 2, unrelated to it**: the reviews and contact Lambdas' CORS allow-list is
+hardcoded to `http://localhost:4200` only — the actual production site can't fetch reviews or submit the contact
+form. See `05-roadmap.md`'s Phase 2 section for detail. Not fixed (backend, out of scope for this frontend
+refactor) — flagged for the owner to prioritize.
 
 A project domain glossary lives at `/CONTEXT.md` (repo root, not under `docs/refactor/`) — vocabulary for the
 design system (Tone, Card, Glass Panel, Hero color, …), kept up to date as terms get sharpened during planning.

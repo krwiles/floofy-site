@@ -51,8 +51,9 @@ Executed via **[07-phase-1-plan.md](07-phase-1-plan.md)** on branch `refactor/ph
       calls on an empty submit.
 - [x] Visual regression: 21/24 captures pixel-identical to the Phase 0 baseline; the 3 `reviews` mismatches traced
       to the live reviews Lambda returning `503` during capture (confirmed via console log + PNG height comparison,
-      not a rendering regression — see PR #20 for detail). **Separate, unrelated finding to look into**: that Lambda
-      (`isaytzssxo6crcwmqfyoqp54py0yjiyt.lambda-url.us-east-1.on.aws`) was returning `503` twice during this session.
+      not a rendering regression — see PR #20 for detail). **Refined in Phase 2**: the `503` was real but not the
+      full story — the reviews Lambda's CORS policy only allow-lists `http://localhost:4200`, so this same symptom
+      shows up from any other origin regardless of the Lambda's health. See the Phase 2 section below.
 - [x] PR opened and merged by the owner directly — the GitHub MCP server's token didn't have PR-creation permission
       even after the owner updated repo access (still `403` on retry); `gh` CLI isn't installed in either shell. Not
       a blocker, just means I handed off the PR body for the owner to paste rather than opening it myself.
@@ -85,19 +86,39 @@ section-padding scale are all deferred to Phase 3 (no consumer yet; would be spe
 blocker is resolved (finished, see Phase 0) but its *application* across the site is also Phase 3 work, not this
 reorganization.
 
-- [ ] Split `styles.css` into `tokens.css` + `base.css` (`utilities/`/`components/` already exist, already correct).
-- [ ] Add 8 hero/backdrop color tokens (bespoke per page, sampled from each page's hero image — not a shared
-      palette; see `CONTEXT.md`).
-- [ ] De-Flowbite three radius classes (`rounded-base`/`rounded-sm`/`rounded-lg`) by swapping to native Tailwind
-      classes with matching values (`rounded-xl`/`rounded-md`/`rounded-2xl`) — no custom radius token needed.
-      Found while checking: `rounded-sm`/`rounded-lg` were *also* silently Flowbite-dependent, not just
-      `rounded-base`.
-- [ ] Fix `streaming.css`'s hand-duplicated brand-color gradient to reference the existing tokens.
-- [ ] Remove `tailwind.config.js` (confirmed dead — verified by removing it and rebuilding).
-- [ ] Fonts: move the Google Fonts `@import` out of CSS into `<link>` tags in `index.html` (keeping Google Fonts,
-      not self-hosting — may change fonts later).
-- [ ] The Flowbite "empty sub-selector" build warning is tolerated, not fixed — traced to Flowbite's own theme CSS,
-      resolves on its own in Phase 4/5.
+✅ Done (2026-09-22). Executed via `08-phase-2-plan.md` on `refactor/phase-2-design-foundations`, fast-forward
+merged into `working`. `ng build` clean, `ng test` 27/27, code review clean (no findings). Visual diff: 20/24 exactly
+`0.00%`, one negligible `0.01%` (`streaming/375`, almost certainly gradient sub-pixel interpolation from the
+`var()` dedup, not a real change), `reviews` shows `size-mismatch` — see the CORS finding below, unrelated to this
+phase's changes.
+
+- [x] Split `styles.css` into `tokens.css` + `base.css` (`utilities/`/`components/` already existed, already correct).
+- [x] Added 8 hero/backdrop color tokens (bespoke per page, sampled from each page's hero image — not a shared
+      palette; see `CONTEXT.md`). Verified every value matches its original hex exactly in the built CSS.
+- [x] De-Flowbited three radius classes (`rounded-base`/`rounded-sm`/`rounded-lg` → `rounded-xl`/`rounded-md`/
+      `rounded-2xl`, 47 usages) — no custom radius token needed. `rounded-sm`/`rounded-lg` were *also* silently
+      Flowbite-dependent, not just `rounded-base`; verified exact pixel-value matches (12px/6px/16px) in the built
+      CSS.
+- [x] Fixed `streaming.css`'s hand-duplicated brand-color gradient to reference `var(--color-brand)`/
+      `var(--color-brand-strong)`.
+- [x] Removed `tailwind.config.js` (confirmed dead — verified by removing it and rebuilding, identical output).
+- [x] Moved the Google Fonts `@import` out of CSS into `<link>` tags in `index.html` (kept Google Fonts, not
+      self-hosting).
+- [x] The Flowbite "empty sub-selector" build warning is tolerated, not fixed — confirmed traced to Flowbite's own
+      theme CSS by temporarily removing that one import and rebuilding.
+
+**Found during execution, not part of this phase's scope — a real production bug**: chasing the `reviews`
+visual-diff mismatch (present in both this phase's and Phase 1's captures) led to discovering that the **reviews
+and contact Lambdas have their CORS allow-list hardcoded to `http://localhost:4200` only** — confirmed directly:
+`Origin: http://localhost:4200` gets `Access-Control-Allow-Origin: http://localhost:4200` echoed back;
+`Origin: https://www.floofy.site` (and `floofy-site.vercel.app`, `floofy.site`) gets **no CORS header at all**. The
+commission Lambda is correctly configured (`Access-Control-Allow-Origin: *`) for comparison. This means **the real
+production site cannot currently fetch reviews or submit the contact form** — a live bug, not a refactor artifact.
+It also retroactively refines the Phase 1 note above: the `503` observed then was real, but incomplete as an
+explanation — this CORS gap is the deeper, persistent cause, and explains why Phase 0's baseline (captured via the
+one dev server that happens to already run on the allow-listed port) succeeded while every scratch-port
+verification since has shown the same empty-state height. Backend fix, out of scope for this frontend phase — not
+touched, flagged here for the owner to prioritize.
 
 ## Phase 3 — Primitives (no page visibly changes)
 
