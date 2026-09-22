@@ -48,8 +48,53 @@ src/
 Notes:
 - `features/*` replaces the flat page folders; routes update to `import('./features/home/home')`.
 - `models/` disappears: models sit beside the feature or service that owns them (`core/api/…`, `features/reviews/…`).
-- Rename `assets` sub-folders only in a dedicated, mechanical step (asset URLs appear in TS, HTML and CSS
-  `url()`s); see the roadmap.
+- Renaming/reorganising `assets` is its own dedicated step; see "Asset naming and organisation" below and the roadmap.
+
+## Asset naming and organisation (owner-requested change, noted 2026-09-21)
+
+**Problem:** the 47 files in `src/assets/` are flat and mostly unnamed: art files keep their original social-media IDs
+(`G_CQjK1XkAALluE.jpeg`, `HFT6u19bsAAQG-z.jpeg`, `6BA33836.jpeg`, `0062bdc3-…-Floofy-t09.webp`), 7 are `.jfif`, one has spaces
+(`VGen Badge - outline.png`), and the gallery `alt` text is currently just the filename slug. Nothing tells you what a
+file is, and type is not reflected in the folder structure.
+
+**Goal:** every image/media file has a descriptive, consistent name and lives in a folder that reflects its type.
+
+Proposed folders (organise by *what the file is*, not by which page uses it — several images are used on multiple pages):
+
+```
+assets/
+  images/
+    art/
+      illustrations/   # gallery/hero/OC artwork
+      chibi/           # commission examples
+      emotes/          # commission examples
+    brand/             # avatar/profile image, logo, favicon source
+  icons/
+    social/            # x, bluesky, pixiv, twitch, ko-fi, vgen, email
+  patterns/            # 4-point-stars, intersecting-circles
+  ornaments/           # flourish*.svg
+  data/  i18n/         # unchanged
+```
+
+Proposed naming convention: lowercase kebab-case, no spaces, no upload IDs, `.jfif` → `.jpg` (a rename, same JPEG data),
+`<subject>-<kind>-<nn>.<ext>` (e.g. `floofy-illustration-01.jpg`, `chibi-example-02.webp`, `avatar-floofy.jpg`).
+Subjects/titles must come from the owner, who knows what each piece depicts.
+
+How to do it without anyone having to open the images:
+1. Generate a **manifest** (CSV/JSON) of each file: current name, format, pixel size, byte size, and every place it is
+   referenced (from source text and image headers only).
+2. The owner fills in `newName`, `folder`, `alt` (real alt text) and optionally `source` (original post, for credit).
+3. A script performs `git mv` (keeps history) and rewrites every reference; `ng build` then finds any miss.
+
+Everything that must be updated with the rename (found by grep on 2026-09-21): `home.ts` (12 entries),
+`gallery-image.service.ts` (13 entries plus chibi/emote/illustration lists), 8 page templates, `navbar.html`, `footer.html`,
+`index.html` (preload link), `src/robots.txt` (`Disallow: /floofy-site/assets/` — keep it matching), `flourishes.css` and
+`icons.css` (`url(...)`), `pricing.service.ts`/`i18n.service.ts` (JSON imports), `README.md` / `LICENSE-media.md` (mention
+`/assets/`). Best done together with the `gallery.json` extraction so each image is described exactly once.
+
+Findings while listing: 3 files are not referenced anywhere by literal path (`A6757DF0.jpeg`, `G25GkrnbsAAv-8K.jfif`,
+`icon.png`) — the owner decides whether to delete or keep. Renaming changes the deployed URLs, so any external site
+hotlinking these images would break (robots.txt already disallows crawling them).
 
 ## Styling layers
 

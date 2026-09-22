@@ -35,7 +35,7 @@ describe('I18nService', () => {
     TestBed.flushEffects();
 
     expect(service.locale()).toBe('ja');
-    expect(service.t('nav.about')).toBe('概要');
+    expect(service.t('footer.legal.backToTop')).toBe('上へ戻る');
     expect(document.documentElement.lang).toBe('ja');
   });
 
@@ -46,7 +46,7 @@ describe('I18nService', () => {
     TestBed.flushEffects();
 
     expect(service.locale()).toBe('en');
-    expect(service.t('nav.about')).toBe('ABOUT');
+    expect(service.t('footer.legal.backToTop')).toBe('Back to top');
     expect(document.documentElement.lang).toBe('en');
   });
 
@@ -58,7 +58,7 @@ describe('I18nService', () => {
     TestBed.flushEffects();
 
     expect(service.locale()).toBe('ja');
-    expect(service.t('nav.gallery')).toBe('ギャラリー');
+    expect(service.t('footer.legal.backToTop')).toBe('上へ戻る');
     expect(localStorage.getItem('locale')).toBe('ja');
     expect(document.documentElement.lang).toBe('ja');
   });

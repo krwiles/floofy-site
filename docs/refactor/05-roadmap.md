@@ -11,18 +11,43 @@ otherwise, does not change how the site looks.
 
 ---
 
-## Phase 0 — Baseline and safety net
+## Phase 0 — Baseline and safety net ✅ done (2026-09-21)
 
-- [ ] **⏸** Owner finishes `src/styles/components/cards.css` (card design) and commits the WIP on `working`
-      (`cards.css` added, `glass.css` deleted, `contact.html` new section).
-- [ ] Decide what to do with the unfinished "Reviews, donate, contact" section in `contact.html` (~180 lines).
-- [ ] Fix the 7 failing spec files so `ng test` is green (see findings: `ParallaxSection` required input, missing
-      HTTP/router providers, …).
-- [ ] Add `.gitattributes` (`* text=auto eol=lf`) to end CRLF warnings.
-- [ ] Capture baseline screenshots for every route at 375 / 768 / 1280 px (both locales for a couple of pages) and
-      record `ng build` bundle sizes.
-- [ ] Create `CLAUDE.md` with the commands, conventions and a link to `docs/refactor/`.
-- [ ] Owner upgrades Node to ≥ 24.15 (required for Angular 22).
+Executed via **[06-phase-0-plan.md](06-phase-0-plan.md)** on branch `refactor/phase-0-baseline`, fast-forward merged
+into `working` at `5d54109`. `ng build` and `ng test` both exit 0 (20/20 spec files, 27/27 tests).
+
+- [x] Owner finished `src/styles/components/cards.css` (card design) — committed.
+- [x] Owner upgraded Node to 24.21.0 (Angular 22 requires ≥ 24.15).
+- [x] Branch `refactor/phase-0-baseline` off `working`, fast-forward merged, branch deleted.
+- [x] Fixed all 7 failing spec files (11 commits — one more than planned; see note below).
+- [x] `.gitattributes` (`* text=auto eol=lf`); `--renormalize` found nothing to change (files were already LF).
+- [x] Removed the unused `RouterLink` import in `About`.
+- [x] `CLAUDE.md` created (short version).
+- [x] Scripted visual baseline (Playwright + pixelmatch) added and run: 24 screenshots captured
+      (8 routes × 3 widths, English only) to `__screenshots__/baseline/` (gitignored, not committed). Diff script
+      self-tested (baseline vs. baseline → 0.00% everywhere). Claude only ever saw file paths/sizes and the diff
+      percent table — never the images. See [[feedback-art-privacy]].
+- [ ] Still open, not part of Phase 0: decide what to do with the unfinished "Reviews, donate, contact" section in
+      `contact.html` (~180 lines) — ask the owner before Phase 6 touches `contact.html`.
+
+## Phase 1 — Angular 22 upgrade
+
+Concrete, ready-to-execute plan: **[07-phase-1-plan.md](07-phase-1-plan.md)** (settled 2026-09-22 via
+`superpowers:brainstorming`). Unlike Phase 0, this phase merges via a PR the owner reviews, not a direct merge —
+it's the first phase that changes real runtime behavior rather than just test infrastructure. Key facts locked in:
+TypeScript pinned to `~6.0.3` (not `latest`, which is `7.0.2` and outside `@angular/compiler-cli`'s peer range),
+Tailwind pinned to `4.3.x` (already resolved on disk from Phase 0's `npm install`, now made intentional), Vitest
+stays on `4.x`. `Gallery` gets an explicit smoke test since Angular 22 makes `OnPush` the default and it's the one
+component that doesn't set it explicitly. Form verification is validation-only — no real submission, since that
+would hit production Lambda URLs (real emails via Resend, real review rows in the live database).
+
+**Found during execution, not in the original plan**: fixing `App`'s router-provider issue let `App`'s lifecycle run
+for the first time in a test, which exposed that `ngAfterViewInit` → `observerInit()` calls
+`new IntersectionObserver(...)`, undefined in jsdom — an unhandled exception that made `ng test` exit 1 even though
+all tests "passed". Fixed with a `vi.stubGlobal('IntersectionObserver', …)` shim scoped to `app.spec.ts`
+(`beforeAll`, not `beforeEach`/`afterEach` — a per-test stub raced the deferred `setTimeout` and didn't work). Zero
+change to `App`'s real behavior. The underlying scroll-reveal design (`App.observerInit`) is unchanged and is still
+slated for replacement by `appReveal`/`RevealService` in Phase 3.
 
 ## Phase 1 — Upgrade (see `04-upgrade-plan.md`)
 
@@ -74,7 +99,9 @@ otherwise, does not change how the site looks.
 
 - [ ] Move pages into `features/`, shared UI into `shared/`, singletons into `core/` (mechanical moves, one commit
       per folder, imports fixed by the build).
-- [ ] Split assets into `images/`, `icons/`, `patterns/` (mechanical, dedicated commit).
+- [ ] **Name and organise all image/media assets by type** (owner-requested; details in `03-target-architecture.md`):
+      generate a manifest → owner supplies names/alt text → scripted `git mv` + reference rewrite → `ng build`. Decide
+      the 3 unreferenced files. Do together with the next item.
 - [ ] Extract `gallery.json`; derive home carousel, commission carousels and gallery page from it; real alt text.
 - [ ] Split `commission.html` into pricing card ×3, terms card ×7, form, usage picker.
 - [ ] Lightbox + gallery grid (a11y, focus trap, keyboard, `ScrollLockService`, invisible defer placeholder).
@@ -105,7 +132,10 @@ otherwise, does not change how the site looks.
 3. **i18n approach** — keep custom (lazy-loaded, signal-friendly; proposed) vs a library.
 4. **Flowbite removal** — confirm removing entirely (proposed) rather than keeping the CSS theme/plugin.
 5. **Folder layout** — `features/ shared/ core/` (proposed) vs staying flat.
-6. **Visual regression tooling** — Playwright script (adds a dev dependency) vs manual before/after checks in a browser.
+6. **Visual regression tooling** — must keep the art out of Claude's view (owner request). Options: local Playwright
+   capture + pixel-diff that reports only numbers (adds dev dependencies), or headless Chrome CLI screenshots + a
+   small diff script, or the owner eyeballs before/after themselves. The Claude-in-Chrome tool is fine for non-visual
+   checks (DOM, console, network, computed styles) but its screenshots are returned to Claude, so not for art pages.
 7. **Deployment targets** — GitHub Pages only, or also Vercel / custom domain? (drives Twitch `parent`, base-href and
    404 fallback handling.)
 8. **Fonts** — keep Google Fonts (link tags) or self-host.

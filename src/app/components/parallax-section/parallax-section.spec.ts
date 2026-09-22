@@ -13,6 +13,7 @@ describe('ParallaxSection', () => {
 
     fixture = TestBed.createComponent(ParallaxSection);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('backgroundImage', 'assets/test-fixture.jpg');
     await fixture.whenStable();
   });
 
