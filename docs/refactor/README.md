@@ -4,7 +4,11 @@ Planning documents for restructuring the site for readability, consistency and e
 **Status: planning only. No application code has been changed.** Written 2026-09-21 on branch `working`.
 Card styles (`src/styles/components/cards.css`) are finished and committed. **Phase 0 and Phase 1 (Angular 22
 upgrade) are both done**, merged into `working` (Phase 1 via
-[PR #20](https://github.com/krwiles/floofy-site/pull/20)). Next up is Phase 2 (design foundations / style layering).
+[PR #20](https://github.com/krwiles/floofy-site/pull/20)). Phase 2 (design foundations / style layering) has a
+concrete, ready-to-execute plan — awaiting the owner's go-ahead to execute.
+
+A project domain glossary lives at `/CONTEXT.md` (repo root, not under `docs/refactor/`) — vocabulary for the
+design system (Tone, Card, Glass Panel, Hero color, …), kept up to date as terms get sharpened during planning.
 
 ## Goals (from the owner)
 
@@ -25,6 +29,7 @@ upgrade) are both done**, merged into `working` (Phase 1 via
 | [05-roadmap.md](05-roadmap.md) | Phased, checkable work plan, risks, and open decisions |
 | [06-phase-0-plan.md](06-phase-0-plan.md) | Concrete, commit-by-commit execution plan for Phase 0 (baseline) — done, merged |
 | [07-phase-1-plan.md](07-phase-1-plan.md) | Execution plan for Phase 1 (Angular 22 upgrade) — done, merged via [PR #20](https://github.com/krwiles/floofy-site/pull/20) |
+| [08-phase-2-plan.md](08-phase-2-plan.md) | Concrete execution plan for Phase 2 (design foundations / style layering), ready to run |
 
 ## Ground rules while this is in progress
 
@@ -32,9 +37,12 @@ upgrade) are both done**, merged into `working` (Phase 1 via
   direction can be seen before components are built around it.
 - Work on a new branch cut from `main` (or from `working` once the WIP is committed), never directly on `main`.
 - Every phase must leave `ng build` green. Behaviour and appearance must not change unless the phase says so.
-- Follow the Angular best-practices guide (`get_best_practices` in the angular-cli MCP): standalone (do not write
-  `standalone: true`), signals, `input()`/`output()`, `OnPush`, `host: {}` instead of `@HostBinding`/`@HostListener`,
-  native control flow, `class`/`style` bindings instead of `ngClass`/`ngStyle`, `NgOptimizedImage` for static images,
-  reactive/signal forms, `inject()`. Must pass AXE and WCAG AA.
+- Follow the Angular best-practices guide (`get_best_practices` in the angular-cli MCP — re-check it per phase, it
+  changed with the v22 upgrade): standalone (do not write `standalone: true`), signals, `input()`/`output()`,
+  `host: {}` instead of `@HostBinding`/`@HostListener`, native control flow, `class`/`style` bindings instead of
+  `ngClass`/`ngStyle`, `NgOptimizedImage` for static images, reactive/Signal Forms, `inject()`. On Angular 22+, do
+  **not** set `changeDetection: ChangeDetectionStrategy.OnPush` explicitly — it's the default now (existing
+  explicit `OnPush` elsewhere in the codebase is harmless leftover, not a bug, cleanup deferred to whichever phase
+  next touches each component). Must pass AXE and WCAG AA.
 - Match existing repo conventions: files named `home.ts` / `home.html` (no `.component` suffix), `app-` selector
   prefix, Prettier (`printWidth` 120, single quotes, Tailwind class sorting plugin).

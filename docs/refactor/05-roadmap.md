@@ -77,22 +77,27 @@ all tests "passed". Fixed with a `vi.stubGlobal('IntersectionObserver', …)` sh
 change to `App`'s real behavior. The underlying scroll-reveal design (`App.observerInit`) is unchanged and is still
 slated for replacement by `appReveal`/`RevealService` in Phase 3.
 
-## Phase 1 — Upgrade (see `04-upgrade-plan.md`)
-
-- [ ] Read the Angular 22 update guide / `ng update` output.
-- [ ] `ng update` to 22.1.x; pin `typescript ~6.0`; keep Vitest 4; add `engines`; pin CI Node.
-- [ ] Fix compile/test regressions; verify Signal Forms API on 22.
-- [ ] Tailwind 4.2.2 → 4.3.x; verify Prettier plugin and visual baseline.
-- [ ] Verify production and GitHub Pages builds.
-
 ## Phase 2 — Design foundations
 
-- [ ] Split `styles.css` into `tokens.css`, `base.css`, `utilities/`, `components/` (see architecture).
-- [ ] Add missing tokens: `--radius-base`, shadow scale, z-index scale, hero background colours, section padding scale.
-- [ ] Replace raw hex/rgba (`bg-[#…]`, `streaming.css`) with tokens.
-- [ ] Remove `tailwind.config.js`; fix the two "empty sub-selector" CSS warnings.
-- [ ] Fonts: move out of the CSS `@import` (decision needed: Google Fonts link vs self-host).
-- [ ] **⏸** Finalise card/glass system with the owner; document the variants in this folder.
+Concrete, ready-to-execute plan: **[08-phase-2-plan.md](08-phase-2-plan.md)** (settled 2026-09-22 via
+`grill-with-docs`). Narrower than originally sketched below — a shared shadow scale, z-index scale, and
+section-padding scale are all deferred to Phase 3 (no consumer yet; would be speculative). The card/glass system
+blocker is resolved (finished, see Phase 0) but its *application* across the site is also Phase 3 work, not this
+reorganization.
+
+- [ ] Split `styles.css` into `tokens.css` + `base.css` (`utilities/`/`components/` already exist, already correct).
+- [ ] Add 8 hero/backdrop color tokens (bespoke per page, sampled from each page's hero image — not a shared
+      palette; see `CONTEXT.md`).
+- [ ] De-Flowbite three radius classes (`rounded-base`/`rounded-sm`/`rounded-lg`) by swapping to native Tailwind
+      classes with matching values (`rounded-xl`/`rounded-md`/`rounded-2xl`) — no custom radius token needed.
+      Found while checking: `rounded-sm`/`rounded-lg` were *also* silently Flowbite-dependent, not just
+      `rounded-base`.
+- [ ] Fix `streaming.css`'s hand-duplicated brand-color gradient to reference the existing tokens.
+- [ ] Remove `tailwind.config.js` (confirmed dead — verified by removing it and rebuilding).
+- [ ] Fonts: move the Google Fonts `@import` out of CSS into `<link>` tags in `index.html` (keeping Google Fonts,
+      not self-hosting — may change fonts later).
+- [ ] The Flowbite "empty sub-selector" build warning is tolerated, not fixed — traced to Flowbite's own theme CSS,
+      resolves on its own in Phase 4/5.
 
 ## Phase 3 — Primitives (no page visibly changes)
 
@@ -160,15 +165,13 @@ slated for replacement by `appReveal`/`RevealService` in Phase 3.
 3. **i18n approach** — keep custom (lazy-loaded, signal-friendly; proposed) vs a library.
 4. **Flowbite removal** — confirm removing entirely (proposed) rather than keeping the CSS theme/plugin.
 5. **Folder layout** — `features/ shared/ core/` (proposed) vs staying flat.
-6. **Visual regression tooling** — must keep the art out of Claude's view (owner request). Options: local Playwright
-   capture + pixel-diff that reports only numbers (adds dev dependencies), or headless Chrome CLI screenshots + a
-   small diff script, or the owner eyeballs before/after themselves. The Claude-in-Chrome tool is fine for non-visual
-   checks (DOM, console, network, computed styles) but its screenshots are returned to Claude, so not for art pages.
+6. ~~Visual regression tooling~~ — **resolved in Phase 0**: local Playwright capture + pixelmatch diff, numbers only.
 7. **Deployment targets** — GitHub Pages only, or also Vercel / custom domain? (drives Twitch `parent`, base-href and
    404 fallback handling.)
-8. **Fonts** — keep Google Fonts (link tags) or self-host.
+8. ~~Fonts~~ — **resolved in Phase 2 planning**: keep Google Fonts (link tags), not self-hosting.
 9. **Lambda vendored deps** — stop tracking going forward only, or rewrite history?
-10. **Branching** — refactor branch name and whether to work from `working` or a fresh branch off `main`.
+10. ~~Branching~~ — **resolved**: one branch per phase off `working`, small commits, PR vs. direct-merge decided
+    per-phase by whether the visual diff comes back clean.
 
 ## Risks
 
