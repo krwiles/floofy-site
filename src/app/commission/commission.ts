@@ -11,6 +11,7 @@ import { CommissionService } from '../services/commission.service';
 import { Reveal } from '../directives/reveal';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
+import { SectionHeader } from '../components/section-header/section-header';
 
 interface CommissionFormValue {
   name: string;
@@ -38,6 +39,7 @@ interface CommissionFormValue {
     Reveal,
     Flourish,
     SectionDivider,
+    SectionHeader,
   ],
   templateUrl: './commission.html',
   styleUrl: './commission.css',

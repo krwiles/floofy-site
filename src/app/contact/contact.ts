@@ -4,9 +4,9 @@ import { ParallaxSection } from '../components/parallax-section/parallax-section
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { ContactService } from '../services/contact.service';
-import { Reveal } from '../directives/reveal';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
+import { SectionHeader } from '../components/section-header/section-header';
 
 interface ContactFormData {
   name: string;
@@ -16,7 +16,7 @@ interface ContactFormData {
 
 @Component({
   selector: 'app-contact',
-  imports: [ParallaxSection, TranslatePipe, FormRoot, FormField, Reveal, Flourish, SectionDivider],
+  imports: [ParallaxSection, TranslatePipe, FormRoot, FormField, Flourish, SectionDivider, SectionHeader],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

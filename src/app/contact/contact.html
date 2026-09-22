@@ -58,22 +58,12 @@
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-3xl">
       <!-- Section heading -->
-      <div class="mb-12 text-center">
-        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
-          {{ 'contact.form.kicker' | translate }}
-        </p>
-        <h2
-          appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
-        >
-          {{ 'contact.form.title' | translate }}
-        </h2>
-        <p appReveal class="mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
-          {{ 'contact.form.description' | translate }}
-        </p>
-        <div appReveal class="mx-auto mb-12 flex justify-center">
-          <app-flourish variant="full" class="h-8 text-on-middle-heading" />
-        </div>
-      </div>
+      <app-section-header
+        [eyebrow]="'contact.form.kicker' | translate"
+        [title]="'contact.form.title' | translate"
+        [description]="'contact.form.description' | translate"
+        tone="middle"
+      />
 
       <!-- Contact form -->
       <form
@@ -175,19 +165,13 @@
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block" />
 
       <!-- Section heading -->
-      <div class="mb-12 text-center">
-        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
-          {{ 'contact.socials.kicker' | translate }}
-        </p>
-        <h2
-          appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
-        >
-          {{ 'contact.socials.title' | translate }}
-        </h2>
-        <p appReveal class="mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
-          {{ 'contact.socials.description' | translate }}
-        </p>
-      </div>
+      <app-section-header
+        [eyebrow]="'contact.socials.kicker' | translate"
+        [title]="'contact.socials.title' | translate"
+        [description]="'contact.socials.description' | translate"
+        tone="middle"
+        [flourish]="false"
+      />
 
       <div
         class="grid grid-cols-2 gap-3 text-on-light-heading sm:grid-cols-2 md:grid-cols-4 md:gap-4"

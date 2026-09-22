@@ -104,22 +104,12 @@
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div id="commission-form" class="mx-auto max-w-3xl rounded-4xl">
       <!-- Section heading -->
-      <div class="mb-12 text-center">
-        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
-          Share your experience
-        </p>
-        <h2
-          appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
-        >
-          Post a review
-        </h2>
-        <p appReveal class="mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
-          Leave your thoughts and feedback for the community to see. Your input helps us improve and grow together.
-        </p>
-        <div appReveal class="mx-auto mb-12 flex justify-center">
-          <app-flourish variant="full" class="h-8 text-on-middle-heading" />
-        </div>
-      </div>
+      <app-section-header
+        eyebrow="Share your experience"
+        title="Post a review"
+        description="Leave your thoughts and feedback for the community to see. Your input helps us improve and grow together."
+        tone="middle"
+      />
 
       <!-- Review form -->
       <form

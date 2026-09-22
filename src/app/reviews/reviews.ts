@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Reveal } from '../directives/reveal';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
+import { SectionHeader } from '../components/section-header/section-header';
 
 interface ReviewFormValue {
   author: string;
@@ -18,7 +19,7 @@ interface ReviewFormValue {
 
 @Component({
   selector: 'app-reviews',
-  imports: [ParallaxSection, TranslatePipe, DatePipe, FormField, FormRoot, Reveal, Flourish, SectionDivider],
+  imports: [ParallaxSection, TranslatePipe, DatePipe, FormField, FormRoot, Reveal, Flourish, SectionDivider, SectionHeader],
   templateUrl: './reviews.html',
   styleUrl: './reviews.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

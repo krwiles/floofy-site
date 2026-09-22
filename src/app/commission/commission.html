@@ -299,22 +299,12 @@
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div id="commission-terms" class="rounded-4xl">
       <!-- Section heading -->
-      <div class="mb-12 text-center">
-        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
-          {{ 'commission.terms.kicker' | translate }}
-        </p>
-        <h2
-          appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
-        >
-          {{ 'commission.terms.title' | translate }}
-        </h2>
-        <p appReveal class="mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
-          {{ 'commission.terms.description' | translate }}
-        </p>
-        <div appReveal class="mx-auto mb-12 flex justify-center">
-          <app-flourish variant="full" class="h-8 text-on-middle-heading" />
-        </div>
-      </div>
+      <app-section-header
+        [eyebrow]="'commission.terms.kicker' | translate"
+        [title]="'commission.terms.title' | translate"
+        [description]="'commission.terms.description' | translate"
+        tone="middle"
+      />
 
       <div class="grid gap-6 lg:grid-cols-3">
         <div class="space-y-6">
