@@ -47,23 +47,15 @@
 <!-- Reviews Section-->
 <app-section tone="dark">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-    <!-- Section heading -->
-    <div class="mb-12 text-center">
-      <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
-        Community Feedback
-      </p>
-      <h2
-        appReveal class="mb-4 scroll-mt-32 rounded-md text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-      >
-        Recent Reviews
-      </h2>
-      <p appReveal class="mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
-        Kind words from tangerines who want to share their experiences.
-      </p>
-      <div appReveal class="mx-auto mb-12 flex justify-center">
-        <app-flourish variant="full" class="h-8 text-on-dark-heading" />
-      </div>
-    </div>
+    <!-- Section heading text is hardcoded English, not translate-piped, unlike every other section-header caller
+         -- pre-existing i18n gap, left alone per the owner (content not finalized yet; Phase 7 sweeps this). -->
+    <app-section-header
+      eyebrow="Community Feedback"
+      title="Recent Reviews"
+      description="Kind words from tangerines who want to share their experiences."
+      tone="dark"
+      descriptionSize="base"
+    />
 
     @if (reviews().length === 0) {
       <div class="card-shadow rounded-4xl border border-white/10 bg-white/5 px-6 py-6 text-center sm:px-7 sm:py-7">

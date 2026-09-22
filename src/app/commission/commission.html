@@ -48,23 +48,13 @@
 <app-section tone="dark">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div id="commission-types" class="rounded-4xl">
-      <!-- Section heading -->
-      <div class="mb-12 text-center">
-        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
-          {{ 'commission.pricing_section.kicker' | translate }}
-        </p>
-        <h2
-          appReveal class="mb-4 scroll-mt-32 rounded-md text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-        >
-          {{ 'commission.pricing_section.title' | translate }}
-        </h2>
-        <p appReveal class="mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
-          {{ 'commission.pricing_section.description' | translate }}
-        </p>
-        <div appReveal class="mx-auto mb-12 flex justify-center">
-          <app-flourish variant="full" class="h-8 text-on-dark-heading" />
-        </div>
-      </div>
+      <app-section-header
+        eyebrow="{{ 'commission.pricing_section.kicker' | translate }}"
+        title="{{ 'commission.pricing_section.title' | translate }}"
+        description="{{ 'commission.pricing_section.description' | translate }}"
+        tone="dark"
+        descriptionSize="base"
+      />
 
       <div class="grid gap-6 lg:grid-cols-3">
         <!-- Pricing Card: Chibi -->
@@ -530,26 +520,18 @@
 <app-section tone="light" pattern="stars" ariaLabel="Request Form">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div id="commission-form" class="mx-auto max-w-3xl rounded-4xl">
-      <!-- Section heading -->
-      <div class="mb-12 text-center">
-        <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-middle-body-subtle uppercase">
-          {{ 'commission.inquire.kicker' | translate }}
-        </p>
-        <h2
-          appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-middle-heading"
-        >
-          {{ 'commission.inquire.title' | translate }}
-        </h2>
-        <p appReveal class="mx-auto mb-2 max-w-3xl text-sm leading-7 text-on-middle-body">
-          {{ 'commission.inquire.subtitle' | translate }}
-        </p>
-        <div appReveal class="mx-auto mb-12 flex justify-center">
-          <app-flourish variant="full" class="h-8 text-on-middle-heading" />
-        </div>
-        <p appReveal class="mx-auto mb-2 max-w-2xl leading-7 text-on-middle-body">
-          {{ 'commission.inquire.description' | translate }}
-        </p>
-      </div>
+      <app-section-header
+        eyebrow="{{ 'commission.inquire.kicker' | translate }}"
+        title="{{ 'commission.inquire.title' | translate }}"
+        description="{{ 'commission.inquire.subtitle' | translate }}"
+        tone="middle"
+      />
+      <!-- Second paragraph app-section-header doesn't have a slot for -- kept as a plain sibling rather than
+           extending the component for this one occurrence. mb-12 (not the original inline mb-2) reproduces the
+           same overall gap to the form below, since it's no longer nested inside the component's own mb-12 wrapper. -->
+      <p appReveal class="mx-auto mb-12 max-w-2xl text-center leading-7 text-on-middle-body">
+        {{ 'commission.inquire.description' | translate }}
+      </p>
 
       <!-- Commission form -->
       <form
