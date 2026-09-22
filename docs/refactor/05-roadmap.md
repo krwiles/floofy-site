@@ -126,11 +126,44 @@ Concrete, ready-to-execute plan for stage 3a (stages 3b/3c settled but detailed 
 **[09-phase-3-plan.md](09-phase-3-plan.md)** (settled 2026-09-22 via `grill-with-docs`). Split into three
 sub-phases, each its own branch and merge decision — they have very different risk profiles.
 
-- [ ] **3a — Motion & structure** (zero visual risk): `appReveal` directive + `RevealService`; delete
-      `App.observerInit`/its router-subscription re-scan and the `Reviews → App` dependency; delete the now-dead
-      `IntersectionObserver` test stub from Phase 0. `app-flourish` (29 usages), `app-section-divider` (13
-      byte-identical usages), `app-section-header` (~20 usages), `app-section`. TDD throughout. Diff-decides-merge
-      like Phase 0/2.
+- [x] **3a — Motion & structure** — executed on `refactor/phase-3a-motion-structure`, pushed,
+      [PR pending](https://github.com/krwiles/floofy-site/pull/new/refactor/phase-3a-motion-structure) (owner needs
+      to open it — see note below). **Not zero visual risk in practice** — a real bug was found and fixed during
+      verification (see below), and the diff-decides-merge rule from Phase 0/2 was overridden: this goes through a
+      PR despite the plan's original "zero visual risk" expectation, because the diff came back far from clean and
+      needs the owner's own eyes.
+  - [x] `RevealService` + `appReveal` (TDD); deleted `App.observerInit`/its router-subscription re-scan, the
+        `Reviews → App` dependency, and the Phase 0 `IntersectionObserver` test stub (replaced by a project-wide
+        one in `src/test-setup.ts`, needed because every `appReveal`-using component now hits the same
+        `matchMedia`/`IntersectionObserver` jsdom gaps Phase 0 only fixed for `App`). Migrated 110 usages.
+  - [x] `app-flourish` (TDD); migrated 29 usages via a scripted regex replace (verified exact counts).
+  - [x] `app-section-divider` (TDD, zero inputs — confirmed byte-identical across all 13 usages); migrated 13.
+  - [x] `app-section-header` (TDD); investigated all ~17 candidates before designing — 8 matched the plain shape
+        and got migrated, 3 were deliberately left as hand-written markup (scroll-anchor classes, an extra
+        paragraph — not forced to fit). Added `flourish`/`descriptionSize` inputs for real variance found (2
+        instances have no flourish, 2 lack `text-sm`).
+  - [x] `app-section` (TDD); investigated all 16 candidates and found the inner width/padding wrapper varies on
+        nearly every instance, so narrowed scope to just the outer tone/pattern shell — the padding stays as the
+        caller's own content, not a parametrized input.
+  - **Real bug found during the visual-diff step, not by `ng build`/`ng test`**: `app-section`'s pattern-mode
+        content rendered completely empty (about's OC section, gallery's whole image grid, commission's inquire
+        section all silently disappeared) — two `<ng-content>` tags across `@if`/`@else` branches, which Angular
+        resolves at compile time rather than per the active runtime branch, so only one branch ever received
+        projected content. Fixed with `<ng-template>` + `*ngTemplateOutlet` (the standard idiom for this). Also
+        fixed: `app-section`/`app-section-header` both defaulted to `display: inline` (confirmed via computed
+        style), breaking layout height everywhere they're used — both now set `:host { display: block }`. The
+        test meant to catch the `ng-content` bug didn't, because it asserted content projection via a manual
+        `appendChild()` that never exercises Angular's real projection mechanism — replaced with a proper
+        host-component test, verified to fail pre-fix and pass post-fix.
+  - **Honest, unresolved uncertainty**: even after both fixes, the visual diff against the Phase 0 baseline still
+        shows 30–79% changed on most routes (down from far worse before the fix). Best-effort diagnosis: below-the-
+        fold `appReveal` content is likely legitimately unrevealed at capture time (the same `IntersectionObserver`
+        limitation the old system had — nothing scrolls during a full-page capture), so captures likely show
+        content mid-"not yet faded in." This is a plausible, partially-checked theory, not a verified fact the way
+        the `ng-content` bug was — flagged explicitly in the PR for the owner to check visually rather than
+        claimed as resolved.
+  - **PR creation blocked again**: the GitHub MCP token still returns `403` (same issue as Phase 1, unresolved by
+        the owner's earlier access change). Branch is pushed; PR body handed to the owner to paste manually.
 - [ ] **3b — Surfaces & controls** (real visual change on every page — **always a PR**, regardless of diff):
       `[appCard]` directive (not a component — no required DOM structure), `appButton` directive (`primary` /
       `secondary` / `pill` variants). Detailed just before execution, after enumerating every current card/button
