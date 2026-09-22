@@ -7,6 +7,7 @@ import { ContactService } from '../services/contact.service';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
+import { Section } from '../components/section/section';
 
 interface ContactFormData {
   name: string;
@@ -16,7 +17,7 @@ interface ContactFormData {
 
 @Component({
   selector: 'app-contact',
-  imports: [ParallaxSection, TranslatePipe, FormRoot, FormField, Flourish, SectionDivider, SectionHeader],
+  imports: [ParallaxSection, TranslatePipe, FormRoot, FormField, Flourish, SectionDivider, SectionHeader, Section],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

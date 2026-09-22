@@ -47,13 +47,7 @@
 <app-section-divider />
 
 <!-- Contact Form Section -->
-<app-parallax-section
-  class="bg-section-light"
-  [backgroundImage]="'assets/4-point-stars.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'General Inquiry Form'"
+<app-section tone="light" pattern="stars" ariaLabel="General Inquiry Form">
 >
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-3xl">
@@ -156,10 +150,10 @@
       </form>
     </div>
   </div>
-</app-parallax-section>
+</app-section>
 
 <!-- Contact Socials -->
-<section class="bg-section-middle">
+<app-section tone="middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div class="card-on-section-middle relative mx-auto max-w-3xl border border-white/30 px-5 py-8 sm:px-7">
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block" />
@@ -215,4 +209,4 @@
       </div>
     </div>
   </div>
-</section>
+</app-section>

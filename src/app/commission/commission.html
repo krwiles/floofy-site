@@ -45,7 +45,7 @@
 <app-section-divider />
 
 <!-- Pricing -->
-<section class="bg-section-dark">
+<app-section tone="dark">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div id="commission-types" class="rounded-4xl">
       <!-- Section heading -->
@@ -292,10 +292,10 @@
       </div>
     </div>
   </div>
-</section>
+</app-section>
 
 <!-- Terms -->
-<section class="bg-section-middle">
+<app-section tone="middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div id="commission-terms" class="rounded-4xl">
       <!-- Section heading -->
@@ -522,18 +522,12 @@
       </div>
     </div>
   </div>
-</section>
+</app-section>
 
 <app-section-divider />
 
 <!-- Inquire -->
-<app-parallax-section
-  class="bg-section-light"
-  [backgroundImage]="'assets/4-point-stars.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Request Form'"
+<app-section tone="light" pattern="stars" ariaLabel="Request Form">
 >
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div id="commission-form" class="mx-auto max-w-3xl rounded-4xl">
@@ -887,4 +881,4 @@
       </form>
     </div>
   </div>
-</app-parallax-section>
+</app-section>

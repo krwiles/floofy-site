@@ -45,7 +45,7 @@
 <app-section-divider />
 
 <!-- Meet the Artist -->
-<section class="bg-section-light">
+<app-section tone="light">
   <div
     class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
   >
@@ -76,10 +76,10 @@
       </p>
     </div>
   </div>
-</section>
+</app-section>
 
 <!-- Contact Socials -->
-<section class="bg-section-middle">
+<app-section tone="middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div class="glass-panel mx-auto max-w-3xl border border-white/30 px-5 py-8 sm:px-7">
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block" />
@@ -155,18 +155,12 @@
       </div>
     </div>
   </div>
-</section>
+</app-section>
 
 <app-section-divider />
 
 <!-- Original Character -->
-<app-parallax-section
-  class="bg-section-dark"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Floofy lore section'"
+<app-section tone="dark" pattern="circles" ariaLabel="Floofy lore section">
 >
   <!-- Section header -->
   <div class="mx-auto max-w-7xl px-4 pt-16 pb-0 text-center sm:pt-24 lg:px-6">
@@ -257,4 +251,4 @@
     </p>
     <!-- Fan images here -->
   </div>
-</app-parallax-section>
+</app-section>

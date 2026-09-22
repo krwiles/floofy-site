@@ -47,13 +47,7 @@
 <app-section-divider />
 
 <!-- Gallery Section -->
-<app-parallax-section
-  class="bg-section-dark"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'Streaming Section'"
+<app-section tone="dark" pattern="circles" ariaLabel="Streaming Section">
 >
   <div class="mx-auto max-w-7xl columns-1 gap-8 px-4 py-8 sm:py-16 md:columns-2 lg:columns-3 lg:px-6">
     @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index) {
@@ -75,7 +69,7 @@
       }
     }
   </div>
-</app-parallax-section>
+</app-section>
 
 <!-- TODO fix the defer placeholder, just make it invisible. It flashes in and looks odd-->
 <!-- TODO fix the dropdown, also ask about going to a url like /gallery and it doesn't load. Can we fix this? -->

@@ -45,7 +45,7 @@
 <app-section-divider />
 
 <!-- Gallery section -->
-<section class="bg-section-dark">
+<app-section tone="dark">
   <div class="mx-auto max-w-7xl px-4 py-10 sm:py-24 lg:px-6">
     <!-- Gallery carousel -->
     <div
@@ -78,18 +78,12 @@
       </a>
     </div>
   </div>
-</section>
+</app-section>
 
 <app-section-divider />
 
 <!-- About, commission, streaming section -->
-<app-parallax-section
-  class="bg-section-light"
-  [backgroundImage]="'assets/4-point-stars.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.6"
-  [ariaLabel]="'About Section'"
+<app-section tone="light" pattern="stars" ariaLabel="About Section">
 >
   <div class="py-24">
     <!-- Section header -->
@@ -198,12 +192,12 @@
       </div>
     </div>
   </div>
-</app-parallax-section>
+</app-section>
 
 <app-section-divider />
 
 <!-- Reviews, donate, contact section -->
-<section class="bg-section-middle">
+<app-section tone="middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <!-- Section header -->
     <app-section-header
@@ -273,4 +267,4 @@
       </div>
     </div>
   </div>
-</section>
+</app-section>
