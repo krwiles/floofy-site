@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { ParallaxSection } from '../parallax-section/parallax-section';
 
@@ -14,8 +15,11 @@ type Tone = 'light' | 'light-alt' | 'middle' | 'middle-alt' | 'dark' | 'dark-alt
  */
 @Component({
   selector: 'app-section',
-  imports: [ParallaxSection],
+  imports: [ParallaxSection, NgTemplateOutlet],
   template: `
+    <ng-template #projected>
+      <ng-content />
+    </ng-template>
     @if (pattern()) {
       <app-parallax-section
         [class]="toneClass()"
@@ -25,14 +29,19 @@ type Tone = 'light' | 'light-alt' | 'middle' | 'middle-alt' | 'dark' | 'dark-alt
         [parallaxStrength]="parallaxStrength()"
         [ariaLabel]="ariaLabel() ?? 'Section'"
       >
-        <ng-content />
+        <ng-container *ngTemplateOutlet="projected" />
       </app-parallax-section>
     } @else {
       <section [class]="toneClass()" [attr.aria-label]="ariaLabel()">
-        <ng-content />
+        <ng-container *ngTemplateOutlet="projected" />
       </section>
     }
   `,
+  // Angular custom elements default to display: inline. This replaces a
+  // plain <section>, a block-level element -- without this, everything
+  // inside collapses into inline flow (confirmed: broke layout height on
+  // every page using it, most visibly gallery's masonry grid).
+  styles: ':host { display: block; }',
 })
 export class Section {
   readonly tone = input.required<Tone>();

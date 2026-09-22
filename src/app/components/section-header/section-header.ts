@@ -49,6 +49,10 @@ const TONE_CLASSES: Record<Tone, { eyebrow: string; heading: string; body: strin
       }
     </div>
   `,
+  // See section.ts's comment: custom elements default to display: inline,
+  // which breaks the block-level <div class="mb-12 text-center"> wrapper
+  // this replaces.
+  styles: ':host { display: block; }',
 })
 export class SectionHeader {
   readonly eyebrow = input.required<string>();
