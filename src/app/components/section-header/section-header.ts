@@ -12,10 +12,12 @@ const TONE_CLASSES: Record<Tone, { eyebrow: string; heading: string; body: strin
 
 /**
  * The eyebrow/title/description/flourish stack repeated at the top of most
- * sections. Covers the plain shape only -- a few pages have variants with
- * extra structure (a second paragraph, scroll-anchor classes) that don't fit
- * this and were deliberately left as hand-written markup rather than forced
- * to match (see docs/refactor/09-phase-3-plan.md).
+ * sections. Covers the plain shape only -- one page has an extra second
+ * description paragraph that doesn't fit this and stays as a hand-written
+ * sibling rather than forcing the component to match (see
+ * docs/refactor/09-phase-3-plan.md). Description size is standardized (no
+ * configurable size) -- an earlier sm/base split across pages was an
+ * unintended inconsistency, not a real design difference.
  */
 @Component({
   selector: 'app-section-header',
@@ -33,12 +35,7 @@ const TONE_CLASSES: Record<Tone, { eyebrow: string; heading: string; body: strin
         {{ title() }}
       </h2>
       @if (description()) {
-        <p
-          appReveal
-          class="mx-auto mb-2 max-w-3xl leading-7"
-          [class]="colors().body"
-          [class.text-sm]="descriptionSize() === 'sm'"
-        >
+        <p appReveal class="mx-auto mb-2 max-w-3xl leading-7" [class]="colors().body">
           {{ description() }}
         </p>
       }
@@ -59,7 +56,6 @@ export class SectionHeader {
   readonly title = input.required<string>();
   readonly description = input<string>();
   readonly tone = input.required<Tone>();
-  readonly descriptionSize = input<'sm' | 'base'>('sm');
   readonly flourish = input(true);
 
   readonly colors = computed(() => TONE_CLASSES[this.tone()]);

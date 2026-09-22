@@ -49,17 +49,8 @@ describe('SectionHeader', () => {
     expect(fixture.nativeElement.querySelector('app-flourish')).toBeFalsy();
   });
 
-  it('applies text-sm to the description by default', () => {
+  it('never applies text-sm to the description -- size is standardized, not configurable', () => {
     fixture.componentRef.setInput('description', 'Some description text');
-    fixture.detectChanges();
-
-    const description = fixture.nativeElement.querySelectorAll('p')[1];
-    expect(description.classList.contains('text-sm')).toBe(true);
-  });
-
-  it('omits text-sm when descriptionSize is base', () => {
-    fixture.componentRef.setInput('description', 'Some description text');
-    fixture.componentRef.setInput('descriptionSize', 'base');
     fixture.detectChanges();
 
     const description = fixture.nativeElement.querySelectorAll('p')[1];
