@@ -30,16 +30,44 @@ into `working` at `5d54109`. `ng build` and `ng test` both exit 0 (20/20 spec fi
 - [ ] Still open, not part of Phase 0: decide what to do with the unfinished "Reviews, donate, contact" section in
       `contact.html` (~180 lines) — ask the owner before Phase 6 touches `contact.html`.
 
-## Phase 1 — Angular 22 upgrade
+## Phase 1 — Angular 22 upgrade ✅ done (2026-09-22)
 
-Concrete, ready-to-execute plan: **[07-phase-1-plan.md](07-phase-1-plan.md)** (settled 2026-09-22 via
-`superpowers:brainstorming`). Unlike Phase 0, this phase merges via a PR the owner reviews, not a direct merge —
-it's the first phase that changes real runtime behavior rather than just test infrastructure. Key facts locked in:
-TypeScript pinned to `~6.0.3` (not `latest`, which is `7.0.2` and outside `@angular/compiler-cli`'s peer range),
-Tailwind pinned to `4.3.x` (already resolved on disk from Phase 0's `npm install`, now made intentional), Vitest
-stays on `4.x`. `Gallery` gets an explicit smoke test since Angular 22 makes `OnPush` the default and it's the one
-component that doesn't set it explicitly. Form verification is validation-only — no real submission, since that
-would hit production Lambda URLs (real emails via Resend, real review rows in the live database).
+Executed via **[07-phase-1-plan.md](07-phase-1-plan.md)** on branch `refactor/phase-1-angular-22`, merged into
+`working` via [PR #20](https://github.com/krwiles/floofy-site/pull/20) at `c9fca2d`. `ng build` clean; `ng test`
+27/27 green.
+
+- [x] `@angular/core`/`cli`/`build`/`common`/`compiler`/`compiler-cli`/`forms`/`platform-browser`/`router` → 22.1.7/22.1.8.
+- [x] `typescript` pinned `~6.0.3` (auto-pinned by `ng update` itself — matched the plan exactly).
+- [x] `tailwindcss`/`@tailwindcss/postcss` pinned `^4.3.2` explicitly (was already resolved on disk from Phase 0).
+- [x] `vitest` unchanged at `4.1.10`.
+- [x] Automated migrations from `ng update`: `provideHttpClient(withXhr())` in `app.config.ts` (preserves old HTTP
+      backend); `ChangeDetectionStrategy.Eager` added to `App` and `Gallery` (preserves their pre-v22 non-`OnPush`
+      behavior — the only two components with no explicit strategy; the tool defending against a silent behavior
+      change, not one happening); `$safeNavigationMigration()` wrapping two optional-chaining expressions in
+      `gallery.html`; two new extended diagnostics suppressed in `tsconfig.app.json`.
+- [x] Signal Forms `min`/`max` string-value breaking change: re-grepped, not used anywhere in this codebase.
+- [x] `Gallery` smoke test (non-visual): `@defer (on viewport)` and the lightbox both work correctly.
+- [x] Form validation smoke test (non-visual, no real submission): all three forms validate and fire zero network
+      calls on an empty submit.
+- [x] Visual regression: 21/24 captures pixel-identical to the Phase 0 baseline; the 3 `reviews` mismatches traced
+      to the live reviews Lambda returning `503` during capture (confirmed via console log + PNG height comparison,
+      not a rendering regression — see PR #20 for detail). **Separate, unrelated finding to look into**: that Lambda
+      (`isaytzssxo6crcwmqfyoqp54py0yjiyt.lambda-url.us-east-1.on.aws`) was returning `503` twice during this session.
+- [x] PR opened and merged by the owner directly — the GitHub MCP server's token didn't have PR-creation permission
+      even after the owner updated repo access (still `403` on retry); `gh` CLI isn't installed in either shell. Not
+      a blocker, just means I handed off the PR body for the owner to paste rather than opening it myself.
+
+**Not a Phase 1 bug (methodology note)**: while smoke-testing the gallery lightbox close behavior via scripted
+synthetic DOM events (`dispatchEvent`, no real paint/animation-frame timing — chosen to avoid viewing the site's
+art, see [[feedback-art-privacy]]), the close animation appeared to get permanently stuck. The owner reproduced it
+directly with real interaction and confirmed it closes correctly via all three methods (Escape, close button,
+backdrop click). Recorded here only as a testing-method caveat: scripted event dispatch is not a fully reliable way
+to verify CSS-animation-gated DOM removal (`animate.leave`) in this kind of automated check — not an app issue, and
+not a claim to repeat in future phases without re-verifying by hand first.
+
+**For future phases (not acted on in Phase 1, out of its declared scope)**: `get_best_practices` now says explicit
+`OnPush` is unnecessary in v22 (it's the default) — nearly every component here still sets it. Signal Forms are now
+marked **stable** in v22 (was experimental-adjacent before Phase 1).
 
 **Found during execution, not in the original plan**: fixing `App`'s router-provider issue let `App`'s lifecycle run
 for the first time in a test, which exposed that `ngAfterViewInit` → `observerInit()` calls

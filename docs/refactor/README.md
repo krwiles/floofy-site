@@ -2,10 +2,9 @@
 
 Planning documents for restructuring the site for readability, consistency and ease of development.
 **Status: planning only. No application code has been changed.** Written 2026-09-21 on branch `working`.
-Card styles (`src/styles/components/cards.css`) are finished and committed. **Phase 0 is done**, merged into
-`working`. Phase 1 (Angular 22 upgrade) has a concrete, ready-to-execute plan (`07-phase-1-plan.md`), settled via a
-`superpowers:brainstorming` session — awaiting the owner's go-ahead to execute. Unlike Phase 0, Phase 1 goes through
-a PR the owner reviews, rather than a direct merge — the first phase to change real runtime behavior, not just tests.
+Card styles (`src/styles/components/cards.css`) are finished and committed. **Phase 0 and Phase 1 (Angular 22
+upgrade) are both done**, merged into `working` (Phase 1 via
+[PR #20](https://github.com/krwiles/floofy-site/pull/20)). Next up is Phase 2 (design foundations / style layering).
 
 ## Goals (from the owner)
 
@@ -25,7 +24,7 @@ a PR the owner reviews, rather than a direct merge — the first phase to change
 | [04-upgrade-plan.md](04-upgrade-plan.md) | Angular 22 / TypeScript / Node / Tailwind upgrade and the Flowbite removal analysis |
 | [05-roadmap.md](05-roadmap.md) | Phased, checkable work plan, risks, and open decisions |
 | [06-phase-0-plan.md](06-phase-0-plan.md) | Concrete, commit-by-commit execution plan for Phase 0 (baseline) — done, merged |
-| [07-phase-1-plan.md](07-phase-1-plan.md) | Concrete execution plan for Phase 1 (Angular 22 upgrade), ready to run, goes through a PR |
+| [07-phase-1-plan.md](07-phase-1-plan.md) | Execution plan for Phase 1 (Angular 22 upgrade) — done, merged via [PR #20](https://github.com/krwiles/floofy-site/pull/20) |
 
 ## Ground rules while this is in progress
 
