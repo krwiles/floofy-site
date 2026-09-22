@@ -30,6 +30,17 @@ into `working` at `5d54109`. `ng build` and `ng test` both exit 0 (20/20 spec fi
 - [ ] Still open, not part of Phase 0: decide what to do with the unfinished "Reviews, donate, contact" section in
       `contact.html` (~180 lines) — ask the owner before Phase 6 touches `contact.html`.
 
+## Phase 1 — Angular 22 upgrade
+
+Concrete, ready-to-execute plan: **[07-phase-1-plan.md](07-phase-1-plan.md)** (settled 2026-09-22 via
+`superpowers:brainstorming`). Unlike Phase 0, this phase merges via a PR the owner reviews, not a direct merge —
+it's the first phase that changes real runtime behavior rather than just test infrastructure. Key facts locked in:
+TypeScript pinned to `~6.0.3` (not `latest`, which is `7.0.2` and outside `@angular/compiler-cli`'s peer range),
+Tailwind pinned to `4.3.x` (already resolved on disk from Phase 0's `npm install`, now made intentional), Vitest
+stays on `4.x`. `Gallery` gets an explicit smoke test since Angular 22 makes `OnPush` the default and it's the one
+component that doesn't set it explicitly. Form verification is validation-only — no real submission, since that
+would hit production Lambda URLs (real emails via Resend, real review rows in the live database).
+
 **Found during execution, not in the original plan**: fixing `App`'s router-provider issue let `App`'s lifecycle run
 for the first time in a test, which exposed that `ngAfterViewInit` → `observerInit()` calls
 `new IntersectionObserver(...)`, undefined in jsdom — an unhandled exception that made `ng test` exit 1 even though
