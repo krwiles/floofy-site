@@ -7,10 +7,11 @@ import { ParallaxSection } from '../components/parallax-section/parallax-section
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { Reveal } from '../directives/reveal';
 import { Flourish } from '../components/flourish/flourish';
+import { SectionDivider } from '../components/section-divider/section-divider';
 
 @Component({
   selector: 'app-home',
-  imports: [Carousel, NgOptimizedImage, RouterLink, ParallaxSection, TranslatePipe, Reveal, Flourish],
+  imports: [Carousel, NgOptimizedImage, RouterLink, ParallaxSection, TranslatePipe, Reveal, Flourish, SectionDivider],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

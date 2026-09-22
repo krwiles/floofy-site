@@ -6,10 +6,11 @@ import { NgOptimizedImage } from '@angular/common';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { Flourish } from '../components/flourish/flourish';
+import { SectionDivider } from '../components/section-divider/section-divider';
 
 @Component({
   selector: 'app-gallery',
-  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe, Flourish],
+  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe, Flourish, SectionDivider],
   templateUrl: './gallery.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './gallery.css',

@@ -8,6 +8,7 @@ import { form, FormField, FormRoot, max, maxLength, required, submit } from '@an
 import { HttpErrorResponse } from '@angular/common/http';
 import { Reveal } from '../directives/reveal';
 import { Flourish } from '../components/flourish/flourish';
+import { SectionDivider } from '../components/section-divider/section-divider';
 
 interface ReviewFormValue {
   author: string;
@@ -17,7 +18,7 @@ interface ReviewFormValue {
 
 @Component({
   selector: 'app-reviews',
-  imports: [ParallaxSection, TranslatePipe, DatePipe, FormField, FormRoot, Reveal, Flourish],
+  imports: [ParallaxSection, TranslatePipe, DatePipe, FormField, FormRoot, Reveal, Flourish, SectionDivider],
   templateUrl: './reviews.html',
   styleUrl: './reviews.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

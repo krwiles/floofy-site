@@ -2,10 +2,11 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angu
 import { DOCUMENT } from '@angular/common';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { Flourish } from '../components/flourish/flourish';
+import { SectionDivider } from '../components/section-divider/section-divider';
 
 @Component({
   selector: 'app-streaming',
-  imports: [ParallaxSection, Flourish],
+  imports: [ParallaxSection, Flourish, SectionDivider],
   templateUrl: './streaming.html',
   styleUrl: './streaming.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

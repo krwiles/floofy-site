@@ -10,6 +10,7 @@ import { CreateCommissionRequest } from '../models/commission.model';
 import { CommissionService } from '../services/commission.service';
 import { Reveal } from '../directives/reveal';
 import { Flourish } from '../components/flourish/flourish';
+import { SectionDivider } from '../components/section-divider/section-divider';
 
 interface CommissionFormValue {
   name: string;
@@ -26,7 +27,18 @@ interface CommissionFormValue {
 
 @Component({
   selector: 'app-commission',
-  imports: [Carousel, ParallaxSection, TranslatePipe, FormField, CurrencyPipe, PercentPipe, FormRoot, Reveal, Flourish],
+  imports: [
+    Carousel,
+    ParallaxSection,
+    TranslatePipe,
+    FormField,
+    CurrencyPipe,
+    PercentPipe,
+    FormRoot,
+    Reveal,
+    Flourish,
+    SectionDivider,
+  ],
   templateUrl: './commission.html',
   styleUrl: './commission.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
