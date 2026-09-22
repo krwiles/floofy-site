@@ -21,13 +21,23 @@ derive from that tone's palette) and has a plain and a "special" (featured) vari
 - **Glass Panel** — a *translucent*, blurred surface (backdrop-filter) used specifically for the panel that sits
   over a hero's background image. Glass Panels are not tied to a Tone the way Cards are; they read correctly over a
   photographic background rather than a flat section fill.
-- **Card Shadow** — the shadow alone, with no fill or border. Used standalone where something needs elevation
-  (e.g. an embedded iframe, a plain image) without becoming a full Card.
+- **Card Shadow** — the shadow alone, with no fill or border, used standalone where something needs elevation
+  (e.g. an embedded iframe, a plain image) without becoming a full Card. Still tone-aware like a full Card — each
+  Tone has its own shadow depth/color (matching the shadow already baked into that Tone's Card), so an elevated
+  image or plain container reads correctly whichever tone's section it sits in.
 
-**Status (2026-09-22):** the Card and Glass Panel styles were finished by the owner as a system, but have **not yet
-been applied** to the site. Most on-page cards today are still manually styled with ad-hoc Tailwind classes plus
-the standalone Card Shadow. Reconciling the two is planned as its own piece of work (applying the finished Card
-system across every page), not a side effect of any styling reorganization.
+**Status (2026-09-22):** the Card and Glass Panel styles were finished by the owner as a system; applying them
+site-wide (reconciling the ad-hoc manually-styled cards with the finished system, including standardizing the
+Card Shadow radius that varied per usage) is Phase 3b's work — see `docs/refactor/10-phase-3b-plan.md`.
+
+## Button
+
+A clickable call-to-action. Has two independent properties, same pattern as a Card: **Variant** (its shape/
+hierarchy — Primary, Secondary, Pill) and **Tone** (which section background it sits on — Light, Middle, Dark, the
+same three as a section's Tone). Unlike a Card, whose fill matches its Tone's own color family so it reads as a
+native surface, a Button's fill *contrasts* against its Tone so it always stands out rather than blending in — a
+Light or Middle Button renders darker than its background, a Dark Button renders lighter — mirroring the contrast
+direction of that Tone's heading/body text colors rather than its Card's.
 
 ## Hero color
 

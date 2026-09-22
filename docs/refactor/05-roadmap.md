@@ -164,10 +164,14 @@ sub-phases, each its own branch and merge decision — they have very different 
         claimed as resolved.
   - **PR creation blocked again**: the GitHub MCP token still returns `403` (same issue as Phase 1, unresolved by
         the owner's earlier access change). Branch is pushed; PR body handed to the owner to paste manually.
-- [ ] **3b — Surfaces & controls** (real visual change on every page — **always a PR**, regardless of diff):
-      `[appCard]` directive (not a component — no required DOM structure), `appButton` directive (`primary` /
-      `secondary` / `pill` variants). Detailed just before execution, after enumerating every current card/button
-      instance side by side.
+- [ ] **3b — Surfaces & controls** (real visual change on every page — **always a PR**, regardless of diff).
+      Concrete, ready-to-execute plan: **[10-phase-3b-plan.md](10-phase-3b-plan.md)** (settled 2026-09-22 via
+      `grilling` + `domain-modeling`). `[appCard]` directive (`tone`/`special`/`noBackground`/`glass`) applied
+      site-wide to every card-shaped element, including standardizing the radius/shadow on images that currently
+      vary. `appButton` directive (`variant: primary/secondary/pill` × `tone: light/middle/dark`, contrasting
+      against its tone rather than matching it) — Claude writes `buttons.css` from `cards.css`'s technique as a
+      first pass, owner tweaks after, not blocking on that. Streaming page, navbar buttons, and commission's form
+      radio-labels are explicitly excluded (see the plan's "Explicitly out of scope" and the open items below).
 - [ ] **3c — Data-driven consolidation**: `SOCIALS` typed data (adds an `email` entry), `app-social-links`
       (`ids` + `variant: 'plain' | 'chip'` — real per-page variance, not one fixed list), `app-brand` (confirmed
       byte-identical markup already). Diff-decides-merge.
@@ -217,9 +221,25 @@ sub-phases, each its own branch and merge decision — they have very different 
 
 ---
 
+## Open ideas / future work
+
+Found during Stage 3b planning (2026-09-22), deliberately excluded from that stage's scope — not lost track of,
+just not this stage's job. Move these into a dedicated `backlog.md` once the whole refactor finishes.
+
+1. **Streaming page pass** — `streaming.html`/`.css` (including `.stream-cta`) is a known formatting/consistency
+   outlier; not touched or used as a pattern reference anywhere in Phase 3. Owner may redesign it directly with
+   the finished primitives once they exist, or it becomes its own future phase.
+2. **Navbar button styling** — the login/menu-toggle buttons share most of `appButton`'s classes but add
+   `border border-border` and a fixed `h-10` size; too few instances (2) to justify a variant in Stage 3b. Revisit
+   once there's a second real consumer of nav-specific button styling.
+3. **Forms should get tone options** — Phase 5's `app-form-field`/`appControl`/etc. should offer `light`/`middle`/
+   `dark` tone options, matching the Card/Button pattern established in Stage 3b, so a form embedded on any
+   section reads correctly.
+
 ## Open decisions for the owner
 
-1. **Card system shape** — `app-card` component vs `[appCard]` directive vs plain CSS classes (after seeing final styles).
+1. ~~Card system shape~~ — **resolved in Stage 3b planning**: `[appCard]` directive, not a component or plain
+   classes — see [10-phase-3b-plan.md](10-phase-3b-plan.md).
 2. **Hero text API** — pass translated strings as inputs (proposed) vs pass an i18n key prefix
    (`heroKey="donate.hero"`), which is shorter but couples the component to the i18n key layout.
 3. **i18n approach** — keep custom (lazy-loaded, signal-friendly; proposed) vs a library.
