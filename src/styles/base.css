@@ -1,0 +1,24 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+}
+
+body,
+*:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+}
+
+body {
+  background-color: var(--color-bg);
+}
+
+/* Reduce mobile typography scale without affecting desktop sizes */
+@media (max-width: 767px) {
+  html {
+    font-size: 14px;
+  }
+}
