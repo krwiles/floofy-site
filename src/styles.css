@@ -6,6 +6,7 @@
 @import './styles/utilities/flourishes.css';
 @import './styles/utilities/motion.css';
 @import './styles/components/cards.css';
+@import './styles/components/buttons.css';
 @import './styles/utilities/icons.css';
 @plugin 'flowbite/plugin';
 @source '../node_modules/flowbite';

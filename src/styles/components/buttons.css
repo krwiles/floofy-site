@@ -1,0 +1,82 @@
+/* First-pass button design (Phase 3b) -- reuses cards.css's gradient + saturate(130%) technique, but applies
+   the filter directly to the element rather than via a ::before layer: cards always wrap their content in
+   child elements (so `> * { z-index: 1 }` lifts them above the painted background layer), but a button's
+   label is usually a bare text node with no wrapping element to lift the same way. Applying the filter
+   directly means it also touches the text color, which is a minor, likely-negligible shift for a flat solid
+   color -- flagging the deviation rather than silently changing the approach. Owner reviews/adjusts values
+   after this first pass; see CONTEXT.md's "Button" entry for the contrast rule this follows. */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+  box-shadow:
+    0 0.65rem 1.6rem color-mix(in srgb, var(--color-section-dark-alt) 25%, transparent),
+    0 0.1rem 0.5rem color-mix(in srgb, var(--color-section-dark-alt) 15%, transparent);
+}
+
+.btn:hover {
+  filter: saturate(160%);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-brand-strong);
+  outline-offset: 2px;
+}
+
+/* ── Variant: shape ─────────────────────────────────────────────────────── */
+
+.btn-primary {
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+}
+
+.btn-secondary {
+  border-radius: 0.75rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+}
+
+.btn-pill {
+  border-radius: 9999px;
+  padding: 0.25rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* ── Tone: color, contrasting against its section rather than matching it ─
+   Light/middle sections are pale, so their buttons go darker; the dark
+   section is already dark, so its button goes lighter. Mirrors the
+   contrast direction of that tone's own heading/body text colors. ── */
+
+.btn-on-light {
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-strong),
+    color-mix(in srgb, var(--color-brand-strong) 55%, var(--color-on-light-heading))
+  );
+  filter: saturate(130%);
+  color: white;
+}
+
+.btn-on-middle {
+  background: linear-gradient(135deg, var(--color-brand-strong), var(--color-section-dark));
+  filter: saturate(130%);
+  color: white;
+}
+
+.btn-on-dark {
+  background: linear-gradient(135deg, var(--color-brand), var(--color-brand-subtle));
+  filter: saturate(130%);
+  color: var(--color-on-light-heading);
+}
