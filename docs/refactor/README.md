@@ -5,7 +5,8 @@ Planning documents for restructuring the site for readability, consistency and e
 Card styles (`src/styles/components/cards.css`) are finished and committed. **Phases 0, 1 (Angular 22 upgrade) and
 2 (design foundations) are all done**, merged into `working` (Phase 1 via
 [PR #20](https://github.com/krwiles/floofy-site/pull/20); Phase 2 direct-merged, clean visual diff and code review).
-Next up is Phase 3 (primitives).
+Phase 3 (primitives) has a concrete plan for its first sub-phase (3a) — awaiting the owner's go-ahead to execute.
+The backend CORS fix and buying a real domain are explicitly deferred by the owner — frontend only for now.
 
 **A real, live bug was found during Phase 2, unrelated to it**: the reviews and contact Lambdas' CORS allow-list is
 hardcoded to `http://localhost:4200` only — the actual production site can't fetch reviews or submit the contact
@@ -34,7 +35,8 @@ design system (Tone, Card, Glass Panel, Hero color, …), kept up to date as ter
 | [05-roadmap.md](05-roadmap.md) | Phased, checkable work plan, risks, and open decisions |
 | [06-phase-0-plan.md](06-phase-0-plan.md) | Concrete, commit-by-commit execution plan for Phase 0 (baseline) — done, merged |
 | [07-phase-1-plan.md](07-phase-1-plan.md) | Execution plan for Phase 1 (Angular 22 upgrade) — done, merged via [PR #20](https://github.com/krwiles/floofy-site/pull/20) |
-| [08-phase-2-plan.md](08-phase-2-plan.md) | Concrete execution plan for Phase 2 (design foundations / style layering), ready to run |
+| [08-phase-2-plan.md](08-phase-2-plan.md) | Execution plan for Phase 2 (design foundations / style layering) — done, merged |
+| [09-phase-3-plan.md](09-phase-3-plan.md) | Concrete plan for Phase 3 stage 3a (primitives: motion & structure), ready to run; 3b/3c settled but detailed later |
 
 ## Ground rules while this is in progress
 

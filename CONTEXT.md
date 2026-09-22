@@ -36,6 +36,13 @@ the gaps its mask leaves. Each page's Hero color is **sampled directly from that
 not an independently chosen design color, and the two are not expected to relate to each other across pages. If a
 page's hero image changes, its Hero color should be re-sampled from the new image, not reused from the old one.
 
+## Social link
+
+A link to an external profile or platform (X, Bluesky, Pixiv, Twitch, Vgen, Ko-fi, or an emailer). Has two visual
+presentations in use across the site: **Plain** (an inline icon with no border or fill, used in the footer) and
+**Chip** (a bordered, filled button with a larger icon, used on the about page). Which networks appear, and in
+which presentation, is chosen per page — there is no single fixed set shown everywhere.
+
 ## Lightbox backdrop
 
 The dark scrim behind an enlarged image in the gallery lightbox. Distinct from a Hero color — it is a fixed neutral

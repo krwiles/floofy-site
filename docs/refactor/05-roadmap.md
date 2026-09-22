@@ -120,18 +120,24 @@ one dev server that happens to already run on the allow-listed port) succeeded w
 verification since has shown the same empty-state height. Backend fix, out of scope for this frontend phase — not
 touched, flagged here for the owner to prioritize.
 
-## Phase 3 — Primitives (no page visibly changes)
+## Phase 3 — Primitives
 
-- [ ] `appReveal` directive + `RevealService`; delete `App.observerInit`; replace `.animate-on-scroll` usages
-      (mechanical) and the `Reviews → App` dependency.
-- [ ] `app-flourish`, `app-section-divider`.
-- [ ] `app-section-header`.
-- [ ] `app-section` (tone/pattern/width/padding).
-- [ ] `app-card` / `appCard` **⏸ after card styles**.
-- [ ] `appButton` (consolidate 3 implementations).
-- [ ] `app-social-links` + `SOCIALS` data; use in footer/about/contact/donate.
-- [ ] `app-brand`.
-- [ ] Unit tests for each.
+Concrete, ready-to-execute plan for stage 3a (stages 3b/3c settled but detailed just before each executes):
+**[09-phase-3-plan.md](09-phase-3-plan.md)** (settled 2026-09-22 via `grill-with-docs`). Split into three
+sub-phases, each its own branch and merge decision — they have very different risk profiles.
+
+- [ ] **3a — Motion & structure** (zero visual risk): `appReveal` directive + `RevealService`; delete
+      `App.observerInit`/its router-subscription re-scan and the `Reviews → App` dependency; delete the now-dead
+      `IntersectionObserver` test stub from Phase 0. `app-flourish` (29 usages), `app-section-divider` (13
+      byte-identical usages), `app-section-header` (~20 usages), `app-section`. TDD throughout. Diff-decides-merge
+      like Phase 0/2.
+- [ ] **3b — Surfaces & controls** (real visual change on every page — **always a PR**, regardless of diff):
+      `[appCard]` directive (not a component — no required DOM structure), `appButton` directive (`primary` /
+      `secondary` / `pill` variants). Detailed just before execution, after enumerating every current card/button
+      instance side by side.
+- [ ] **3c — Data-driven consolidation**: `SOCIALS` typed data (adds an `email` entry), `app-social-links`
+      (`ids` + `variant: 'plain' | 'chip'` — real per-page variance, not one fixed list), `app-brand` (confirmed
+      byte-identical markup already). Diff-decides-merge.
 
 ## Phase 4 — Hero and Flowbite JS removal
 
