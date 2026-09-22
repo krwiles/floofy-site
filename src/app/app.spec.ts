@@ -1,9 +1,27 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { beforeAll, vi } from 'vitest';
 import { App } from './app';
 import { routes } from './app.routes';
 
 describe('App', () => {
+  beforeAll(() => {
+    // jsdom (the test environment) doesn't implement IntersectionObserver, which
+    // App.ngAfterViewInit schedules via setTimeout(0). That timeout can still be
+    // pending when a test's assertions finish, so the stub is installed for this
+    // whole file's run (not unstubbed per-test) rather than raced against a
+    // deferred callback. This is an environment shim only; App's real behavior
+    // is unchanged.
+    vi.stubGlobal(
+      'IntersectionObserver',
+      class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      },
+    );
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
