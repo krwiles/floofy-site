@@ -18,6 +18,13 @@ function createFixture(): ComponentFixture<HostComponent> {
   return TestBed.createComponent(HostComponent);
 }
 
+// No [tone] binding at all -- glass-panel's own CSS doesn't vary by tone, so glass usage shouldn't need one.
+@Component({
+  template: `<div appCard [glass]="true"></div>`,
+  imports: [Card],
+})
+class GlassOnlyHostComponent {}
+
 describe('Card', () => {
   it('applies card-on-section-light for tone light', () => {
     const fixture = createFixture();
@@ -75,5 +82,13 @@ describe('Card', () => {
     expect(element.classList.contains('glass-panel')).toBe(true);
     expect(element.classList.contains('card-on-section-light')).toBe(false);
     expect(element.classList.contains('card-shadow-light')).toBe(false);
+  });
+
+  it('applies glass-panel with no tone bound at all', () => {
+    TestBed.configureTestingModule({ imports: [GlassOnlyHostComponent] });
+    const fixture = TestBed.createComponent(GlassOnlyHostComponent);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('div').classList.contains('glass-panel')).toBe(true);
   });
 });
