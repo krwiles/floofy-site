@@ -13,6 +13,9 @@ describe('Carousel', () => {
 
     fixture = TestBed.createComponent(Carousel);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('images', [
+      [{ src: 'assets/test-fixture.jpg', alt: 'Test image', width: 400, height: 600 }],
+    ]);
     await fixture.whenStable();
   });
 
