@@ -20,7 +20,7 @@
   <div
     class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
-    <div class="glass-panel hero-reveal-surface max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
+    <div appCard [glass]="true" class="hero-reveal-surface max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block" />
       <p
         class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-light-heading uppercase sm:text-[0.95rem]"
@@ -55,7 +55,7 @@
       alt="SummerFloofy"
       height="600"
       width="600"
-      appReveal class="card-shadow block w-full rounded-2xl drop-shadow-xl"
+      appReveal appCard tone="light" [noBackground]="true" class="block w-full"
     />
 
     <!-- Artist text -->
@@ -81,7 +81,7 @@
 <!-- Contact Socials -->
 <app-section tone="middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-    <div class="glass-panel mx-auto max-w-3xl border border-white/30 px-5 py-8 sm:px-7">
+    <div appCard [glass]="true" class="mx-auto max-w-3xl border border-white/30 px-5 py-8 sm:px-7">
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block" />
 
       <!-- Section heading -->
@@ -188,7 +188,7 @@
         alt="Floofy – SummerFloofy's original character"
         height="600"
         width="600"
-        class="card-shadow w-full rounded-2xl object-cover shadow-2xl"
+        appCard tone="dark" [noBackground]="true" class="w-full object-cover"
       />
     </div>
 
@@ -222,7 +222,7 @@
           alt="Floofy reference sheet"
           height="2048"
           width="1536"
-          class="card-shadow max-h-[90svh] w-auto"
+          appCard tone="dark" [noBackground]="true" class="max-h-[90svh] w-auto"
         />
       </div>
     </div>
@@ -236,10 +236,12 @@
         {{ 'about.oc.fanart.title' | translate }}
       </h3>
       <a
+        appButton
+        variant="pill"
+        tone="dark"
         href="https://twitter.com/hashtag/{{ ('about.oc.fanart.hashtag' | translate).replace('#', '') }}?src=hash"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center justify-center rounded-full bg-brand px-4 py-1 text-sm font-bold tracking-widest text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
         aria-label="View fan art hashtag on X/Twitter"
       >
         {{ 'about.oc.fanart.hashtag' | translate }}

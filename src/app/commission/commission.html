@@ -20,7 +20,7 @@
   <div
     class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-start"
   >
-    <div class="glass-panel hero-reveal-surface max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
+    <div appCard [glass]="true" class="hero-reveal-surface max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block" />
       <p
         class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-light-heading uppercase sm:text-[0.95rem]"
@@ -57,7 +57,7 @@
 
       <div class="grid gap-6 lg:grid-cols-3">
         <!-- Pricing Card: Chibi -->
-        <div class="card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
+        <div appCard tone="dark" class="border border-white/10 p-8">
           <h3 appReveal class="text-2xl font-black text-on-dark-heading">
             {{ 'commission.cards.chibi.title' | translate }}
           </h3>
@@ -69,7 +69,7 @@
           </p>
           <!-- Carousel -->
           <div
-            appReveal class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
+            appReveal appCard tone="dark" class="mt-6 aspect-square overflow-hidden border border-white/10 p-2"
           >
             <app-carousel [images]="chibiCarouselImages" [controls]="true"></app-carousel>
           </div>
@@ -124,14 +124,14 @@
           </div>
           <a
             (click)="scrollToForm('chibi')"
-            appReveal class="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+            appReveal appButton variant="primary" tone="dark" class="mt-8"
           >
             {{ 'commission.cards.chibi.cta' | translate }}
           </a>
         </div>
 
         <!-- Pricing Card: Emotes -->
-        <div class="card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
+        <div appCard tone="dark" class="border border-white/10 p-8">
           <h3 appReveal class="text-2xl font-black text-on-dark-heading">
             {{ 'commission.cards.emotes.title' | translate }}
           </h3>
@@ -144,7 +144,7 @@
 
           <!-- Carousel -->
           <div
-            appReveal class="card-shadow mt-6 aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
+            appReveal appCard tone="dark" class="mt-6 aspect-square overflow-hidden border border-white/10 p-2"
           >
             <app-carousel [images]="emoteCarouselImages" [controls]="true"></app-carousel>
           </div>
@@ -201,14 +201,14 @@
           </div>
           <a
             (click)="scrollToForm('emotes')"
-            appReveal class="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+            appReveal appButton variant="primary" tone="dark" class="mt-8"
           >
             {{ 'commission.cards.emotes.cta' | translate }}
           </a>
         </div>
 
         <!-- Pricing Card: Illustration -->
-        <div class="card-shadow rounded-4xl border border-white/10 bg-white/5 p-8">
+        <div appCard tone="dark" class="border border-white/10 p-8">
           <h3 appReveal class="text-2xl font-black text-on-dark-heading">
             {{ 'commission.cards.illustration.title' | translate }}
           </h3>
@@ -221,7 +221,7 @@
 
           <!-- Carousel -->
           <div
-            appReveal class="card-shadow mt-6 aspect-3/4 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2"
+            appReveal appCard tone="dark" class="mt-6 aspect-3/4 overflow-hidden border border-white/10 p-2"
           >
             <app-carousel [images]="illustrationCarouselImages" [controls]="true"></app-carousel>
           </div>
@@ -273,7 +273,7 @@
           </div>
           <a
             (click)="scrollToForm('illustration')"
-            appReveal class="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+            appReveal appButton variant="primary" tone="dark" class="mt-8"
           >
             {{ 'commission.cards.illustration.cta' | translate }}
           </a>
@@ -298,7 +298,7 @@
       <div class="grid gap-6 lg:grid-cols-3">
         <div class="space-y-6">
           <!-- Terms Card: Revisions -->
-          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal appCard tone="middle" class="border border-white/60 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.revisions.title' | translate }}
             </h3>
@@ -311,7 +311,7 @@
           </article>
 
           <!-- Terms Card: Workflow -->
-          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal appCard tone="middle" class="border border-white/60 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.workflow.title' | translate }}
             </h3>
@@ -325,7 +325,7 @@
           </article>
 
           <!-- Terms Card: Communication -->
-          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal appCard tone="middle" class="border border-white/60 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.communication.title' | translate }}
             </h3>
@@ -337,7 +337,7 @@
 
         <div class="space-y-6">
           <!-- Terms Card: Pricing -->
-          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal appCard tone="middle" class="border border-white/60 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.pricing.title' | translate }}
             </h3>
@@ -348,10 +348,7 @@
           </article>
 
           <!-- Terms Card: Artwork Usage -->
-          <article
-            id="artwork-usage"
-            appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8"
-          >
+          <article id="artwork-usage" appReveal appCard tone="middle" class="border border-white/60 p-8">
             <h3
               class="scroll-mt-32 rounded-md text-2xl font-black text-on-middle-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
             >
@@ -407,7 +404,7 @@
           </article>
 
           <!-- Terms Card: Payment -->
-          <article appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+          <article appReveal appCard tone="middle" class="border border-white/60 p-8">
             <h3 class="text-2xl font-black text-on-middle-heading">
               {{ 'commission.terms.payment.title' | translate }}
             </h3>
@@ -421,7 +418,7 @@
         <div>
           <!-- Terms Card: Terms of Service -->
           <article
-            appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8 focus-visible:outline-2 focus-visible:outline-brand-strong"
+            appReveal appCard tone="middle" class="border border-white/60 p-8 focus-visible:outline-2 focus-visible:outline-brand-strong"
           >
             <h3
               class="scroll-mt-32 rounded-md text-2xl font-black text-on-middle-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
@@ -534,7 +531,9 @@
 
       <!-- Commission form -->
       <form
-        class="card-shadow mx-auto max-w-3xl rounded-4xl border border-white/70 bg-section-middle-alt px-8 py-12 text-on-middle-heading"
+        appCard
+        tone="middle"
+        class="mx-auto max-w-3xl border border-white/70 px-8 py-12 text-on-middle-heading"
         [formRoot]="commissionForm"
       >
         <div class="grid grid-cols-1 gap-6">
@@ -847,10 +846,7 @@
 
           <!-- Submit button -->
           <div class="flex items-center gap-5 pt-4 text-on-middle-body">
-            <button
-              type="submit"
-              class="inline-flex items-center justify-center rounded-xl bg-brand px-6 py-3 text-sm font-semibold text-on-light-heading hover:bg-brand-subtle"
-            >
+            <button type="submit" appButton variant="primary" tone="middle">
               {{ 'commission.form.submit' | translate }}
             </button>
             <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="commission-form-status">
