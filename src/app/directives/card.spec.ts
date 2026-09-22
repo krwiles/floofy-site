@@ -25,6 +25,13 @@ function createFixture(): ComponentFixture<HostComponent> {
 })
 class GlassOnlyHostComponent {}
 
+// No [tone] and no [glass] -- tone is required in practice for every other mode.
+@Component({
+  template: `<div appCard></div>`,
+  imports: [Card],
+})
+class NoToneNoGlassHostComponent {}
+
 describe('Card', () => {
   it('applies card-on-section-light for tone light', () => {
     const fixture = createFixture();
@@ -90,5 +97,12 @@ describe('Card', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('div').classList.contains('glass-panel')).toBe(true);
+  });
+
+  it('throws if tone is missing and glass is not set, instead of silently emitting a broken class', () => {
+    TestBed.configureTestingModule({ imports: [NoToneNoGlassHostComponent] });
+    const fixture = TestBed.createComponent(NoToneNoGlassHostComponent);
+
+    expect(() => fixture.detectChanges()).toThrow();
   });
 });

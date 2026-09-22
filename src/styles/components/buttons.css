@@ -1,10 +1,22 @@
-/* First-pass button design (Phase 3b) -- reuses cards.css's gradient + saturate(130%) technique, but applies
-   the filter directly to the element rather than via a ::before layer: cards always wrap their content in
-   child elements (so `> * { z-index: 1 }` lifts them above the painted background layer), but a button's
-   label is usually a bare text node with no wrapping element to lift the same way. Applying the filter
-   directly means it also touches the text color, which is a minor, likely-negligible shift for a flat solid
-   color -- flagging the deviation rather than silently changing the approach. Owner reviews/adjusts values
-   after this first pass; see CONTEXT.md's "Button" entry for the contrast rule this follows. */
+/* First-pass button design (Phase 3b) -- reuses cards.css's gradient + saturate() technique, but applies the
+   filter directly to the element rather than via a ::before layer: cards always wrap their content in child
+   elements (so `> * { z-index: 1 }` lifts them above the painted background layer), but a button's label is
+   usually a bare text node with no wrapping element to lift the same way. Applying the filter directly means
+   it also touches the text color, a minor, likely-negligible shift for a flat solid color -- flagging the
+   deviation rather than silently changing the approach. Owner reviews/adjusts values after this first pass;
+   see CONTEXT.md's "Button" entry for the contrast rule this follows.
+
+   Gradient stops below are deliberately kept dark enough (light/middle tones) or light enough (dark tone) that
+   white/dark text stays above WCAG AA's 4.5:1 contrast ratio across the *whole* gradient, not just one end --
+   an earlier version used undiluted --color-brand-strong as one stop, which only hit ~2.76:1 with white text
+   (caught in code review). Never reintroduce a bare --color-brand/--color-brand-strong stop under white text. */
+
+:root {
+  --btn-saturate: 130%;
+  --btn-shadow:
+    0 0.65rem 1.6rem color-mix(in srgb, var(--color-section-dark-alt) 25%, transparent),
+    0 0.1rem 0.5rem color-mix(in srgb, var(--color-section-dark-alt) 15%, transparent);
+}
 
 .btn {
   display: inline-flex;
@@ -18,13 +30,13 @@
   transition:
     filter 0.2s ease,
     transform 0.2s ease;
-  box-shadow:
-    0 0.65rem 1.6rem color-mix(in srgb, var(--color-section-dark-alt) 25%, transparent),
-    0 0.1rem 0.5rem color-mix(in srgb, var(--color-section-dark-alt) 15%, transparent);
+  box-shadow: var(--btn-shadow);
 }
 
 .btn:hover {
-  filter: saturate(160%);
+  /* brightness alongside saturate -- saturate alone is a near-imperceptible shift on this palette's already
+     desaturated pastel blues (caught in code review). */
+  filter: saturate(calc(var(--btn-saturate) + 30%)) brightness(1.08);
 }
 
 .btn:focus-visible {
@@ -57,26 +69,63 @@
 /* ── Tone: color, contrasting against its section rather than matching it ─
    Light/middle sections are pale, so their buttons go darker; the dark
    section is already dark, so its button goes lighter. Mirrors the
-   contrast direction of that tone's own heading/body text colors. ── */
+   contrast direction of that tone's own heading/body text colors. Every
+   variant at a given tone still contrasts the same *direction* -- secondary
+   is lower-emphasis via a lighter fill, not by flipping direction -- but
+   never lighter than the safe stop already verified for that tone below. ── */
 
 .btn-on-light {
   background: linear-gradient(
     135deg,
-    var(--color-brand-strong),
-    color-mix(in srgb, var(--color-brand-strong) 55%, var(--color-on-light-heading))
+    color-mix(in srgb, var(--color-on-light-heading) 65%, var(--color-brand-strong)),
+    var(--color-on-light-heading)
   );
-  filter: saturate(130%);
+  filter: saturate(var(--btn-saturate));
+  color: white;
+}
+
+.btn-on-light.btn-secondary {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-on-light-heading) 40%, var(--color-brand-strong)),
+    color-mix(in srgb, var(--color-on-light-heading) 65%, var(--color-brand-strong))
+  );
+  filter: saturate(var(--btn-saturate));
   color: white;
 }
 
 .btn-on-middle {
-  background: linear-gradient(135deg, var(--color-brand-strong), var(--color-section-dark));
-  filter: saturate(130%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-section-dark) 60%, var(--color-brand-strong)),
+    var(--color-section-dark)
+  );
+  filter: saturate(var(--btn-saturate));
+  color: white;
+}
+
+.btn-on-middle.btn-secondary {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-section-dark) 80%, var(--color-brand-strong)),
+    color-mix(in srgb, var(--color-section-dark) 60%, var(--color-brand-strong))
+  );
+  filter: saturate(var(--btn-saturate));
   color: white;
 }
 
 .btn-on-dark {
-  background: linear-gradient(135deg, var(--color-brand), var(--color-brand-subtle));
-  filter: saturate(130%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-brand) 85%, var(--color-brand-subtle)),
+    var(--color-brand-subtle)
+  );
+  filter: saturate(var(--btn-saturate));
+  color: var(--color-on-light-heading);
+}
+
+.btn-on-dark.btn-secondary {
+  background: linear-gradient(135deg, var(--color-brand-subtle), white);
+  filter: saturate(var(--btn-saturate));
   color: var(--color-on-light-heading);
 }
