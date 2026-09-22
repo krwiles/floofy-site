@@ -5,10 +5,26 @@ import { CarouselImage } from '../models/carousel-image.model';
 import { RouterLink } from '@angular/router';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { Reveal } from '../directives/reveal';
+import { Flourish } from '../components/flourish/flourish';
+import { SectionDivider } from '../components/section-divider/section-divider';
+import { SectionHeader } from '../components/section-header/section-header';
+import { Section } from '../components/section/section';
 
 @Component({
   selector: 'app-home',
-  imports: [Carousel, NgOptimizedImage, RouterLink, ParallaxSection, TranslatePipe],
+  imports: [
+    Carousel,
+    NgOptimizedImage,
+    RouterLink,
+    ParallaxSection,
+    TranslatePipe,
+    Reveal,
+    Flourish,
+    SectionDivider,
+    SectionHeader,
+    Section,
+  ],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

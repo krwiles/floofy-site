@@ -57,7 +57,7 @@
 }
 
 .stream-cta--primary {
-  background: linear-gradient(135deg, #a9bedb, #7d9ec8);
+  background: linear-gradient(135deg, var(--color-brand), var(--color-brand-strong));
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 12px 24px rgba(125, 158, 200, 0.28);

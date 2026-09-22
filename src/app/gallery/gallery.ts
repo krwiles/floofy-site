@@ -1,15 +1,19 @@
-import { Component, HostListener, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { GalleryImageService } from '../services/gallery-image.service';
 import { GalleryImage } from '../models/gallery-image';
 import { DOCUMENT } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { Flourish } from '../components/flourish/flourish';
+import { SectionDivider } from '../components/section-divider/section-divider';
+import { Section } from '../components/section/section';
 
 @Component({
   selector: 'app-gallery',
-  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe],
+  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe, Flourish, SectionDivider, Section],
   templateUrl: './gallery.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './gallery.css',
 })
 export class Gallery {
