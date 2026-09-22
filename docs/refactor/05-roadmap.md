@@ -126,12 +126,17 @@ Concrete, ready-to-execute plan for stage 3a (stages 3b/3c settled but detailed 
 **[09-phase-3-plan.md](09-phase-3-plan.md)** (settled 2026-09-22 via `grill-with-docs`). Split into three
 sub-phases, each its own branch and merge decision — they have very different risk profiles.
 
-- [x] **3a — Motion & structure** — executed on `refactor/phase-3a-motion-structure`, pushed,
-      [PR pending](https://github.com/krwiles/floofy-site/pull/new/refactor/phase-3a-motion-structure) (owner needs
-      to open it — see note below). **Not zero visual risk in practice** — a real bug was found and fixed during
-      verification (see below), and the diff-decides-merge rule from Phase 0/2 was overridden: this goes through a
-      PR despite the plan's original "zero visual risk" expectation, because the diff came back far from clean and
-      needs the owner's own eyes.
+- [x] **3a — Motion & structure** — executed on `refactor/phase-3a-motion-structure`, merged into `working` via
+      [PR #21](https://github.com/krwiles/floofy-site/pull/21) (the GitHub MCP token's `403` got fixed mid-phase —
+      re-scoping its fine-grained PAT permissions — so PR creation worked directly from here on). **Not zero
+      visual risk in practice** — a real bug was found and fixed during verification (see below), and the
+      diff-decides-merge rule from Phase 0/2 was overridden: this went through a PR despite the plan's original
+      "zero visual risk" expectation, because the diff came back far from clean and needed the owner's own eyes.
+      Two follow-up commits landed on the same PR after the owner noticed `app-section-header` wasn't applied
+      everywhere it should be: the 3 remaining "exceptions" from the original migration turned out not to be real
+      exceptions (dead scroll-anchor CSS, traced via `commission.ts`'s `scrollToElement()`) except one genuine
+      extra-paragraph case, and the site's `descriptionSize` sm/base split was an unintended inconsistency,
+      standardized on `base` (input removed entirely).
   - [x] `RevealService` + `appReveal` (TDD); deleted `App.observerInit`/its router-subscription re-scan, the
         `Reviews → App` dependency, and the Phase 0 `IntersectionObserver` test stub (replaced by a project-wide
         one in `src/test-setup.ts`, needed because every `appReveal`-using component now hits the same
@@ -164,14 +169,39 @@ sub-phases, each its own branch and merge decision — they have very different 
         claimed as resolved.
   - **PR creation blocked again**: the GitHub MCP token still returns `403` (same issue as Phase 1, unresolved by
         the owner's earlier access change). Branch is pushed; PR body handed to the owner to paste manually.
-- [ ] **3b — Surfaces & controls** (real visual change on every page — **always a PR**, regardless of diff).
-      Concrete, ready-to-execute plan: **[10-phase-3b-plan.md](10-phase-3b-plan.md)** (settled 2026-09-22 via
-      `grilling` + `domain-modeling`). `[appCard]` directive (`tone`/`special`/`noBackground`/`glass`) applied
-      site-wide to every card-shaped element, including standardizing the radius/shadow on images that currently
-      vary. `appButton` directive (`variant: primary/secondary/pill` × `tone: light/middle/dark`, contrasting
-      against its tone rather than matching it) — Claude writes `buttons.css` from `cards.css`'s technique as a
-      first pass, owner tweaks after, not blocking on that. Streaming page, navbar buttons, and commission's form
-      radio-labels are explicitly excluded (see the plan's "Explicitly out of scope" and the open items below).
+- [x] **3b — Surfaces & controls** (real visual change on every page — **always a PR**, regardless of diff) —
+      executed on `refactor/phase-3b-surfaces-controls`, per **[10-phase-3b-plan.md](10-phase-3b-plan.md)**.
+      `[appCard]` (`tone`/`special`/`noBackground`/`glass`) and `appButton` (`variant` × `tone`) directives,
+      TDD throughout, migrated every in-scope card/button instance across about/commission/home/gallery/contact/
+      donate/reviews. Streaming, navbar buttons, and commission's form radio-labels excluded as planned.
+  - **Real bugs found by `/code-review`, all verified before fixing (not caught by `ng build`/`ng test`)**:
+    - `donate.html`'s Ko-fi `<iframe>` was migrated to a full `[appCard tone]`, but the directive's fill/border
+      paint via a `::before` layer, and browsers never render `::before`/`::after` on replaced elements like
+      `<iframe>` — the card's whole surface would have silently never appeared. Moved `appCard` to a wrapper
+      `<div>` around the iframe instead.
+    - Every full-card migration kept its original `border-white/N` utility alongside `[appCard]`, reasoning
+      (wrongly) from `contact.html`'s one pre-existing `card-on-section-middle` usage as precedent. Worked out
+      the actual box geometry by hand: a `::before` with `inset:0` resolves against the parent's *padding*
+      edge, so its own 1px border paints in the ring immediately inside the parent's own border — two adjacent,
+      differently-colored 1px rings, not one hidden behind the other the way the already-removed `bg-white/N`
+      classes were. Removed the redundant border from all ~15 instances, including retroactively fixing
+      `contact.html`'s original usage, which turned out to have the same defect already — the trusted precedent
+      was itself buggy.
+    - `tone` was fully optional on `[appCard]` to accommodate `glass`, leaving the far more common non-glass
+      case with no safety net at all. Now throws immediately if missing outside `glass` mode, instead of
+      silently emitting a class matching no CSS rule.
+    - `buttons.css`: `variant="secondary"` rendered identically to `primary` (only `.btn-on-{tone}` set color).
+      White text on `btn-on-light`/`btn-on-middle`'s lighter gradient stop computed to ~2.76:1 contrast against
+      WCAG AA's 4.5:1 floor — both fixed (secondary gets its own lighter-but-still-contrasting fill; every
+      gradient stop now verified ≥4.5:1, not just checked at one end).
+    - Deduplicated the `Tone` type (identical in both directives) into `src/app/models/tone.ts`.
+  - **Disclosed, not fixed**: 3 commission carousel-thumbnail wrappers go from `rounded-2xl` (1rem) to the
+    card system's fixed 2rem radius — a real, visible size increase and a design call for the owner, not a code
+    defect; no clean way to override it without fighting the directive's own cascade.
+  - Visual diff vs. the Phase 0 baseline: real changes everywhere a card/button actually changed, several
+    `size-mismatch` entries (expected — full-page height changes with real content/spacing changes). `streaming`
+    shows 30–36%, entirely inherited from Stage 3a's already-disclosed reveal-timing uncertainty — confirmed via
+    `git diff working -- src/app/streaming/` (empty) that this branch touched nothing there.
 - [ ] **3c — Data-driven consolidation**: `SOCIALS` typed data (adds an `email` entry), `app-social-links`
       (`ids` + `variant: 'plain' | 'chip'` — real per-page variance, not one fixed list), `app-brand` (confirmed
       byte-identical markup already). Diff-decides-merge.
