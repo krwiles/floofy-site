@@ -4,7 +4,8 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** 
 Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (Stages 3a, 3b, 3c) fully done and
 merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixed outside phase work, merged
 (PR #25). Phase 4 has a concrete plan (see below); step 1 (image asset model) executed and merged. A 4th
-`<app-flourish>`/`app-section-divider` bug found outside phase work, [PR #26](https://github.com/krwiles/floofy-site/pull/26) — pending review — caused real mobile horizontal overflow site-wide. Phases 5–8 not started.
+`<app-flourish>`/`app-section-divider` bug found outside phase work, [PR #26](https://github.com/krwiles/floofy-site/pull/26) — merged — caused real mobile horizontal overflow site-wide. Phase 4 step 2
+(`app-rolling-carousel`) up next. Phases 5–8 not started.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -34,7 +35,7 @@ category of gap as the Stage 3a `bg-section` bug). All three verified via `getCo
 against the real DOM, never via screenshots.
 
 **4th bug found outside phase work, 2026-09-23, [PR #26](https://github.com/krwiles/floofy-site/pull/26) —
-pending review — a different root gap from the 3 above, same components:** every caller-facing `hidden ...
+merged into `working` — a different root gap from the 3 above, same components:** every caller-facing `hidden ...
 md:inline-block` on `<app-flourish>` or `app-section-divider`'s own `.flourish` span (meant to hide the flourish
 below the `md` breakpoint) never actually worked below `md` — the owner noticed flourishes always showing on
 mobile and suspected (correctly) that this was pushing pages wider than the screen. Root cause: `flourish.ts`'s
