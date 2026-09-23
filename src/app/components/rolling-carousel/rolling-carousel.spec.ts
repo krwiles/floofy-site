@@ -68,6 +68,17 @@ describe('RollingCarousel', () => {
     }
   });
 
+  it('adds the --framed class (extra padding for the card shadow to fully render) only when cardTone is set', () => {
+    fixture = create();
+    fixture.detectChanges();
+    const root = fixture.nativeElement.querySelector('.rolling-carousel');
+    expect(root.classList.contains('rolling-carousel--framed')).toBe(false);
+
+    fixture.componentRef.setInput('cardTone', 'dark');
+    fixture.detectChanges();
+    expect(root.classList.contains('rolling-carousel--framed')).toBe(true);
+  });
+
   it('defaults the loop duration to 30s and lets the page override it via the speed input', () => {
     fixture = create();
     fixture.detectChanges();

@@ -6,7 +6,12 @@
   page's own "See full gallery" link next to this strip. Hiding the whole thing here also means the
   duplicate copy needs no aria-hidden handling of its own -- there's nothing left to distinguish.
 -->
-<div class="rolling-carousel" [style.height]="height()" aria-hidden="true">
+<div
+  class="rolling-carousel"
+  [class.rolling-carousel--framed]="cardTone()"
+  [style.height]="height()"
+  aria-hidden="true"
+>
   <div class="rolling-carousel__track" [style.animation-duration.s]="speed()">
     @for (image of images(); track 'a-' + $index) {
       @if (cardTone()) {

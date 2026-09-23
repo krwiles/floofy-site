@@ -21,7 +21,10 @@
     class="relative z-10 mx-auto flex h-full min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
     <div appCard [glass]="true" class="hero-reveal-surface max-w-2xl px-7 py-7 drop-shadow-md sm:px-9 sm:py-9 md:mb-16">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 h-8 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:h-12" />
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 h-8 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:h-12"
+      />
       <!-- Small intro/kicker text above the main title. -->
       <p
         class="hero-reveal-kicker m-0 text-sm font-bold tracking-[0.34em] text-on-dark-heading uppercase md:text-[1.05rem]"
@@ -58,7 +61,8 @@
     >
       <div>
         <h2
-          appReveal class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-dark-heading md:justify-start"
+          appReveal
+          class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-dark-heading md:justify-start"
         >
           {{ 'home.gallery.title' | translate }}
           <app-flourish variant="end" [flip]="true" class="hidden text-on-dark-heading md:inline-block" />
@@ -68,10 +72,7 @@
           {{ 'home.gallery.description' | translate }}
         </p>
       </div>
-      <a
-        routerLink="/gallery"
-        appReveal appButton variant="primary" tone="dark" class="md:self-start"
-      >
+      <a routerLink="/gallery" appReveal appButton variant="primary" tone="dark" class="md:self-start">
         {{ 'home.gallery.cta' | translate }}
       </a>
     </div>
@@ -95,7 +96,11 @@
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
       <!-- About image -->
       <img
-        appReveal appCard tone="light" [noBackground]="true" class="block max-h-90 w-auto justify-self-end object-cover"
+        appReveal
+        appCard
+        tone="light"
+        [noBackground]="true"
+        class="block max-h-90 w-auto justify-self-end object-cover"
         ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
         alt="Floofy"
         width="621"
@@ -104,7 +109,8 @@
       <!-- About text -->
       <div class="mt-4 text-center md:mt-0 md:text-left">
         <h2
-          appReveal class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
+          appReveal
+          class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
         >
           {{ 'home.about.title' | translate }}
           <app-flourish variant="end" [flip]="true" class="hidden text-on-light-heading md:inline-block" />
@@ -112,10 +118,7 @@
         <p appReveal class="mb-6 leading-7 text-on-light-body">
           {{ 'home.about.description' | translate }}
         </p>
-        <a
-          routerLink="/about"
-          appReveal appButton variant="secondary" tone="light"
-        >
+        <a routerLink="/about" appReveal appButton variant="secondary" tone="light">
           {{ 'home.about.cta' | translate }}
         </a>
       </div>
@@ -127,7 +130,8 @@
     >
       <div class="mt-4 text-center md:mt-0 md:text-right">
         <h2
-          appReveal class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-end"
+          appReveal
+          class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-end"
         >
           <app-flourish variant="end" class="hidden text-on-light-heading md:inline-block" />
           {{ 'home.commission.title' | translate }}
@@ -135,10 +139,7 @@
         <p appReveal class="mb-6 leading-7 text-on-light-body">
           {{ 'home.commission.description' | translate }}
         </p>
-        <a
-          routerLink="/commission"
-          appReveal appButton variant="secondary" tone="light"
-        >
+        <a routerLink="/commission" appReveal appButton variant="secondary" tone="light">
           {{ 'home.commission.cta' | translate }}
         </a>
       </div>
@@ -169,7 +170,11 @@
     <!-- Streaming -->
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
       <img
-        appReveal appCard tone="light" [noBackground]="true" class="w-full"
+        appReveal
+        appCard
+        tone="light"
+        [noBackground]="true"
+        class="w-full"
         ngSrc="assets/6BA33836.jpeg"
         alt="Floofy"
         width="1718"
@@ -177,7 +182,8 @@
       />
       <div class="mt-4 text-center md:mt-0 md:text-left">
         <h2
-          appReveal class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
+          appReveal
+          class="mb-4 flex items-center justify-center gap-3 text-4xl font-black tracking-tight wrap-break-word text-on-light-heading md:justify-start"
         >
           {{ 'home.streaming.title' | translate }}
           <app-flourish variant="end" [flip]="true" class="hidden text-on-light-heading md:inline-block" />
@@ -185,10 +191,7 @@
         <p appReveal class="mb-6 leading-7 text-on-light-body">
           {{ 'home.streaming.description' | translate }}
         </p>
-        <a
-          routerLink="/streaming"
-          appReveal appButton variant="secondary" tone="light"
-        >
+        <a routerLink="/streaming" appReveal appButton variant="secondary" tone="light">
           {{ 'home.streaming.cta' | translate }}
         </a>
       </div>
@@ -221,13 +224,7 @@
         <p class="mt-4 leading-7 text-on-middle-body">
           {{ 'home.reviews.description' | translate }}
         </p>
-        <a
-          routerLink="/reviews"
-          appButton
-          variant="primary"
-          tone="middle"
-          class="mt-8"
-        >
+        <a routerLink="/reviews" appButton variant="primary" tone="middle" class="mt-8">
           {{ 'home.reviews.cta' | translate }}
         </a>
       </div>
@@ -243,13 +240,7 @@
         <p class="mt-4 leading-7 text-on-middle-body">
           {{ 'home.donate.description' | translate }}
         </p>
-        <a
-          routerLink="/donate"
-          appButton
-          variant="primary"
-          tone="middle"
-          class="mt-8"
-        >
+        <a routerLink="/donate" appButton variant="primary" tone="middle" class="mt-8">
           {{ 'home.donate.cta' | translate }}
         </a>
       </div>
@@ -265,13 +256,7 @@
         <p class="mt-4 leading-7 text-on-middle-body">
           {{ 'home.contact.description' | translate }}
         </p>
-        <a
-          routerLink="/contact"
-          appButton
-          variant="primary"
-          tone="middle"
-          class="mt-8"
-        >
+        <a routerLink="/contact" appButton variant="primary" tone="middle" class="mt-8">
           {{ 'home.contact.cta' | translate }}
         </a>
       </div>
