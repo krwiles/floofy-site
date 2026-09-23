@@ -2,11 +2,24 @@
 .flourish {
   --flourish-src: url('../../assets/flourish-end.svg');
   --flourish-ratio: 241 / 54;
+  /* display: inline-block is required, not decorative -- aspect-ratio/min-height/width:auto
+     have NO EFFECT on a plain non-replaced `display: inline` box per spec, so without this the
+     element is a genuine 0x0 box and nothing paints. This mask technique previously "worked"
+     only by accident, when a caller's own utility classes (e.g. `absolute`, or being a flex
+     item) happened to blockify the element that carries this class. `<app-flourish>` renders
+     this span one level inside its own host, so whatever positioning class a caller puts on
+     the host never reaches this span -- every `<app-flourish>` usage was silently invisible
+     until this was made explicit. Found via a real bug report (variant="end" + flip="true"),
+     but confirmed via computed-style inspection to affect every variant, not just that one. */
+  display: inline-block;
   width: auto;
   min-height: 1em;
   aspect-ratio: var(--flourish-ratio);
   flex-shrink: 0;
-  vertical-align: -0.08em;
+  /* middle, not the old -0.08em: that fixed offset was tuned for no particular font-size
+     context and was visibly wrong (a small downward nudge is not the general fix for aligning
+     an icon-like inline-block box against surrounding text -- vertical-align: middle is). */
+  vertical-align: middle;
   background-color: currentColor;
   -webkit-mask-image: var(--flourish-src);
   mask-image: var(--flourish-src);
