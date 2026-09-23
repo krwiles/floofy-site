@@ -4,6 +4,17 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** 
 Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (Stages 3a, 3b, 3c) fully done and
 merged into `working` (PR #21, #23, #24). Phase 4 up next, not yet planned in detail. Phases 5–8 not started.
 
+**Bug found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) (fix branch, pending
+review):** the owner reported `<app-flourish variant="end" [flip]="true">` rendering invisible. Root cause: `.flourish`
+(`src/styles/utilities/flourishes.css`) never set its own `display`, so it was a plain `display: inline` `<span>` —
+`aspect-ratio`/`min-height`/`width: auto` have no effect on a non-replaced inline box, so it was a genuine 0×0 box.
+It only ever appeared to work when a caller's own classes (`absolute`, or being a flex item) happened to blockify
+the *host*, but `<app-flourish>` renders this span one level inside its own host, so that blockification never
+reached the span itself. Confirmed via computed-style inspection (never viewed rendered art/screenshots) that this
+affects **every** `<app-flourish>` usage on every page, not just the reported combination — `flourish.spec.ts`
+only asserts class names, so jsdom's lack of real CSS layout let this ship unnoticed (same category of gap as the
+Stage 3a `bg-section` bug). Fix: `display: inline-block` on `.flourish` itself.
+
 ## Guiding order
 
 Baseline → upgrade → design foundations → primitives → hero/section → forms → Flowbite replacement → pages one at a
