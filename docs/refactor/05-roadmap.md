@@ -3,7 +3,8 @@
 Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** = waiting on the owner.
 Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (Stages 3a, 3b, 3c) fully done and
 merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixed outside phase work, merged
-(PR #25). Phase 4 has a concrete plan (see below), not yet executed. Phases 5–8 not started.
+(PR #25). Phase 4 has a concrete plan (see below); step 1 (image asset model) executed and merged. A 4th
+`<app-flourish>`/`app-section-divider` bug found outside phase work, [PR #26](https://github.com/krwiles/floofy-site/pull/26) — pending review — caused real mobile horizontal overflow site-wide. Phases 5–8 not started.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -31,6 +32,25 @@ classes ever reached the element that needed them.
 `flourish.spec.ts` only asserts class names, so jsdom's lack of real CSS layout let all three ship unnoticed (same
 category of gap as the Stage 3a `bg-section` bug). All three verified via `getComputedStyle`/`getBoundingClientRect`
 against the real DOM, never via screenshots.
+
+**4th bug found outside phase work, 2026-09-23, [PR #26](https://github.com/krwiles/floofy-site/pull/26) —
+pending review — a different root gap from the 3 above, same components:** every caller-facing `hidden ...
+md:inline-block` on `<app-flourish>` or `app-section-divider`'s own `.flourish` span (meant to hide the flourish
+below the `md` breakpoint) never actually worked below `md` — the owner noticed flourishes always showing on
+mobile and suspected (correctly) that this was pushing pages wider than the screen. Root cause: `flourish.ts`'s
+`:host { display: inline-block; }` and `flourishes.css`'s shared `.flourish { display: inline-block; }` are both
+unlayered CSS, which always wins over Tailwind's layered utilities (`hidden`/`md:inline-block` included in
+`@layer utilities`) regardless of specificity or source order — the same underlying cascade-layers mechanism
+already documented above for the `height: 100%` fix, just hitting `display` instead. Confirmed live via
+Playwright (`scrollWidth` vs `innerWidth`, never a screenshot): real horizontal overflow up to 522px at a 375px
+viewport on every one of 8 routes; some flourishes are absolutely positioned and up to ~670px wide once visible.
+Fix: wrap the conflicting CSS in Tailwind's own `base` layer (ranked below `utilities` in Tailwind's own
+`@layer theme,base,components,utilities;`), so a caller's utility class correctly overrides the component
+default — widened to the whole `.flourish` rule (not just `display`) per a code-review finding, since the same
+latent gap exists for every property in that rule, not just the one that's actually been hit. Present since
+Stage 3a first shipped these two components — not a recent regression. Disclosed, not fixed: no unit test
+asserts computed display, so a regression back to unlayered CSS wouldn't be caught by `ng test` — same jsdom
+limitation as the 3 bugs above.
 
 ## Guiding order
 
