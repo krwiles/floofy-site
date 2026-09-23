@@ -5,7 +5,8 @@ Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (S
 merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixed outside phase work, merged
 (PR #25). Phase 4 has a concrete plan (see below); step 1 (image asset model) executed and merged. A 4th
 `<app-flourish>`/`app-section-divider` bug found outside phase work, [PR #26](https://github.com/krwiles/floofy-site/pull/26) — merged — caused real mobile horizontal overflow site-wide. Phase 4 step 2
-(`app-rolling-carousel`) up next. Phases 5–8 not started.
+(`app-rolling-carousel`, home page) executed, [PR #27](https://github.com/krwiles/floofy-site/pull/27) — pending
+review. Phase 4 step 3 (`app-slideshow-carousel`, commission) up next. Phases 5–8 not started.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -325,7 +326,26 @@ for Flowbite-JS-driven pieces.
       drifting once, per the dimension bug above) — both out of scope for this step, flagged for later.
       Also fixed in passing, unrelated to this step: `scripts/visual-baseline/capture.mjs` now emulates
       `prefers-reduced-motion` so `appReveal` content no longer captures as invisible below the fold.
-- [ ] [`app-rolling-carousel`](specs/app-rolling-carousel.md); migrate home.
+- [x] [`app-rolling-carousel`](specs/app-rolling-carousel.md); migrate home. Executed,
+      [PR #27](https://github.com/krwiles/floofy-site/pull/27) — pending review (real, intentional redesign on
+      home only — always a PR, not diff-decides-merge). Two real bugs found and fixed *before* code review even
+      ran, neither showing as page overflow (masked by the strip's own `overflow: hidden`, so only computed-
+      style inspection caught them): `align-items: center` on the outer container meant its flex child never got
+      a definite height via flex stretch, so `height: 100%` resolved to `auto` per spec and every image rendered
+      at its own intrinsic pixel size; the track itself had no `flex-shrink: 0` (a different flex context than
+      its own children), so the browser compressed the whole track to the container's width instead of sizing
+      to `max-content`, squashing every image. Code review then found and fixed five more: the loop's
+      `translateX(-50%)` was short of the true seamless-loop period by exactly half the gap value (verified both
+      algebraically and empirically, offset-based, to within 0.11px after the fix); the height fix patched one
+      level below the real cause (`align-items: center` was removed instead of just compensated for); the whole
+      strip is now `aria-hidden` (resolves a 12-images-at-once accessibility finding and an `aria-hidden`
+      placement inconsistency together); a dead no-op nested CSS rule was deleted; `will-change: transform` was
+      added for the animation that runs for as long as the page is open; a stale line in the spec document
+      itself was corrected. **Disclosed, not fixed**: per-image card-shadow frames get hard-clipped at the
+      scroll window's edges by the container's own `overflow: hidden` (a visual-taste call, not a bug);
+      `home.ts`'s image-list duplication with `GalleryImageService` (already flagged in the step above); no unit
+      test asserts real computed height or loop-period geometry (jsdom doesn't do real CSS layout — exactly why
+      every bug above needed a real-browser check, not `ng test`, to find).
 - [ ] [`app-slideshow-carousel`](specs/app-slideshow-carousel.md); migrate commission's 3 instances; delete the
       old `app-carousel`/`initCarousels()`/its static id.
 - [ ] [`app-language-toggle`](specs/app-language-toggle.md) — extraction only, not Flowbite-related.
