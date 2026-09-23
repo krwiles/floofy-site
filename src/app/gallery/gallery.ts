@@ -8,10 +8,11 @@ import { TranslatePipe } from '../pipes/translate.pipe';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { Section } from '../components/section/section';
+import { Card } from '../directives/card';
 
 @Component({
   selector: 'app-gallery',
-  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe, Flourish, SectionDivider, Section],
+  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe, Flourish, SectionDivider, Section, Card],
   templateUrl: './gallery.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './gallery.css',

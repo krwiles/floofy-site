@@ -137,8 +137,37 @@
 }
 
 .card-shadow {
-  /* Utility depth shadow for elements that need elevation without a full card surface style. */
+  /* Kept for streaming.html, deliberately not migrated in Phase 3b (explicit owner exclusion -- see
+     docs/refactor/10-phase-3b-plan.md). Every other usage of this flat, non-tone-aware utility has moved to
+     [appCard noBackground], which uses the tone-aware .card-shadow-{tone} classes below instead. Remove this
+     once streaming gets its own pass and no longer needs it. */
   box-shadow:
     0 0.65rem 1.6rem color-mix(in srgb, var(--color-section-dark-alt) 25%, transparent),
     0 0.1rem 0.5rem color-mix(in srgb, var(--color-section-dark-alt) 15%, transparent);
+}
+
+.card-shadow-light {
+  /* Shadow-only, tone-aware: same depth as .card-on-section-light, no fill/border. For images and other
+     elements that need elevation without becoming a full card. Standardized radius -- the images this
+     replaces used rounded-2xl inconsistently to not at all (see docs/refactor/10-phase-3b-plan.md). */
+  border-radius: 1rem;
+  box-shadow:
+    0 0.75rem 1.9rem color-mix(in srgb, var(--color-section-dark-alt) 20%, transparent),
+    0 0.15rem 0.6rem color-mix(in srgb, var(--color-section-dark-alt) 10%, transparent);
+}
+
+.card-shadow-middle {
+  /* Shadow-only, tone-aware: same depth as .card-on-section-middle. */
+  border-radius: 1rem;
+  box-shadow:
+    0 0.75rem 1.9rem color-mix(in srgb, var(--color-section-dark-alt) 30%, transparent),
+    0 0.15rem 0.6rem color-mix(in srgb, var(--color-section-dark-alt) 20%, transparent);
+}
+
+.card-shadow-dark {
+  /* Shadow-only, tone-aware: same depth as .card-on-section-dark. */
+  border-radius: 1rem;
+  box-shadow:
+    0 0.75rem 1.9rem color-mix(in srgb, var(--color-section-dark-alt) 80%, black),
+    0 0.15rem 0.6rem color-mix(in srgb, var(--color-section-dark-alt) 90%, black);
 }

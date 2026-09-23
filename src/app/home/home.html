@@ -20,7 +20,7 @@
   <div
     class="relative z-10 mx-auto flex h-full min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
-    <div class="glass-panel hero-reveal-surface max-w-2xl px-7 py-7 drop-shadow-md sm:px-9 sm:py-9 md:mb-16">
+    <div appCard [glass]="true" class="hero-reveal-surface max-w-2xl px-7 py-7 drop-shadow-md sm:px-9 sm:py-9 md:mb-16">
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 h-8 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:h-12" />
       <!-- Small intro/kicker text above the main title. -->
       <p
@@ -49,7 +49,7 @@
   <div class="mx-auto max-w-7xl px-4 py-10 sm:py-24 lg:px-6">
     <!-- Gallery carousel -->
     <div
-      appReveal class="card-shadow mx-auto aspect-5/2 h-auto max-w-5xl rounded-3xl border-white/10 bg-white/5 sm:p-4 md:border"
+      appReveal appCard tone="dark" class="mx-auto aspect-5/2 h-auto max-w-5xl sm:p-4"
     >
       <app-carousel [images]="images"></app-carousel>
     </div>
@@ -72,7 +72,7 @@
       </div>
       <a
         routerLink="/gallery"
-        appReveal class="inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong md:self-start"
+        appReveal appButton variant="primary" tone="dark" class="md:self-start"
       >
         {{ 'home.gallery.cta' | translate }}
       </a>
@@ -97,7 +97,7 @@
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
       <!-- About image -->
       <img
-        appReveal class="card-shadow block max-h-90 w-auto justify-self-end rounded-2xl object-cover"
+        appReveal appCard tone="light" [noBackground]="true" class="block max-h-90 w-auto justify-self-end object-cover"
         ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
         alt="Floofy"
         width="621"
@@ -116,7 +116,7 @@
         </p>
         <a
           routerLink="/about"
-          appReveal class="inline-flex items-center rounded-xl bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appReveal appButton variant="secondary" tone="light"
         >
           {{ 'home.about.cta' | translate }}
         </a>
@@ -139,7 +139,7 @@
         </p>
         <a
           routerLink="/commission"
-          appReveal class="inline-flex items-center rounded-xl bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appReveal appButton variant="secondary" tone="light"
         >
           {{ 'home.commission.cta' | translate }}
         </a>
@@ -150,14 +150,20 @@
           width="900"
           height="1200"
           alt="Commission Example 1"
-          class="card-shadow max-w-[47%] rounded-2xl"
+          appCard
+          tone="light"
+          [noBackground]="true"
+          class="max-w-[47%]"
         />
         <img
           ngSrc="assets/HFT6u19bsAAQG-z.jpeg"
           width="900"
           height="1200"
           alt="Commission Example 2"
-          class="card-shadow max-w-[47%] rounded-2xl"
+          appCard
+          tone="light"
+          [noBackground]="true"
+          class="max-w-[47%]"
         />
       </div>
     </div>
@@ -165,7 +171,7 @@
     <!-- Streaming -->
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
       <img
-        appReveal class="card-shadow w-full rounded-2xl"
+        appReveal appCard tone="light" [noBackground]="true" class="w-full"
         ngSrc="assets/6BA33836.jpeg"
         alt="Floofy"
         width="1718"
@@ -183,7 +189,7 @@
         </p>
         <a
           routerLink="/streaming"
-          appReveal class="inline-flex items-center rounded-xl bg-brand-subtle px-5 py-2.5 text-center text-sm font-semibold text-on-light-heading underline-offset-2 transition-colors hover:bg-brand hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appReveal appButton variant="secondary" tone="light"
         >
           {{ 'home.streaming.cta' | translate }}
         </a>
@@ -207,7 +213,7 @@
 
     <div class="grid gap-6 lg:grid-cols-3">
       <!-- Reviews -->
-      <div appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+      <div appReveal appCard tone="middle" class="p-8">
         <h3
           class="mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-start"
         >
@@ -219,14 +225,17 @@
         </p>
         <a
           routerLink="/reviews"
-          class="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appButton
+          variant="primary"
+          tone="middle"
+          class="mt-8"
         >
           {{ 'home.reviews.cta' | translate }}
         </a>
       </div>
 
       <!-- Donate -->
-      <div appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+      <div appReveal appCard tone="middle" class="p-8">
         <h3
           class="mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-start"
         >
@@ -238,14 +247,17 @@
         </p>
         <a
           routerLink="/donate"
-          class="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appButton
+          variant="primary"
+          tone="middle"
+          class="mt-8"
         >
           {{ 'home.donate.cta' | translate }}
         </a>
       </div>
 
       <!-- Contact -->
-      <div appReveal class="card-shadow rounded-4xl border border-white/60 bg-white/30 p-8">
+      <div appReveal appCard tone="middle" class="p-8">
         <h3
           class="mb-4 flex gap-3 text-2xl font-black tracking-tight wrap-break-word text-on-middle-heading md:justify-start"
         >
@@ -257,7 +269,10 @@
         </p>
         <a
           routerLink="/contact"
-          class="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-on-light-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
+          appButton
+          variant="primary"
+          tone="middle"
+          class="mt-8"
         >
           {{ 'home.contact.cta' | translate }}
         </a>

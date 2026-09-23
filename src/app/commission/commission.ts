@@ -13,6 +13,8 @@ import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
+import { Card } from '../directives/card';
+import { Button } from '../directives/button';
 
 interface CommissionFormValue {
   name: string;
@@ -42,6 +44,8 @@ interface CommissionFormValue {
     SectionDivider,
     SectionHeader,
     Section,
+    Card,
+    Button,
   ],
   templateUrl: './commission.html',
   styleUrl: './commission.css',
