@@ -3,7 +3,7 @@
 Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** = waiting on the owner.
 Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (Stages 3a, 3b, 3c) fully done and
 merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixed outside phase work, merged
-(PR #25). Phase 4 up next, not yet planned in detail. Phases 5–8 not started.
+(PR #25). Phase 4 has a concrete plan (see below), not yet executed. Phases 5–8 not started.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -283,10 +283,24 @@ sub-phases, each its own branch and merge decision — they have very different 
 
 ## Phase 4 — Hero and Flowbite JS removal
 
+Concrete plan: **[12-phase-4-plan.md](12-phase-4-plan.md)** (settled 2026-09-23 via `grill-with-docs`). Component
+specs for the genuinely-new pieces live in **[specs/](specs/)**. Today's single `app-carousel` (Flowbite-wrapped)
+turned out to not cleanly match either real usage — it's replaced by two separate components, not one with a
+mode: `app-rolling-carousel` (home's continuous strip) and `app-slideshow-carousel` (commission's 3 pricing-card
+slideshows). `app-hero` and `app-parallax` clean-up stay parity-preserving (no formal spec, no visual change);
+the rest (carousels, navbar disclosure) get a from-scratch, no-parity redesign per the owner's standing direction
+for Flowbite-JS-driven pieces.
+
+- [ ] [Image asset model](specs/image-asset-model.md) — consolidate `CarouselImage`/`GalleryImage` into one type
+      (prerequisite for both carousels below).
+- [ ] [`app-rolling-carousel`](specs/app-rolling-carousel.md); migrate home.
+- [ ] [`app-slideshow-carousel`](specs/app-slideshow-carousel.md); migrate commission's 3 instances; delete the
+      old `app-carousel`/`initCarousels()`/its static id.
+- [ ] [`app-language-toggle`](specs/app-language-toggle.md) — extraction only, not Flowbite-related.
+- [ ] [Mobile navigation menu](specs/navbar-disclosure.md) — remove `initFlowbite()` and `data-collapse-toggle`.
 - [ ] `app-hero`; migrate pages one by one (donate → gallery → reviews → contact → streaming → about → commission → home).
-- [ ] Own `app-carousel`; remove `initCarousels()`; remove static id; migrate home + commission.
-- [ ] Navbar disclosure + `app-language-toggle`; remove `initFlowbite()` and `data-collapse-toggle`.
-- [ ] `app-parallax` clean-up (single scroll source, reduced motion, tests).
+- [ ] `app-parallax` clean-up (single shared scroll source instead of one listener per instance; revisit the
+      underlying technique later if a shared listener alone doesn't fix the motion lag the owner's noticed).
 
 ## Phase 5 — Forms and backend access
 

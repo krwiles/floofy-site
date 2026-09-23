@@ -71,3 +71,25 @@ where Brand appears, not as part of Brand itself.
 
 The dark scrim behind an enlarged image in the gallery lightbox. Distinct from a Hero color — it is a fixed neutral
 chosen for contrast against art of any color, not sampled from anything.
+
+## Image asset
+
+A picture's metadata — source, alt text, width, height. One shared shape used everywhere a picture is rendered:
+the gallery grid, the lightbox, and both kinds of Carousel below. Previously two overlapping ideas (a "carousel
+image" and a separate "gallery image" with an unused thumbnail/full-size split) — consolidated into one, since the
+thumbnail split was never actually implemented differently in practice, only declared and then left unused.
+
+## Carousel
+
+Not one thing — two distinct presentations, each its own component, not two modes of a shared one:
+
+- **Rolling carousel**: a continuously auto-scrolling horizontal strip of images, each sized to a shared height
+  with its own natural aspect ratio preserved, looping seamlessly. No manual controls, no indicators — a purely
+  flowing preview (home page's gallery preview).
+- **Slideshow carousel**: shows exactly one cropped image at a time, auto-advancing on a delay with a directional
+  slide transition, wrapping endlessly. Navigated manually via hover/focus-revealed arrows or touch swipe. No
+  indicators either (commission's pricing-card image carousels).
+
+Both replace the site's previous single Carousel, which was a thin wrapper around Flowbite's own carousel JS and
+matched neither presentation cleanly (fixed grouped slides, a hardcoded shared id that broke with more than one
+instance on a page).
