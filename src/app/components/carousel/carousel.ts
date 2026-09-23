@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { initCarousels } from 'flowbite';
-import { CarouselImage } from '../../models/carousel-image.model';
+import { ImageAsset } from '../../models/image-asset';
 
 @Component({
   selector: 'app-carousel',
@@ -11,7 +11,7 @@ import { CarouselImage } from '../../models/carousel-image.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Carousel implements AfterViewInit {
-  readonly images = input.required<CarouselImage[][]>();
+  readonly images = input.required<ImageAsset[][]>();
   readonly controls = input<boolean>();
 
   ngAfterViewInit(): void {

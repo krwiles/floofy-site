@@ -1,6 +1,6 @@
 import { Component, HostListener, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { GalleryImageService } from '../services/gallery-image.service';
-import { GalleryImage } from '../models/gallery-image';
+import { ImageAsset } from '../models/image-asset';
 import { DOCUMENT } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
@@ -21,11 +21,11 @@ export class Gallery {
   private readonly document = inject(DOCUMENT);
 
   galleryImageService = inject(GalleryImageService);
-  selectedImage = signal<GalleryImage | null>(null);
+  selectedImage = signal<ImageAsset | null>(null);
   showLightBox = signal<boolean>(false);
   scrollY = 0;
 
-  showImage(image: GalleryImage) {
+  showImage(image: ImageAsset) {
     this.selectedImage.set(image);
     this.showLightBox.set(true);
 

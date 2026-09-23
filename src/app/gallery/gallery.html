@@ -53,17 +53,17 @@
       @defer (on viewport) {
         <img
           class="gallery-image mb-8 w-full break-inside-avoid"
-          [ngSrc]="galleryImage.srcThumbnail"
+          [ngSrc]="galleryImage.src"
           [alt]="galleryImage.alt"
-          [height]="galleryImage.heightThumbnail"
-          [width]="galleryImage.widthThumbnail"
+          [height]="galleryImage.height"
+          [width]="galleryImage.width"
           (click)="showImage(galleryImage)"
           animate.enter="enter-image"
         />
       } @placeholder {
         <div
           class="mb-8 w-full break-inside-avoid"
-          [style.aspect-ratio]="galleryImage.widthThumbnail + '/' + galleryImage.heightThumbnail"
+          [style.aspect-ratio]="galleryImage.width + '/' + galleryImage.height"
         ></div>
       }
     }
@@ -84,7 +84,7 @@
       <img
         animate.enter="enter-image"
         class="lightbox-image max-h-screen max-w-screen bg-lightbox-backdrop shadow-[0_0_3rem_rgb(0,0,0)]"
-        [src]="$safeNavigationMigration(selectedImage()?.srcFull)"
+        [src]="$safeNavigationMigration(selectedImage()?.src)"
         [alt]="$safeNavigationMigration(selectedImage()?.alt)"
         loading="eager"
       />

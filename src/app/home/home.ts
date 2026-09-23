@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Carousel } from '../components/carousel/carousel';
 import { NgOptimizedImage } from '@angular/common';
-import { CarouselImage } from '../models/carousel-image.model';
+import { ImageAsset } from '../models/image-asset';
 import { RouterLink } from '@angular/router';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { TranslatePipe } from '../pipes/translate.pipe';
@@ -34,7 +34,7 @@ import { Button } from '../directives/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
-  readonly images: CarouselImage[][] = [
+  readonly images: ImageAsset[][] = [
     [
       { src: 'assets/G_CQjK1XkAALluE.jpeg', alt: 'Image 1', width: 1200, height: 1800 },
       { src: 'assets/G-Ewq9pagAA7Z-b.jpeg', alt: 'Image 2', width: 1442, height: 2048 },
