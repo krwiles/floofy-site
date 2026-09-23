@@ -48,10 +48,24 @@ page's hero image changes, its Hero color should be re-sampled from the new imag
 
 ## Social link
 
-A link to an external profile or platform (X, Bluesky, Pixiv, Twitch, Vgen, Ko-fi, or an emailer). Has two visual
-presentations in use across the site: **Plain** (an inline icon with no border or fill, used in the footer) and
-**Chip** (a bordered, filled button with a larger icon, used on the about page). Which networks appear, and in
-which presentation, is chosen per page — there is no single fixed set shown everywhere.
+A link to an external profile or platform. Seven networks: X, Bluesky, Pixiv, Twitch, Vgen, Ko-fi, and Email
+(a `mailto:` link, still counted as a Social link even though it isn't a "profile" the way the others are — it
+gets the same icon-link treatment). Has two visual presentations in use across the site: **Plain** (an inline
+icon with no border or fill, used in the footer) and **Chip** (a bordered, filled button with a larger icon,
+used on the about/contact/donate pages). Which networks appear, and in which presentation, is chosen per page —
+there is no single fixed set shown everywhere. Every Social link's accessible name follows "SummerFloofy on
+{Network}" (e.g. "SummerFloofy on Email") — a fixed convention, not computed from the network name at render
+time, so a network whose accessible name should read differently would need that decided explicitly, not left
+to a template default.
+
+## Brand
+
+The logo image + "Floofy" wordmark linking home, shown in both the navbar and the footer. Has a shared core (the
+image, the wordmark text, and the link itself) but is **not a single fixed presentation** — each place it
+appears wraps that core in its own surrounding structure for its own reasons: the footer wraps it in a heading
+(it's the accessible name for that footer landmark), the navbar gives it a one-time entrance animation on page
+load (irrelevant to the footer, which isn't part of that load sequence). Treat those wrappers as belonging to
+where Brand appears, not as part of Brand itself.
 
 ## Lightbox backdrop
 
