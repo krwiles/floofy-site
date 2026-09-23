@@ -7,7 +7,8 @@ merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixe
 `<app-flourish>`/`app-section-divider` bug found outside phase work, [PR #26](https://github.com/krwiles/floofy-site/pull/26) — merged — caused real mobile horizontal overflow site-wide. Phase 4 step 2
 (`app-rolling-carousel`, home page) executed and merged, [PR #27](https://github.com/krwiles/floofy-site/pull/27),
 including an owner-requested follow-up (card-shadow padding + edge fade mask). Phase 4 step 3
-(`app-slideshow-carousel`, commission) up next. Phases 5–8 not started.
+(`app-slideshow-carousel`, commission) executed, [PR #28](https://github.com/krwiles/floofy-site/pull/28) —
+pending owner review. Phase 4 step 4 (`app-language-toggle`) up next once #28 merges. Phases 5–8 not started.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -358,8 +359,27 @@ for Flowbite-JS-driven pieces.
       `mask-image` fade at both edges instead (owner-tuned to `3rem`), unconditional in both plain and framed
       mode, vertical edges untouched (padding's job). Verified live: total height = image height + padding
       exactly, image height itself unchanged; mask resolves to real pixel gradients.
-- [ ] [`app-slideshow-carousel`](specs/app-slideshow-carousel.md); migrate commission's 3 instances; delete the
-      old `app-carousel`/`initCarousels()`/its static id.
+- [x] [`app-slideshow-carousel`](specs/app-slideshow-carousel.md); migrate commission's 3 instances; delete the
+      old `app-carousel`/`initCarousels()`/its static id. Executed, [PR #28](https://github.com/krwiles/floofy-site/pull/28)
+      (real, intentional redesign on commission only — always a PR, not diff-decides-merge) — pending owner
+      review. Looping technique: the image list is rendered with one clone of the last image prepended and one
+      clone of the first appended, so there's always a real neighbor to slide to in either direction and the
+      transition always runs the correct way, even on the wrap; landing on a clone slot is harmless (pixel-
+      identical to the real slide) and gets silently resynced the next time a real move is requested. `/code-
+      review` found and fixed two real issues: touch handlers never claimed the gesture, so a swipe could be
+      fought by page scroll or a mobile browser's own swipe-back navigation (fixed via a conditional
+      `preventDefault` once horizontal intent is clear); a loop-boundary crossing restarted the auto-advance
+      timer twice in quick succession instead of once (harmless churn, fixed by skipping the restart during the
+      resync's own transient state). **Disclosed, not fixed**: the `cardTone` framing markup (the
+      `[appCard][noBackground]`/`@if` branch) duplicates rolling-carousel's own, unshared between the two
+      components; the card-shadow clips against the viewport's edge at rest when `cardTone` is set — same class
+      of issue as rolling-carousel's pre-follow-up state, called out in the component's own CSS comment, left
+      alone pending the owner actually seeing it (same pattern as rolling-carousel's follow-up above); the loop-
+      boundary resync uses a plain `setTimeout(0)` rather than a double-`requestAnimationFrame` guarantee — a
+      deliberate simplicity/testability trade-off, documented inline. Verified live in a real browser (not just
+      jsdom, per this refactor's established practice for anything touch/timing-dependent): 3 independent
+      instances, correct wraparound both directions, hover-pause/resume, auto-advance timing, `cardTone` framing,
+      i18n aria-labels, no console errors, no horizontal page overflow.
 - [ ] [`app-language-toggle`](specs/app-language-toggle.md) — extraction only, not Flowbite-related.
 - [ ] [Mobile navigation menu](specs/navbar-disclosure.md) — remove `initFlowbite()` and `data-collapse-toggle`.
 - [ ] `app-hero`; migrate pages one by one (donate → gallery → reviews → contact → streaming → about → commission → home).
