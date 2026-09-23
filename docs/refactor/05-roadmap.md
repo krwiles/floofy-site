@@ -291,8 +291,19 @@ slideshows). `app-hero` and `app-parallax` clean-up stay parity-preserving (no f
 the rest (carousels, navbar disclosure) get a from-scratch, no-parity redesign per the owner's standing direction
 for Flowbite-JS-driven pieces.
 
-- [ ] [Image asset model](specs/image-asset-model.md) — consolidate `CarouselImage`/`GalleryImage` into one type
-      (prerequisite for both carousels below).
+- [x] [Image asset model](specs/image-asset-model.md) — consolidate `CarouselImage`/`GalleryImage` into one type
+      (prerequisite for both carousels below). Direct-merged into `working` (diff-decides-merge, `0.00%` on every
+      route/width). Code review caught and fixed two real issues: `illustrationImages`' entry for
+      `GyfSzJfaIAAn9qh.jfif` had the wrong dimensions vs. `galleryImages`' entry for the same file (verified the
+      real file via metadata, corrected it — zero visual effect either way, since `carousel.html` hardcodes its
+      `<img>` width/height rather than binding them); `ImageAsset`'s fields are `readonly`, matching the
+      immutability the deleted `GalleryImage` class had via constructor params. **Disclosed, not fixed**:
+      `GalleryImageService` is still named after the gallery page despite now equally serving carousel-only image
+      sets that `commission.ts` consumes with no gallery dependency; `home.ts`'s carousel images remain a third,
+      independently-maintained literal duplicating images already in `GalleryImageService` (already caught
+      drifting once, per the dimension bug above) — both out of scope for this step, flagged for later.
+      Also fixed in passing, unrelated to this step: `scripts/visual-baseline/capture.mjs` now emulates
+      `prefers-reduced-motion` so `appReveal` content no longer captures as invisible below the fold.
 - [ ] [`app-rolling-carousel`](specs/app-rolling-carousel.md); migrate home.
 - [ ] [`app-slideshow-carousel`](specs/app-slideshow-carousel.md); migrate commission's 3 instances; delete the
       old `app-carousel`/`initCarousels()`/its static id.
