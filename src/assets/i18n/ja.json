@@ -3,6 +3,12 @@
     "english": "英語",
     "japanese": "日本語"
   },
+  "components": {
+    "slideshow_carousel": {
+      "previous": "前のスライド",
+      "next": "次のスライド"
+    }
+  },
   "home": {
     "hero": {
       "kicker": "イラストレーター • ストリーマー",

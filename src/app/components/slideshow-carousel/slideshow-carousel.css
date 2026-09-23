@@ -1,0 +1,105 @@
+:host {
+  display: block;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.slideshow-carousel__viewport {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  /* Clips the previous/next slide sitting at +/-100% -- without this they'd show fully alongside the
+     current one instead of only becoming visible mid-slide, and (per this project's own history with
+     the flourish bug) an unclipped absolutely-positioned child can push the page wider than intended. */
+  overflow: hidden;
+}
+
+.slideshow-carousel__slide,
+.slideshow-carousel__frame {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  transition: transform 450ms ease;
+}
+
+.slideshow-carousel__slide,
+.slideshow-carousel__image {
+  object-fit: cover;
+}
+
+/* Shadow/rounded-corner frame (card-shadow-{tone}, applied by [appCard noBackground]) needs its own
+   overflow: hidden so the image inside clips to the frame's rounded corners rather than the frame
+   growing to the image's natural size and the radius doing nothing (same reasoning as
+   rolling-carousel.css's own __frame rule). Unlike the rolling carousel's continuously-moving strip,
+   this frame sits flush with the viewport at rest, so its shadow can clip against the viewport's own
+   edge -- a purely cosmetic point, left alone for now (revisit only if raised, the same way the rolling
+   carousel's shadow padding was: a discussion first, once it could actually be seen, not guessed at
+   ahead of time). */
+.slideshow-carousel__frame {
+  overflow: hidden;
+}
+
+.slideshow-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  display: flex;
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: rgb(0 0 0 / 35%);
+  color: white;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition:
+    opacity 200ms ease,
+    background-color 200ms ease;
+}
+
+.slideshow-carousel__arrow--prev {
+  left: 0.5rem;
+}
+
+.slideshow-carousel__arrow--next {
+  right: 0.5rem;
+}
+
+.slideshow-carousel__arrow:hover {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+/* Invisible until a visitor points at, taps toward, or keyboard-focuses the component -- per the spec,
+   not a generic hover-reveal habit. */
+.slideshow-carousel:hover .slideshow-carousel__arrow,
+.slideshow-carousel:focus-within .slideshow-carousel__arrow {
+  opacity: 1;
+}
+
+.slideshow-carousel__arrow:focus-visible {
+  opacity: 1;
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* No equivalent of "hovering" on a touch device -- always visible there instead, per the spec. */
+@media (hover: none) {
+  .slideshow-carousel__arrow {
+    opacity: 1;
+  }
+}
+
+/* Pure CSS is enough here (see rolling-carousel.css's own note on this) -- every slide's position is
+   already driven by the `transform` above regardless of motion preference; this just removes the
+   animation of that change, leaving automatic advancing (still driven by JS on a timer) running as-is,
+   matching the spec's reduced-motion requirement exactly ("automatic advancing still happens, just
+   without the animated motion"). */
+@media (prefers-reduced-motion: reduce) {
+  .slideshow-carousel__slide,
+  .slideshow-carousel__frame {
+    transition: none;
+  }
+}
