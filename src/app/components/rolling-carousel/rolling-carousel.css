@@ -21,8 +21,8 @@
      are untouched -- that clipping is fixed properly below (padding), not something to hide with a
      fade. Both prefixed and unprefixed, matching this project's existing convention for mask
      properties in flourishes.css. */
-  -webkit-mask-image: linear-gradient(to right, transparent, black 4rem, black calc(100% - 4rem), transparent);
-  mask-image: linear-gradient(to right, transparent, black 4rem, black calc(100% - 4rem), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 3rem, black calc(100% - 3rem), transparent);
+  mask-image: linear-gradient(to right, transparent, black 3rem, black calc(100% - 3rem), transparent);
 }
 
 .rolling-carousel--framed {
@@ -31,14 +31,15 @@
      this, not just ones mid-transit at the left/right edges (see the mask above for those). The
      shadow bleeds asymmetrically per cards.css's card-shadow-{tone} box-shadow values (offset
      downward: roughly 0.2rem above its own box, 1.7rem below, from blur-radius/2 ± offset-y on the
-     larger of its two shadow layers) -- rounded up to a plain, generous, SYMMETRIC 1.75rem on both
-     edges rather than matching that asymmetry exactly: a tidy number with a little safety margin,
-     framed evenly, beats hand-tuned precision that looks visually off-center. Revisit if cards.css's
-     shadow values change. box-sizing: content-box so this padding ADDS to the height() input rather
-     than shrinking the images to fit inside it -- Tailwind's preflight defaults every element to
-     border-box, which would do the opposite. */
+     larger of its two shadow layers) -- rounded up to a plain, SYMMETRIC value on both edges rather
+     than matching that asymmetry exactly (a tidy number, framed evenly, beats hand-tuned precision
+     that looks visually off-center), and tuned generous rather than tight (owner's own call, past
+     the ~1.7rem minimum that would just clear the shadow). Revisit if cards.css's shadow values
+     change. box-sizing: content-box so this padding ADDS to the height() input rather than shrinking
+     the images to fit inside it -- Tailwind's preflight defaults every element to border-box, which
+     would do the opposite. */
   box-sizing: content-box;
-  padding-block: 1.75rem;
+  padding-block: 2.5rem;
 }
 
 .rolling-carousel__track {
