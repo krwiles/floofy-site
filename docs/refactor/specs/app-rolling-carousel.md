@@ -49,7 +49,7 @@ visible seam, at a size and speed the page can control.
 ## 7. Acceptance Criteria
 
 - Looks and behaves as described above, using the home page's real images.
-- Hovering pauses it; motion-reduction settings stop it entirely.
+- Motion-reduction settings stop it entirely.
 - The optional card-style framing works correctly whether turned on or off.
 
 ---

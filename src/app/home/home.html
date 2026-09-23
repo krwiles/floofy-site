@@ -48,10 +48,8 @@
 <app-section tone="dark">
   <div class="mx-auto max-w-7xl px-4 py-10 sm:py-24 lg:px-6">
     <!-- Gallery carousel -->
-    <div
-      appReveal appCard tone="dark" class="mx-auto aspect-5/2 h-auto max-w-5xl sm:p-4"
-    >
-      <app-carousel [images]="images"></app-carousel>
+    <div appReveal class="mx-auto max-w-5xl">
+      <app-rolling-carousel [images]="images" [cardTone]="'dark'" />
     </div>
 
     <!-- Gallery text -->

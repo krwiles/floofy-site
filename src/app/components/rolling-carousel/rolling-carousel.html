@@ -1,0 +1,55 @@
+<!--
+  aria-hidden on the whole strip, not per-image: this is a purely decorative, ambient preview (see
+  the component's own doc comment) -- the images aren't unique content available nowhere else, and
+  a screen-reader user gets no value from 12 (24 with the duplicate copy) consecutive image
+  announcements for something with no interaction and no information not already reachable via the
+  page's own "See full gallery" link next to this strip. Hiding the whole thing here also means the
+  duplicate copy needs no aria-hidden handling of its own -- there's nothing left to distinguish.
+-->
+<div class="rolling-carousel" [style.height]="height()" aria-hidden="true">
+  <div class="rolling-carousel__track" [style.animation-duration.s]="speed()">
+    @for (image of images(); track 'a-' + $index) {
+      @if (cardTone()) {
+        <div appCard [tone]="cardTone()!" [noBackground]="true" class="rolling-carousel__frame">
+          <img
+            [ngSrc]="image.src"
+            [alt]="image.alt"
+            [width]="image.width"
+            [height]="image.height"
+            class="rolling-carousel__image"
+          />
+        </div>
+      } @else {
+        <img
+          [ngSrc]="image.src"
+          [alt]="image.alt"
+          [width]="image.width"
+          [height]="image.height"
+          class="rolling-carousel__image"
+        />
+      }
+    }
+    <!-- Duplicate copy, identical order -- makes the CSS loop's endpoint land on an identical frame. -->
+    @for (image of images(); track 'b-' + $index) {
+      @if (cardTone()) {
+        <div appCard [tone]="cardTone()!" [noBackground]="true" class="rolling-carousel__frame">
+          <img
+            [ngSrc]="image.src"
+            [alt]="image.alt"
+            [width]="image.width"
+            [height]="image.height"
+            class="rolling-carousel__image"
+          />
+        </div>
+      } @else {
+        <img
+          [ngSrc]="image.src"
+          [alt]="image.alt"
+          [width]="image.width"
+          [height]="image.height"
+          class="rolling-carousel__image"
+        />
+      }
+    }
+  </div>
+</div>
