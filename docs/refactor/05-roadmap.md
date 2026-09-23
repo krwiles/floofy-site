@@ -1,10 +1,8 @@
 # 05 — Roadmap
 
 Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** = waiting on the owner.
-Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 Stages 3a, 3b done and merged into
-`working` (PR #21, PR #23). Stage 3c executed on `refactor/phase-3c-data-consolidation`, PR open pending owner
-review/merge (real diff on `donate` per decision #2 means it ships as a PR, not a direct merge). Phases 4–8 not
-started.
+Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (Stages 3a, 3b, 3c) fully done and
+merged into `working` (PR #21, #23, #24). Phase 4 up next, not yet planned in detail. Phases 5–8 not started.
 
 ## Guiding order
 
