@@ -9,6 +9,7 @@ import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
 import { Card } from '../directives/card';
 import { Button } from '../directives/button';
+import { SocialLinks } from '../components/social-links/social-links';
 
 // Declare the Twitter widgets object to avoid TypeScript errors
 declare const twttr: { widgets: { load: () => void } };
@@ -26,6 +27,7 @@ declare const twttr: { widgets: { load: () => void } };
     Section,
     Card,
     Button,
+    SocialLinks,
   ],
   templateUrl: './about.html',
   styleUrl: './about.css',

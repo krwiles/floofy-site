@@ -79,15 +79,7 @@
         <p class="min-w-0 text-sm leading-6 font-semibold text-on-middle-body sm:text-base">
           Prefer to use the Ko-fi site? Visit my page~
         </p>
-        <a
-          href="https://ko-fi.com/summerfloofy"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="SummerFloofy on Ko-fi"
-          class="inline-flex shrink-0 items-center justify-center rounded-2xl border border-border bg-white/65 px-4 py-3 text-on-middle-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:px-5"
-        >
-          <span class="social-icon social-icon--kofi text-4xl sm:text-5xl" aria-hidden="true"></span>
-        </a>
+        <app-social-links [ids]="['kofi']" variant="chip" />
       </div>
     </div>
   </div>

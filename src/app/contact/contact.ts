@@ -10,6 +10,7 @@ import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
 import { Card } from '../directives/card';
 import { Button } from '../directives/button';
+import { SocialLinks } from '../components/social-links/social-links';
 
 interface ContactFormData {
   name: string;
@@ -30,6 +31,7 @@ interface ContactFormData {
     Section,
     Card,
     Button,
+    SocialLinks,
   ],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
