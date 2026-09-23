@@ -2,16 +2,7 @@
   <div class="mx-auto w-full max-w-7xl px-4 py-8 lg:py-10">
     <div class="grid gap-10 lg:grid-cols-12 lg:gap-6 xl:gap-8">
       <section aria-labelledby="footer-brand" class="lg:col-span-5 lg:pr-6">
-        <a routerLink="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-          <img
-            class="block h-14 w-14 rounded-4xl border-2 border-bg-muted"
-            ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
-            alt="Floofy"
-            width="621"
-            height="621"
-          />
-          <h2 id="footer-brand" class="text-2xl font-semibold text-on-light-heading">Floofy</h2>
-        </a>
+        <h2 id="footer-brand"><app-brand /></h2>
         <p class="mt-4 text-sm leading-6 text-on-light-body">
           {{ 'footer.brand.description' | translate }}
         </p>
@@ -57,61 +48,8 @@
               </a>
             </li>
           </ul>
-          <div class="mt-6 flex flex-wrap items-center gap-3 text-xl">
-            <a
-              href="https://x.com/SummerFloofy"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="SummerFloofy on X"
-              class="inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-            >
-              <span class="social-icon social-icon--x" aria-hidden="true"></span>
-            </a>
-            <a
-              href="https://bsky.app/profile/summerfloofy.bsky.social"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="SummerFloofy on Bluesky"
-              class="inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-            >
-              <span class="social-icon social-icon--bsky" aria-hidden="true"></span>
-            </a>
-            <a
-              href="https://www.pixiv.net/en/users/115468010"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="SummerFloofy on Pixiv"
-              class="inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-            >
-              <span class="social-icon social-icon--pixiv" aria-hidden="true"></span>
-            </a>
-            <a
-              href="https://www.twitch.tv/summerfloofy"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="SummerFloofy on Twitch"
-              class="inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-            >
-              <span class="social-icon social-icon--twitch" aria-hidden="true"></span>
-            </a>
-            <a
-              href="https://vgen.co/SummerFloofy"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="SummerFloofy on Vgen"
-              class="inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-            >
-              <span class="social-icon social-icon--vgen" aria-hidden="true"></span>
-            </a>
-            <a
-              href="https://ko-fi.com/summerfloofy"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="SummerFloofy on Ko-fi"
-              class="inline-flex items-center justify-center text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-            >
-              <span class="social-icon social-icon--kofi" aria-hidden="true"></span>
-            </a>
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <app-social-links [ids]="['x', 'bsky', 'pixiv', 'twitch', 'vgen', 'kofi']" variant="plain" />
           </div>
         </section>
       </div>
