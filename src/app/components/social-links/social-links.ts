@@ -16,6 +16,12 @@ const VARIANT_CLASSES: Record<Variant, string> = {
  */
 @Component({
   selector: 'app-social-links',
+  // display: contents -- callers grid/flex their own wrapping container
+  // directly around the repeated <a> items (see CONTEXT.md "Social link"),
+  // so this host must not introduce its own box: a real box would become a
+  // single grid/flex item instead of letting each <a> participate in the
+  // caller's layout, silently collapsing a grid into one cell.
+  styles: ':host { display: contents; }',
   template: `
     @for (social of socials(); track social.id) {
       <a
@@ -34,10 +40,18 @@ export class SocialLinks {
   readonly ids = input.required<SocialId[]>();
   readonly variant = input<Variant>('plain');
 
-  readonly socials = computed(() => this.ids().map((id) => SOCIALS.find((social) => social.id === id)!));
+  readonly socials = computed(() => this.ids().map((id) => this.findSocial(id)));
   readonly variantClass = computed(() => VARIANT_CLASSES[this.variant()]);
 
   isExternal(social: Social): boolean {
     return !social.url.startsWith('mailto:');
+  }
+
+  private findSocial(id: SocialId): Social {
+    const social = SOCIALS.find((entry) => entry.id === id);
+    if (!social) {
+      throw new Error(`[app-social-links] no SOCIALS entry for id "${id}".`);
+    }
+    return social;
   }
 }

@@ -21,7 +21,10 @@
     class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-start"
   >
     <div appCard [glass]="true" class="hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block" />
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block"
+      />
       <p
         class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-light-heading uppercase sm:text-[0.95rem]"
       >
@@ -58,7 +61,10 @@
 
     <!-- Ko-fi Embed -->
     <div class="relative mt-4 flex justify-center pb-6 md:mt-0">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block" />
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block"
+      />
       <div appCard tone="middle" class="w-lg max-w-full p-1">
         <!-- appCard's fill/border paint via a ::before layer, which browsers never render on replaced elements
              like <iframe> -- the directive has to live on this wrapper div instead, with the iframe as plain
@@ -79,7 +85,7 @@
         <p class="min-w-0 text-sm leading-6 font-semibold text-on-middle-body sm:text-base">
           Prefer to use the Ko-fi site? Visit my page~
         </p>
-        <app-social-links [ids]="['kofi']" variant="chip" />
+        <app-social-links [ids]="['kofi']" variant="chip" class="shrink-0 text-on-middle-heading" />
       </div>
     </div>
   </div>

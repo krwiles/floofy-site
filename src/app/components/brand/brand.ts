@@ -14,10 +14,15 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink, NgOptimizedImage],
   template: `
     <a routerLink="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <!-- alt="" -- the adjacent "Floofy" text already names the link; a
+           non-empty alt here would double-announce ("Floofy Floofy") to a
+           screen reader, and inside footer's <h2 id="footer-brand">
+           wrapper it would also corrupt that heading's accessible name
+           (the aria-labelledby target for footer's landmark section). -->
       <img
         class="block h-14 w-14 rounded-4xl border-2 border-bg-muted"
         ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
-        alt="Floofy"
+        alt=""
         width="621"
         height="621"
       />

@@ -9,7 +9,13 @@ export interface Social {
 }
 
 export const SOCIALS: Social[] = [
-  { id: 'x', label: 'X', url: 'https://x.com/SummerFloofy', iconClass: 'social-icon--x', ariaLabel: 'SummerFloofy on X' },
+  {
+    id: 'x',
+    label: 'X',
+    url: 'https://x.com/SummerFloofy',
+    iconClass: 'social-icon--x',
+    ariaLabel: 'SummerFloofy on X',
+  },
   {
     id: 'bsky',
     label: 'Bluesky',

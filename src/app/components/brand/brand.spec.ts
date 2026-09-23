@@ -4,7 +4,9 @@ import { provideRouter } from '@angular/router';
 import { Brand } from './brand';
 
 @Component({
-  template: `<app-brand class="nav-brand-intro" />`,
+  template: `
+    <app-brand class="nav-brand-intro" />
+  `,
   imports: [Brand],
 })
 class HostComponent {}
@@ -23,14 +25,17 @@ describe('Brand', () => {
     expect(link.getAttribute('href')).toBe('/');
   });
 
-  it('renders the Floofy image with the right src and alt', () => {
+  it('renders the Floofy image with the right src, decorative (alt="")', () => {
     const fixture = createFixture();
     fixture.detectChanges();
 
     const img: HTMLImageElement = fixture.nativeElement.querySelector('img');
     expect(img.getAttribute('ng-img')).toBe('true');
     expect(img.src).toContain('G_Xl1MobAAAVbNn.jpeg');
-    expect(img.alt).toBe('Floofy');
+    // Empty, not missing -- the adjacent "Floofy" text already names the
+    // link, so a real alt would double-announce it to a screen reader (see
+    // brand.ts's comment).
+    expect(img.alt).toBe('');
   });
 
   it('renders the Floofy wordmark text', () => {
