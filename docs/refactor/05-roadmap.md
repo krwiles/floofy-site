@@ -1,7 +1,9 @@
 # 05 — Roadmap
 
 Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** = waiting on the owner.
-Nothing below has been started (planning only, 2026-09-21).
+Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 Stage 3a done and merged (PR #21).
+Stage 3b executed, [PR #23](https://github.com/krwiles/floofy-site/pull/23) open, pending owner review/merge.
+Stage 3c planned (`11-phase-3c-plan.md`), not yet executed. Phases 4–8 not started.
 
 ## Guiding order
 
@@ -171,8 +173,10 @@ sub-phases, each its own branch and merge decision — they have very different 
         below); fixing it alone dropped the diff on unaffected routes from 30–79% down to 0.00–0.16%. Left here
         rather than edited away, as a record that the original diagnosis was a guess that turned out incomplete,
         not a verified fact — exactly the distinction this note tried to draw at the time.
-  - **PR creation blocked again**: the GitHub MCP token still returns `403` (same issue as Phase 1, unresolved by
-        the owner's earlier access change). Branch is pushed; PR body handed to the owner to paste manually.
+  - **PR creation blocked again, then fixed mid-phase**: the GitHub MCP token still returned `403` at first
+        (same issue as Phase 1); branch pushed, PR body handed to the owner to paste manually. The owner then
+        re-scoped the fine-grained PAT's permissions and it started working — see the PR #21 note above. PRs
+        #22 and #23 (and this note's own correction) were all created directly from here on.
 - [x] **3b — Surfaces & controls** (real visual change on every page — **always a PR**, regardless of diff) —
       executed on `refactor/phase-3b-surfaces-controls`, per **[10-phase-3b-plan.md](10-phase-3b-plan.md)**.
       `[appCard]` (`tone`/`special`/`noBackground`/`glass`) and `appButton` (`variant` × `tone`) directives,
@@ -220,9 +224,15 @@ sub-phases, each its own branch and merge decision — they have very different 
     was the real cause of Stage 3a's entire unresolved diff. `streaming` (0.01–0.15%) confirmed via
     `git diff working -- src/app/streaming/` (empty) that this branch touched nothing there; the residual
     fraction of a percent is capture noise (font hinting/anti-aliasing), not a real change.
-- [ ] **3c — Data-driven consolidation**: `SOCIALS` typed data (adds an `email` entry), `app-social-links`
-      (`ids` + `variant: 'plain' | 'chip'` — real per-page variance, not one fixed list), `app-brand` (confirmed
-      byte-identical markup already). Diff-decides-merge.
+- [ ] **3c — Data-driven consolidation**: concrete plan **[11-phase-3c-plan.md](11-phase-3c-plan.md)** (settled
+      2026-09-23 via `grilling` + `domain-modeling`). `SOCIALS` typed data (7 entries incl. a new `email`,
+      explicit per-entry `ariaLabel` text), `app-social-links` (`ids` + `variant: 'plain' | 'chip'` — owns
+      individual items + their sizing, not the wrapping grid/flex layout, which stays real per-page variance).
+      `app-brand` — **the original "confirmed byte-identical" claim was wrong** (never re-verified after being
+      written): footer wraps the wordmark in a real `<h2 id="footer-brand">` landmark heading, navbar has a
+      genuine one-time entrance animation neither shares; `app-brand` now owns only the shared core, each
+      caller supplies its own wrapper. Diff-decides-merge (not always-a-PR like 3b — this consolidates already-
+      matching markup, not a redesign).
 
 ## Phase 4 — Hero and Flowbite JS removal
 
