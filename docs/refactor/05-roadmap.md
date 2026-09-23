@@ -5,8 +5,9 @@ Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (S
 merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixed outside phase work, merged
 (PR #25). Phase 4 has a concrete plan (see below); step 1 (image asset model) executed and merged. A 4th
 `<app-flourish>`/`app-section-divider` bug found outside phase work, [PR #26](https://github.com/krwiles/floofy-site/pull/26) — merged — caused real mobile horizontal overflow site-wide. Phase 4 step 2
-(`app-rolling-carousel`, home page) executed, [PR #27](https://github.com/krwiles/floofy-site/pull/27) — pending
-review. Phase 4 step 3 (`app-slideshow-carousel`, commission) up next. Phases 5–8 not started.
+(`app-rolling-carousel`, home page) executed and merged, [PR #27](https://github.com/krwiles/floofy-site/pull/27),
+including an owner-requested follow-up (card-shadow padding + edge fade mask). Phase 4 step 3
+(`app-slideshow-carousel`, commission) up next. Phases 5–8 not started.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -326,9 +327,9 @@ for Flowbite-JS-driven pieces.
       drifting once, per the dimension bug above) — both out of scope for this step, flagged for later.
       Also fixed in passing, unrelated to this step: `scripts/visual-baseline/capture.mjs` now emulates
       `prefers-reduced-motion` so `appReveal` content no longer captures as invisible below the fold.
-- [x] [`app-rolling-carousel`](specs/app-rolling-carousel.md); migrate home. Executed,
-      [PR #27](https://github.com/krwiles/floofy-site/pull/27) — pending review (real, intentional redesign on
-      home only — always a PR, not diff-decides-merge). Two real bugs found and fixed *before* code review even
+- [x] [`app-rolling-carousel`](specs/app-rolling-carousel.md); migrate home. Executed and merged,
+      [PR #27](https://github.com/krwiles/floofy-site/pull/27) (real, intentional redesign on home only —
+      always a PR, not diff-decides-merge). Two real bugs found and fixed *before* code review even
       ran, neither showing as page overflow (masked by the strip's own `overflow: hidden`, so only computed-
       style inspection caught them): `align-items: center` on the outer container meant its flex child never got
       a definite height via flex stretch, so `height: 100%` resolved to `auto` per spec and every image rendered
@@ -341,11 +342,22 @@ for Flowbite-JS-driven pieces.
       strip is now `aria-hidden` (resolves a 12-images-at-once accessibility finding and an `aria-hidden`
       placement inconsistency together); a dead no-op nested CSS rule was deleted; `will-change: transform` was
       added for the animation that runs for as long as the page is open; a stale line in the spec document
-      itself was corrected. **Disclosed, not fixed**: per-image card-shadow frames get hard-clipped at the
-      scroll window's edges by the container's own `overflow: hidden` (a visual-taste call, not a bug);
-      `home.ts`'s image-list duplication with `GalleryImageService` (already flagged in the step above); no unit
+      itself was corrected. **Disclosed, not fixed at first**: per-image card-shadow frames get hard-clipped at
+      the scroll window's edges by the container's own `overflow: hidden`; `home.ts`'s image-list duplication
+      with `GalleryImageService` (already flagged in the step above, still not fixed, out of scope); no unit
       test asserts real computed height or loop-period geometry (jsdom doesn't do real CSS layout — exactly why
-      every bug above needed a real-browser check, not `ng test`, to find).
+      every bug above needed a real-browser check, not `ng test`, to find — still an open gap).
+      **Owner-requested follow-up, same PR**: the shadow-clipping disclosure above got addressed after the
+      owner saw the shipped component running — vertical padding (`padding-block`, tuned by the owner to
+      `2.5rem`) added automatically whenever `cardTone` is set (no new input — the component sizes its own
+      shadow headroom from `cards.css`'s real values), `box-sizing: content-box` so the padding grows the
+      component's total footprint rather than shrinking the images to fit inside it. A rounded-corner viewport
+      (matching the per-image card radius, so images would vanish/emerge behind a rounded edge) was considered
+      and dropped — the owner realized rounding and padding fight each other, since the rounded clip wouldn't
+      line up with the images once there's padding between them and the edge. Went with a horizontal
+      `mask-image` fade at both edges instead (owner-tuned to `3rem`), unconditional in both plain and framed
+      mode, vertical edges untouched (padding's job). Verified live: total height = image height + padding
+      exactly, image height itself unchanged; mask resolves to real pixel gradients.
 - [ ] [`app-slideshow-carousel`](specs/app-slideshow-carousel.md); migrate commission's 3 instances; delete the
       old `app-carousel`/`initCarousels()`/its static id.
 - [ ] [`app-language-toggle`](specs/app-language-toggle.md) — extraction only, not Flowbite-related.
