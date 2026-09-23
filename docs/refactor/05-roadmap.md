@@ -160,13 +160,17 @@ sub-phases, each its own branch and merge decision — they have very different 
         test meant to catch the `ng-content` bug didn't, because it asserted content projection via a manual
         `appendChild()` that never exercises Angular's real projection mechanism — replaced with a proper
         host-component test, verified to fail pre-fix and pass post-fix.
-  - **Honest, unresolved uncertainty**: even after both fixes, the visual diff against the Phase 0 baseline still
-        shows 30–79% changed on most routes (down from far worse before the fix). Best-effort diagnosis: below-the-
-        fold `appReveal` content is likely legitimately unrevealed at capture time (the same `IntersectionObserver`
-        limitation the old system had — nothing scrolls during a full-page capture), so captures likely show
-        content mid-"not yet faded in." This is a plausible, partially-checked theory, not a verified fact the way
-        the `ng-content` bug was — flagged explicitly in the PR for the owner to check visually rather than
-        claimed as resolved.
+  - **Correction (found during Stage 3b): the "honest, unresolved uncertainty" below was wrong.** At the time,
+        the visual diff against the Phase 0 baseline still showed 30–79% changed on most routes even after both
+        fixes above, and the best guess was below-the-fold `appReveal` content being legitimately unrevealed at
+        capture time. That guess was never actually verified, and it wasn't the real cause: `Section` computes
+        its tone class as a runtime string (`` `bg-section-${tone}` ``), which Tailwind's content scanner can
+        never see as a literal candidate — `bg-section-middle`/`bg-section-dark` were silently never generated,
+        so every `app-section` using either tone rendered with **no background color at all** from the moment
+        this component shipped. Found while investigating an owner report during Stage 3b (see that section
+        below); fixing it alone dropped the diff on unaffected routes from 30–79% down to 0.00–0.16%. Left here
+        rather than edited away, as a record that the original diagnosis was a guess that turned out incomplete,
+        not a verified fact — exactly the distinction this note tried to draw at the time.
   - **PR creation blocked again**: the GitHub MCP token still returns `403` (same issue as Phase 1, unresolved by
         the owner's earlier access change). Branch is pushed; PR body handed to the owner to paste manually.
 - [x] **3b — Surfaces & controls** (real visual change on every page — **always a PR**, regardless of diff) —
@@ -195,13 +199,27 @@ sub-phases, each its own branch and merge decision — they have very different 
       WCAG AA's 4.5:1 floor — both fixed (secondary gets its own lighter-but-still-contrasting fill; every
       gradient stop now verified ≥4.5:1, not just checked at one end).
     - Deduplicated the `Tone` type (identical in both directives) into `src/app/models/tone.ts`.
+  - **Pre-existing Stage 3a bug, found while investigating an owner report** ("something you did broke all of
+    the app-sections — none of them show their correct color"): traced it to `Section`, not this branch —
+    it computes its tone class as a runtime string (`` `bg-section-${tone}` ``), invisible to Tailwind's content
+    scanner. `bg-section-light` only kept working by accident (that exact string also happens to appear
+    literally elsewhere, in form input styling); `bg-section-middle`/`bg-section-dark` never appeared literally
+    anywhere, so Tailwind silently never generated them — every `app-section` using either tone has had no
+    background color since Stage 3a shipped, not since this PR. Confirmed this predates Stage 3b by checking out
+    `working` directly and reproducing the identical bug there via `getComputedStyle` in a real browser (not
+    jsdom, which doesn't exercise real Tailwind generation and wouldn't have caught this). Fixed with
+    `@source inline()` in `tokens.css`, force-generating all 6 `bg-section-{tone}` utilities regardless of
+    scanner detection — the standard Tailwind v4 answer for a dynamically-built class name.
   - **Disclosed, not fixed**: 3 commission carousel-thumbnail wrappers go from `rounded-2xl` (1rem) to the
     card system's fixed 2rem radius — a real, visible size increase and a design call for the owner, not a code
     defect; no clean way to override it without fighting the directive's own cascade.
-  - Visual diff vs. the Phase 0 baseline: real changes everywhere a card/button actually changed, several
-    `size-mismatch` entries (expected — full-page height changes with real content/spacing changes). `streaming`
-    shows 30–36%, entirely inherited from Stage 3a's already-disclosed reveal-timing uncertainty — confirmed via
-    `git diff working -- src/app/streaming/` (empty) that this branch touched nothing there.
+  - Visual diff vs. the Phase 0 baseline, re-captured after the `bg-section` fix: real changes everywhere a
+    card/button actually changed, several `size-mismatch` entries (expected — full-page height changes with real
+    content/spacing changes). Routes untouched by card/button work dropped to **0.00–0.16%** once the color fix
+    landed (was 30–79%, see the corrected Stage 3a note above) — strong evidence that bug, not reveal-timing,
+    was the real cause of Stage 3a's entire unresolved diff. `streaming` (0.01–0.15%) confirmed via
+    `git diff working -- src/app/streaming/` (empty) that this branch touched nothing there; the residual
+    fraction of a percent is capture noise (font hinting/anti-aliasing), not a real change.
 - [ ] **3c — Data-driven consolidation**: `SOCIALS` typed data (adds an `email` entry), `app-social-links`
       (`ids` + `variant: 'plain' | 'chip'` — real per-page variance, not one fixed list), `app-brand` (confirmed
       byte-identical markup already). Diff-decides-merge.
