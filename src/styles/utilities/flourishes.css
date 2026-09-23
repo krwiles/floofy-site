@@ -16,7 +16,10 @@
   min-height: 1em;
   aspect-ratio: var(--flourish-ratio);
   flex-shrink: 0;
-  vertical-align: -0.08em;
+  /* middle, not the old -0.08em: that fixed offset was tuned for no particular font-size
+     context and was visibly wrong (a small downward nudge is not the general fix for aligning
+     an icon-like inline-block box against surrounding text -- vertical-align: middle is). */
+  vertical-align: middle;
   background-color: currentColor;
   -webkit-mask-image: var(--flourish-src);
   mask-image: var(--flourish-src);
