@@ -1,9 +1,10 @@
 # 05 — Roadmap
 
 Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** = waiting on the owner.
-Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 Stage 3a done and merged (PR #21).
-Stage 3b executed, [PR #23](https://github.com/krwiles/floofy-site/pull/23) open, pending owner review/merge.
-Stage 3c planned (`11-phase-3c-plan.md`), not yet executed. Phases 4–8 not started.
+Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 Stages 3a, 3b done and merged into
+`working` (PR #21, PR #23). Stage 3c executed on `refactor/phase-3c-data-consolidation`, PR open pending owner
+review/merge (real diff on `donate` per decision #2 means it ships as a PR, not a direct merge). Phases 4–8 not
+started.
 
 ## Guiding order
 
@@ -224,15 +225,35 @@ sub-phases, each its own branch and merge decision — they have very different 
     was the real cause of Stage 3a's entire unresolved diff. `streaming` (0.01–0.15%) confirmed via
     `git diff working -- src/app/streaming/` (empty) that this branch touched nothing there; the residual
     fraction of a percent is capture noise (font hinting/anti-aliasing), not a real change.
-- [ ] **3c — Data-driven consolidation**: concrete plan **[11-phase-3c-plan.md](11-phase-3c-plan.md)** (settled
-      2026-09-23 via `grilling` + `domain-modeling`). `SOCIALS` typed data (7 entries incl. a new `email`,
-      explicit per-entry `ariaLabel` text), `app-social-links` (`ids` + `variant: 'plain' | 'chip'` — owns
-      individual items + their sizing, not the wrapping grid/flex layout, which stays real per-page variance).
-      `app-brand` — **the original "confirmed byte-identical" claim was wrong** (never re-verified after being
-      written): footer wraps the wordmark in a real `<h2 id="footer-brand">` landmark heading, navbar has a
-      genuine one-time entrance animation neither shares; `app-brand` now owns only the shared core, each
-      caller supplies its own wrapper. Diff-decides-merge (not always-a-PR like 3b — this consolidates already-
-      matching markup, not a redesign).
+- [x] **3c — Data-driven consolidation**: executed 2026-09-23 on `refactor/phase-3c-data-consolidation`
+      (branched off `working`), per **[11-phase-3c-plan.md](11-phase-3c-plan.md)**. `SOCIALS` typed data (7
+      entries incl. `email`, explicit per-entry `ariaLabel` text, standardizing email's aria-label from "Email
+      SummerFloofy" to "SummerFloofy on Email" per the plan's decision #6), `app-social-links` (`ids` +
+      `variant: 'plain' | 'chip'` — owns individual items + their sizing, not the wrapping grid/flex layout,
+      which stays real per-page variance), `app-brand` (owns only the shared link/image/text core; footer's
+      `<h2 id="footer-brand">` landmark heading and navbar's `nav-brand-intro` entrance animation stay at the
+      call site, confirming the plan's correction that they were never byte-identical).
+  - **Code-review findings, all fixed:**
+    1. `app-social-links` needed `:host { display: contents; }`. Without it, the component's own element
+       became a single grid/flex item instead of letting its `<a>` children participate directly in the
+       caller's grid/flex — silently collapsing about/contact/donate's icon grids into one cell. Caught by
+       visual-diff (`size-mismatch` on every route/width, not just the pages with visible social icons —
+       footer's shared `flex-wrap` row was affected everywhere).
+    2. Donate's migration to the shared chip dropped its `text-on-middle-heading` color and `shrink-0` — real
+       losses, not part of the plan's decision #2 (which standardizes chip *sizing* onto about/contact's, not
+       color or flex-shrink behavior). Restored via a forwarded class on the component's host.
+    3. `app-brand`'s `<img>` needed `alt=""` (decorative), not `alt="Floofy"`: the adjacent wordmark text
+       already names the link, and inside footer's `<h2 id="footer-brand">` (wrapping the whole component,
+       correctly per the plan) a real alt corrupted that heading's accessible name into "Floofy Floofy".
+    4. `SOCIALS.find()!` non-null assertion replaced with a lookup that throws a clear error on a missing id,
+       matching `[appCard]`'s established convention from Stage 3b.
+    5. Prettier formatting on the new `social.ts`.
+  - **`app-brand`'s host is `display: block`, not `contents`** (the plan flagged this as worth confirming
+    during implementation): `display: contents` breaks navbar's `nav-brand-intro` entrance animation, since an
+    element with no generated box has nothing for `opacity`/`animation` to apply to.
+  - **Visual diff**: `0.00%` on every route/width except `donate` (`size-mismatch`, all three widths) — the
+    intended, plan-approved chip-size standardization (decision #2), not a regression. Per diff-decides-merge,
+    a real diff means this stage ships as a PR rather than a direct merge.
 
 ## Phase 4 — Hero and Flowbite JS removal
 

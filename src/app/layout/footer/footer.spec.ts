@@ -22,4 +22,9 @@ describe('Footer', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it("gives the footer-brand heading exactly the text 'Floofy' as its accessible name -- not doubled by the adjacent decorative image", () => {
+    const heading = fixture.nativeElement.querySelector('#footer-brand');
+    expect(heading.textContent.trim()).toBe('Floofy');
+  });
 });
