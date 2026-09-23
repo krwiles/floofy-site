@@ -13,9 +13,25 @@ import { Component, input } from '@angular/core';
        explicit height utility (h-6/h-8/h-12/...) on <app-flourish> itself, and that utility has
        no effect on a plain \`display: inline\` element (same underlying issue flourishes.css's
        .flourish had before its own fix). Also required for the span rule below to have a real
-       height to resolve 100% against, rather than an indefinite inline box. */
-    :host {
-      display: inline-block;
+       height to resolve 100% against, rather than an indefinite inline box.
+
+       Wrapped in Tailwind's own "base" layer (not left unlayered): Tailwind v4 puts every one of
+       its own utilities -- including \`hidden\` and responsive variants like \`md:inline-block\` --
+       in \`@layer utilities\`, which Tailwind's own \`@layer theme,base,components,utilities;\`
+       declaration ranks ABOVE \`base\`. Angular's compiled component styles are unlayered CSS by
+       default, and unlayered CSS always wins over ANY layered CSS regardless of specificity or
+       source order (the same root cause behind an earlier bug in this file, see the height rule
+       below) -- so this rule was unconditionally beating every caller's \`hidden\` class site-wide,
+       keeping every "hide below md" flourish visible (and, since several are absolutely positioned
+       and centered via left-1/2, wide enough to push real horizontal overflow onto the page) on
+       every mobile viewport, on every page that tried to hide one. Moving this into \`base\`
+       (the same layer name Tailwind itself uses for exactly this purpose -- default styles a
+       utility class should be able to override) fixes that without weakening the default: it still
+       applies whenever a caller doesn't override it, same as before. */
+    @layer base {
+      :host {
+        display: inline-block;
+      }
     }
 
     /* height: 100% here, scoped to this component (Angular emulated encapsulation), not in the
