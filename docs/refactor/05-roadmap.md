@@ -2,10 +2,11 @@
 
 Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** = waiting on the owner.
 Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (Stages 3a, 3b, 3c) fully done and
-merged into `working` (PR #21, #23, #24). Phase 4 up next, not yet planned in detail. Phases 5–8 not started.
+merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixed outside phase work, merged
+(PR #25). Phase 4 up next, not yet planned in detail. Phases 5–8 not started.
 
-**3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) (fix branch, pending
-review) — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
+**3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
+`working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
 height utility like `h-8`/`h-12`, `absolute`, `hidden md:inline-block`) goes on the `<app-flourish>` *host*, one
 element above the `<span class="flourish">` that actually has the mask/`aspect-ratio` CSS — so none of those
 classes ever reached the element that needed them.
