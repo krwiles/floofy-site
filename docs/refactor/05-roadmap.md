@@ -4,16 +4,32 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** 
 Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (Stages 3a, 3b, 3c) fully done and
 merged into `working` (PR #21, #23, #24). Phase 4 up next, not yet planned in detail. Phases 5–8 not started.
 
-**Bug found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) (fix branch, pending
-review):** the owner reported `<app-flourish variant="end" [flip]="true">` rendering invisible. Root cause: `.flourish`
-(`src/styles/utilities/flourishes.css`) never set its own `display`, so it was a plain `display: inline` `<span>` —
-`aspect-ratio`/`min-height`/`width: auto` have no effect on a non-replaced inline box, so it was a genuine 0×0 box.
-It only ever appeared to work when a caller's own classes (`absolute`, or being a flex item) happened to blockify
-the *host*, but `<app-flourish>` renders this span one level inside its own host, so that blockification never
-reached the span itself. Confirmed via computed-style inspection (never viewed rendered art/screenshots) that this
-affects **every** `<app-flourish>` usage on every page, not just the reported combination — `flourish.spec.ts`
-only asserts class names, so jsdom's lack of real CSS layout let this ship unnoticed (same category of gap as the
-Stage 3a `bg-section` bug). Fix: `display: inline-block` on `.flourish` itself.
+**3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) (fix branch, pending
+review) — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
+height utility like `h-8`/`h-12`, `absolute`, `hidden md:inline-block`) goes on the `<app-flourish>` *host*, one
+element above the `<span class="flourish">` that actually has the mask/`aspect-ratio` CSS — so none of those
+classes ever reached the element that needed them.
+1. **Invisible** (the owner's original report, `variant="end" [flip]="true"`): `.flourish` never set its own
+   `display`, so it was a plain `display: inline` span — `aspect-ratio`/`min-height`/`width: auto` have no effect
+   on a non-replaced inline box, making it a genuine 0×0 box everywhere. It only ever looked like it worked when a
+   caller's classes happened to blockify the host by accident. Confirmed via computed-style inspection (never
+   viewed rendered art/screenshots) that this affected **every** `<app-flourish>` usage on every page. Fix:
+   `display: inline-block` on `.flourish`.
+2. **Wrong-sized** (found immediately after fixing #1): every flourish sized itself from `min-height: 1em` — the
+   ambient font-size at that point in the DOM — ignoring the host's own height utility entirely; a `h-12` (48px)
+   hero flourish rendered at 16px, `app-section-header`'s `h-8` flourish likewise. Fix: a `Flourish`-component-
+   *scoped* `.flourish { height: 100%; }` (in `flourish.ts`'s own `styles`, not the shared CSS file) — deliberately
+   not shared, since `app-section-divider` uses `.flourish` directly (unwrapped) with its own height utility on the
+   same element, and an unscoped `height: 100%` there would be unlayered CSS unconditionally beating that
+   utility's layered Tailwind rule, breaking the one usage that already worked.
+3. **Misaligned**: `end`/`end-short` flourishes sitting inline next to heading text rendered visibly above center.
+   `vertical-align: -0.08em` was a flat, untuned magic number, wrong for every font-size context it was used in.
+   Fix: `vertical-align: middle` — verified within ~2-3px of true visual center (font-metrics noise, not a further
+   bug) in both a flex-centered heading and genuine inline text.
+
+`flourish.spec.ts` only asserts class names, so jsdom's lack of real CSS layout let all three ship unnoticed (same
+category of gap as the Stage 3a `bg-section` bug). All three verified via `getComputedStyle`/`getBoundingClientRect`
+against the real DOM, never via screenshots.
 
 ## Guiding order
 
