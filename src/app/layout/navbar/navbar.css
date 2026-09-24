@@ -76,6 +76,38 @@
   animation-delay: 740ms;
 }
 
+/* Fade for the mobile-menu backdrop -- same 0.3s timing as the gallery lightbox's own
+   enter-lightbox/leave-lightbox (that pair lives scoped to gallery.css, under Angular's emulated
+   encapsulation, so it can't be reused directly from here; this is the equivalent, renamed for this
+   component). */
+.nav-overlay-enter {
+  opacity: 0;
+  animation: navOverlayFadeIn 0.3s forwards;
+}
+
+.nav-overlay-leave {
+  opacity: 1;
+  animation: navOverlayFadeOut 0.3s forwards;
+}
+
+@keyframes navOverlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes navOverlayFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nav-intro,
   .nav-brand-intro,
@@ -85,5 +117,14 @@
     opacity: 1;
     transform: none;
     filter: none;
+  }
+
+  /* The gallery lightbox's own equivalent overlay has no reduced-motion guard -- adding one here
+     anyway, matching this project's now-established convention (slideshow-carousel, rolling-carousel)
+     of respecting prefers-reduced-motion in new/touched work. */
+  .nav-overlay-enter,
+  .nav-overlay-leave {
+    animation: none;
+    opacity: 1;
   }
 }

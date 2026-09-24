@@ -17,6 +17,16 @@ describe('Navbar', () => {
     return fixture.nativeElement.querySelector('#navbar-language');
   }
 
+  function navElement(): HTMLElement {
+    return fixture.nativeElement.querySelector('nav');
+  }
+
+  // `.fixed.inset-0` uniquely matches the dimming overlay within this component -- `<nav>` itself uses
+  // `fixed` too, but not `inset-0` (it uses the unrelated `inset-s-0`).
+  function overlay(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.fixed.inset-0');
+  }
+
   function pressEscape(): void {
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
   }
@@ -157,6 +167,45 @@ describe('Navbar', () => {
       // later tests in this file.
       outsideInput.remove();
     }
+  });
+
+  it('rounds the border around the nav links', () => {
+    const links = menuPanel().querySelector('ul');
+    expect(links!.classList.contains('rounded-xl')).toBe(true);
+  });
+
+  it("rounds only the navbar's own bottom corners while the mobile menu is open, not while closed", () => {
+    expect(navElement().classList.contains('rounded-b-2xl')).toBe(false);
+
+    menuButton().click();
+    fixture.detectChanges();
+
+    expect(navElement().classList.contains('rounded-b-2xl')).toBe(true);
+  });
+
+  it('shows a dimming overlay behind the navbar while the menu is open, and hides it once closed', () => {
+    expect(overlay()).toBeFalsy();
+
+    menuButton().click();
+    fixture.detectChanges();
+    expect(overlay()).toBeTruthy();
+
+    menuButton().click();
+    fixture.detectChanges();
+    expect(overlay()).toBeFalsy();
+  });
+
+  it("clicking the overlay closes the menu, same as clicking outside the gallery lightbox's content closes that", () => {
+    menuButton().click();
+    fixture.detectChanges();
+    expect(menuButton().getAttribute('aria-expanded')).toBe('true'); // sanity check: it did open first
+
+    overlay()!.click();
+    fixture.detectChanges();
+
+    expect(menuButton().getAttribute('aria-expanded')).toBe('false');
+    expect(menuPanel().classList.contains('hidden')).toBe(true);
+    expect(overlay()).toBeFalsy();
   });
 
   it('does not try to focus the (lg:hidden, unfocusable) menu button when closing at a desktop viewport width', () => {
