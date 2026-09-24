@@ -10,11 +10,13 @@ including an owner-requested follow-up (card-shadow padding + edge fade mask). P
 (`app-slideshow-carousel`, commission) executed and **merged into `working`**,
 [PR #28](https://github.com/krwiles/floofy-site/pull/28) — including both owner-requested follow-up rounds (see
 below). Phase 4 step 4 (`app-language-toggle`) executed and **merged into `working`**,
-[PR #29](https://github.com/krwiles/floofy-site/pull/29). Phase 4 step 5 (navbar disclosure) executed,
-[PR #30](https://github.com/krwiles/floofy-site/pull/30) — pending owner review; this was the real Flowbite-JS
-removal (`initFlowbite()`, `data-collapse-toggle`) — no interactive Flowbite JS remains anywhere in the site once
-this merges. Phase 4 steps 6–7 (`app-hero`, `app-parallax` clean-up) not started. Phases 5–8 (top-level) not
-started.
+[PR #29](https://github.com/krwiles/floofy-site/pull/29). Phase 4 step 5 (navbar disclosure) executed and
+**merged into `working`**, [PR #30](https://github.com/krwiles/floofy-site/pull/30) — this was the real
+Flowbite-JS removal (`initFlowbite()`, `data-collapse-toggle`); no interactive Flowbite JS remains anywhere in
+the site as of this merge. An owner-requested follow-up round on top of it (mobile-menu corner rounding + a
+dimming backdrop + click-outside-to-close) is in [PR #31](https://github.com/krwiles/floofy-site/pull/31) —
+pending owner review. Phase 4 steps 6–7 (`app-hero`, `app-parallax` clean-up) not started. Phases 5–8 (top-level)
+not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
 `slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
@@ -33,6 +35,16 @@ dangling `refactor/phase-4-slideshow-carousel` branch instead of `working`. Step
 on top of that same stale branch by mistake. Both commits were moved onto a fresh `refactor/phase-4-language-toggle`
 branch based on the real `working` tip before pushing, so PR #29 contains only the roadmap-doc commit plus step 4's
 own commit — nothing already-merged is being re-proposed.
+
+**Same mixup, a third time (2026-09-24):** an owner-requested follow-up round for step 5 (corner rounding +
+backdrop overlay + click-outside-close) was committed on `refactor/phase-4-navbar-disclosure`, then a `/code-review`
+pass was kicked off in the background before that commit was pushed — and the owner merged PR #30 while that
+review was still running, so the follow-up commit never made it in either. Same fix as before: moved onto a fresh
+`refactor/phase-4-navbar-followup` branch off the real `working` tip, PR #31 opened there instead. Noting the
+pattern plainly since it's now happened three times (#28→#29, #29→#30, #30→#31): a commit that hasn't been pushed
+yet is at risk the moment the current PR might be merged, and a backgrounded `/code-review` run extends that
+window rather than closing it — worth pushing work-in-progress commits promptly rather than batching them behind
+a still-running background task.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -455,6 +467,12 @@ for Flowbite-JS-driven pieces.
       restart effect is gated on `!instant()`) and forcing every later manual move to snap with no transition.
       Plausible contributor to point 4 above; reported to the owner as a follow-up candidate rather than fixed
       inline, since PR #28 is already merged.
+
+      `ng build`/`tsc --noEmit`/`ng test` (101/101) all clean after both follow-up rounds. Verified live in a
+      real browser throughout (not just jsdom, per this refactor's established practice for anything touch/
+      timing/rendering-dependent): 3 independent instances, correct wraparound both directions, hover-pause/
+      resume, auto-advance timing, `appCard`-on-the-tag framing, i18n aria-labels, no console errors, no
+      horizontal page overflow, no sub-pixel seam.
 - [x] [`app-language-toggle`](specs/app-language-toggle.md); extract out of `navbar.html`, move the two flag
       `<svg>`s to real image files. Executed and **merged into `working`**,
       [PR #29](https://github.com/krwiles/floofy-site/pull/29). A plain extraction per the spec's own scope (not
@@ -474,8 +492,8 @@ for Flowbite-JS-driven pieces.
       re-validated against the new padded track).
 - [x] [Navbar disclosure](specs/navbar-disclosure.md) — the real Flowbite-JS removal (`initFlowbite()`,
       `data-collapse-toggle`), unlike the language toggle above genuinely tied to the plugin, so freed from
-      visual/behavioral parity by the spec itself. Executed, [PR #30](https://github.com/krwiles/floofy-site/pull/30)
-      — pending owner review. `Navbar` now owns an `isMenuOpen` signal instead of Flowbite's own toggle state:
+      visual/behavioral parity by the spec itself. Executed and **merged into `working`**,
+      [PR #30](https://github.com/krwiles/floofy-site/pull/30). `Navbar` now owns an `isMenuOpen` signal instead of Flowbite's own toggle state:
       `aria-expanded` is bound to it (was a static `"false"`, so screen readers were told the menu was always
       collapsed even while open — one of the two real problems the spec called out); the panel's `hidden` class
       is bound to `!isMenuOpen()`, under the same `lg:flex` that already made it always-visible on larger
@@ -500,14 +518,28 @@ for Flowbite-JS-driven pieces.
       project's jsdom `matchMedia` stub has inert listeners — documented inline); a test's stray `<input>`
       cleanup was moved into a `try`/`finally` so a failed assertion couldn't leave it behind for later tests.
       12 tests (TDD, written first); full suite 117/117.
-
-      `ng build`/`tsc --noEmit`/`ng test` (101/101) all clean after both follow-up rounds. Verified live in a
-      real browser throughout (not just jsdom, per this refactor's established practice for anything touch/
-      timing/rendering-dependent): 3 independent instances, correct wraparound both directions, hover-pause/
-      resume, auto-advance timing, `appCard`-on-the-tag framing, i18n aria-labels, no console errors, no
-      horizontal page overflow, no sub-pixel seam.
-- [ ] [`app-language-toggle`](specs/app-language-toggle.md) — extraction only, not Flowbite-related.
-- [ ] [Mobile navigation menu](specs/navbar-disclosure.md) — remove `initFlowbite()` and `data-collapse-toggle`.
+- [x] [Navbar disclosure follow-up](specs/navbar-disclosure.md) — owner-requested, same PR at first (seen it
+      running live), moved to [PR #31](https://github.com/krwiles/floofy-site/pull/31) after a branch mixup (see
+      the housekeeping note above): rounds the nav-links list's border (`rounded-xl`, replacing a typo'd,
+      non-functional `rounded-bas`), rounds the navbar's own bottom corners while the mobile menu is open
+      (`rounded-b-2xl`, bound to `isMenuOpen()`, a no-op on desktop), adds a dimming backdrop behind the navbar
+      matching the gallery lightbox's own (`bg-black/80`, `z-90` under the navbar's `z-100`), and click-outside-
+      to-close on that same backdrop. `/code-review` found and fixed two real issues: the new backdrop visually
+      implied a modal, but nothing stopped keyboard focus tabbing into now visually-buried, still fully-
+      interactive page content underneath it — `App`'s template now wraps `<router-outlet>` + `<app-footer>` in
+      a container bound to `[inert]="navbar.isMenuOpen()"` (read off `Navbar`'s own public signal via a template
+      reference); the backdrop's leave-animation could visibly jump to full opacity on a rapid re-toggle, and
+      more commonly could still be fading out over a page the router had already navigated to (tapping a link
+      closes the menu and starts routing in the same instant, independently of the fade) — fixed by dropping the
+      leave-animation entirely, so it disappears instantly on any close and only ever fades in on open; that
+      fade-in was also extracted into a shared `.overlay-fade-in` class in the already-global `motion.css`
+      rather than a second copy living in `navbar.css` (migrating the gallery lightbox's own near-identical fade
+      onto it is left as a follow-up, not done here). **Disclosed, not fixed**: a mousedown/mouseup split can
+      defeat the backdrop's click-to-close (matches the gallery lightbox's own pre-existing equivalent
+      limitation); the "mobile-only" invariant is now enforced three separate ways across this component
+      (deliberate defense-in-depth, not accidental duplication); the backdrop's `z-90` is another ad-hoc
+      stacking number with no shared z-index scale anywhere in this codebase yet. 5 new tests across both
+      commits. Full suite 122/122.
 - [ ] `app-hero`; migrate pages one by one (donate → gallery → reviews → contact → streaming → about → commission → home).
 - [ ] `app-parallax` clean-up (single shared scroll source instead of one listener per instance; revisit the
       underlying technique later if a shared listener alone doesn't fix the motion lag the owner's noticed).

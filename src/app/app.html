@@ -1,3 +1,10 @@
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<app-navbar #navbar></app-navbar>
+<!-- Inert while the mobile nav menu is open: that state now dims everything below the navbar with an
+     opaque-looking overlay (see navbar.html), so keyboard focus should not be able to tab into a
+     control that's visually buried under it -- `inert` blocks both focus and pointer interaction on
+     everything inside, without this needing to become a full focus-trapped modal (a deliberate choice
+     for the menu panel itself; see navbar-disclosure.md). -->
+<div [inert]="navbar.isMenuOpen()">
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+</div>
