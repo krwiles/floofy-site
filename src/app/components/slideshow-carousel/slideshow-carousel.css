@@ -15,30 +15,13 @@
   overflow: hidden;
 }
 
-.slideshow-carousel__slide,
-.slideshow-carousel__frame {
+.slideshow-carousel__slide {
   position: absolute;
   inset: 0;
   height: 100%;
   width: 100%;
-  transition: transform 450ms ease;
-}
-
-.slideshow-carousel__slide,
-.slideshow-carousel__image {
   object-fit: cover;
-}
-
-/* Shadow/rounded-corner frame (card-shadow-{tone}, applied by [appCard noBackground]) needs its own
-   overflow: hidden so the image inside clips to the frame's rounded corners rather than the frame
-   growing to the image's natural size and the radius doing nothing (same reasoning as
-   rolling-carousel.css's own __frame rule). Unlike the rolling carousel's continuously-moving strip,
-   this frame sits flush with the viewport at rest, so its shadow can clip against the viewport's own
-   edge -- a purely cosmetic point, left alone for now (revisit only if raised, the same way the rolling
-   carousel's shadow padding was: a discussion first, once it could actually be seen, not guessed at
-   ahead of time). */
-.slideshow-carousel__frame {
-  overflow: hidden;
+  transition: transform 450ms ease;
 }
 
 .slideshow-carousel__arrow {
@@ -73,9 +56,14 @@
 }
 
 /* Invisible until a visitor points at, taps toward, or keyboard-focuses the component -- per the spec,
-   not a generic hover-reveal habit. */
-.slideshow-carousel:hover .slideshow-carousel__arrow,
-.slideshow-carousel:focus-within .slideshow-carousel__arrow {
+   not a generic hover-reveal habit. Written as :host(:hover)/:host(:focus-within), not a plain
+   `.slideshow-carousel:hover` descendant selector: Angular's emulated view encapsulation scopes a
+   component's own selectors by tagging matched elements with an `_ngcontent-*` attribute, but the host
+   element itself gets `_nghost-*` instead -- so a plain class selector for the host's own class (set via
+   this component's `host: {}` metadata) never actually matches it from inside its own stylesheet, and
+   this rule silently never fired (the bug that made the arrows permanently invisible). */
+:host(:hover) .slideshow-carousel__arrow,
+:host(:focus-within) .slideshow-carousel__arrow {
   opacity: 1;
 }
 
@@ -98,8 +86,7 @@
    matching the spec's reduced-motion requirement exactly ("automatic advancing still happens, just
    without the animated motion"). */
 @media (prefers-reduced-motion: reduce) {
-  .slideshow-carousel__slide,
-  .slideshow-carousel__frame {
+  .slideshow-carousel__slide {
     transition: none;
   }
 }

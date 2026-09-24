@@ -21,11 +21,14 @@ matter how many copies of it appear on the same page.
 - Dot or numbered indicators — not wanted.
 - Making the shown image itself clickable — noted as a future idea, not built now.
 - Any visual style beyond what's described here.
+- Any card-style framing of its own. Every image stays plain and rectangular, so nothing casts a shadow onto
+  the neighboring image while it slides past. A page that wants the whole thing framed applies its card
+  styling directly to this component's own tag, the same way it would to any other element — that's not this
+  component's concern.
 
 ## 4. Requirements
 
 - Shows one image at a time, cropped to fill a consistent shape (the page chooses the shape).
-- Optionally, the shown image can have a card-style frame — the page decides this for the whole component.
 - Automatically moves to the next image after a pause; the length of that pause can be set by the page.
 - Loops endlessly — after the last image it returns to the first, and going backward from the first goes to the
   last.

@@ -146,23 +146,16 @@ describe('SlideshowCarousel', () => {
     expect(visibleAlt(fixture)).toBe('One');
   });
 
-  it('wraps every slide in an [appCard][noBackground] frame for the given tone when cardTone is set', () => {
-    fixture = create();
-    fixture.componentRef.setInput('cardTone', 'dark');
-    fixture.detectChanges();
-
-    const frames = fixture.nativeElement.querySelectorAll('.card-shadow-dark');
-    expect(frames.length).toBe(IMAGES.length + 2);
-    for (const frame of Array.from(frames)) {
-      expect((frame as HTMLElement).querySelector('img')).toBeTruthy();
-    }
-  });
-
-  it('renders plain images with no card wrapper when cardTone is not set', () => {
+  it('has no card framing of its own -- every slide is a plain image, never wrapped in [appCard]', () => {
     fixture = create();
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('[appCard]')).toBeFalsy();
+    const imgs: HTMLImageElement[] = Array.from(fixture.nativeElement.querySelectorAll('img'));
+    expect(imgs.length).toBe(IMAGES.length + 2);
+    for (const img of imgs) {
+      expect(img.classList.contains('slideshow-carousel__slide')).toBe(true);
+    }
   });
 
   it('automatically advances after the interval, defaulting to 4s and overridable via the interval input', () => {

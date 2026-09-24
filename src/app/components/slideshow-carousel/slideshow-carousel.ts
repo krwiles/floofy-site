@@ -1,14 +1,18 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, computed, effect, input, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { ImageAsset } from '../../models/image-asset';
-import { Tone } from '../../models/tone';
-import { Card } from '../../directives/card';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
 /**
  * One image at a time, auto-advancing, looping endlessly forward and backward, usable by mouse,
  * keyboard, or touch -- see docs/refactor/specs/app-slideshow-carousel.md. Every instance on a page
  * runs fully independently (its own timer, its own position); nothing here is shared/global.
+ *
+ * No card framing of its own (deliberately -- see the spec): every slide is a plain rectangular image,
+ * so nothing here casts a shadow onto its sliding neighbor. A page that wants the whole carousel framed
+ * applies `[appCard]` directly to this component's own host tag, exactly like it would for any other
+ * element -- `card-on-section-{tone}`'s own `overflow: hidden` + `border-radius` then clips the image
+ * to match, no extra plumbing needed here.
  *
  * Looping technique: `images()` is rendered with one extra clone of the last image prepended and one
  * clone of the first image appended (`trackSlides`), so there's always a real slide immediately either
@@ -21,7 +25,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
  */
 @Component({
   selector: 'app-slideshow-carousel',
-  imports: [NgOptimizedImage, Card, TranslatePipe],
+  imports: [NgOptimizedImage, TranslatePipe],
   host: {
     class: 'slideshow-carousel',
     '(mouseenter)': 'pause()',
@@ -39,7 +43,6 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 })
 export class SlideshowCarousel implements OnDestroy {
   readonly images = input.required<ImageAsset[]>();
-  readonly cardTone = input<Tone | null>(null);
   /** How long to pause on each image before automatically advancing, in ms. */
   readonly interval = input(4000);
 

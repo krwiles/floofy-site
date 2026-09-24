@@ -1,28 +1,14 @@
 <div class="slideshow-carousel__viewport">
   @for (image of trackSlides(); track $index) {
-    @if (cardTone()) {
-      <div
-        appCard
-        [tone]="cardTone()!"
-        [noBackground]="true"
-        class="slideshow-carousel__frame"
-        [style.transform]="'translateX(' + offsetFor($index) * 100 + '%)'"
-        [style.transition]="instant() ? 'none' : null"
-        [attr.aria-hidden]="offsetFor($index) !== 0"
-      >
-        <img [ngSrc]="image.src" [alt]="image.alt" fill class="slideshow-carousel__image" />
-      </div>
-    } @else {
-      <img
-        [ngSrc]="image.src"
-        [alt]="image.alt"
-        fill
-        class="slideshow-carousel__slide"
-        [style.transform]="'translateX(' + offsetFor($index) * 100 + '%)'"
-        [style.transition]="instant() ? 'none' : null"
-        [attr.aria-hidden]="offsetFor($index) !== 0"
-      />
-    }
+    <img
+      [ngSrc]="image.src"
+      [alt]="image.alt"
+      fill
+      class="slideshow-carousel__slide"
+      [style.transform]="'translateX(' + offsetFor($index) * 100 + '%)'"
+      [style.transition]="instant() ? 'none' : null"
+      [attr.aria-hidden]="offsetFor($index) !== 0"
+    />
   }
 </div>
 
