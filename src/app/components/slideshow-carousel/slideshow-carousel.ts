@@ -127,6 +127,38 @@ export class SlideshowCarousel implements OnDestroy {
     return trackIndex - this.position();
   }
 
+  /** How much to shrink the slide at `trackIndex` horizontally: 1 (full size) for the one currently
+      shown, slightly less for every other slide. Every slide's *position* (`translateX`) is already
+      exact -- `translateX(0%)` for the current slide has no rounding to go wrong in the first place --
+      but an *adjacent* slide's `translateX(+-100%)`, `+-200%`, etc. is a percentage of the viewport's
+      own (rarely whole-number) pixel width, and the browser's sub-pixel rounding of that can leave a
+      hairline of the adjacent slide creeping into view at the seam. On an opaque image that's
+      invisible; on one with a transparent background (the emote/chibi art), the visible artwork of
+      that sliver of the *neighboring* image shows through. Pulling every non-current slide in by a
+      safety margin (its own box, not the seam) that's far bigger than any possible rounding error
+      means there's nothing left at the seam for a neighbor to creep into -- rather than trying to grow
+      the current slide to cover a creeping neighbor, which was tried first and made things worse: it
+      shrinks or grows every slide the *same* amount, so adjacent (still 100%-apart) slides end up
+      overlapping *each other*, and plain DOM order (not which one is actually current) decides which
+      one's edge wins that overlap. Shrinking instead of growing has no equivalent failure mode --
+      there's no "growing into the neighbor" to get backward, since nothing here ever grows. */
+  scaleFor(trackIndex: number): number {
+    return this.offsetFor(trackIndex) === 0 ? 1 : 0.99;
+  }
+
+  /** The full inline `transform` for the slide at `trackIndex`: its slide position, plus `scaleFor`'s
+      horizontal-only shrink. `scaleX()` comes *after* `translateX()`, not before: composed right-to-
+      left, that means the scale applies first (in the slide's own local space) and the translate
+      second, so the translate's percentage keeps resolving against the slide's real, unscaled width --
+      moving each slide by exactly one slide-width regardless of the cosmetic shrink. Reversing the
+      order would scale the translate distance too, drifting every slide's position by that same small
+      factor. Horizontal-only (`scaleX`, not `scale`): slides are never offset vertically, so there's no
+      equivalent vertical rounding error to guard against, and shrinking the height too would just add
+      pointless letterboxing above/below every inactive slide. */
+  transformFor(trackIndex: number): string {
+    return `translateX(${this.offsetFor(trackIndex) * 100}%) scaleX(${this.scaleFor(trackIndex)})`;
+  }
+
   onTouchStart(event: TouchEvent): void {
     this.pause();
     this.touchStartX = event.touches[0]?.clientX ?? null;

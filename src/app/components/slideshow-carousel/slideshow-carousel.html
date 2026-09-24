@@ -5,7 +5,7 @@
       [alt]="image.alt"
       fill
       class="slideshow-carousel__slide"
-      [style.transform]="'translateX(' + offsetFor($index) * 100 + '%)'"
+      [style.transform]="transformFor($index)"
       [style.transition]="instant() ? 'none' : null"
       [attr.aria-hidden]="offsetFor($index) !== 0"
     />

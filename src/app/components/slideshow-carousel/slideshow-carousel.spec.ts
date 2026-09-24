@@ -62,6 +62,27 @@ describe('SlideshowCarousel', () => {
     expect(visibleAlt(fixture)).toBe('One');
   });
 
+  it("keeps the current slide at full size and shrinks every other slide slightly, to hide the sub-pixel seam, without disturbing any slide's position", () => {
+    fixture = create();
+    fixture.detectChanges();
+
+    // trackSlides() is [clone(Three), One, Two, Three, clone(One)] -- track index 1 is the current
+    // slide (offset 0): full size, translateX exactly 0%.
+    expect(fixture.componentInstance.scaleFor(1)).toBe(1);
+    const current = fixture.componentInstance.transformFor(1);
+    expect(current).toBe('translateX(0%) scaleX(1)');
+
+    // Every other slide (any nonzero offset) is shrunk the same amount.
+    expect(fixture.componentInstance.scaleFor(2)).toBeLessThan(1);
+    expect(fixture.componentInstance.scaleFor(0)).toBe(fixture.componentInstance.scaleFor(2));
+
+    // scaleX() must come *after* translateX(), not before -- see transformFor's own doc comment for
+    // why (getting this backwards would scale the slide distance itself, not just the cosmetic shrink).
+    const next = fixture.componentInstance.transformFor(2);
+    expect(next.indexOf('translateX')).toBeLessThan(next.indexOf('scaleX'));
+    expect(next).toBe(`translateX(100%) scaleX(${fixture.componentInstance.scaleFor(2)})`);
+  });
+
   it('renders no arrows and no clones with only one image', () => {
     fixture = create(ONE_IMAGE);
     fixture.detectChanges();
