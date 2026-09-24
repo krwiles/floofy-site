@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { Hero } from '../components/hero/hero';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { NgOptimizedImage } from '@angular/common';
 import { Reveal } from '../directives/reveal';
@@ -17,7 +17,7 @@ declare const twttr: { widgets: { load: () => void } };
 @Component({
   selector: 'app-about',
   imports: [
-    ParallaxSection,
+    Hero,
     TranslatePipe,
     NgOptimizedImage,
     Reveal,

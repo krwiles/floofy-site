@@ -1,0 +1,183 @@
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ParallaxSection } from '../parallax-section/parallax-section';
+import { Card } from '../../directives/card';
+import { Flourish } from '../flourish/flourish';
+
+export type HeroTone = 'light' | 'dark';
+export type HeroCardAlign = 'start' | 'end';
+
+// Mirrors the shape (if not the literal type) of section-header.ts's own TONE_CLASSES map -- a lookup
+// table, not ad hoc ternaries, so a future rename of any of these color tokens is one map to update,
+// not a scattered set of conditionals. HeroTone stays its own narrower 'light' | 'dark' rather than the
+// shared, 3-value Tone from models/tone.ts: every real usage across all 8 pages is one or the other,
+// never 'middle', and section-header.ts's own tone map is likewise local rather than reusing it -- an
+// existing inconsistency this doesn't originate, and adding an unused 'middle' branch here wouldn't
+// actually resolve it.
+const TONE_CLASSES: Record<HeroTone, { heading: string; body: string }> = {
+  light: { heading: 'text-on-light-heading', body: 'text-on-light-body' },
+  dark: { heading: 'text-on-dark-heading', body: 'text-on-dark-body' },
+};
+
+/** Joins class fragments with a single space, dropping any empty ones -- avoids the classic
+ * off-by-one when building a class list by hand from several optional/required pieces. */
+function joinClasses(...parts: string[]): string {
+  return parts.filter(Boolean).join(' ');
+}
+
+/**
+ * The parallax hero block repeated, with real per-page variation, at the top of all 8 pages --
+ * consolidates that duplication into one component. Not a redesign: every input below exists to
+ * reproduce some page's exact existing output (see docs/refactor/12-phase-4-plan.md, Phase 4 step 6),
+ * verified per page via this project's scripted visual-diff tool rather than a formal spec.
+ *
+ * Two content slots, per the plan: `heroTitle` (the <h1>'s own content -- a plain translated string
+ * for 7 of 8 pages, home's two-line name for the 8th) and `heroActions` (streaming's CTA row, in place
+ * of a tagline). Every other string (`kicker`/`description`/`tagline`) comes in already-translated by
+ * the caller, per the plan's own decision to keep this component i18n-agnostic -- streaming is the one
+ * exception, passing hardcoded English rather than a translated string, a pre-existing i18n gap on
+ * that page carried over unchanged (see streaming.html's own comment), not something this component
+ * enforces or should be assumed to guarantee.
+ *
+ * Most of the "override" class inputs below default to whatever 6-7 of the 8 pages already share;
+ * they exist only because a couple of pages (usually home, sometimes streaming/commission) genuinely
+ * differ and parity requires reproducing that exactly, not smoothing it over.
+ */
+@Component({
+  selector: 'app-hero',
+  imports: [ParallaxSection, Card, Flourish],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <app-parallax-section
+      [class]="backgroundClass()"
+      [backgroundImage]="backgroundPatternImage()"
+      backgroundSize="100px"
+      backgroundHeight="200%"
+      [parallaxStrength]="outerParallaxStrength()"
+      ariaLabel="Hero Background"
+    >
+      <div class="hero-image-wrapper absolute inset-0 mx-auto h-full max-w-7xl" [class]="imageWrapperExtraClass()">
+        <app-parallax-section
+          [class]="heroImageClass()"
+          [ariaLabel]="heroSectionAriaLabel()"
+          [backgroundImage]="heroImageSrc()"
+          [backgroundPosition]="heroImagePosition()"
+          [backgroundHeight]="heroImageHeight()"
+          [parallaxStrength]="heroImageParallaxStrength()"
+        ></app-parallax-section>
+      </div>
+      <div
+        class="hero-content-wrapper relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh]"
+        [class]="contentWrapperClass()"
+      >
+        <div appCard [glass]="true" [class]="cardClass()">
+          <app-flourish variant="full" [class]="flourishClass()" />
+          <p class="hero-reveal-kicker" [class]="kickerFullClass()">
+            {{ kicker() }}
+          </p>
+          <h1 class="hero-reveal-title" [class]="titleFullClass()">
+            <ng-content select="[heroTitle]" />
+          </h1>
+          @if (description()) {
+            <p class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 sm:text-base" [class]="bodyColorClass()">
+              {{ description() }}
+            </p>
+          }
+          @if (tagline()) {
+            <p class="hero-reveal-copy" [class]="taglineFullClass()">
+              {{ tagline() }}
+            </p>
+          }
+          <ng-content select="[heroActions]" />
+        </div>
+      </div>
+    </app-parallax-section>
+  `,
+})
+export class Hero {
+  // Outer background-pattern layer. Size/height/aria-label are identical on all 8 pages, so they're
+  // not inputs at all.
+  readonly backgroundClass = input.required<string>();
+  readonly backgroundPatternImage = input('assets/4-point-stars.svg');
+  readonly outerParallaxStrength = input(0.8);
+
+  // Inner hero-image parallax layer.
+  readonly heroImageSrc = input.required<string>();
+  readonly heroImagePosition = input.required<string>();
+  readonly heroImageHeight = input('100%');
+  readonly heroImageParallaxStrength = input(0.65);
+  readonly heroImageMaxWidthClass = input.required<string>();
+  // One-off escape hatch: every page but commission positions this layer with a plain `absolute
+  // inset-0`; commission's own is `inset-0` unconditionally plus `lg:absolute` (only absolute from
+  // `lg` up), for reasons not documented anywhere -- preserved exactly rather than guessed at.
+  readonly heroImagePositionClasses = input('absolute inset-0');
+  // One-off escape hatch: commission's image-wrapper carries an extra `mt-14` no other page has.
+  readonly imageWrapperExtraClass = input('');
+  // Capitalization genuinely differs today ("Hero section" vs. commission's "Hero Section") --
+  // preserved rather than normalized, since this is an aria-label a screen reader announces verbatim.
+  readonly heroSectionAriaLabel = input('Hero section');
+
+  // Layout / tone.
+  readonly tone = input<HeroTone>('light');
+  readonly cardAlign = input<HeroCardAlign>('end');
+  readonly cardMaxWidthClass = input.required<string>();
+  readonly cardPaddingClass = input('px-6 py-6 sm:px-7 sm:py-7');
+  // One-off escape hatch: home's content wrapper carries an extra `h-full` no other page has.
+  readonly contentWrapperExtraClass = input('');
+  // Preserves an existing inconsistency on gallery/contact, where the description/tagline paragraphs
+  // use the *heading* color instead of the body color every other page uses for them -- parity means
+  // reproducing that, not quietly fixing it as a drive-by.
+  readonly bodyTextUsesHeadingColor = input(false);
+
+  readonly flourishSizeClasses = input('hidden h-12 md:inline-block');
+  readonly titleClass = input('text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase');
+  readonly kickerClass = input('mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]');
+  readonly taglineClass = input('mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm');
+
+  // Content -- already translated by the caller; see this component's own doc comment.
+  readonly kicker = input.required<string>();
+  readonly description = input<string | null>(null);
+  readonly tagline = input<string | null>(null);
+
+  readonly headingColorClass = computed(() => TONE_CLASSES[this.tone()].heading);
+
+  readonly bodyColorClass = computed(() =>
+    this.bodyTextUsesHeadingColor() ? this.headingColorClass() : TONE_CLASSES[this.tone()].body,
+  );
+
+  // The card and the hero image sit on opposite sides of the layout -- see this component's own doc
+  // comment: every one of the 8 pages pairs "card at the end" with "image on the left" (the default,
+  // no ml-auto) and "card at the start" with "image pushed right" (ml-auto), with no exception, so one
+  // input derives both sides rather than risking them being set inconsistently.
+  readonly contentJustifyClass = computed(() => (this.cardAlign() === 'start' ? 'md:justify-start' : 'md:justify-end'));
+  readonly heroImageAlignClass = computed(() => (this.cardAlign() === 'start' ? 'ml-auto' : ''));
+
+  readonly contentWrapperClass = computed(() =>
+    joinClasses(this.contentWrapperExtraClass(), this.contentJustifyClass()),
+  );
+
+  readonly heroImageClass = computed(() =>
+    joinClasses(
+      this.heroImagePositionClasses(),
+      this.heroImageAlignClass(),
+      'h-full',
+      this.heroImageMaxWidthClass(),
+      'lg:mask-fade-x',
+    ),
+  );
+
+  readonly cardClass = computed(() =>
+    joinClasses('hero-reveal-surface', this.cardMaxWidthClass(), this.cardPaddingClass(), 'drop-shadow-md', 'md:mb-16'),
+  );
+
+  readonly flourishClass = computed(() =>
+    joinClasses(
+      'absolute top-0 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2',
+      this.headingColorClass(),
+      this.flourishSizeClasses(),
+    ),
+  );
+
+  readonly kickerFullClass = computed(() => joinClasses(this.kickerClass(), this.headingColorClass()));
+  readonly titleFullClass = computed(() => joinClasses(this.titleClass(), this.headingColorClass()));
+  readonly taglineFullClass = computed(() => joinClasses(this.taglineClass(), this.bodyColorClass()));
+}

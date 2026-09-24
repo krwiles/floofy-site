@@ -3,7 +3,7 @@ import { RollingCarousel } from '../components/rolling-carousel/rolling-carousel
 import { NgOptimizedImage } from '@angular/common';
 import { ImageAsset } from '../models/image-asset';
 import { RouterLink } from '@angular/router';
-import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { Hero } from '../components/hero/hero';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { Reveal } from '../directives/reveal';
 import { Flourish } from '../components/flourish/flourish';
@@ -19,7 +19,7 @@ import { Button } from '../directives/button';
     RollingCarousel,
     NgOptimizedImage,
     RouterLink,
-    ParallaxSection,
+    Hero,
     TranslatePipe,
     Reveal,
     Flourish,

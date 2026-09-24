@@ -1,49 +1,27 @@
 <!-- Hero section  -->
-<app-parallax-section
-  class="bg-hero-home"
-  [backgroundImage]="'assets/4-point-stars.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.8"
-  [ariaLabel]="'Hero Background'"
+<app-hero
+  backgroundClass="bg-hero-home"
+  heroImageSrc="assets/G8s5y4ZakAA0XN9.jpeg"
+  heroImagePosition="center 40%"
+  heroImageMaxWidthClass="max-w-5xl"
+  tone="dark"
+  cardMaxWidthClass="max-w-2xl"
+  cardPaddingClass="px-7 py-7 sm:px-9 sm:py-9"
+  contentWrapperExtraClass="h-full"
+  flourishSizeClasses="h-8 md:h-12"
+  titleClass="mt-3 mb-0 text-[clamp(6rem,16vw,12rem)] leading-[0.86] font-black tracking-[-0.045em]"
+  kickerClass="m-0 text-sm font-bold tracking-[0.34em] uppercase md:text-[1.05rem]"
+  taglineClass="mt-6 text-xs font-bold tracking-[0.3em] uppercase md:text-base"
+  [bodyTextUsesHeadingColor]="true"
+  [kicker]="'home.hero.kicker' | translate"
+  [tagline]="'home.hero.tagline' | translate"
 >
-  <div class="absolute inset-0 mx-auto h-full max-w-7xl">
-    <app-parallax-section
-      class="absolute inset-0 h-full max-w-5xl lg:mask-fade-x"
-      [ariaLabel]="'Hero section'"
-      [backgroundImage]="'assets/G8s5y4ZakAA0XN9.jpeg'"
-      [backgroundPosition]="'center 40%'"
-      [backgroundHeight]="'100%'"
-      [parallaxStrength]="0.65"
-    ></app-parallax-section>
-  </div>
-  <div
-    class="relative z-10 mx-auto flex h-full min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
-  >
-    <div appCard [glass]="true" class="hero-reveal-surface max-w-2xl px-7 py-7 drop-shadow-md sm:px-9 sm:py-9 md:mb-16">
-      <app-flourish
-        variant="full"
-        class="absolute top-0 left-1/2 z-10 h-8 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:h-12"
-      />
-      <!-- Small intro/kicker text above the main title. -->
-      <p
-        class="hero-reveal-kicker m-0 text-sm font-bold tracking-[0.34em] text-on-dark-heading uppercase md:text-[1.05rem]"
-      >
-        {{ 'home.hero.kicker' | translate }}
-      </p>
-      <!-- Main hero heading. -->
-      <h1
-        class="hero-reveal-title mt-3 mb-0 text-[clamp(6rem,16vw,12rem)] leading-[0.86] font-black tracking-[-0.045em] text-on-dark-heading"
-      >
-        <span class="block text-[clamp(4rem,11vw,8rem)] tracking-[-0.04em]">{{ 'home.hero.name_1' | translate }}</span>
-        <span class="block">{{ 'home.hero.name_2' | translate }}</span>
-      </h1>
-      <p class="hero-reveal-copy mt-6 text-xs font-bold tracking-[0.3em] text-on-dark-heading uppercase md:text-base">
-        {{ 'home.hero.tagline' | translate }}
-      </p>
-    </div>
-  </div>
-</app-parallax-section>
+  <!-- Main hero heading -- two lines, unlike every other page's single-string title. -->
+  <ng-container heroTitle>
+    <span class="block text-[clamp(4rem,11vw,8rem)] tracking-[-0.04em]">{{ 'home.hero.name_1' | translate }}</span>
+    <span class="block">{{ 'home.hero.name_2' | translate }}</span>
+  </ng-container>
+</app-hero>
 
 <app-section-divider />
 

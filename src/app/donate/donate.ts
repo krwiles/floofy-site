@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { Hero } from '../components/hero/hero';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
@@ -13,6 +13,6 @@ import { SocialLinks } from '../components/social-links/social-links';
   templateUrl: './donate.html',
   styleUrl: './donate.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ParallaxSection, TranslatePipe, Flourish, SectionDivider, SectionHeader, Section, Card, SocialLinks],
+  imports: [Hero, TranslatePipe, Flourish, SectionDivider, SectionHeader, Section, Card, SocialLinks],
 })
 export class Donate {}

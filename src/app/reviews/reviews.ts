@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { Hero } from '../components/hero/hero';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { ReviewsService } from '../services/reviews.service';
 import { DatePipe } from '@angular/common';
@@ -7,7 +7,6 @@ import { CreateReviewRequest, CreateReviewResponse, Review } from '../models/rev
 import { form, FormField, FormRoot, max, maxLength, required, submit } from '@angular/forms/signals';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Reveal } from '../directives/reveal';
-import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
@@ -23,13 +22,12 @@ interface ReviewFormValue {
 @Component({
   selector: 'app-reviews',
   imports: [
-    ParallaxSection,
+    Hero,
     TranslatePipe,
     DatePipe,
     FormField,
     FormRoot,
     Reveal,
-    Flourish,
     SectionDivider,
     SectionHeader,
     Section,

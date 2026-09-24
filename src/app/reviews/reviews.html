@@ -1,46 +1,17 @@
 <!-- Reviews Hero -->
-<app-parallax-section
-  class="bg-hero-reviews"
-  [backgroundImage]="'assets/4-point-stars.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.8"
-  [ariaLabel]="'Hero Background'"
+<app-hero
+  backgroundClass="bg-hero-reviews"
+  heroImageSrc="assets/G8oM0YEasAAWxIg.jpeg"
+  heroImagePosition="center 35%"
+  heroImageHeight="110%"
+  heroImageMaxWidthClass="max-w-4xl"
+  cardMaxWidthClass="max-w-2xl"
+  [kicker]="'reviews.hero.kicker' | translate"
+  [description]="'reviews.hero.description' | translate"
+  [tagline]="'reviews.hero.tagline' | translate"
 >
-  <div class="absolute inset-0 mx-auto h-full max-w-7xl">
-    <app-parallax-section
-      class="absolute inset-0 h-full max-w-4xl lg:mask-fade-x"
-      [ariaLabel]="'Hero section'"
-      [backgroundImage]="'assets/G8oM0YEasAAWxIg.jpeg'"
-      [backgroundPosition]="'center 35%'"
-      [backgroundHeight]="'110%'"
-      [parallaxStrength]="0.65"
-    ></app-parallax-section>
-  </div>
-  <div
-    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
-  >
-    <div appCard [glass]="true" class="hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block" />
-      <p
-        class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-light-heading uppercase sm:text-[0.95rem]"
-      >
-        {{ 'reviews.hero.kicker' | translate }}
-      </p>
-      <h1
-        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] text-on-light-heading uppercase"
-      >
-        {{ 'reviews.hero.title' | translate }}
-      </h1>
-      <p class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-light-body sm:text-base">
-        {{ 'reviews.hero.description' | translate }}
-      </p>
-      <p class="hero-reveal-copy mt-6 text-xs font-semibold tracking-[0.28em] text-on-light-body uppercase sm:text-sm">
-        {{ 'reviews.hero.tagline' | translate }}
-      </p>
-    </div>
-  </div>
-</app-parallax-section>
+  <span heroTitle>{{ 'reviews.hero.title' | translate }}</span>
+</app-hero>
 
 <app-section-divider />
 
@@ -64,12 +35,7 @@
     } @else {
       <ol class="columns-1 gap-x-6 sm:columns-2" aria-label="Client reviews">
         @for (review of reviews(); track review.id) {
-          <li
-            appReveal
-            appCard
-            tone="dark"
-            class="mb-6 break-inside-avoid px-6 py-6 sm:px-7 sm:py-7"
-          >
+          <li appReveal appCard tone="dark" class="mb-6 break-inside-avoid px-6 py-6 sm:px-7 sm:py-7">
             <article class="flex h-full flex-col">
               <p class="review-quote mb-5 text-lg leading-8 text-on-dark-heading">{{ review.comment }}</p>
               <div class="mt-auto flex items-center justify-between gap-4 border-t border-white/40 pt-4">
@@ -99,12 +65,7 @@
       />
 
       <!-- Review form -->
-      <form
-        appCard
-        tone="middle"
-        class="mx-auto max-w-3xl px-8 py-12 text-on-middle-heading"
-        [formRoot]="reviewForm"
-      >
+      <form appCard tone="middle" class="mx-auto max-w-3xl px-8 py-12 text-on-middle-heading" [formRoot]="reviewForm">
         <div class="grid grid-cols-1 gap-6">
           <!-- author field -->
           <div>
@@ -172,13 +133,7 @@
 
         <!-- Submit button -->
         <div class="flex items-center gap-5 pt-4 text-on-middle-body">
-          <button
-            type="submit"
-            appButton
-            variant="primary"
-            tone="middle"
-            class="shrink-0 whitespace-nowrap"
-          >
+          <button type="submit" appButton variant="primary" tone="middle" class="shrink-0 whitespace-nowrap">
             Submit Review
           </button>
           <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="review-status">

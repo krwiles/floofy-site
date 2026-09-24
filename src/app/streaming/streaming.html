@@ -1,50 +1,29 @@
-<!-- Streaming Hero -->
-<app-parallax-section
-  class="bg-hero-streaming"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.8"
-  [ariaLabel]="'Hero Background'"
+<!-- Streaming Hero. Every string below (kicker, description, title, both CTA labels) is hardcoded
+     English, not translate-piped, unlike every other page's hero -- pre-existing i18n gap, carried
+     over unchanged from the markup this replaced, left alone per the same reasoning as the hardcoded
+     text in reviews.html (content not finalized yet; Phase 7 sweeps this). -->
+<app-hero
+  backgroundClass="bg-hero-streaming"
+  backgroundPatternImage="assets/intersecting-circles.svg"
+  heroImageSrc="assets/G0iHCdnaIAA5IDY.jpg"
+  heroImagePosition="center 40%"
+  heroImageHeight="110%"
+  heroImageMaxWidthClass="max-w-5xl"
+  tone="dark"
+  cardAlign="start"
+  cardMaxWidthClass="max-w-3xl"
+  titleClass="text-[clamp(3.2rem,7vw,5.5rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
+  kicker="Live on Twitch"
+  description="SummerFloofy usually streams on Saturdays at 11:00 AM EST, with a cozy mix of drawing, chatting, games, and art updates."
 >
-  <div class="absolute inset-0 mx-auto h-full max-w-7xl">
-    <app-parallax-section
-      class="absolute inset-0 ml-auto h-full max-w-5xl lg:mask-fade-x"
-      [ariaLabel]="'Hero section'"
-      [backgroundImage]="'assets/G0iHCdnaIAA5IDY.jpg'"
-      [backgroundPosition]="'center 40%'"
-      [backgroundHeight]="'110%'"
-      [parallaxStrength]="0.65"
-    ></app-parallax-section>
+  <span heroTitle>Join the stream</span>
+  <div heroActions class="hero-reveal-copy mt-6 flex flex-wrap items-center gap-3">
+    <a [href]="twitchUrl" target="_blank" rel="noopener noreferrer" class="stream-cta stream-cta--primary">
+      Watch on Twitch
+    </a>
+    <a href="#schedule" class="stream-cta stream-cta--secondary">See schedule</a>
   </div>
-  <div
-    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-start"
-  >
-    <div class="glass-panel hero-reveal-surface max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:inline-block" />
-      <p
-        class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-dark-heading uppercase sm:text-[0.95rem]"
-      >
-        Live on Twitch
-      </p>
-      <h1
-        class="hero-reveal-title text-[clamp(3.2rem,7vw,5.5rem)] leading-[0.9] font-black tracking-[0.02em] text-on-dark-heading uppercase"
-      >
-        Join the stream
-      </h1>
-      <p class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-dark-body sm:text-base">
-        SummerFloofy usually streams on Saturdays at 11:00 AM EST, with a cozy mix of drawing, chatting, games, and art
-        updates.
-      </p>
-      <div class="hero-reveal-copy mt-6 flex flex-wrap items-center gap-3">
-        <a [href]="twitchUrl" target="_blank" rel="noopener noreferrer" class="stream-cta stream-cta--primary">
-          Watch on Twitch
-        </a>
-        <a href="#schedule" class="stream-cta stream-cta--secondary">See schedule</a>
-      </div>
-    </div>
-  </div>
-</app-parallax-section>
+</app-hero>
 
 <app-section-divider />
 

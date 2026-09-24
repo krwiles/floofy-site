@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import type { CreateContactRequest } from '../models/contact.model';
-import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { Hero } from '../components/hero/hero';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { ContactService } from '../services/contact.service';
@@ -21,7 +21,7 @@ interface ContactFormData {
 @Component({
   selector: 'app-contact',
   imports: [
-    ParallaxSection,
+    Hero,
     TranslatePipe,
     FormRoot,
     FormField,
