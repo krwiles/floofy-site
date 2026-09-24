@@ -22,6 +22,14 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
  * (`offsetFor`); landing exactly on a clone slot (0 or `len+1`) is expected and harmless to sit at
  * indefinitely (a clone is pixel-identical to the real slide it stands in for) -- see `navigate` for how
  * it gets silently resynced the next time a move is actually requested.
+ *
+ * KNOWN, UNRESOLVED ISSUE (owner-reported, 2026-09-24): the carousel occasionally reverses direction or
+ * jumps back toward the start instead of continuing to loop the same way, after the arrows have been
+ * used at least once -- no reliable repro steps found yet. One real, related bug *was* found and fixed
+ * here (`navigate`'s loop-boundary resync retry could replay a stale, superseded direction -- see its
+ * own comment, and the dedicated regression test), but the owner's original symptom persisted after
+ * that fix, so there's at least one more cause still unaccounted for. Deferred rather than guessed at
+ * further -- revisit once it can actually be reproduced on demand.
  */
 @Component({
   selector: 'app-slideshow-carousel',
