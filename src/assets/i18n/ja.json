@@ -7,6 +7,9 @@
     "slideshow_carousel": {
       "previous": "前のスライド",
       "next": "次のスライド"
+    },
+    "language_toggle": {
+      "toggle": "言語を切り替える"
     }
   },
   "home": {
