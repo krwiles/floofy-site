@@ -24,7 +24,6 @@ import { Hero } from './hero';
       [kicker]="kicker"
       [description]="description"
       [tagline]="tagline"
-      [bodyTextUsesHeadingColor]="bodyTextUsesHeadingColor"
     >
       <span heroTitle>Test Title</span>
       @if (withActions) {
@@ -41,7 +40,6 @@ class HeroTestHost {
   kicker = 'Kicker text';
   description: string | null = 'Description text';
   tagline: string | null = 'Tagline text';
-  bodyTextUsesHeadingColor = false;
   withActions = false;
 }
 
@@ -111,14 +109,6 @@ describe('Hero', () => {
     expect(description.classList.contains('text-on-dark-body')).toBe(true);
   });
 
-  it('uses the heading color for body text when bodyTextUsesHeadingColor is set (preserves an existing gallery/contact quirk)', () => {
-    create({ tone: 'dark', bodyTextUsesHeadingColor: true });
-
-    const description = heroEl().querySelectorAll('p.hero-reveal-copy')[0];
-    expect(description.classList.contains('text-on-dark-heading')).toBe(true);
-    expect(description.classList.contains('text-on-dark-body')).toBe(false);
-  });
-
   it('aligns the card to the end and keeps the hero image on the left by default (cardAlign="end")', () => {
     create();
     expect(contentWrapper().classList.contains('md:justify-end')).toBe(true);
@@ -153,11 +143,10 @@ describe('Hero', () => {
     expect(heroInstance().heroImagePosition()).toBe('center 50%');
   });
 
-  it('defaults to the shared background-pattern image, the common hero-image height/parallax strength, and the common card padding', () => {
+  it('defaults to the shared background-pattern image, the common hero-image height, and the common (hidden-on-mobile) flourish size', () => {
     create();
     expect(heroInstance().backgroundPatternImage()).toBe('assets/4-point-stars.svg');
     expect(heroInstance().heroImageHeight()).toBe('100%');
-    expect(heroInstance().heroImageParallaxStrength()).toBe(0.65);
-    expect(heroInstance().cardPaddingClass()).toBe('px-6 py-6 sm:px-7 sm:py-7');
+    expect(heroInstance().flourishSizeClasses()).toBe('hidden h-12 md:inline-block');
   });
 });

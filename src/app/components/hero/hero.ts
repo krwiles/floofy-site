@@ -38,9 +38,14 @@ function joinClasses(...parts: string[]): string {
  * that page carried over unchanged (see streaming.html's own comment), not something this component
  * enforces or should be assumed to guarantee.
  *
- * Most of the "override" class inputs below default to whatever 6-7 of the 8 pages already share;
- * they exist only because a couple of pages (usually home, sometimes streaming/commission) genuinely
- * differ and parity requires reproducing that exactly, not smoothing it over.
+ * The remaining "override" class inputs each default to what the rest of the site shares, and exist
+ * only for the few per-page differences the owner chose to keep as real, deliberate differences rather
+ * than standardize away (commission's image position/offset quirks, home's always-visible flourish).
+ * Several similar one-page-only overrides existed here originally (card padding, an extra content-
+ * wrapper class, a body-text color quirk shared by gallery/contact/home, a capitalization difference
+ * in one aria-label, and about.html's own slightly faster parallax speed) and were removed once the
+ * owner reviewed this component and decided those specific differences should just go away instead of
+ * being preserved -- see docs/refactor/05-roadmap.md for that follow-up round.
  */
 @Component({
   selector: 'app-hero',
@@ -52,22 +57,22 @@ function joinClasses(...parts: string[]): string {
       [backgroundImage]="backgroundPatternImage()"
       backgroundSize="100px"
       backgroundHeight="200%"
-      [parallaxStrength]="outerParallaxStrength()"
+      [parallaxStrength]="0.8"
       ariaLabel="Hero Background"
     >
       <div class="hero-image-wrapper absolute inset-0 mx-auto h-full max-w-7xl" [class]="imageWrapperExtraClass()">
         <app-parallax-section
           [class]="heroImageClass()"
-          [ariaLabel]="heroSectionAriaLabel()"
+          ariaLabel="Hero section"
           [backgroundImage]="heroImageSrc()"
           [backgroundPosition]="heroImagePosition()"
           [backgroundHeight]="heroImageHeight()"
-          [parallaxStrength]="heroImageParallaxStrength()"
+          [parallaxStrength]="0.65"
         ></app-parallax-section>
       </div>
       <div
         class="hero-content-wrapper relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh]"
-        [class]="contentWrapperClass()"
+        [class]="contentJustifyClass()"
       >
         <div appCard [glass]="true" [class]="cardClass()">
           <app-flourish variant="full" [class]="flourishClass()" />
@@ -94,17 +99,16 @@ function joinClasses(...parts: string[]): string {
   `,
 })
 export class Hero {
-  // Outer background-pattern layer. Size/height/aria-label are identical on all 8 pages, so they're
-  // not inputs at all.
+  // Outer background-pattern layer. Size/height/aria-label/parallax speed are the same on every page
+  // -- about.html used to run its outer/inner parallax slightly faster (0.9/0.7 vs. the common
+  // 0.8/0.65); standardized away rather than kept as a one-page override, per the owner's own call.
   readonly backgroundClass = input.required<string>();
   readonly backgroundPatternImage = input('assets/4-point-stars.svg');
-  readonly outerParallaxStrength = input(0.8);
 
   // Inner hero-image parallax layer.
   readonly heroImageSrc = input.required<string>();
   readonly heroImagePosition = input.required<string>();
   readonly heroImageHeight = input('100%');
-  readonly heroImageParallaxStrength = input(0.65);
   readonly heroImageMaxWidthClass = input.required<string>();
   // One-off escape hatch: every page but commission positions this layer with a plain `absolute
   // inset-0`; commission's own is `inset-0` unconditionally plus `lg:absolute` (only absolute from
@@ -112,22 +116,15 @@ export class Hero {
   readonly heroImagePositionClasses = input('absolute inset-0');
   // One-off escape hatch: commission's image-wrapper carries an extra `mt-14` no other page has.
   readonly imageWrapperExtraClass = input('');
-  // Capitalization genuinely differs today ("Hero section" vs. commission's "Hero Section") --
-  // preserved rather than normalized, since this is an aria-label a screen reader announces verbatim.
-  readonly heroSectionAriaLabel = input('Hero section');
 
   // Layout / tone.
   readonly tone = input<HeroTone>('light');
   readonly cardAlign = input<HeroCardAlign>('end');
   readonly cardMaxWidthClass = input.required<string>();
-  readonly cardPaddingClass = input('px-6 py-6 sm:px-7 sm:py-7');
-  // One-off escape hatch: home's content wrapper carries an extra `h-full` no other page has.
-  readonly contentWrapperExtraClass = input('');
-  // Preserves an existing inconsistency on gallery/contact, where the description/tagline paragraphs
-  // use the *heading* color instead of the body color every other page uses for them -- parity means
-  // reproducing that, not quietly fixing it as a drive-by.
-  readonly bodyTextUsesHeadingColor = input(false);
 
+  // Kept, unlike the other per-page typography overrides removed above: home's flourish is
+  // deliberately always-visible (not hidden below `md` like every other page's), the owner's explicit
+  // call to keep as a real per-page difference rather than standardize away.
   readonly flourishSizeClasses = input('hidden h-12 md:inline-block');
   readonly titleClass = input('text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase');
   readonly kickerClass = input('mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]');
@@ -140,9 +137,10 @@ export class Hero {
 
   readonly headingColorClass = computed(() => TONE_CLASSES[this.tone()].heading);
 
-  readonly bodyColorClass = computed(() =>
-    this.bodyTextUsesHeadingColor() ? this.headingColorClass() : TONE_CLASSES[this.tone()].body,
-  );
+  // Every page's description/tagline uses the body color -- gallery, contact, and home used to be
+  // exceptions (using the heading color instead), an inconsistency standardized away rather than kept
+  // as a per-page override, per the owner's own call.
+  readonly bodyColorClass = computed(() => TONE_CLASSES[this.tone()].body);
 
   // The card and the hero image sit on opposite sides of the layout -- see this component's own doc
   // comment: every one of the 8 pages pairs "card at the end" with "image on the left" (the default,
@@ -150,10 +148,6 @@ export class Hero {
   // input derives both sides rather than risking them being set inconsistently.
   readonly contentJustifyClass = computed(() => (this.cardAlign() === 'start' ? 'md:justify-start' : 'md:justify-end'));
   readonly heroImageAlignClass = computed(() => (this.cardAlign() === 'start' ? 'ml-auto' : ''));
-
-  readonly contentWrapperClass = computed(() =>
-    joinClasses(this.contentWrapperExtraClass(), this.contentJustifyClass()),
-  );
 
   readonly heroImageClass = computed(() =>
     joinClasses(
@@ -165,8 +159,17 @@ export class Hero {
     ),
   );
 
+  // Card padding is the same on every page -- home used to run larger (px-7/py-7, sm:px-9/py-9)
+  // padding than the rest; standardized away rather than kept as a one-page override, per the owner's
+  // own call.
   readonly cardClass = computed(() =>
-    joinClasses('hero-reveal-surface', this.cardMaxWidthClass(), this.cardPaddingClass(), 'drop-shadow-md', 'md:mb-16'),
+    joinClasses(
+      'hero-reveal-surface',
+      this.cardMaxWidthClass(),
+      'px-6 py-6 sm:px-7 sm:py-7',
+      'drop-shadow-md',
+      'md:mb-16',
+    ),
   );
 
   readonly flourishClass = computed(() =>
