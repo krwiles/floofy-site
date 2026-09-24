@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { initFlowbite } from 'flowbite';
 import { Navbar } from './layout/navbar/navbar';
 import { Footer } from './layout/footer/footer';
 
@@ -11,8 +10,4 @@ import { Footer } from './layout/footer/footer';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.css',
 })
-export class App {
-  ngOnInit(): void {
-    initFlowbite();
-  }
-}
+export class App {}

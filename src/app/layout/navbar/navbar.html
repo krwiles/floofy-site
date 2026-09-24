@@ -4,12 +4,12 @@
     <div class="nav-actions-intro flex items-center space-x-1 lg:order-2 lg:space-x-0 rtl:space-x-reverse">
       <app-language-toggle />
       <button
-        #navDropdown
-        data-collapse-toggle="navbar-language"
+        #menuButton
         type="button"
+        (click)="toggleMenu()"
         class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-brand-subtle p-2 text-sm text-on-light-heading transition-colors hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong lg:hidden"
         aria-controls="navbar-language"
-        aria-expanded="false"
+        [attr.aria-expanded]="isMenuOpen()"
       >
         <span class="sr-only">Open main menu</span>
         <svg
@@ -25,7 +25,12 @@
         </svg>
       </button>
     </div>
-    <div class="hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto" id="navbar-language">
+    <div
+      #menuPanel
+      class="w-full items-center justify-between lg:order-1 lg:flex lg:w-auto"
+      [class.hidden]="!isMenuOpen()"
+      id="navbar-language"
+    >
       <ul
         class="nav-links-intro rounded-bas mt-4 flex flex-col border border-border p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse"
       >
@@ -35,7 +40,7 @@
               [routerLink]="item.route"
               routerLinkActive="bg-brand-subtle text-brand lg:bg-transparent lg:text-brand"
               [routerLinkActiveOptions]="{ exact: true }"
-              (click)="navDropdown.click()"
+              (click)="closeMenu()"
               class="block rounded px-3 py-2 text-on-light-heading transition-colors hover:text-brand lg:border-0 lg:p-0 lg:hover:bg-transparent lg:hover:text-brand"
             >
               {{ item.label }}

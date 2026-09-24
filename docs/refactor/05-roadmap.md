@@ -9,8 +9,12 @@ merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixe
 including an owner-requested follow-up (card-shadow padding + edge fade mask). Phase 4 step 3
 (`app-slideshow-carousel`, commission) executed and **merged into `working`**,
 [PR #28](https://github.com/krwiles/floofy-site/pull/28) — including both owner-requested follow-up rounds (see
-below). Phase 4 step 4 (`app-language-toggle`) executed, [PR #29](https://github.com/krwiles/floofy-site/pull/29) —
-pending owner review. Phases 5–8 not started.
+below). Phase 4 step 4 (`app-language-toggle`) executed and **merged into `working`**,
+[PR #29](https://github.com/krwiles/floofy-site/pull/29). Phase 4 step 5 (navbar disclosure) executed,
+[PR #30](https://github.com/krwiles/floofy-site/pull/30) — pending owner review; this was the real Flowbite-JS
+removal (`initFlowbite()`, `data-collapse-toggle`) — no interactive Flowbite JS remains anywhere in the site once
+this merges. Phase 4 steps 6–7 (`app-hero`, `app-parallax` clean-up) not started. Phases 5–8 (top-level) not
+started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
 `slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
@@ -452,21 +456,50 @@ for Flowbite-JS-driven pieces.
       Plausible contributor to point 4 above; reported to the owner as a follow-up candidate rather than fixed
       inline, since PR #28 is already merged.
 - [x] [`app-language-toggle`](specs/app-language-toggle.md); extract out of `navbar.html`, move the two flag
-      `<svg>`s to real image files. Executed, [PR #29](https://github.com/krwiles/floofy-site/pull/29) — pending
-      owner review. A plain extraction per the spec's own scope (not Flowbite-related, no visual/behavioral
-      change intended). `LanguageToggle` injects `I18nService` directly, same as `Navbar` already did; flags now
-      live at `src/assets/flag-{en,ja}.svg`. `/code-review` found and fixed two real issues: `aria-label="Toggle
-      language"` was hardcoded English rather than sourced from the i18n JSON files (this repo's own convention,
-      already followed by `slideshow-carousel`'s arrow labels) — added `components.language_toggle.toggle` to
-      both locale files, wired through `TranslatePipe`; the near-duplicate `@if`/`@else` template branches were
-      collapsed into one computed flag-display lookup. The visible `"EN/日本語"`/`"日本語/EN"` label was
-      deliberately left as a plain constant (not translated) — it names both languages together regardless of
-      current locale, so there's no per-locale variant to look up. Also surfaced, out of scope for this step and
-      reported to the owner rather than fixed here: the `instant`-stuck bug noted above, plus two low-severity,
-      currently-inert latent issues in already-merged PR #28 code (`commission.ts`'s carousel image arrays now
-      alias `GalleryImageService`'s mutable fields directly instead of defensively copying them; `position`'s
-      `-1`-sentinel correction only ever runs once, so a future caller that changes `images()`'s length after
-      first settle wouldn't get `position` re-validated against the new padded track).
+      `<svg>`s to real image files. Executed and **merged into `working`**,
+      [PR #29](https://github.com/krwiles/floofy-site/pull/29). A plain extraction per the spec's own scope (not
+      Flowbite-related, no visual/behavioral change intended). `LanguageToggle` injects `I18nService` directly,
+      same as `Navbar` already did; flags now live at `src/assets/flag-{en,ja}.svg`. `/code-review` found and
+      fixed two real issues: `aria-label="Toggle language"` was hardcoded English rather than sourced from the
+      i18n JSON files (this repo's own convention, already followed by `slideshow-carousel`'s arrow labels) —
+      added `components.language_toggle.toggle` to both locale files, wired through `TranslatePipe`; the
+      near-duplicate `@if`/`@else` template branches were collapsed into one computed flag-display lookup. The
+      visible `"EN/日本語"`/`"日本語/EN"` label was deliberately left as a plain constant (not translated) — it
+      names both languages together regardless of current locale, so there's no per-locale variant to look up.
+      Also surfaced, out of scope for this step and reported to the owner rather than fixed here: the
+      `instant`-stuck bug noted above, plus two low-severity, currently-inert latent issues in already-merged
+      PR #28 code (`commission.ts`'s carousel image arrays now alias `GalleryImageService`'s mutable fields
+      directly instead of defensively copying them; `position`'s `-1`-sentinel correction only ever runs once,
+      so a future caller that changes `images()`'s length after first settle wouldn't get `position`
+      re-validated against the new padded track).
+- [x] [Navbar disclosure](specs/navbar-disclosure.md) — the real Flowbite-JS removal (`initFlowbite()`,
+      `data-collapse-toggle`), unlike the language toggle above genuinely tied to the plugin, so freed from
+      visual/behavioral parity by the spec itself. Executed, [PR #30](https://github.com/krwiles/floofy-site/pull/30)
+      — pending owner review. `Navbar` now owns an `isMenuOpen` signal instead of Flowbite's own toggle state:
+      `aria-expanded` is bound to it (was a static `"false"`, so screen readers were told the menu was always
+      collapsed even while open — one of the two real problems the spec called out); the panel's `hidden` class
+      is bound to `!isMenuOpen()`, under the same `lg:flex` that already made it always-visible on larger
+      screens (unchanged there, per the spec's constraint). Escape closes it via a document-level `host: {}`
+      listener (not scoped to the component's own host element, since focus is never moved into the menu on
+      open, so it can legitimately be anywhere on the page when Escape is pressed). Tapping a link now calls
+      `closeMenu()` directly, replacing the old `navDropdown.click()` re-click trick that only worked by leaning
+      on how Flowbite happened to wire the toggle button — the spec's other named problem. Any other navigation
+      (router-driven back/forward, a redirect, etc.) closes it via a `Router.events` subscription filtered to
+      `NavigationStart`. `initFlowbite()` and its import removed from `app.ts` — the last real dependency on
+      Flowbite's interactive JS; confirmed via the prod JS bundle shrinking ~15KB. Flowbite's Tailwind CSS
+      plugin/theme in `styles.css` is untouched (a styling concern, not interactive behavior, out of scope
+      here). **Focus-handling decision, since the spec explicitly left it open**: opening the menu never moves
+      focus into it (same as any other newly-visible content, a visitor tabs into it next); closing it returns
+      focus to the toggle button only if focus was inside the panel when it closed, otherwise focus is left
+      alone. `/code-review` found and fixed two real issues: the focus-restore called `.focus()` on the toggle
+      button even at the `lg` breakpoint, where that button is `lg:hidden` and therefore unfocusable — silently
+      stranding focus on `<body>` instead of honoring its own contract, fixed with a live `matchMedia` check;
+      while fixing this, also implemented a spec edge case missed during design — widening past `lg` while the
+      menu is left open now force-closes it, so it can't silently reappear "open" once the viewport narrows
+      again without the visitor tapping the button (not exercised by a real event in unit tests, since this
+      project's jsdom `matchMedia` stub has inert listeners — documented inline); a test's stray `<input>`
+      cleanup was moved into a `try`/`finally` so a failed assertion couldn't leave it behind for later tests.
+      12 tests (TDD, written first); full suite 117/117.
 
       `ng build`/`tsc --noEmit`/`ng test` (101/101) all clean after both follow-up rounds. Verified live in a
       real browser throughout (not just jsdom, per this refactor's established practice for anything touch/
