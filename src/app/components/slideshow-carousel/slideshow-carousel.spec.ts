@@ -129,6 +129,34 @@ describe('SlideshowCarousel', () => {
     expect(visibleAlt(fixture)).toBe('Two');
   });
 
+  it("a fresh navigate landing before an earlier one's pending loop-boundary resync fires is not later overridden by that stale retry", async () => {
+    fixture = create();
+    fixture.detectChanges();
+
+    // Walk forward past the loop boundary (One -> Two -> Three -> [clone of One]) and one step
+    // further -- that 4th click starts on the clone slot, so it's the one that resyncs and leaves a
+    // pending +1 retry behind. Its own resync already lands back on 'One' synchronously; the retry is
+    // what's still outstanding when the fresher request below arrives.
+    fixture.componentInstance.next();
+    fixture.componentInstance.next();
+    fixture.componentInstance.next();
+    fixture.componentInstance.next();
+    fixture.detectChanges();
+
+    // Before that pending retry has a chance to fire (real timers, 0ms delay, checked with zero
+    // elapsed time on purpose), the visitor changes their mind and goes back instead.
+    fixture.componentInstance.previous();
+    fixture.detectChanges();
+    expect(visibleAlt(fixture)).toBe('Three'); // correct: one step back from the loop boundary.
+
+    // Let every timer that's going to fire, fire.
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    fixture.detectChanges();
+
+    // Still 'Three' -- the stale, superseded +1 retry must not have silently resumed forward motion.
+    expect(visibleAlt(fixture)).toBe('Three');
+  });
+
   it('clicking the arrow buttons navigates, and they are labeled for assistive tech', () => {
     fixture = create();
     fixture.detectChanges();

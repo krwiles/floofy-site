@@ -17,9 +17,14 @@
 
 .slideshow-carousel__slide {
   position: absolute;
-  inset: 0;
-  height: 100%;
-  width: 100%;
+  /* -1px, not 0: the viewport's width/height is rarely a whole number of pixels, so two adjacent
+     slides (each translated by exactly 100% of that fractional width) don't always tile perfectly --
+     the browser's own sub-pixel rounding can leave a hairline gap at the seam, invisible on an opaque
+     image but showing the neighboring slide through it on one with a transparent edge (the emote/chibi
+     art). Overhanging every slide by 1px on each side (clipped by the viewport's own overflow: hidden
+     above, so nothing actually grows on screen) puts that seam a full pixel inside the image instead
+     of exactly on the rounding error. */
+  inset: -1px;
   object-fit: cover;
   transition: transform 450ms ease;
 }

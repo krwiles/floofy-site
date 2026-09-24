@@ -64,6 +64,8 @@ export class SlideshowCarousel implements OnDestroy {
   private readonly paused = signal(false);
   private autoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
   private resyncTimer: ReturnType<typeof setTimeout> | null = null;
+  /** Which direction the in-flight `resyncTimer`'s retry (if any) is going to move once it fires. */
+  private pendingResyncDelta: 1 | -1 | null = null;
 
   private touchStartX: number | null = null;
   private touchStartY: number | null = null;
@@ -100,6 +102,7 @@ export class SlideshowCarousel implements OnDestroy {
     if (this.resyncTimer !== null) {
       clearTimeout(this.resyncTimer);
       this.resyncTimer = null;
+      this.pendingResyncDelta = null;
     }
   }
 
@@ -169,6 +172,22 @@ export class SlideshowCarousel implements OnDestroy {
       return;
     }
 
+    if (this.resyncTimer !== null && this.pendingResyncDelta !== delta) {
+      // A resync is in flight, but its retry (still a 0ms timeout away, not literally synchronous)
+      // was going to move in the *other* direction -- the visitor has changed their mind since that
+      // retry was scheduled, so it no longer reflects what should happen and gets dropped. Left alone
+      // when the direction matches (the common case: a burst of same-direction clicks/auto-advance
+      // ticks) -- that retry still correctly finishes the earlier move once it fires; dropping it
+      // unconditionally here would silently swallow one legitimate step every time a burst happens to
+      // land on a loop boundary. This was a real bug -- found via the owner noticing the carousel
+      // occasionally reversing direction/jumping back after using the arrows -- and the fix needs to
+      // be this narrow: the original, cruder attempt (clearing on *every* fresh call, regardless of
+      // direction) broke same-direction bursts instead.
+      clearTimeout(this.resyncTimer);
+      this.resyncTimer = null;
+      this.pendingResyncDelta = null;
+    }
+
     const len = this.images().length;
     const pos = this.position();
 
@@ -182,10 +201,8 @@ export class SlideshowCarousel implements OnDestroy {
       // stands in for), so nothing is visually lost, only delayed by a tick.
       this.instant.set(true);
       this.position.set(pos === 0 ? len : 1);
+      this.pendingResyncDelta = delta;
 
-      if (this.resyncTimer !== null) {
-        clearTimeout(this.resyncTimer);
-      }
       // A plain 0ms timeout, not double-rAF: this is a deliberate simplicity/testability trade-off --
       // browsers paint between macrotasks under normal load, so in practice this is enough for the
       // resync above to actually be invisible; under heavy main-thread contention it could in theory
@@ -194,6 +211,7 @@ export class SlideshowCarousel implements OnDestroy {
       // gymnastics that would need in the spec) for it.
       this.resyncTimer = setTimeout(() => {
         this.resyncTimer = null;
+        this.pendingResyncDelta = null;
         this.instant.set(false);
         this.navigate(delta);
       }, 0);
