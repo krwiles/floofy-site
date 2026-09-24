@@ -7,8 +7,28 @@ merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixe
 `<app-flourish>`/`app-section-divider` bug found outside phase work, [PR #26](https://github.com/krwiles/floofy-site/pull/26) — merged — caused real mobile horizontal overflow site-wide. Phase 4 step 2
 (`app-rolling-carousel`, home page) executed and merged, [PR #27](https://github.com/krwiles/floofy-site/pull/27),
 including an owner-requested follow-up (card-shadow padding + edge fade mask). Phase 4 step 3
-(`app-slideshow-carousel`, commission) executed, [PR #28](https://github.com/krwiles/floofy-site/pull/28) —
-pending owner review. Phase 4 step 4 (`app-language-toggle`) up next once #28 merges. Phases 5–8 not started.
+(`app-slideshow-carousel`, commission) executed and **merged into `working`**,
+[PR #28](https://github.com/krwiles/floofy-site/pull/28) — including both owner-requested follow-up rounds (see
+below). Phase 4 step 4 (`app-language-toggle`) executed, [PR #29](https://github.com/krwiles/floofy-site/pull/29) —
+pending owner review. Phases 5–8 not started.
+
+**Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
+`slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
+clone slot, `instant.set(true)` is set and a `0ms` resync retry is scheduled; only that retry's own callback ever
+sets `instant` back to `false`. If a fresh, opposite-direction `navigate()` call arrives before the retry fires, the
+guard that cancels the stale retry clears the timer *without* running its callback — so `instant` never resets.
+Once stuck, the auto-advance-restart effect (gated on `!instant()`) stops rescheduling (auto-advance silently
+stops), and every future manual navigation snaps instantly with no transition. This is a plausible contributor to
+the still-unreproduced "occasionally jumps/reverses after the arrows are used" symptom already documented in the
+component's own doc comment. Reported to the owner rather than fixed inline — it's a step-3 bug, not step-4 —
+awaiting a decision on a follow-up fix.
+
+**Branch/PR housekeeping note (2026-09-23):** the roadmap-doc commit recording PR #28's two follow-up rounds was
+pushed a few minutes *after* the owner had already merged #28 on GitHub, so it landed on the now-merged,
+dangling `refactor/phase-4-slideshow-carousel` branch instead of `working`. Step 4's work was initially committed
+on top of that same stale branch by mistake. Both commits were moved onto a fresh `refactor/phase-4-language-toggle`
+branch based on the real `working` tip before pushing, so PR #29 contains only the roadmap-doc commit plus step 4's
+own commit — nothing already-merged is being re-proposed.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -361,8 +381,8 @@ for Flowbite-JS-driven pieces.
       exactly, image height itself unchanged; mask resolves to real pixel gradients.
 - [x] [`app-slideshow-carousel`](specs/app-slideshow-carousel.md); migrate commission's 3 instances; delete the
       old `app-carousel`/`initCarousels()`/its static id. Executed, [PR #28](https://github.com/krwiles/floofy-site/pull/28)
-      (real, intentional redesign on commission only — always a PR, not diff-decides-merge) — pending owner
-      review. Looping technique: the image list is rendered with one clone of the last image prepended and one
+      (real, intentional redesign on commission only — always a PR, not diff-decides-merge) — **merged into
+      `working`**. Looping technique: the image list is rendered with one clone of the last image prepended and one
       clone of the first appended, so there's always a real neighbor to slide to in either direction and the
       transition always runs the correct way, even on the wrap; landing on a clone slot is harmless (pixel-
       identical to the real slide) and gets silently resynced the next time a real move is requested. `/code-
@@ -423,6 +443,30 @@ for Flowbite-JS-driven pieces.
          persisted afterward and remains unreproduced** — documented as a known, deferred issue in the
          component's own doc comment per the owner's explicit direction, rather than continued to be chased
          without a reliable repro.
+
+      **New candidate lead on the deferred symptom, found by `/code-review` during step 4's work, not yet
+      fixed**: that same direction-aware cancellation clears `resyncTimer`/`pendingResyncDelta` on a stale,
+      opposite-direction retry, but never resets `instant` back to `false` — only the timer callback it just
+      cancelled does that. `instant` can get stuck permanently `true`, silently stopping auto-advance (the
+      restart effect is gated on `!instant()`) and forcing every later manual move to snap with no transition.
+      Plausible contributor to point 4 above; reported to the owner as a follow-up candidate rather than fixed
+      inline, since PR #28 is already merged.
+- [x] [`app-language-toggle`](specs/app-language-toggle.md); extract out of `navbar.html`, move the two flag
+      `<svg>`s to real image files. Executed, [PR #29](https://github.com/krwiles/floofy-site/pull/29) — pending
+      owner review. A plain extraction per the spec's own scope (not Flowbite-related, no visual/behavioral
+      change intended). `LanguageToggle` injects `I18nService` directly, same as `Navbar` already did; flags now
+      live at `src/assets/flag-{en,ja}.svg`. `/code-review` found and fixed two real issues: `aria-label="Toggle
+      language"` was hardcoded English rather than sourced from the i18n JSON files (this repo's own convention,
+      already followed by `slideshow-carousel`'s arrow labels) — added `components.language_toggle.toggle` to
+      both locale files, wired through `TranslatePipe`; the near-duplicate `@if`/`@else` template branches were
+      collapsed into one computed flag-display lookup. The visible `"EN/日本語"`/`"日本語/EN"` label was
+      deliberately left as a plain constant (not translated) — it names both languages together regardless of
+      current locale, so there's no per-locale variant to look up. Also surfaced, out of scope for this step and
+      reported to the owner rather than fixed here: the `instant`-stuck bug noted above, plus two low-severity,
+      currently-inert latent issues in already-merged PR #28 code (`commission.ts`'s carousel image arrays now
+      alias `GalleryImageService`'s mutable fields directly instead of defensively copying them; `position`'s
+      `-1`-sentinel correction only ever runs once, so a future caller that changes `images()`'s length after
+      first settle wouldn't get `position` re-validated against the new padded track).
 
       `ng build`/`tsc --noEmit`/`ng test` (101/101) all clean after both follow-up rounds. Verified live in a
       real browser throughout (not just jsdom, per this refactor's established practice for anything touch/
