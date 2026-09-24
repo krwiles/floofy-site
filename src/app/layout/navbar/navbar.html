@@ -59,12 +59,13 @@
      own overlay (bg-black/80). Sits below `<nav>` (z-90 vs. its z-100) so the navbar itself -- brand,
      language toggle, the menu button, and the menu panel's own links -- all stay fully lit and
      clickable above it. A plain click anywhere on it closes the menu, same as tapping outside the
-     lightbox's image closes that. -->
+     lightbox's image closes that.
+
+     Fades in (shared .overlay-fade-in, motion.css) but disappears instantly on close, with no
+     matching leave animation: closing can happen mid-navigation (a tapped link starts routing the same
+     instant it closes the menu), and an animated fade-out has no way to know the new page's content
+     might already be painting underneath it -- an animated close was tried and visibly lingered as a
+     darkening film over the freshly-routed page. -->
 @if (isMenuOpen()) {
-  <div
-    class="fixed inset-0 z-90 bg-black/80 lg:hidden"
-    (click)="closeMenu()"
-    animate.enter="nav-overlay-enter"
-    animate.leave="nav-overlay-leave"
-  ></div>
+  <div class="fixed inset-0 z-90 bg-black/80 lg:hidden" (click)="closeMenu()" animate.enter="overlay-fade-in"></div>
 }

@@ -80,6 +80,28 @@
   animation-delay: 300ms;
 }
 
+/* Generic fade-in for a newly-shown full-page overlay/backdrop (a modal scrim, a dropdown's dimming
+   layer, etc.) -- shared so a new consumer reaches for this instead of hand-rolling another copy.
+   Currently used by the navbar's mobile-menu backdrop (navbar.html/css). The gallery lightbox's own,
+   near-identical overlay fade (gallery.css's .enter-lightbox/.leave-lightbox) predates this and hasn't
+   been migrated over yet -- left as a follow-up, not touched here. No matching "-out" class: a
+   consumer that needs to *fade out* on close should think about whether an animated leave can outlive
+   the reason it's closing (e.g. a navigation already under way) before reaching for one -- see
+   navbar.html's own history with exactly that. */
+.overlay-fade-in {
+  opacity: 0;
+  animation: overlayFadeIn 0.3s forwards;
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-on-scroll,
   .animate-on-scroll.animate-in,
@@ -92,5 +114,10 @@
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
+  }
+
+  .overlay-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
   }
 }
