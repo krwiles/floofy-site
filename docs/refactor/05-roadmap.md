@@ -14,8 +14,11 @@ below). Phase 4 step 4 (`app-language-toggle`) executed and **merged into `worki
 **merged into `working`**, [PR #30](https://github.com/krwiles/floofy-site/pull/30) — this was the real
 Flowbite-JS removal (`initFlowbite()`, `data-collapse-toggle`); no interactive Flowbite JS remains anywhere in
 the site as of this merge. An owner-requested follow-up round on top of it (mobile-menu corner rounding + a
-dimming backdrop + click-outside-to-close) is in [PR #31](https://github.com/krwiles/floofy-site/pull/31) —
-pending owner review. Phase 4 steps 6–7 (`app-hero`, `app-parallax` clean-up) not started. Phases 5–8 (top-level)
+dimming backdrop + click-outside-to-close) executed and **merged into `working`**,
+[PR #31](https://github.com/krwiles/floofy-site/pull/31). Phase 4 step 6 (`app-hero`, all 8 pages) executed,
+[PR #32](https://github.com/krwiles/floofy-site/pull/32) — pending owner review; parity-preserving (Track B),
+0.00% visual diff verified on every route/width. Phase 4 step 7 (`app-parallax` clean-up) not started. Phases
+5–8 (top-level)
 not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
@@ -45,6 +48,15 @@ pattern plainly since it's now happened three times (#28→#29, #29→#30, #30�
 yet is at risk the moment the current PR might be merged, and a backgrounded `/code-review` run extends that
 window rather than closing it — worth pushing work-in-progress commits promptly rather than batching them behind
 a still-running background task.
+
+**Diff-decides-merge can't actually be executed as a direct push from this environment (2026-09-24):** step 6
+(`app-hero`) is Track B, whose pre-agreed process (`12-phase-4-plan.md`) is a direct merge into `working` — no PR
+— once the visual diff comes back clean, skipping owner review same as the Stage 3a/3c and image-asset-model
+zero-diff merges earlier in this refactor. Attempting that here (`git push origin <branch>:working`) was blocked
+by this environment's own permission guard ("Merge Without Review"), which doesn't distinguish a verified-clean
+parity-preserving merge from any other push straight to the trunk. Opened as a normal PR instead ([PR #32]
+(https://github.com/krwiles/floofy-site/pull/32)) — same will apply to step 7 (`app-parallax` clean-up), the only
+remaining Track B item.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -540,7 +552,36 @@ for Flowbite-JS-driven pieces.
       (deliberate defense-in-depth, not accidental duplication); the backdrop's `z-90` is another ad-hoc
       stacking number with no shared z-index scale anywhere in this codebase yet. 5 new tests across both
       commits. Full suite 122/122.
-- [ ] `app-hero`; migrate pages one by one (donate → gallery → reviews → contact → streaming → about → commission → home).
+- [x] `app-hero`; migrated all 8 pages (donate → gallery → reviews → contact → streaming → about → commission →
+      home, per the plan's order). Executed, [PR #32](https://github.com/krwiles/floofy-site/pull/32) — pending
+      owner review (see the housekeeping note above for why this Track B, diff-decides-merge step still went
+      through a PR). Consolidates the 8 near-identical parallax-hero blocks (each hand-copied, each with real
+      per-page variation) into one component, `src/app/components/hero/`. Inputs model every genuine difference
+      found while cataloguing all 8: image/parallax config for both layers, `tone` (light/dark, via a
+      `TONE_CLASSES` lookup), card width/padding/alignment (`cardAlign` alone derives both the content's
+      `justify-*` and the image's `ml-auto`, since every page pairs them the same way with no exception), plus
+      documented one-off escape hatches for the genuine structural outliers: commission's extra `mt-14` +
+      `lg:absolute`-only image positioning and capitalized `"Hero Section"` aria-label; home's larger card
+      padding, always-visible flourish, bespoke kicker/title/tagline typography, and two-line name (via the
+      `heroTitle` content slot the plan called for). `heroActions` (the plan's other named slot) covers
+      streaming's CTA row, replacing its tagline. Verified via this project's scripted visual-diff tool: **0.00%
+      pixel change across all 8 routes × 3 widths**, before and after both a formatting pass and the code-review
+      fixes below. One real bug caught this way mid-migration: home's tagline shares gallery/contact's existing
+      heading-color quirk (uses `text-on-*-heading`, not `text-on-*-body`) — missed on the first pass, caught by
+      a small but genuine nonzero diff (confirmed not capture noise by diffing a page against a second,
+      independent capture of itself first, which came back exactly 0.00%), fixed. `/code-review` found and fixed
+      two real issues: the tone→color mapping was ad hoc `computed()`/ternary logic instead of a lookup table
+      (now `TONE_CLASSES`, mirroring `section-header.ts`'s own pattern of the same name); several classes were
+      built via manual template-literal concatenation across 7 sites, fragile to a missing/doubled space — a
+      `joinClasses()` helper replaces it, and 3 inline template concatenations moved into named computed
+      signals. **Disclosed, not fixed**: streaming's hero content (kicker/description/title/both CTA labels) is
+      hardcoded English, not translated, unlike every other page's hero — carried over unchanged from the
+      markup it replaced (same pre-existing gap as `reviews.html`'s own hardcoded section heading, left for
+      Phase 7). Also found, unrelated to correctness: this app runs zoneless Angular (no `zone.js` dependency) —
+      a test-host pattern of mutating a plain property *after* the first `detectChanges()` is silently never
+      picked up by a child's input signal; saved to memory, since it'll affect any future spec using that
+      pattern, not just this component's own. 12 new tests (TDD, written first); full suite 134/134; per-page
+      and main bundle sizes dropped meaningfully now that the duplicated hero markup is shared.
 - [ ] `app-parallax` clean-up (single shared scroll source instead of one listener per instance; revisit the
       underlying technique later if a shared listener alone doesn't fix the motion lag the owner's noticed).
 
