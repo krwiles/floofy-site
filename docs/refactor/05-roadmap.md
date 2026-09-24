@@ -7,8 +7,28 @@ merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixe
 `<app-flourish>`/`app-section-divider` bug found outside phase work, [PR #26](https://github.com/krwiles/floofy-site/pull/26) — merged — caused real mobile horizontal overflow site-wide. Phase 4 step 2
 (`app-rolling-carousel`, home page) executed and merged, [PR #27](https://github.com/krwiles/floofy-site/pull/27),
 including an owner-requested follow-up (card-shadow padding + edge fade mask). Phase 4 step 3
-(`app-slideshow-carousel`, commission) executed, [PR #28](https://github.com/krwiles/floofy-site/pull/28) —
-pending owner review. Phase 4 step 4 (`app-language-toggle`) up next once #28 merges. Phases 5–8 not started.
+(`app-slideshow-carousel`, commission) executed and **merged into `working`**,
+[PR #28](https://github.com/krwiles/floofy-site/pull/28) — including both owner-requested follow-up rounds (see
+below). Phase 4 step 4 (`app-language-toggle`) executed, [PR #29](https://github.com/krwiles/floofy-site/pull/29) —
+pending owner review. Phases 5–8 not started.
+
+**Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
+`slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
+clone slot, `instant.set(true)` is set and a `0ms` resync retry is scheduled; only that retry's own callback ever
+sets `instant` back to `false`. If a fresh, opposite-direction `navigate()` call arrives before the retry fires, the
+guard that cancels the stale retry clears the timer *without* running its callback — so `instant` never resets.
+Once stuck, the auto-advance-restart effect (gated on `!instant()`) stops rescheduling (auto-advance silently
+stops), and every future manual navigation snaps instantly with no transition. This is a plausible contributor to
+the still-unreproduced "occasionally jumps/reverses after the arrows are used" symptom already documented in the
+component's own doc comment. Reported to the owner rather than fixed inline — it's a step-3 bug, not step-4 —
+awaiting a decision on a follow-up fix.
+
+**Branch/PR housekeeping note (2026-09-23):** the roadmap-doc commit recording PR #28's two follow-up rounds was
+pushed a few minutes *after* the owner had already merged #28 on GitHub, so it landed on the now-merged,
+dangling `refactor/phase-4-slideshow-carousel` branch instead of `working`. Step 4's work was initially committed
+on top of that same stale branch by mistake. Both commits were moved onto a fresh `refactor/phase-4-language-toggle`
+branch based on the real `working` tip before pushing, so PR #29 contains only the roadmap-doc commit plus step 4's
+own commit — nothing already-merged is being re-proposed.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
@@ -361,8 +381,8 @@ for Flowbite-JS-driven pieces.
       exactly, image height itself unchanged; mask resolves to real pixel gradients.
 - [x] [`app-slideshow-carousel`](specs/app-slideshow-carousel.md); migrate commission's 3 instances; delete the
       old `app-carousel`/`initCarousels()`/its static id. Executed, [PR #28](https://github.com/krwiles/floofy-site/pull/28)
-      (real, intentional redesign on commission only — always a PR, not diff-decides-merge) — pending owner
-      review. Looping technique: the image list is rendered with one clone of the last image prepended and one
+      (real, intentional redesign on commission only — always a PR, not diff-decides-merge) — **merged into
+      `working`**. Looping technique: the image list is rendered with one clone of the last image prepended and one
       clone of the first appended, so there's always a real neighbor to slide to in either direction and the
       transition always runs the correct way, even on the wrap; landing on a clone slot is harmless (pixel-
       identical to the real slide) and gets silently resynced the next time a real move is requested. `/code-
@@ -370,16 +390,89 @@ for Flowbite-JS-driven pieces.
       fought by page scroll or a mobile browser's own swipe-back navigation (fixed via a conditional
       `preventDefault` once horizontal intent is clear); a loop-boundary crossing restarted the auto-advance
       timer twice in quick succession instead of once (harmless churn, fixed by skipping the restart during the
-      resync's own transient state). **Disclosed, not fixed**: the `cardTone` framing markup (the
-      `[appCard][noBackground]`/`@if` branch) duplicates rolling-carousel's own, unshared between the two
-      components; the card-shadow clips against the viewport's edge at rest when `cardTone` is set — same class
-      of issue as rolling-carousel's pre-follow-up state, called out in the component's own CSS comment, left
-      alone pending the owner actually seeing it (same pattern as rolling-carousel's follow-up above); the loop-
-      boundary resync uses a plain `setTimeout(0)` rather than a double-`requestAnimationFrame` guarantee — a
-      deliberate simplicity/testability trade-off, documented inline. Verified live in a real browser (not just
-      jsdom, per this refactor's established practice for anything touch/timing-dependent): 3 independent
-      instances, correct wraparound both directions, hover-pause/resume, auto-advance timing, `cardTone` framing,
-      i18n aria-labels, no console errors, no horizontal page overflow.
+      resync's own transient state). **Disclosed, not fixed**: the loop-boundary resync uses a plain
+      `setTimeout(0)` rather than a double-`requestAnimationFrame` guarantee — a deliberate simplicity/
+      testability trade-off, documented inline.
+
+      **Owner-requested follow-up round, same PR**: after seeing the shipped component running, the owner
+      found two real bugs and asked for a spec change.
+      1. **Arrows permanently invisible, even while hovering.** Root cause: the reveal rule was written as a
+         plain descendant selector on the host's *own class* (`.slideshow-carousel:hover .slideshow-carousel__arrow`)
+         — Angular's emulated view encapsulation tags every element *inside* a component's template with an
+         `_ngcontent-*` attribute, but the host element itself gets `_nghost-*` instead, so a selector like this,
+         written from inside that same component's own stylesheet, can never match the host. Fixed with
+         `:host(:hover)`/`:host(:focus-within)`. This environment's `getComputedStyle` proved unreliable for
+         reading back `opacity` specifically (even a forced inline `!important` override wasn't reflected), so
+         verified structurally instead — the fixed selector matches the exact arrow element with higher
+         specificity than the base rule, confirmed via the live stylesheet's own compiled selector text.
+      2. **Spec change: no card framing of its own, at all.** The disclosed `cardTone` shadow-clipping item above
+         turned out to be the wrong thing to fix — the owner decided this component shouldn't have `[appCard]`
+         framing logic internally in the first place. `cardTone`, the `Card` import, and the per-slide
+         `[appCard][noBackground]` wrapper are all removed; every slide is now unconditionally a plain
+         rectangular `<img>`. Commission's 3 usages now apply `appCard tone="dark"` directly to the
+         `<app-slideshow-carousel>` tag instead — `card-on-section-dark`'s own `overflow: hidden` +
+         `border-radius` clips the image to match automatically, confirmed live, no extra CSS needed.
+
+      **Second follow-up round, two more owner-reported issues**:
+      3. **Sub-pixel image seam**: a column of the neighboring image visible through the transparent edge of
+         alpha-background images (the emote/chibi art), since two adjacent slides — each `translateX()`'d by
+         exactly 100% of the viewport's own (rarely whole-number) pixel width — don't always tile perfectly
+         under the browser's sub-pixel rounding. First fix attempt (uniformly growing every slide via
+         `scale()`) made it *worse*, per the owner's live testing: growing every slide the same amount makes
+         adjacent (still 100%-apart) slides overlap *each other*, and plain DOM/array order — not which one is
+         actually current — decided whose edge won that overlap, letting an off-screen neighbor's transparent
+         edge paint right over the active slide. Corrected, per the owner's own suggested approach: shrink every
+         *inactive* slide slightly (`scaleX(0.99)`) instead, leaving the current slide at full size. No
+         equivalent failure mode — nothing here ever grows into a neighbor. The current slide's own position
+         (`translateX(0%)`) has zero rounding error to begin with; only adjacent slides' percentages are subject
+         to it, and shrinking them inward by a safety margin (~1.6px on a ~319px slide) larger than any possible
+         rounding error (~1px) leaves nothing at the seam for a neighbor to creep into. Verified via direct
+         `getBoundingClientRect` measurements (not just trusting the transform value): the active slide's
+         rendered width exactly matches the viewport's; every inactive slide's edge sits measurably inside the
+         viewport boundary.
+      4. **Occasional direction-reversal/jump-back**, reported as hard to reliably reproduce, more with 4 images
+         than 3, only after using the arrows. Root-caused via a deterministic unit test rather than chased live:
+         the loop-boundary resync's deferred retry captures its delta in a closure at schedule time; a
+         *different* navigate() call (opposite direction) landing before that 0ms-deferred retry fires would get
+         silently overridden once the retry fires and blindly replays its now-stale delta. First fix attempt
+         (clear any pending retry on every fresh call) was too broad — it also cancelled *same-direction* pending
+         retries, silently dropping a legitimate step out of a rapid burst, breaking the existing loop-point
+         test. Corrected to the narrower, direction-aware fix: only cancel the pending retry when the fresh
+         call's direction actually differs from what it was going to do. **This fix is confirmed correct for the
+         specific race it targets (a dedicated regression test proves it), but the owner's original symptom
+         persisted afterward and remains unreproduced** — documented as a known, deferred issue in the
+         component's own doc comment per the owner's explicit direction, rather than continued to be chased
+         without a reliable repro.
+
+      **New candidate lead on the deferred symptom, found by `/code-review` during step 4's work, not yet
+      fixed**: that same direction-aware cancellation clears `resyncTimer`/`pendingResyncDelta` on a stale,
+      opposite-direction retry, but never resets `instant` back to `false` — only the timer callback it just
+      cancelled does that. `instant` can get stuck permanently `true`, silently stopping auto-advance (the
+      restart effect is gated on `!instant()`) and forcing every later manual move to snap with no transition.
+      Plausible contributor to point 4 above; reported to the owner as a follow-up candidate rather than fixed
+      inline, since PR #28 is already merged.
+- [x] [`app-language-toggle`](specs/app-language-toggle.md); extract out of `navbar.html`, move the two flag
+      `<svg>`s to real image files. Executed, [PR #29](https://github.com/krwiles/floofy-site/pull/29) — pending
+      owner review. A plain extraction per the spec's own scope (not Flowbite-related, no visual/behavioral
+      change intended). `LanguageToggle` injects `I18nService` directly, same as `Navbar` already did; flags now
+      live at `src/assets/flag-{en,ja}.svg`. `/code-review` found and fixed two real issues: `aria-label="Toggle
+      language"` was hardcoded English rather than sourced from the i18n JSON files (this repo's own convention,
+      already followed by `slideshow-carousel`'s arrow labels) — added `components.language_toggle.toggle` to
+      both locale files, wired through `TranslatePipe`; the near-duplicate `@if`/`@else` template branches were
+      collapsed into one computed flag-display lookup. The visible `"EN/日本語"`/`"日本語/EN"` label was
+      deliberately left as a plain constant (not translated) — it names both languages together regardless of
+      current locale, so there's no per-locale variant to look up. Also surfaced, out of scope for this step and
+      reported to the owner rather than fixed here: the `instant`-stuck bug noted above, plus two low-severity,
+      currently-inert latent issues in already-merged PR #28 code (`commission.ts`'s carousel image arrays now
+      alias `GalleryImageService`'s mutable fields directly instead of defensively copying them; `position`'s
+      `-1`-sentinel correction only ever runs once, so a future caller that changes `images()`'s length after
+      first settle wouldn't get `position` re-validated against the new padded track).
+
+      `ng build`/`tsc --noEmit`/`ng test` (101/101) all clean after both follow-up rounds. Verified live in a
+      real browser throughout (not just jsdom, per this refactor's established practice for anything touch/
+      timing/rendering-dependent): 3 independent instances, correct wraparound both directions, hover-pause/
+      resume, auto-advance timing, `appCard`-on-the-tag framing, i18n aria-labels, no console errors, no
+      horizontal page overflow, no sub-pixel seam.
 - [ ] [`app-language-toggle`](specs/app-language-toggle.md) — extraction only, not Flowbite-related.
 - [ ] [Mobile navigation menu](specs/navbar-disclosure.md) — remove `initFlowbite()` and `data-collapse-toggle`.
 - [ ] `app-hero`; migrate pages one by one (donate → gallery → reviews → contact → streaming → about → commission → home).

@@ -8,6 +8,9 @@
     "slideshow_carousel": {
       "previous": "Previous slide",
       "next": "Next slide"
+    },
+    "language_toggle": {
+      "toggle": "Toggle language"
     }
   },
 
