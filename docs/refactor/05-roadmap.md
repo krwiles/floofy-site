@@ -17,8 +17,9 @@ the site as of this merge. An owner-requested follow-up round on top of it (mobi
 dimming backdrop + click-outside-to-close) executed and **merged into `working`**,
 [PR #31](https://github.com/krwiles/floofy-site/pull/31). Phase 4 step 6 (`app-hero`, all 8 pages) executed,
 [PR #32](https://github.com/krwiles/floofy-site/pull/32) — pending owner review; parity-preserving (Track B),
-0.00% visual diff verified on every route/width. Phase 4 step 7 (`app-parallax` clean-up) not started. Phases
-5–8 (top-level)
+0.00% visual diff verified on every route/width, then an owner-requested simplification round on the same PR
+that deliberately changed 3 pages' visual output (home/gallery/contact) to remove one-page-only overrides —
+see below. Phase 4 step 7 (`app-parallax` clean-up) not started. Phases 5–8 (top-level)
 not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
@@ -582,6 +583,24 @@ for Flowbite-JS-driven pieces.
       picked up by a child's input signal; saved to memory, since it'll affect any future spec using that
       pattern, not just this component's own. 12 new tests (TDD, written first); full suite 134/134; per-page
       and main bundle sizes dropped meaningfully now that the duplicated hero markup is shared.
+
+      **Owner-requested simplification round, same PR**: reviewing the new component, the owner asked for fewer
+      inputs — several of the one-off overrides were judged worth standardizing away rather than preserving.
+      Removed 6 inputs: `bodyTextUsesHeadingColor` (gallery/contact/home's description/tagline now use the
+      standard body color, like every other page, instead of the heading color they used to — the very
+      inconsistency the original parity-preserving pass had deliberately kept); `cardPaddingClass` (home's card
+      now uses the same padding as everyone else); `contentWrapperExtraClass` (dropped home's extra `h-full`,
+      redundant next to `min-h-screen` in practice); `heroSectionAriaLabel` (commission's hero image now
+      announces "Hero section" like every other page — screen-reader text only, no visual change);
+      `outerParallaxStrength`/`heroImageParallaxStrength` (about's hero now scrolls at the same speed as every
+      other page instead of its own slightly faster one). `flourishSizeClasses` stays, by explicit owner choice:
+      home's always-visible flourish is a real, deliberate difference worth keeping, not a bug to iron out.
+      Commission's `mt-14`/`lg:absolute`-only image-positioning overrides also stay — riskier structural quirks
+      not raised in this round. Verified via a targeted before/after diff (`git stash` to capture the
+      pre-simplification state, then the post-simplification one): only home/gallery/contact show any visual
+      change at all (0.06%–0.92%, matching exactly what's described above); every other page — including about
+      and commission, whose only changes were the two invisible-by-design normalizations — stays byte-for-byte
+      0.00%. 11 tests (1 removed, matching the removed input); full suite 133/133.
 - [ ] `app-parallax` clean-up (single shared scroll source instead of one listener per instance; revisit the
       underlying technique later if a shared listener alone doesn't fix the motion lag the owner's noticed).
 
