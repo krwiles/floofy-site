@@ -15,13 +15,14 @@ below). Phase 4 step 4 (`app-language-toggle`) executed and **merged into `worki
 Flowbite-JS removal (`initFlowbite()`, `data-collapse-toggle`); no interactive Flowbite JS remains anywhere in
 the site as of this merge. An owner-requested follow-up round on top of it (mobile-menu corner rounding + a
 dimming backdrop + click-outside-to-close) executed and **merged into `working`**,
-[PR #31](https://github.com/krwiles/floofy-site/pull/31). Phase 4 step 6 (`app-hero`, all 8 pages) executed,
-[PR #32](https://github.com/krwiles/floofy-site/pull/32) — pending owner review; parity-preserving (Track B),
+[PR #31](https://github.com/krwiles/floofy-site/pull/31). Phase 4 step 6 (`app-hero`, all 8 pages) executed and
+**merged into `working`**, [PR #32](https://github.com/krwiles/floofy-site/pull/32); parity-preserving (Track B),
 0.00% visual diff verified on every route/width, then an owner-requested simplification round on the same PR
 that deliberately changed 3 pages' visual output (home/gallery/contact) to remove one-page-only overrides —
-see below. Phase 4 step 7 (`app-parallax` clean-up) executed, [PR #34]
-(https://github.com/krwiles/floofy-site/pull/34) — pending owner review; same Track B/no-direct-push situation as
-step 6 — see below. Phases 5–8 (top-level) not started.
+see below. Phase 4 step 7 (`app-parallax` clean-up) executed and **merged into `working`**, [PR #34]
+(https://github.com/krwiles/floofy-site/pull/34) — same Track B/no-direct-push situation as step 6, opened as a
+normal PR instead. **Phase 4 is now fully done.** Phase 5 (forms and backend access) planning started
+2026-09-25 via `/grill-with-docs` — see below; Phases 6–8 not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
 `slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
@@ -557,10 +558,11 @@ review` found and fixed two real issues: touch handlers never claimed the gestur
       stacking number with no shared z-index scale anywhere in this codebase yet. 5 new tests across both
       commits. Full suite 122/122.
 - [x] `app-hero`; migrated all 8 pages (donate → gallery → reviews → contact → streaming → about → commission →
-      home, per the plan's order). Executed, [PR #32](https://github.com/krwiles/floofy-site/pull/32) — pending
-      owner review (see the housekeeping note above for why this Track B, diff-decides-merge step still went
-      through a PR). Consolidates the 8 near-identical parallax-hero blocks (each hand-copied, each with real
-      per-page variation) into one component, `src/app/components/hero/`. Inputs model every genuine difference
+      home, per the plan's order). Executed and **merged into `working`**, [PR #32]
+      (https://github.com/krwiles/floofy-site/pull/32) (see the housekeeping note above for why this Track B,
+      diff-decides-merge step still went through a PR). Consolidates the 8 near-identical parallax-hero blocks
+      (each hand-copied, each with real per-page variation) into one component, `src/app/components/hero/`.
+      Inputs model every genuine difference
       found while cataloguing all 8: image/parallax config for both layers, `tone` (light/dark, via a
       `TONE_CLASSES` lookup), card width/padding/alignment (`cardAlign` alone derives both the content's
       `justify-*` and the image's `ml-auto`, since every page pairs them the same way with no exception), plus
@@ -588,56 +590,57 @@ review` found and fixed two real issues: touch handlers never claimed the gestur
       and main bundle sizes dropped meaningfully now that the duplicated hero markup is shared.
 
       **Owner-requested simplification round, same PR**: reviewing the new component, the owner asked for fewer
-                          inputs — several of the one-off overrides were judged worth standardizing away rather than preserving.
-                          Removed 6 inputs: `bodyTextUsesHeadingColor` (gallery/contact/home's description/tagline now use the
-                          standard body color, like every other page, instead of the heading color they used to — the very
-                          inconsistency the original parity-preserving pass had deliberately kept); `cardPaddingClass` (home's card
-                          now uses the same padding as everyone else); `contentWrapperExtraClass` (dropped home's extra `h-full`,
-                          redundant next to `min-h-screen` in practice); `heroSectionAriaLabel` (commission's hero image now
-                          announces "Hero section" like every other page — screen-reader text only, no visual change);
-                          `outerParallaxStrength`/`heroImageParallaxStrength` (about's hero now scrolls at the same speed as every
-                          other page instead of its own slightly faster one). `flourishSizeClasses` stays, by explicit owner choice:
-                          home's always-visible flourish is a real, deliberate difference worth keeping, not a bug to iron out.
-                          Commission's `mt-14`/`lg:absolute`-only image-positioning overrides also stay — riskier structural quirks
-                          not raised in this round. Verified via a targeted before/after diff (`git stash` to capture the
-                          pre-simplification state, then the post-simplification one): only home/gallery/contact show any visual
-                          change at all (0.06%–0.92%, matching exactly what's described above); every other page — including about
-                          and commission, whose only changes were the two invisible-by-design normalizations — stays byte-for-byte
-                          0.00%. 11 tests (1 removed, matching the removed input); full suite 133/133.
+      inputs — several of the one-off overrides were judged worth standardizing away rather than preserving.
+      Removed 6 inputs: `bodyTextUsesHeadingColor` (gallery/contact/home's description/tagline now use the
+      standard body color, like every other page, instead of the heading color they used to — the very
+      inconsistency the original parity-preserving pass had deliberately kept); `cardPaddingClass` (home's card
+      now uses the same padding as everyone else); `contentWrapperExtraClass` (dropped home's extra `h-full`,
+      redundant next to `min-h-screen` in practice); `heroSectionAriaLabel` (commission's hero image now
+      announces "Hero section" like every other page — screen-reader text only, no visual change);
+      `outerParallaxStrength`/`heroImageParallaxStrength` (about's hero now scrolls at the same speed as every
+      other page instead of its own slightly faster one). `flourishSizeClasses` stays, by explicit owner choice:
+      home's always-visible flourish is a real, deliberate difference worth keeping, not a bug to iron out.
+      Commission's `mt-14`/`lg:absolute`-only image-positioning overrides also stay — riskier structural quirks
+      not raised in this round. Verified via a targeted before/after diff (`git stash` to capture the
+      pre-simplification state, then the post-simplification one): only home/gallery/contact show any visual
+      change at all (0.06%–0.92%, matching exactly what's described above); every other page — including about
+      and commission, whose only changes were the two invisible-by-design normalizations — stays byte-for-byte
+      0.00%. 11 tests (1 removed, matching the removed input); full suite 133/133.
 
-                          **Second simplification round, same PR**: asked to keep pushing further, naming `imageWrapperExtraClass`,
-                          `backgroundClass`, `flourishSizeClasses`, `heroImagePositionClasses`, and a merge of `cardAlign`/
-                          `contentJustifyClass` into one left/right input. Two of those five turned out not to need any change:
-                          `backgroundClass` holds each page's own distinct hero color — bespoke design tokens sampled from that
-                          page's image (see Phase 2's own notes), not incidental duplication, so left alone; `contentJustifyClass`
-                          was already a single computed value derived from the one `cardAlign` input, not a second input needing to
-                          be merged, so also left alone. The other three were removed: `flourishSizeClasses` — standardized *to*
-                          home's own original always-visible behavior rather than away from it, reversing the previous round's
-                          explicit decision to keep it as a one-page difference; `heroImagePositionClasses`/`imageWrapperExtraClass`
-                          — commission's inner hero image now positions the same way as every other page (plain `absolute inset-0`,
-                          no `mt-14` offset), the two riskier, structural quirks the previous round had deliberately left alone.
-                          Verified via another targeted before/after diff: home stays 0.00% (it already had the standardized
-                          flourish behavior); every other page shows a small diff only at the 375px width (0.01%–0.11% — the
-                          flourish was already visible at md/lg, so only the smallest breakpoint's "hidden" removal is visible);
-                          commission shows a larger, consistent diff across all three widths (1.8%–2.9%, from losing both the
-                          `mt-14` offset and the `lg:absolute`-only positioning at every width, not just below `lg`). 12 tests (1
-                          added, replacing the removed default-value check with a behavioral "always visible" one); full suite
-                          134/134.
+      **Second simplification round, same PR**: asked to keep pushing further, naming `imageWrapperExtraClass`,
+      `backgroundClass`, `flourishSizeClasses`, `heroImagePositionClasses`, and a merge of `cardAlign`/
+      `contentJustifyClass` into one left/right input. Two of those five turned out not to need any change:
+      `backgroundClass` holds each page's own distinct hero color — bespoke design tokens sampled from that
+      page's image (see Phase 2's own notes), not incidental duplication, so left alone; `contentJustifyClass`
+      was already a single computed value derived from the one `cardAlign` input, not a second input needing to
+      be merged, so also left alone. The other three were removed: `flourishSizeClasses` — standardized *to*
+      home's own original always-visible behavior rather than away from it, reversing the previous round's
+      explicit decision to keep it as a one-page difference; `heroImagePositionClasses`/`imageWrapperExtraClass`
+      — commission's inner hero image now positions the same way as every other page (plain `absolute inset-0`,
+      no `mt-14` offset), the two riskier, structural quirks the previous round had deliberately left alone.
+      Verified via another targeted before/after diff: home stays 0.00% (it already had the standardized
+      flourish behavior); every other page shows a small diff only at the 375px width (0.01%–0.11% — the
+      flourish was already visible at md/lg, so only the smallest breakpoint's "hidden" removal is visible);
+      commission shows a larger, consistent diff across all three widths (1.8%–2.9%, from losing both the
+      `mt-14` offset and the `lg:absolute`-only positioning at every width, not just below `lg`). 12 tests (1
+      added, replacing the removed default-value check with a behavioral "always visible" one); full suite
+      134/134.
 
-                          **Input audit, no further changes**: asked for a full list of every remaining input, categorized by
-                          whether it's genuinely page-specific (content strings, image src/position — never reducible),
-                          genuinely-split design values with no single outlier to fix (`tone` 4/4, `cardAlign` 5/3,
-                          `heroImageHeight` 4/4, `backgroundPatternImage` 6/2, plus the already-settled `backgroundClass`,
-                          `cardMaxWidthClass`, `heroImageMaxWidthClass`), or one-outlier overrides worth a further look
-                          (`titleClass`: streaming/commission/home; `kickerClass`/`taglineClass`: home only — the same shape
-                          `flourishSizeClasses` had before that round standardized *to* home's behavior). Owner's call: lean
-                          enough for now, stop here — `titleClass`/`kickerClass`/`taglineClass` left as one-outlier overrides,
-                          not pursued further this pass. Component's final input count: 15 (down from roughly 24 before the two
-                          simplification rounds).
+      **Input audit, no further changes**: asked for a full list of every remaining input, categorized by
+      whether it's genuinely page-specific (content strings, image src/position — never reducible),
+      genuinely-split design values with no single outlier to fix (`tone` 4/4, `cardAlign` 5/3,
+      `heroImageHeight` 4/4, `backgroundPatternImage` 6/2, plus the already-settled `backgroundClass`,
+      `cardMaxWidthClass`, `heroImageMaxWidthClass`), or one-outlier overrides worth a further look
+      (`titleClass`: streaming/commission/home; `kickerClass`/`taglineClass`: home only — the same shape
+      `flourishSizeClasses` had before that round standardized *to* home's behavior). Owner's call: lean
+      enough for now, stop here — `titleClass`/`kickerClass`/`taglineClass` left as one-outlier overrides,
+      not pursued further this pass. Component's final input count: 15 (down from roughly 24 before the two
+      simplification rounds).
 
-- [~] `app-parallax` clean-up. Executed, [PR #34](https://github.com/krwiles/floofy-site/pull/34) — pending owner
-  review (same Track B/no-direct-push situation as step 6, see the housekeeping note above) — parity-preserving
-  (Track B), no formal spec. Adds `ParallaxScrollService` (`src/app/services/`), mirroring `RevealService`'s own
+- [x] `app-parallax` clean-up. Executed and **merged into `working`**, [PR #34]
+  (https://github.com/krwiles/floofy-site/pull/34) — same Track B/no-direct-push situation as step 6, see the
+  housekeeping note above — parity-preserving (Track B), no formal spec. Adds `ParallaxScrollService`
+  (`src/app/services/`), mirroring `RevealService`'s own
   shared-registry pattern: one passive `window` scroll listener for the whole app, lazily attached on first
   registration, fanning out to every registered callback. `ParallaxSection` registers/unregisters a callback
   instead of managing its own listener — a page with a hero (2 layers) plus a couple of patterned
