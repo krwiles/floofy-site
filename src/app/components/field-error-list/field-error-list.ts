@@ -3,9 +3,9 @@ import { FieldState } from '@angular/forms/signals';
 
 /**
  * A field's active validation errors, shown once it's both invalid and touched -- never before, so a field
- * doesn't scold the person before they've had a chance to fill it in. Shared by `FormFieldGroup` and
- * `CheckboxField` (and, soon, `RadioGroup`) -- extracted after `/code-review` flagged this markup as
- * duplicated verbatim between the first two.
+ * doesn't scold the person before they've had a chance to fill it in. Shared by `FormFieldGroup`,
+ * `CheckboxField`, and `RadioGroup` -- extracted after `/code-review` flagged this markup as duplicated
+ * verbatim between the first two, before `RadioGroup` existed to make it a third.
  */
 @Component({
   selector: 'app-field-error-list',
