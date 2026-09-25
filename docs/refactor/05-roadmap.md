@@ -620,6 +620,17 @@ for Flowbite-JS-driven pieces.
       `mt-14` offset and the `lg:absolute`-only positioning at every width, not just below `lg`). 12 tests (1
       added, replacing the removed default-value check with a behavioral "always visible" one); full suite
       134/134.
+
+      **Input audit, no further changes**: asked for a full list of every remaining input, categorized by
+      whether it's genuinely page-specific (content strings, image src/position — never reducible),
+      genuinely-split design values with no single outlier to fix (`tone` 4/4, `cardAlign` 5/3,
+      `heroImageHeight` 4/4, `backgroundPatternImage` 6/2, plus the already-settled `backgroundClass`,
+      `cardMaxWidthClass`, `heroImageMaxWidthClass`), or one-outlier overrides worth a further look
+      (`titleClass`: streaming/commission/home; `kickerClass`/`taglineClass`: home only — the same shape
+      `flourishSizeClasses` had before that round standardized *to* home's behavior). Owner's call: lean
+      enough for now, stop here — `titleClass`/`kickerClass`/`taglineClass` left as one-outlier overrides,
+      not pursued further this pass. Component's final input count: 15 (down from roughly 24 before the two
+      simplification rounds).
 - [ ] `app-parallax` clean-up (single shared scroll source instead of one listener per instance; revisit the
       underlying technique later if a shared listener alone doesn't fix the motion lag the owner's noticed).
 
