@@ -4,6 +4,16 @@
     "japanese": "Japanese"
   },
 
+  "components": {
+    "slideshow_carousel": {
+      "previous": "Previous slide",
+      "next": "Next slide"
+    },
+    "language_toggle": {
+      "toggle": "Toggle language"
+    }
+  },
+
   "home": {
     "hero": {
       "kicker": "Illustrator • Vtuber",

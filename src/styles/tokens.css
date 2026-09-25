@@ -78,3 +78,14 @@
      anything, see CONTEXT.md ("Lightbox backdrop"). */
   --color-lightbox-backdrop: #222222;
 }
+
+/* app-section (src/app/components/section/section.ts) builds its bg-section-{tone} class as a runtime string
+   (`bg-section-${tone}`), which Tailwind's content scanner can never see as a literal candidate -- it can only
+   detect complete class names that appear as actual text somewhere in scanned source. bg-section-light happened
+   to keep working only because that exact string also appears literally elsewhere (form input styling);
+   bg-section-middle and bg-section-dark never appeared literally anywhere, so Tailwind silently never generated
+   them -- every app-section using either tone rendered with no background at all. Confirmed live via
+   getComputedStyle before this fix. @source inline() force-generates a utility regardless of whether the
+   scanner would otherwise find it -- the standard Tailwind v4 answer for a dynamically-built class name. Keep
+   this list in sync with section.ts's Tone union if it ever changes. */
+@source inline('bg-section-light bg-section-light-alt bg-section-middle bg-section-middle-alt bg-section-dark bg-section-dark-alt');

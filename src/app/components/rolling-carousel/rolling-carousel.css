@@ -1,0 +1,106 @@
+:host {
+  display: block;
+}
+
+.rolling-carousel {
+  --rolling-carousel-gap: 1.5rem;
+  display: flex;
+  /* No align-items override -- the default (stretch) is what gives .rolling-carousel__track a
+     definite height from this element's own inline `height` style. An earlier version of this file
+     set align-items: center here and gave the track an explicit height: 100% to compensate instead,
+     but that patched the symptom one level below the actual cause: with center still in place, a
+     future edit that saw the track's height: 100% as "redundant" (doesn't stretch already do that?)
+     and removed it would have silently reintroduced the bug -- because center is exactly what
+     stops stretch from doing that in the first place. Removing center instead makes plain flex
+     stretch the real, load-bearing mechanism, not an explicit override fighting a default that
+     would otherwise undo it. */
+  overflow: hidden;
+  /* Horizontal-only fade at both edges, instead of a hard rectangular cut, for whatever's mid-transit
+     into or out of view -- an image (and, in framed mode, its card-shadow) fades to transparent as it
+     approaches either edge rather than disappearing/appearing abruptly. Vertical (top/bottom) edges
+     are untouched -- that clipping is fixed properly below (padding), not something to hide with a
+     fade. Both prefixed and unprefixed, matching this project's existing convention for mask
+     properties in flourishes.css. */
+  -webkit-mask-image: linear-gradient(to right, transparent, black 3rem, black calc(100% - 3rem), transparent);
+  mask-image: linear-gradient(to right, transparent, black 3rem, black calc(100% - 3rem), transparent);
+}
+
+.rolling-carousel--framed {
+  /* Room for the per-image card-shadow's own blur to fully render, instead of being clipped by this
+     element's own overflow: hidden -- every image's shadow was getting cut at the top/bottom before
+     this, not just ones mid-transit at the left/right edges (see the mask above for those). The
+     shadow bleeds asymmetrically per cards.css's card-shadow-{tone} box-shadow values (offset
+     downward: roughly 0.2rem above its own box, 1.7rem below, from blur-radius/2 ± offset-y on the
+     larger of its two shadow layers) -- rounded up to a plain, SYMMETRIC value on both edges rather
+     than matching that asymmetry exactly (a tidy number, framed evenly, beats hand-tuned precision
+     that looks visually off-center), and tuned generous rather than tight (owner's own call, past
+     the ~1.7rem minimum that would just clear the shadow). Revisit if cards.css's shadow values
+     change. box-sizing: content-box so this padding ADDS to the height() input rather than shrinking
+     the images to fit inside it -- Tailwind's preflight defaults every element to border-box, which
+     would do the opposite. */
+  box-sizing: content-box;
+  padding-block: 2.5rem;
+}
+
+.rolling-carousel__track {
+  display: flex;
+  align-items: center;
+  gap: var(--rolling-carousel-gap);
+  width: max-content;
+  /* The track is itself a flex item of .rolling-carousel, and a flex item's default flex-shrink is
+     1 -- without this, the browser compresses the whole track down to fit .rolling-carousel's own
+     (much narrower) width instead of letting it size to max-content, squashing every image. The
+     flex-shrink: 0 on .rolling-carousel__image/.rolling-carousel__frame below is a different level
+     (their flex context is the track, not .rolling-carousel) and doesn't help this one. */
+  flex-shrink: 0;
+  animation-name: rolling-carousel-scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* This animation runs indefinitely for as long as the page is open (never stops outside
+     prefers-reduced-motion) -- hint the browser to promote it to its own compositor layer up front
+     rather than only after several frames of jank. */
+  will-change: transform;
+}
+
+.rolling-carousel__image {
+  height: 100%;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* Shadow/rounded-corner frame (card-shadow-{tone}, applied by [appCard noBackground]) needs its own
+   height + overflow: hidden so the image inside clips to the frame's rounded corners rather than the
+   frame growing to the image's natural size and the radius doing nothing. */
+.rolling-carousel__frame {
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+@keyframes rolling-carousel-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* The image list is rendered twice in the template (see rolling-carousel.html) so the loop point
+       is invisible -- but the exact distance for that to line up isn't simply 50% of the doubled
+       track's width when there's a `gap` between items: with k images per copy and gap g, the track
+       is 2 copies plus (2k-1) gaps wide (including the one gap *between* the two copies), so 50% of
+       that total is short of one full copy's-width-plus-its-trailing-gap by exactly half a gap.
+       Verified algebraically, not just eyeballed: 50%W = S + (k-0.5)g while the correct target is
+       S + kg, a constant 0.5g short regardless of image count. Left as -50% this would visibly
+       stutter by half the gap value at the end of every loop. */
+    transform: translateX(calc(-50% - (var(--rolling-carousel-gap) / 2)));
+  }
+}
+
+/* Pure CSS is enough here (unlike RevealService/ParallaxSection, which need a JS matchMedia check
+   because they drive more than an animation's own play state) -- this freezes the strip permanently,
+   not just slows it, matching the spec's reduced-motion requirement. */
+@media (prefers-reduced-motion: reduce) {
+  .rolling-carousel__track {
+    animation: none;
+  }
+}

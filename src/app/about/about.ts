@@ -7,13 +7,28 @@ import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
+import { Card } from '../directives/card';
+import { Button } from '../directives/button';
+import { SocialLinks } from '../components/social-links/social-links';
 
 // Declare the Twitter widgets object to avoid TypeScript errors
 declare const twttr: { widgets: { load: () => void } };
 
 @Component({
   selector: 'app-about',
-  imports: [ParallaxSection, TranslatePipe, NgOptimizedImage, Reveal, Flourish, SectionDivider, SectionHeader, Section],
+  imports: [
+    ParallaxSection,
+    TranslatePipe,
+    NgOptimizedImage,
+    Reveal,
+    Flourish,
+    SectionDivider,
+    SectionHeader,
+    Section,
+    Card,
+    Button,
+    SocialLinks,
+  ],
   templateUrl: './about.html',
   styleUrl: './about.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

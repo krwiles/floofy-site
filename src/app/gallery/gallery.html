@@ -20,7 +20,7 @@
   <div
     class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
-    <div class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
+    <div appCard [glass]="true" class="hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:inline-block" />
       <p
         class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-dark-heading uppercase sm:text-[0.95rem]"
@@ -53,17 +53,17 @@
       @defer (on viewport) {
         <img
           class="gallery-image mb-8 w-full break-inside-avoid"
-          [ngSrc]="galleryImage.srcThumbnail"
+          [ngSrc]="galleryImage.src"
           [alt]="galleryImage.alt"
-          [height]="galleryImage.heightThumbnail"
-          [width]="galleryImage.widthThumbnail"
+          [height]="galleryImage.height"
+          [width]="galleryImage.width"
           (click)="showImage(galleryImage)"
           animate.enter="enter-image"
         />
       } @placeholder {
         <div
           class="mb-8 w-full break-inside-avoid"
-          [style.aspect-ratio]="galleryImage.widthThumbnail + '/' + galleryImage.heightThumbnail"
+          [style.aspect-ratio]="galleryImage.width + '/' + galleryImage.height"
         ></div>
       }
     }
@@ -84,7 +84,7 @@
       <img
         animate.enter="enter-image"
         class="lightbox-image max-h-screen max-w-screen bg-lightbox-backdrop shadow-[0_0_3rem_rgb(0,0,0)]"
-        [src]="$safeNavigationMigration(selectedImage()?.srcFull)"
+        [src]="$safeNavigationMigration(selectedImage()?.src)"
         [alt]="$safeNavigationMigration(selectedImage()?.alt)"
         loading="eager"
       />

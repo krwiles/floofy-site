@@ -67,7 +67,12 @@ async function main() {
   try {
     for (const route of ROUTES) {
       for (const width of WIDTHS) {
-        const page = await browser.newPage({ viewport: { width, height: 900 } });
+        // reducedMotion: 'reduce' makes RevealService (see reveal.service.ts) reveal every
+        // appReveal-registered element immediately on registration instead of waiting for it to
+        // cross the viewport via IntersectionObserver -- without this, most of the page renders
+        // with animate-on-scroll's initial opacity: 0 in a full-page screenshot, since a static
+        // capture never actually scrolls anything into view.
+        const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: 'reduce' });
         await page.goto(`${BASE_URL}/${route}`, { waitUntil: 'networkidle' });
         // Let entrance animations / IntersectionObserver reveals settle.
         await page.waitForTimeout(1000);

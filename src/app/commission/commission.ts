@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
 import { TranslatePipe } from '../pipes/translate.pipe';
-import { Carousel } from '../components/carousel/carousel';
+import { SlideshowCarousel } from '../components/slideshow-carousel/slideshow-carousel';
 import { GalleryImageService } from '../services/gallery-image.service';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { PricingService } from '../services/pricing.service';
@@ -13,6 +13,8 @@ import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
+import { Card } from '../directives/card';
+import { Button } from '../directives/button';
 
 interface CommissionFormValue {
   name: string;
@@ -30,7 +32,7 @@ interface CommissionFormValue {
 @Component({
   selector: 'app-commission',
   imports: [
-    Carousel,
+    SlideshowCarousel,
     ParallaxSection,
     TranslatePipe,
     FormField,
@@ -42,6 +44,8 @@ interface CommissionFormValue {
     SectionDivider,
     SectionHeader,
     Section,
+    Card,
+    Button,
   ],
   templateUrl: './commission.html',
   styleUrl: './commission.css',
@@ -59,9 +63,9 @@ export class Commission implements OnInit {
   private readonly scrollFocusDurationMs = 1600;
   private readonly focusDelay = 1000;
 
-  readonly chibiCarouselImages = this.galleryImageService.chibiImages.map((image) => [image]);
-  readonly emoteCarouselImages = this.galleryImageService.emoteImages.map((image) => [image]);
-  readonly illustrationCarouselImages = this.galleryImageService.illustrationImages.map((image) => [image]);
+  readonly chibiCarouselImages = this.galleryImageService.chibiImages;
+  readonly emoteCarouselImages = this.galleryImageService.emoteImages;
+  readonly illustrationCarouselImages = this.galleryImageService.illustrationImages;
 
   private readonly commissionModel = signal<CommissionFormValue>({
     name: '',

@@ -1,21 +1,53 @@
 /* Reusable flourish masks. Color comes from currentColor. */
+
+/* display: inline-block is required, not decorative -- aspect-ratio/min-height/width:auto have
+   NO EFFECT on a plain non-replaced `display: inline` box per spec, so without this the element
+   is a genuine 0x0 box and nothing paints. This mask technique previously "worked" only by
+   accident, when a caller's own utility classes (e.g. `absolute`, or being a flex item) happened
+   to blockify the element that carries this class. `<app-flourish>` renders this span one level
+   inside its own host, so whatever positioning class a caller puts on the host never reaches
+   this span -- every `<app-flourish>` usage was silently invisible until this was made explicit.
+   Found via a real bug report (variant="end" + flip="true"), but confirmed via computed-style
+   inspection to affect every variant, not just that one.
+
+   The WHOLE rule is wrapped in Tailwind's own "base" layer, not left unlayered: `app-section-
+   divider` applies `.flourish` directly to its own span alongside `hidden`/`md:inline-block` (its
+   intended "hidden below md" design, per its own doc comment) -- but this class's own `display`
+   was unconditionally beating that same element's `hidden`, on every mobile viewport, on every
+   page, since unlayered CSS always wins over Tailwind's utilities regardless of specificity or
+   source order. Tailwind puts `hidden`/`md:inline-block` in `@layer utilities`, ranked above
+   `base` by its own `@layer theme,base,components,utilities;` declaration -- moving this rule into
+   `base` (same fix applied to `app-flourish`'s own host default, see flourish.ts) lets a caller's
+   utility correctly override any of these properties, not just `display`, while still applying
+   whenever nothing overrides it. Nothing combines a conflicting utility with any property besides
+   `display` today, but layering the whole rule closes that latent gap for good rather than only
+   for the one property that's actually been hit so far. */
+@layer base {
+  .flourish {
+    display: inline-block;
+    width: auto;
+    min-height: 1em;
+    aspect-ratio: var(--flourish-ratio);
+    flex-shrink: 0;
+    /* middle, not the old -0.08em: that fixed offset was tuned for no particular font-size
+       context and was visibly wrong (a small downward nudge is not the general fix for aligning
+       an icon-like inline-block box against surrounding text -- vertical-align: middle is). */
+    vertical-align: middle;
+    background-color: currentColor;
+    -webkit-mask-image: var(--flourish-src);
+    mask-image: var(--flourish-src);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+}
+
 .flourish {
   --flourish-src: url('../../assets/flourish-end.svg');
   --flourish-ratio: 241 / 54;
-  width: auto;
-  min-height: 1em;
-  aspect-ratio: var(--flourish-ratio);
-  flex-shrink: 0;
-  vertical-align: -0.08em;
-  background-color: currentColor;
-  -webkit-mask-image: var(--flourish-src);
-  mask-image: var(--flourish-src);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
 }
 
 .f-end {

@@ -76,6 +76,9 @@
   animation-delay: 740ms;
 }
 
+/* The mobile-menu backdrop's own fade-in (.overlay-fade-in) is a shared class -- see
+   src/styles/utilities/motion.css -- not defined here. */
+
 @media (prefers-reduced-motion: reduce) {
   .nav-intro,
   .nav-brand-intro,

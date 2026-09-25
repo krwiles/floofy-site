@@ -1,6 +1,6 @@
 import { Component, HostListener, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { GalleryImageService } from '../services/gallery-image.service';
-import { GalleryImage } from '../models/gallery-image';
+import { ImageAsset } from '../models/image-asset';
 import { DOCUMENT } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
 import { ParallaxSection } from '../components/parallax-section/parallax-section';
@@ -8,10 +8,11 @@ import { TranslatePipe } from '../pipes/translate.pipe';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { Section } from '../components/section/section';
+import { Card } from '../directives/card';
 
 @Component({
   selector: 'app-gallery',
-  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe, Flourish, SectionDivider, Section],
+  imports: [NgOptimizedImage, ParallaxSection, TranslatePipe, Flourish, SectionDivider, Section, Card],
   templateUrl: './gallery.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './gallery.css',
@@ -20,11 +21,11 @@ export class Gallery {
   private readonly document = inject(DOCUMENT);
 
   galleryImageService = inject(GalleryImageService);
-  selectedImage = signal<GalleryImage | null>(null);
+  selectedImage = signal<ImageAsset | null>(null);
   showLightBox = signal<boolean>(false);
   scrollY = 0;
 
-  showImage(image: GalleryImage) {
+  showImage(image: ImageAsset) {
     this.selectedImage.set(image);
     this.showLightBox.set(true);
 

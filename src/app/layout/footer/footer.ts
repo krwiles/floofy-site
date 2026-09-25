@@ -1,11 +1,11 @@
-import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Brand } from '../../components/brand/brand';
+import { SocialLinks } from '../../components/social-links/social-links';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink, NgOptimizedImage, TranslatePipe],
+  imports: [Brand, SocialLinks, TranslatePipe],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

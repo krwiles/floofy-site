@@ -20,7 +20,7 @@
   <div
     class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
   >
-    <div class="glass-panel hero-reveal-surface max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
+    <div appCard [glass]="true" class="hero-reveal-surface max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:inline-block" />
       <p
         class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-dark-heading uppercase sm:text-[0.95rem]"
@@ -60,7 +60,9 @@
 
       <!-- Contact form -->
       <form
-        class="card-shadow mx-auto max-w-3xl rounded-4xl border border-white/70 bg-section-middle-alt px-8 py-12 text-on-middle-heading"
+        appCard
+        tone="middle"
+        class="mx-auto max-w-3xl px-8 py-12 text-on-middle-heading"
         [formRoot]="contactForm"
       >
         <div class="grid grid-cols-1 gap-6">
@@ -138,7 +140,10 @@
         <div class="flex items-center gap-5 pt-4 text-on-middle-body">
           <button
             type="submit"
-            class="inline-flex shrink-0 items-center justify-center rounded-xl bg-brand px-6 py-3 text-sm font-semibold whitespace-nowrap text-on-light-heading hover:bg-brand-subtle"
+            appButton
+            variant="primary"
+            tone="middle"
+            class="shrink-0 whitespace-nowrap"
           >
             {{ 'contact.form.submit' | translate }}
           </button>
@@ -154,7 +159,7 @@
 <!-- Contact Socials -->
 <app-section tone="middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-    <div class="card-on-section-middle relative mx-auto max-w-3xl border border-white/30 px-5 py-8 sm:px-7">
+    <div appCard tone="middle" class="relative mx-auto max-w-3xl px-5 py-8 sm:px-7">
       <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block" />
 
       <!-- Section heading -->
@@ -171,40 +176,7 @@
         role="list"
         aria-label="Social links"
       >
-        <a
-          href="https://x.com/SummerFloofy"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="SummerFloofy on X"
-          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
-        >
-          <span class="social-icon social-icon--x" aria-hidden="true"></span>
-        </a>
-        <a
-          href="https://bsky.app/profile/summerfloofy.bsky.social"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="SummerFloofy on Bluesky"
-          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
-        >
-          <span class="social-icon social-icon--bsky" aria-hidden="true"></span>
-        </a>
-        <a
-          href="https://vgen.co/SummerFloofy"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="SummerFloofy on Vgen"
-          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
-        >
-          <span class="social-icon social-icon--vgen" aria-hidden="true"></span>
-        </a>
-        <a
-          href="mailto:Summerfluffball@gmail.com"
-          aria-label="Email SummerFloofy"
-          class="inline-flex items-center justify-center rounded-2xl border border-border bg-white/65 p-4 text-5xl transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:p-5 sm:text-6xl md:text-5xl"
-        >
-          <span class="social-icon social-icon--email" aria-hidden="true"></span>
-        </a>
+        <app-social-links [ids]="['x', 'bsky', 'vgen', 'email']" variant="chip" />
       </div>
     </div>
   </div>

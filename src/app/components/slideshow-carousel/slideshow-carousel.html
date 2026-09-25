@@ -1,0 +1,36 @@
+<div class="slideshow-carousel__viewport">
+  @for (image of trackSlides(); track $index) {
+    <img
+      [ngSrc]="image.src"
+      [alt]="image.alt"
+      fill
+      class="slideshow-carousel__slide"
+      [style.transform]="transformFor($index)"
+      [style.transition]="instant() ? 'none' : null"
+      [attr.aria-hidden]="offsetFor($index) !== 0"
+    />
+  }
+</div>
+
+@if (hasMultipleImages()) {
+  <button
+    type="button"
+    class="slideshow-carousel__arrow slideshow-carousel__arrow--prev"
+    (click)="previous()"
+    [attr.aria-label]="'components.slideshow_carousel.previous' | translate"
+  >
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+    </svg>
+  </button>
+  <button
+    type="button"
+    class="slideshow-carousel__arrow slideshow-carousel__arrow--next"
+    (click)="next()"
+    [attr.aria-label]="'components.slideshow_carousel.next' | translate"
+  >
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
+    </svg>
+  </button>
+}

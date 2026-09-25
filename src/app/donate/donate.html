@@ -20,8 +20,11 @@
   <div
     class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-start"
   >
-    <div class="glass-panel hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block" />
+    <div appCard [glass]="true" class="hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block"
+      />
       <p
         class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-light-heading uppercase sm:text-[0.95rem]"
       >
@@ -58,33 +61,31 @@
 
     <!-- Ko-fi Embed -->
     <div class="relative mt-4 flex justify-center pb-6 md:mt-0">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block" />
-      <iframe
-        id="kofiframe"
-        src="https://ko-fi.com/summerfloofy/?hidefeed=true&widget=true&embed=true&preview=true"
-        height="712"
-        title="summerfloofy"
-        class="card-shadow w-lg max-w-full rounded-4xl bg-section-middle-alt p-1"
-      ></iframe>
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block"
+      />
+      <div appCard tone="middle" class="w-lg max-w-full p-1">
+        <!-- appCard's fill/border paint via a ::before layer, which browsers never render on replaced elements
+             like <iframe> -- the directive has to live on this wrapper div instead, with the iframe as plain
+             content, or the card's whole surface silently never appears (found in code review). -->
+        <iframe
+          id="kofiframe"
+          src="https://ko-fi.com/summerfloofy/?hidefeed=true&widget=true&embed=true&preview=true"
+          height="712"
+          title="summerfloofy"
+          class="w-full"
+        ></iframe>
+      </div>
     </div>
 
     <!-- Ko-fi Direct Link -->
-    <div
-      class="card-shadow mx-auto max-w-lg rounded-4xl border border-white/70 bg-section-middle-alt px-5 py-4 sm:px-6 sm:py-5"
-    >
+    <div appCard tone="middle" class="mx-auto max-w-lg px-5 py-4 sm:px-6 sm:py-5">
       <div class="flex items-center justify-between gap-2">
         <p class="min-w-0 text-sm leading-6 font-semibold text-on-middle-body sm:text-base">
           Prefer to use the Ko-fi site? Visit my page~
         </p>
-        <a
-          href="https://ko-fi.com/summerfloofy"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="SummerFloofy on Ko-fi"
-          class="inline-flex shrink-0 items-center justify-center rounded-2xl border border-border bg-white/65 px-4 py-3 text-on-middle-heading transition-colors hover:bg-brand-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong sm:px-5"
-        >
-          <span class="social-icon social-icon--kofi text-4xl sm:text-5xl" aria-hidden="true"></span>
-        </a>
+        <app-social-links [ids]="['kofi']" variant="chip" class="shrink-0 text-on-middle-heading" />
       </div>
     </div>
   </div>
