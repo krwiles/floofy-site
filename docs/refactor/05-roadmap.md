@@ -804,8 +804,20 @@ page's own execution plan, merged as [PR #35](https://github.com/krwiles/floofy-
   and already wires it in as a consumer of both — updated to reflect that.
 
   **Phase 5 is now fully executed** (all 3 pages), pending merge of PR #37 and PR #38.
-- [ ] Verify Flowbite form-style dependency; **then** remove the Flowbite theme/plugin/`@source` CSS and uninstall
-      `flowbite` — its own PR once all 3 pages are migrated.
+- [~] **Flowbite removal.** Executed, [PR #39](https://github.com/krwiles/floofy-site/pull/39) — pending owner
+  review, stacked on PR #38 (which stacks on #37 — see the summary note above; retarget once earlier PRs
+  merge). Verified fresh (not just trusting earlier grepping) that no Flowbite-provided class or JS hook
+  remains anywhere in `src/app`, including the 3 now-migrated forms — confirmed zero matches for `flowbite`
+  imports, `rounded-base`, and every Flowbite JS data-attribute (`data-collapse-toggle`, `data-dropdown`,
+  `data-modal`, etc.) across the whole app. Removed all 3 Flowbite lines from `src/styles.css` (`@import
+  'flowbite/src/themes/default'`, `@plugin 'flowbite/plugin'`, `@source '../node_modules/flowbite'`);
+  uninstalled the `flowbite` package (14 packages removed with its own deps). **No interactive Flowbite JS or
+  CSS remains anywhere in the project** — the removal effort that spanned Phase 4 and Phase 5 is complete.
+  Bonus find: removing Flowbite's own CSS also silently fixed a "2 rules skipped due to selector errors: Empty
+  sub-selector" build warning that had appeared in every build all session — it was coming from Flowbite's own
+  stylesheet, not this project's code. CSS bundle dropped from 115 KB to 51 KB. Verified: typecheck, full suite
+  200/200, production build clean, visual diff **0.00% across all 8 routes × 3 widths** — confirming the
+  earlier grep-based verification was genuinely thorough, not just assumed.
 
 ## Phase 6 — Restructure
 
