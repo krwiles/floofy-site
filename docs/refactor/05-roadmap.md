@@ -26,7 +26,10 @@ normal PR instead. **Phase 4 is now fully done.** Phase 5 (forms and backend acc
 (https://github.com/krwiles/floofy-site/pull/35) (docs only, no code). Phase 5 page 1 (contact) executed and
 **merged into `working`**, [PR #36](https://github.com/krwiles/floofy-site/pull/36) — builds every shared piece
 from scratch. Phase 5 page 2 (reviews) executed, [PR #37](https://github.com/krwiles/floofy-site/pull/37) —
-pending owner review; adds `CheckboxField` — see below. Phases 6–8 not started.
+pending owner review; adds `CheckboxField`. Phase 5 page 3 (commission), the last page, executed, [PR #38]
+(https://github.com/krwiles/floofy-site/pull/38) — pending owner review, **stacked on PR #37** (targets
+`refactor/phase-5-reviews`, not `working`, since it needs `CheckboxField`; retarget once #37 merges); adds
+`RadioGroup` — see below. Phases 6–8 not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
 `slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
@@ -764,9 +767,43 @@ page's own execution plan, merged as [PR #35](https://github.com/krwiles/floofy-
   a `console.log` to a true no-op — matches this phase's explicit, roadmap-tracked console.log removal;
   user-visible behavior (silently staying on the loading placeholder) is unchanged, since the original handler
   never updated any UI state either.
-- [ ] Page 3: commission (adds `RadioGroup`/`CheckboxField` for Choice — `CheckboxField` already built by
-      reviews' PR — moves `totalPriceUsd` into `PricingService`) — see
-      [16-phase-5-commission-plan.md](16-phase-5-commission-plan.md).
+- [~] **Page 3: commission**, the last page. Executed, [PR #38](https://github.com/krwiles/floofy-site/pull/38)
+  — pending owner review, stacked on PR #37 (see the summary note above). Adds `RadioGroup` (`app-radio-group`,
+  Choice's pill-radio-group presentation, sharing `RequiredMarker`/`FieldErrorList` with `FormFieldGroup`/
+  `CheckboxField`) and an optional `[labelExtra]` projected slot on both `RadioGroup` and `CheckboxField`, for
+  commission's own jump-to-detail "?" buttons. `usageType`'s option labels append a live percent-addon suffix
+  for 3 of 5 options, built in TypeScript (`I18nService.t()` + a small percent formatter) rather than template
+  pipes, since `RadioGroup`'s options are plain data — verified in a real browser: picking a type updates the
+  price display correctly (e.g. illustration $80 × 1.5 promotion addon = $120), and `scrollToForm()` still
+  pre-selects the right pill. Migrated the rest onto `FormFieldGroup`/`Control`/`FormStatus`/
+  `createFormSubmission()`/`ApiService` (`submitCommission` already built, unused until now); `CommissionService`
+  deleted. Moved `totalPriceUsd` onto `PricingService` as `getTotalPriceUsd` (mechanical, 3 new tests). Added a
+  `required()` validator for `commissionType`, previously undeclared even though its label always showed a
+  required asterisk unconditionally — `RadioGroup` derives that asterisk from the field's own signal now, so
+  this keeps the marker showing with no behavioral change (a radio group always has a default value selected,
+  so this can never actually fail in practice). `scrollToElement`/focus-highlight left completely untouched,
+  out of scope. 19 new tests; full suite 200/200; real-browser check of the submit flow (price updates, pill
+  pre-selection, all 5 genuinely-invalidatable fields' errors) — stopped short of an actual submission, which
+  would send a real commission request through the live Lambda.
+
+  **Three real, pre-existing discrepancies found and standardized, per the owner's explicit call** (same
+  "standardize rather than preserve" direction as Stage 3b/Phase 4's own precedent): `FormFieldGroup`'s label
+  row is `gap-2`, commission's fields used `gap-1`; `CheckboxField`'s row is `gap-2`, commission's ToS row used
+  `gap-1`; `FormFieldGroup`'s label is `text-sm font-semibold`, commission's own labels were plain
+  `font-semibold` (base text size) — this third one found only once the rendered page height came out
+  *shorter* than expected after the gap changes, not caught in the initial design pass. Root-caused via
+  real-browser landmark-position measurements (confirmed deterministic via two independent captures of the
+  unchanged original before trusting it, ruling out capture-timing noise) rather than accepted as an
+  unexplained size-mismatch in the scripted visual diff, which can't produce a percentage once page height
+  itself changes. All three are small, deliberate, disclosed visual changes on this one page.
+
+  `/code-review` found and fixed 3 minor issues: `CheckboxField`'s `rowGapClass` input turned out genuinely
+  dead — no caller ever overrode it, since commission standardized on the default instead of using `gap-1` —
+  removed while PR #37 (which introduced it) was still open, rather than left in place. `RequiredMarker`'s and
+  `FieldErrorList`'s doc comments still said "and, soon, `RadioGroup`" even though this PR adds `RadioGroup`
+  and already wires it in as a consumer of both — updated to reflect that.
+
+  **Phase 5 is now fully executed** (all 3 pages), pending merge of PR #37 and PR #38.
 - [ ] Verify Flowbite form-style dependency; **then** remove the Flowbite theme/plugin/`@source` CSS and uninstall
       `flowbite` — its own PR once all 3 pages are migrated.
 
