@@ -1,48 +1,19 @@
 <!-- Contact Hero -->
-<app-parallax-section
-  class="bg-hero-contact"
-  [backgroundImage]="'assets/intersecting-circles.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.8"
-  [ariaLabel]="'Hero Background'"
+<app-hero
+  backgroundClass="bg-hero-contact"
+  backgroundPatternImage="assets/intersecting-circles.svg"
+  heroImageSrc="assets/G1yNfrpbAAAEPTp.jfif"
+  heroImagePosition="center 50%"
+  heroImageHeight="110%"
+  heroImageMaxWidthClass="max-w-4xl"
+  tone="dark"
+  cardMaxWidthClass="max-w-3xl"
+  [kicker]="'contact.hero.kicker' | translate"
+  [description]="'contact.hero.description' | translate"
+  [tagline]="'contact.hero.tagline' | translate"
 >
-  <div class="absolute inset-0 mx-auto h-full max-w-7xl">
-    <app-parallax-section
-      class="absolute inset-0 h-full max-w-4xl lg:mask-fade-x"
-      [ariaLabel]="'Hero section'"
-      [backgroundImage]="'assets/G1yNfrpbAAAEPTp.jfif'"
-      [backgroundPosition]="'center 50%'"
-      [backgroundHeight]="'110%'"
-      [parallaxStrength]="0.65"
-    ></app-parallax-section>
-  </div>
-  <div
-    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
-  >
-    <div appCard [glass]="true" class="hero-reveal-surface max-w-3xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-dark-heading md:inline-block" />
-      <p
-        class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-dark-heading uppercase sm:text-[0.95rem]"
-      >
-        {{ 'contact.hero.kicker' | translate }}
-      </p>
-      <h1
-        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] text-on-dark-heading uppercase"
-      >
-        {{ 'contact.hero.title' | translate }}
-      </h1>
-      <p class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-dark-heading sm:text-base">
-        {{ 'contact.hero.description' | translate }}
-      </p>
-      <p
-        class="hero-reveal-copy mt-6 text-xs font-semibold tracking-[0.28em] text-on-dark-heading uppercase sm:text-sm"
-      >
-        {{ 'contact.hero.tagline' | translate }}
-      </p>
-    </div>
-  </div>
-</app-parallax-section>
+  <span heroTitle>{{ 'contact.hero.title' | translate }}</span>
+</app-hero>
 
 <app-section-divider />
 
@@ -59,12 +30,7 @@
       />
 
       <!-- Contact form -->
-      <form
-        appCard
-        tone="middle"
-        class="mx-auto max-w-3xl px-8 py-12 text-on-middle-heading"
-        [formRoot]="contactForm"
-      >
+      <form appCard tone="middle" class="mx-auto max-w-3xl px-8 py-12 text-on-middle-heading" [formRoot]="contactForm">
         <div class="grid grid-cols-1 gap-6">
           <!-- name field -->
           <div>
@@ -138,13 +104,7 @@
 
         <!-- Submit button -->
         <div class="flex items-center gap-5 pt-4 text-on-middle-body">
-          <button
-            type="submit"
-            appButton
-            variant="primary"
-            tone="middle"
-            class="shrink-0 whitespace-nowrap"
-          >
+          <button type="submit" appButton variant="primary" tone="middle" class="shrink-0 whitespace-nowrap">
             {{ 'contact.form.submit' | translate }}
           </button>
           <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="contact-status">
@@ -160,7 +120,10 @@
 <app-section tone="middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div appCard tone="middle" class="relative mx-auto max-w-3xl px-5 py-8 sm:px-7">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block" />
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block"
+      />
 
       <!-- Section heading -->
       <app-section-header

@@ -1,49 +1,18 @@
 ﻿<!-- Donate Hero -->
-<app-parallax-section
-  class="bg-white"
-  [backgroundImage]="'assets/4-point-stars.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.8"
-  [ariaLabel]="'Hero Background'"
+<app-hero
+  backgroundClass="bg-white"
+  heroImageSrc="assets/GyfSzJfaIAAn9qh.jfif"
+  heroImagePosition="center 33%"
+  heroImageHeight="110%"
+  heroImageMaxWidthClass="max-w-3xl"
+  cardAlign="start"
+  cardMaxWidthClass="max-w-2xl"
+  [kicker]="'donate.hero.kicker' | translate"
+  [description]="'donate.hero.description' | translate"
+  [tagline]="'donate.hero.tagline' | translate"
 >
-  <div class="absolute inset-0 mx-auto h-full max-w-7xl">
-    <app-parallax-section
-      class="absolute inset-0 ml-auto h-full max-w-3xl lg:mask-fade-x"
-      [ariaLabel]="'Hero section'"
-      [backgroundImage]="'assets/GyfSzJfaIAAn9qh.jfif'"
-      [backgroundPosition]="'center 33%'"
-      [backgroundHeight]="'110%'"
-      [parallaxStrength]="0.65"
-    ></app-parallax-section>
-  </div>
-  <div
-    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-start"
-  >
-    <div appCard [glass]="true" class="hero-reveal-surface max-w-2xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
-      <app-flourish
-        variant="full"
-        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block"
-      />
-      <p
-        class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-light-heading uppercase sm:text-[0.95rem]"
-      >
-        {{ 'donate.hero.kicker' | translate }}
-      </p>
-      <h1
-        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] text-on-light-heading uppercase"
-      >
-        {{ 'donate.hero.title' | translate }}
-      </h1>
-      <p class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-light-body sm:text-base">
-        {{ 'donate.hero.description' | translate }}
-      </p>
-      <p class="hero-reveal-copy mt-6 text-xs font-semibold tracking-[0.28em] text-on-light-body uppercase sm:text-sm">
-        {{ 'donate.hero.tagline' | translate }}
-      </p>
-    </div>
-  </div>
-</app-parallax-section>
+  <span heroTitle>{{ 'donate.hero.title' | translate }}</span>
+</app-hero>
 
 <app-section-divider />
 

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
-import { ParallaxSection } from '../components/parallax-section/parallax-section';
+import { Hero } from '../components/hero/hero';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { SlideshowCarousel } from '../components/slideshow-carousel/slideshow-carousel';
 import { GalleryImageService } from '../services/gallery-image.service';
@@ -9,7 +9,6 @@ import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { CreateCommissionRequest } from '../models/commission.model';
 import { CommissionService } from '../services/commission.service';
 import { Reveal } from '../directives/reveal';
-import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
@@ -33,14 +32,13 @@ interface CommissionFormValue {
   selector: 'app-commission',
   imports: [
     SlideshowCarousel,
-    ParallaxSection,
+    Hero,
     TranslatePipe,
     FormField,
     CurrencyPipe,
     PercentPipe,
     FormRoot,
     Reveal,
-    Flourish,
     SectionDivider,
     SectionHeader,
     Section,

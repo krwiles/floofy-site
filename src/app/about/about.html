@@ -1,46 +1,16 @@
 <!-- About Hero -->
-<app-parallax-section
-  class="bg-hero-about"
-  [backgroundImage]="'assets/4-point-stars.svg'"
-  [backgroundSize]="'100px'"
-  [backgroundHeight]="'200%'"
-  [parallaxStrength]="0.9"
-  [ariaLabel]="'Hero Background'"
+<app-hero
+  backgroundClass="bg-hero-about"
+  heroImageSrc="assets/Floofy_Illustration_T03.png"
+  heroImagePosition="center 25%"
+  heroImageMaxWidthClass="max-w-2xl"
+  cardMaxWidthClass="max-w-xl"
+  [kicker]="'about.hero.kicker' | translate"
+  [description]="'about.hero.description' | translate"
+  [tagline]="'about.hero.tagline' | translate"
 >
-  <div class="absolute inset-0 mx-auto h-full max-w-7xl">
-    <app-parallax-section
-      class="absolute inset-0 h-full max-w-2xl lg:mask-fade-x"
-      [ariaLabel]="'Hero section'"
-      [backgroundImage]="'assets/Floofy_Illustration_T03.png'"
-      [backgroundPosition]="'center 25%'"
-      [backgroundHeight]="'100%'"
-      [parallaxStrength]="0.7"
-    ></app-parallax-section>
-  </div>
-  <div
-    class="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-end justify-center text-left md:min-h-[95svh] md:justify-end"
-  >
-    <div appCard [glass]="true" class="hero-reveal-surface max-w-xl px-6 py-6 drop-shadow-md sm:px-7 sm:py-7 md:mb-16">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block" />
-      <p
-        class="hero-reveal-kicker mb-3 text-sm font-bold tracking-[0.32em] text-on-light-heading uppercase sm:text-[0.95rem]"
-      >
-        {{ 'about.hero.kicker' | translate }}
-      </p>
-      <h1
-        class="hero-reveal-title text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] text-on-light-heading uppercase"
-      >
-        {{ 'about.hero.title' | translate }}
-      </h1>
-      <p class="hero-reveal-copy mt-4 max-w-[56ch] text-sm leading-7 text-on-light-body sm:text-base">
-        {{ 'about.hero.description' | translate }}
-      </p>
-      <p class="hero-reveal-copy mt-6 text-xs font-semibold tracking-[0.28em] text-on-light-body uppercase sm:text-sm">
-        {{ 'about.hero.tagline' | translate }}
-      </p>
-    </div>
-  </div>
-</app-parallax-section>
+  <span heroTitle>{{ 'about.hero.title' | translate }}</span>
+</app-hero>
 
 <app-section-divider />
 
@@ -55,7 +25,11 @@
       alt="SummerFloofy"
       height="600"
       width="600"
-      appReveal appCard tone="light" [noBackground]="true" class="block w-full"
+      appReveal
+      appCard
+      tone="light"
+      [noBackground]="true"
+      class="block w-full"
     />
 
     <!-- Artist text -->
@@ -63,9 +37,7 @@
       <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-light-body-subtle uppercase">
         {{ 'about.artist.kicker' | translate }}
       </p>
-      <h2
-        appReveal class="wrap-break-word- mb-4 gap-3 text-5xl font-black tracking-tight text-on-light-heading"
-      >
+      <h2 appReveal class="wrap-break-word- mb-4 gap-3 text-5xl font-black tracking-tight text-on-light-heading">
         {{ 'about.artist.name' | translate }}
       </h2>
       <p class="mb-4 leading-7 text-on-light-body">
@@ -82,7 +54,10 @@
 <app-section tone="middle">
   <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
     <div appCard [glass]="true" class="mx-auto max-w-3xl px-5 py-8 sm:px-7">
-      <app-flourish variant="full" class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block" />
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block"
+      />
 
       <!-- Section heading -->
       <app-section-header
@@ -113,9 +88,7 @@
     <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
       {{ 'about.oc.kicker' | translate }}
     </p>
-    <h2
-      appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading"
-    >
+    <h2 appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading">
       {{ 'about.oc.title' | translate }}
     </h2>
     <p appReveal class="mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
@@ -135,7 +108,10 @@
         alt="Floofy – SummerFloofy's original character"
         height="600"
         width="600"
-        appCard tone="dark" [noBackground]="true" class="w-full object-cover"
+        appCard
+        tone="dark"
+        [noBackground]="true"
+        class="w-full object-cover"
       />
     </div>
 
@@ -169,7 +145,10 @@
           alt="Floofy reference sheet"
           height="2048"
           width="1536"
-          appCard tone="dark" [noBackground]="true" class="max-h-[90svh] w-auto"
+          appCard
+          tone="dark"
+          [noBackground]="true"
+          class="max-h-[90svh] w-auto"
         />
       </div>
     </div>
