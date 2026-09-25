@@ -53,6 +53,16 @@ describe('Control', () => {
     expect(inputEl().classList.contains('placeholder:text-on-dark-body-subtle')).toBe(true);
   });
 
+  it('uses the light-tone placeholder color when given light', () => {
+    // Regression coverage for a real bug /code-review caught: a template-literal-built class name
+    // (`placeholder:text-on-${tone}-body-subtle`) only gets its CSS generated for whichever tone happens to
+    // appear as a literal string elsewhere in the codebase -- 'light' didn't, so it silently built with no
+    // rule at all. Fixed via a lookup table (control.ts's PLACEHOLDER_CLASS); this test exercises the branch
+    // that was previously unverified.
+    create({ tone: 'light' });
+    expect(inputEl().classList.contains('placeholder:text-on-light-body-subtle')).toBe(true);
+  });
+
   it('uses the neutral border while untouched, even if invalid', () => {
     create();
     expect(inputEl().classList.contains('border-border')).toBe(true);

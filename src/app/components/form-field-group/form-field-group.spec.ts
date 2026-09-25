@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { form, FormField, maxLength, required } from '@angular/forms/signals';
-import { FormFieldGroup } from './form-field';
+import { FormFieldGroup } from './form-field-group';
 
 @Component({
   selector: 'app-form-field-test-host',

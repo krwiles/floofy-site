@@ -11,7 +11,7 @@ import { Section } from '../components/section/section';
 import { Card } from '../directives/card';
 import { Button } from '../directives/button';
 import { SocialLinks } from '../components/social-links/social-links';
-import { FormFieldGroup } from '../components/form-field/form-field';
+import { FormFieldGroup } from '../components/form-field-group/form-field-group';
 import { Control } from '../directives/control';
 import { FormStatus } from '../components/form-status/form-status';
 import { createFormSubmission } from '../forms/form-submission';

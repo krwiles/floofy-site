@@ -1,11 +1,18 @@
 import { Directive, computed, inject, input } from '@angular/core';
 import { FormField } from '@angular/forms/signals';
 import { Tone } from '../models/tone';
+import { joinClasses } from '../utils/join-classes';
 
-/** Joins class fragments with a single space, dropping any empty ones. Mirrors hero.ts's own helper. */
-function joinClasses(...parts: string[]): string {
-  return parts.filter(Boolean).join(' ');
-}
+// A lookup table, not a `placeholder:text-on-${tone}-body-subtle` template literal -- Tailwind can only
+// generate a utility class it finds as a complete literal string somewhere in scanned source. A template
+// literal means only whichever tone happens to appear verbatim elsewhere (e.g. in a spec file) gets its class
+// generated; the others silently render with no themed placeholder color at all, no build error, no warning.
+// Same lesson as hero.ts's own TONE_CLASSES map.
+const PLACEHOLDER_CLASS: Record<Tone, string> = {
+  light: 'placeholder:text-on-light-body-subtle',
+  middle: 'placeholder:text-on-middle-body-subtle',
+  dark: 'placeholder:text-on-dark-body-subtle',
+};
 
 /**
  * Supplies the shared input styling (today duplicated ~12 times across contact/reviews/commission) -- see
@@ -42,7 +49,7 @@ export class Control {
     joinClasses(
       'mt-2 w-full rounded-xl border p-3 bg-section-light',
       this.invalid() ? 'border-error' : 'border-border',
-      `placeholder:text-on-${this.tone()}-body-subtle`,
+      PLACEHOLDER_CLASS[this.tone()],
       'focus-visible:outline-2 focus-visible:outline-brand-strong',
     ),
   );
