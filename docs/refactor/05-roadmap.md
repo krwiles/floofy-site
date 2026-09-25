@@ -740,13 +740,17 @@ just not this stage's job. Move these into a dedicated `backlog.md` once the who
 2. **Navbar button styling** — the login/menu-toggle buttons share most of `appButton`'s classes but add
    `border border-border` and a fixed `h-10` size; too few instances (2) to justify a variant in Stage 3b. Revisit
    once there's a second real consumer of nav-specific button styling.
-3. **Forms should get tone options** — Phase 5's `app-form-field`/`appControl`/etc. should offer `light`/`middle`/
-   `dark` tone options, matching the Card/Button pattern established in Stage 3b, so a form embedded on any
-   section reads correctly.
+3. ~~Forms should get tone options~~ — **resolved in Phase 5 planning**: `app-form-field`/`appControl` take a
+   `tone` input defaulting to `'middle'` (the only value in use today), matching the Card/Button pattern — see
+   [13-phase-5-plan.md](13-phase-5-plan.md).
 4. **`httpResource` for reviews' GET** — raised during Phase 5 grilling (2026-09-25); owner deferred adopting it
    for `reviews.ts`'s read (manual `.subscribe()` fits today's pattern more directly, since it also needs manual
    re-triggering after a successful post), but asked to keep it flagged as worth investigating separately later,
    independent of Phase 5's `ApiService` work.
+5. **Move `GalleryImageService`'s hardcoded image arrays into a JSON file** — raised by the owner during Phase 5
+   planning (2026-09-25), unrelated to forms; `galleryImages`/`emoteImages`/`chibiImages`/`illustrationImages`
+   are currently hardcoded TS array literals on the service class, unlike `PricingService`, which already reads
+   from `assets/data/pricing.json`. Worth the same treatment, as its own small future piece of work.
 
 ## Open decisions for the owner
 

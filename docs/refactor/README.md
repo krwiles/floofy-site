@@ -26,17 +26,24 @@ design system (Tone, Card, Glass Panel, Hero color, …), kept up to date as ter
 
 ## Documents
 
-| File | Contents |
-| --- | --- |
-| [01-findings.md](01-findings.md) | Audit of the current codebase: architecture, duplication counts, bugs, smells |
-| [02-component-inventory.md](02-component-inventory.md) | Proposed shared components / directives / services, with intended APIs |
-| [03-target-architecture.md](03-target-architecture.md) | Target folder layout, styling layers, data, i18n, forms, testing conventions |
-| [04-upgrade-plan.md](04-upgrade-plan.md) | Angular 22 / TypeScript / Node / Tailwind upgrade and the Flowbite removal analysis |
-| [05-roadmap.md](05-roadmap.md) | Phased, checkable work plan, risks, and open decisions |
-| [06-phase-0-plan.md](06-phase-0-plan.md) | Concrete, commit-by-commit execution plan for Phase 0 (baseline) — done, merged |
-| [07-phase-1-plan.md](07-phase-1-plan.md) | Execution plan for Phase 1 (Angular 22 upgrade) — done, merged via [PR #20](https://github.com/krwiles/floofy-site/pull/20) |
-| [08-phase-2-plan.md](08-phase-2-plan.md) | Execution plan for Phase 2 (design foundations / style layering) — done, merged |
-| [09-phase-3-plan.md](09-phase-3-plan.md) | Concrete plan for Phase 3 stage 3a (primitives: motion & structure), ready to run; 3b/3c settled but detailed later |
+| File                                                           | Contents                                                                                                                    |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| [01-findings.md](01-findings.md)                               | Audit of the current codebase: architecture, duplication counts, bugs, smells                                               |
+| [02-component-inventory.md](02-component-inventory.md)         | Proposed shared components / directives / services, with intended APIs                                                      |
+| [03-target-architecture.md](03-target-architecture.md)         | Target folder layout, styling layers, data, i18n, forms, testing conventions                                                |
+| [04-upgrade-plan.md](04-upgrade-plan.md)                       | Angular 22 / TypeScript / Node / Tailwind upgrade and the Flowbite removal analysis                                         |
+| [05-roadmap.md](05-roadmap.md)                                 | Phased, checkable work plan, risks, and open decisions                                                                      |
+| [06-phase-0-plan.md](06-phase-0-plan.md)                       | Concrete, commit-by-commit execution plan for Phase 0 (baseline) — done, merged                                             |
+| [07-phase-1-plan.md](07-phase-1-plan.md)                       | Execution plan for Phase 1 (Angular 22 upgrade) — done, merged via [PR #20](https://github.com/krwiles/floofy-site/pull/20) |
+| [08-phase-2-plan.md](08-phase-2-plan.md)                       | Execution plan for Phase 2 (design foundations / style layering) — done, merged                                             |
+| [09-phase-3-plan.md](09-phase-3-plan.md)                       | Concrete plan for Phase 3 stage 3a (primitives: motion & structure), ready to run; 3b/3c settled but detailed later         |
+| [10-phase-3b-plan.md](10-phase-3b-plan.md)                     | Execution plan for Phase 3 stage 3b (surfaces & controls: Card, Button) — done, merged                                      |
+| [11-phase-3c-plan.md](11-phase-3c-plan.md)                     | Execution plan for Phase 3 stage 3c (Social link, Brand) — done, merged                                                     |
+| [12-phase-4-plan.md](12-phase-4-plan.md)                       | Execution plan for Phase 4 (Hero and Flowbite JS removal) — done, merged                                                    |
+| [13-phase-5-plan.md](13-phase-5-plan.md)                       | Component/service design and sequencing for Phase 5 (forms and backend access)                                              |
+| [14-phase-5-contact-plan.md](14-phase-5-contact-plan.md)       | Phase 5 execution plan, page 1: contact (builds every shared piece)                                                         |
+| [15-phase-5-reviews-plan.md](15-phase-5-reviews-plan.md)       | Phase 5 execution plan, page 2: reviews                                                                                     |
+| [16-phase-5-commission-plan.md](16-phase-5-commission-plan.md) | Phase 5 execution plan, page 3: commission (adds the Choice components)                                                     |
 
 ## Ground rules while this is in progress
 
