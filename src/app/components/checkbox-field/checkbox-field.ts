@@ -15,8 +15,16 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
  * Built here, in reviews' PR, rather than commission's: reviews is the first page to actually have a checkbox
  * to migrate, ahead of commission in the sequencing, so it creates this shared piece rather than waiting.
  * `15-phase-5-reviews-plan.md`'s own "New files: none" line didn't account for this -- corrected here, along
- * with a matching note in `16-phase-5-commission-plan.md`. Commission's own checkbox row currently uses
- * `gap-1` instead of this component's default `gap-2` (reviews' value) -- see the `rowGapClass` input below.
+ * with a matching note in `16-phase-5-commission-plan.md`. Commission's own checkbox row used `gap-1` instead
+ * of this component's default `gap-2` (reviews' value) -- the `rowGapClass` input exists so that could have
+ * been kept, but the owner's call when commission's PR reached this question was to standardize on `gap-2`
+ * instead, so `rowGapClass` ends up not actually overridden by any caller. Left in place rather than removed
+ * now, since it already shipped as part of reviews' own reviewed PR -- worth reconsidering if it stays unused.
+ *
+ * `[labelExtra]` (added for commission's PR): an optional projected slot, a sibling of the checkbox's own
+ * `<label>`, for a caller's own jump-to-detail button next to the row -- commission's ToS checkbox needs one;
+ * reviews' agreement checkbox doesn't project anything there, so nothing changes for it. Mirrors `RadioGroup`'s
+ * own `[labelExtra]` slot and the reasoning behind it.
  */
 @Component({
   selector: 'app-checkbox-field',
@@ -31,18 +39,13 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
           <app-required-marker [state]="state()" />
         </span>
       </label>
+      <ng-content select="[labelExtra]" />
     </div>
     <app-field-error-list [state]="state()" />
   `,
 })
 export class CheckboxField {
   readonly field = input.required<Field<boolean>>();
-
-  // Defaults to reviews' own current value. /code-review flagged that commission's existing checkbox row uses
-  // gap-1, not gap-2 -- rather than silently changing commission's spacing when its PR adopts this component,
-  // or silently deciding the two forms should match, this input lets that PR pass 'gap-1' explicitly and put
-  // the actual decision (keep commission's own value, or standardize on reviews') to the owner, same as every
-  // other one-page-difference this refactor has surfaced rather than resolved on its own.
   readonly rowGapClass = input('gap-2');
 
   readonly state = computed(() => this.field()());

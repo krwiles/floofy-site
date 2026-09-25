@@ -38,4 +38,10 @@ export class PricingService {
   getPercentAddon(id: string): number | undefined {
     return this.getCommercialTypePricing(id)?.percentAddon;
   }
+
+  /** Mechanical move from `Commission`'s own `totalPriceUsd` -- same formula, no behavior change. */
+  getTotalPriceUsd(commissionTypeId: string, commercialTypeId: string): number {
+    const multiplier = (this.getPercentAddon(commercialTypeId) ?? 0) + 1;
+    return (this.getBasePriceUsd(commissionTypeId) ?? 0) * multiplier;
+  }
 }
