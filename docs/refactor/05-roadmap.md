@@ -23,9 +23,10 @@ see below. Phase 4 step 7 (`app-parallax` clean-up) executed and **merged into `
 (https://github.com/krwiles/floofy-site/pull/34) — same Track B/no-direct-push situation as step 6, opened as a
 normal PR instead. **Phase 4 is now fully done.** Phase 5 (forms and backend access) planning started
 2026-09-25 via `/grill-with-docs`, design docs merged into `working` as [PR #35]
-(https://github.com/krwiles/floofy-site/pull/35) (docs only, no code). Phase 5 page 1 (contact) executed, [PR #36]
-(https://github.com/krwiles/floofy-site/pull/36) — pending owner review; builds every shared piece from scratch
-— see below. Phases 6–8 not started.
+(https://github.com/krwiles/floofy-site/pull/35) (docs only, no code). Phase 5 page 1 (contact) executed and
+**merged into `working`**, [PR #36](https://github.com/krwiles/floofy-site/pull/36) — builds every shared piece
+from scratch. Phase 5 page 2 (reviews) executed, [PR #37](https://github.com/krwiles/floofy-site/pull/37) —
+pending owner review; adds `CheckboxField` — see below. Phases 6–8 not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
 `slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
@@ -697,8 +698,9 @@ Settled via `/grill-with-docs` (grilling + domain-modeling), 2026-09-25 — see
 [14](14-phase-5-contact-plan.md)/[15](15-phase-5-reviews-plan.md)/[16](16-phase-5-commission-plan.md) for each
 page's own execution plan, merged as [PR #35](https://github.com/krwiles/floofy-site/pull/35) (docs only).
 
-- [~] **Page 1: contact.** Executed, [PR #36](https://github.com/krwiles/floofy-site/pull/36) — pending owner
-  review. Builds every shared piece from scratch, since contact needs almost all of them on day one:
+- [x] **Page 1: contact.** Executed and **merged into `working`**, [PR #36]
+  (https://github.com/krwiles/floofy-site/pull/36). Builds every shared piece from scratch, since contact needs
+  almost all of them on day one:
   `FormFieldGroup` (`app-form-field`, owns label/required-marker/error list, projects the control) and `Control`
   (`appControl`, shared input styling — needs no explicit inputs of its own, reads the sibling `[formField]`
   directive's own `state` signal via `inject(FormField, { self: true })` rather than a redundant second
@@ -733,9 +735,38 @@ page's own execution plan, merged as [PR #35](https://github.com/krwiles/floofy-
   them, so this is robustness for a misuse scenario that doesn't exist yet; hardcoded English field labels/
   validation/status messages were re-flagged, but this is the same already-tracked, deliberately-deferred
   decision from Phase 5 grilling (Phase 7's checklist), not a new finding.
-- [ ] Page 2: reviews — see [15-phase-5-reviews-plan.md](15-phase-5-reviews-plan.md).
-- [ ] Page 3: commission (adds `RadioGroup`/`CheckboxField` for Choice, moves `totalPriceUsd` into
-      `PricingService`) — see [16-phase-5-commission-plan.md](16-phase-5-commission-plan.md).
+- [~] **Page 2: reviews.** Executed, [PR #37](https://github.com/krwiles/floofy-site/pull/37) — pending owner
+  review. Found a real gap in `15-phase-5-reviews-plan.md` during implementation: it said "no new shared
+  components" while also referencing `<app-checkbox-field>`, not noticing contact has no checkbox so nothing had
+  built it yet. Reviews is actually the first page with a checkbox to migrate, ahead of commission, so **this PR
+  builds `CheckboxField`** (`app-checkbox-field`) — per `16-phase-5-commission-plan.md`'s own "whichever page
+  needs it first creates it" note; both plan docs corrected. Renders the checkbox directly (unchanged
+  `class="h-4 w-4"`), not via `appControl` (built for text-like controls); derives its own required-asterisk
+  from the field's `required` signal, matching `FormFieldGroup`. `reviews.ts`/`reviews.html` migrated onto
+  `FormFieldGroup`/`Control`/`CheckboxField`/`FormStatus`/`createFormSubmission()`/`ApiService` (which already
+  had `getReviews`/`submitReview` built, unused until now); `ReviewsService` deleted. Kept reviews' one
+  page-specific behavior: refreshing the list via `requestReviews()` after a successful post. 18 new tests; full
+  suite 188/188; visual diff against reviews' pre-migration render 0.00% at all 3 widths; real-browser check of
+  the submit flow — stopped short of an actual submission, which would post a real, public review to the live
+  site.
+
+  `/code-review` found and fixed 3 real issues: `reviewForm` was never reset after a successful submission
+  (unlike contact's own established pattern), leaving it populated/valid/re-submittable — a double-click could
+  silently duplicate-post; the original pre-migration code didn't reset it either, so this is a deliberate small
+  fix, not preserved behavior. `RequiredMarker`/`FieldErrorList` extracted — `FormFieldGroup` and `CheckboxField`
+  had duplicated this markup verbatim (`RadioGroup`, coming next, would have made it a third copy); both new
+  components' hosts use `display: contents`, since Angular custom elements default to `display: inline` and
+  without this each host would always occupy a flex-item slot in the `gap`-based row even while rendering
+  nothing — re-verified 0.00% visual diff (on both reviews and contact, since `FormFieldGroup` changed) after
+  the fix. `CheckboxField`'s hardcoded `gap-2` gave commission's PR no way to keep its existing `gap-1` short of
+  forking the component — added a `rowGapClass` input, defaulting to `gap-2`; the decision itself is still
+  commission's PR's to raise with the owner. One finding considered, not fixed: the GET error handler went from
+  a `console.log` to a true no-op — matches this phase's explicit, roadmap-tracked console.log removal;
+  user-visible behavior (silently staying on the loading placeholder) is unchanged, since the original handler
+  never updated any UI state either.
+- [ ] Page 3: commission (adds `RadioGroup`/`CheckboxField` for Choice — `CheckboxField` already built by
+      reviews' PR — moves `totalPriceUsd` into `PricingService`) — see
+      [16-phase-5-commission-plan.md](16-phase-5-commission-plan.md).
 - [ ] Verify Flowbite form-style dependency; **then** remove the Flowbite theme/plugin/`@source` CSS and uninstall
       `flowbite` — its own PR once all 3 pages are migrated.
 

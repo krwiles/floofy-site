@@ -7,9 +7,15 @@ adds the two Choice components (nothing else needed them) and the `PricingServic
 ## New files this PR creates
 
 - `src/app/components/radio-group/radio-group.ts` (+ template) — `RadioGroup`, selector `app-radio-group`.
-- `src/app/components/checkbox-field/checkbox-field.ts` (+ template) — `CheckboxField`, selector
-  `app-checkbox-field` (if reviews' PR didn't already create this for its agreement checkbox — whichever page's
-  PR needs it first creates it; commission's own usage is the ToS checkbox either way).
+- **`CheckboxField` already exists** — reviews' PR built it (its own agreement checkbox needed it first,
+  correcting an oversight in `15-phase-5-reviews-plan.md`'s original "no new shared components" claim). This PR
+  just consumes it for the ToS checkbox, no new file. **One thing to raise with the owner before wiring it up**:
+  `CheckboxField` hardcodes `gap-2` on its outer row (carried over from reviews' own markup, unchanged),
+  but commission's current ToS row uses `gap-1` — a small, pre-existing one-page difference between the two
+  forms that predates this refactor. Using `CheckboxField` as-is means commission's checkbox row spacing changes
+  from `gap-1` to `gap-2`; confirm that's fine (matching reviews'/being the standard going forward) rather than
+  assuming it, same as every other one-page-difference decision this refactor has surfaced rather than resolved
+  silently.
 - `ApiService` gains `submitCommission` if not already added in an earlier PR.
 
 ## What changes in `commission.ts` / `commission.html`
