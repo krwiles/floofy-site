@@ -3,9 +3,9 @@ import { FieldState } from '@angular/forms/signals';
 
 /**
  * The `*` shown next to a field's label when it's actually required, derived from the field's own `required`
- * signal rather than a second, independently-set input. Shared by `FormFieldGroup` and `CheckboxField` (and,
- * soon, `RadioGroup`) -- extracted after `/code-review` flagged this markup as duplicated verbatim between the
- * first two.
+ * signal rather than a second, independently-set input. Shared by `FormFieldGroup`, `CheckboxField`, and
+ * `RadioGroup` -- extracted after `/code-review` flagged this markup as duplicated verbatim between the first
+ * two, before `RadioGroup` existed to make it a third.
  */
 @Component({
   selector: 'app-required-marker',

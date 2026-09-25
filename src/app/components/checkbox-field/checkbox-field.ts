@@ -16,10 +16,9 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
  * to migrate, ahead of commission in the sequencing, so it creates this shared piece rather than waiting.
  * `15-phase-5-reviews-plan.md`'s own "New files: none" line didn't account for this -- corrected here, along
  * with a matching note in `16-phase-5-commission-plan.md`. Commission's own checkbox row used `gap-1` instead
- * of this component's default `gap-2` (reviews' value) -- the `rowGapClass` input exists so that could have
- * been kept, but the owner's call when commission's PR reached this question was to standardize on `gap-2`
- * instead, so `rowGapClass` ends up not actually overridden by any caller. Left in place rather than removed
- * now, since it already shipped as part of reviews' own reviewed PR -- worth reconsidering if it stays unused.
+ * of `gap-2` (reviews' value) -- an earlier version of this component took a `rowGapClass` input so commission
+ * could have kept `gap-1`, but the owner's call was to standardize on `gap-2` instead, so nothing ever
+ * overrode it. Removed by `/code-review` on commission's own PR as genuinely dead, untested-by-usage surface.
  *
  * `[labelExtra]` (added for commission's PR): an optional projected slot, a sibling of the checkbox's own
  * `<label>`, for a caller's own jump-to-detail button next to the row -- commission's ToS checkbox needs one;
@@ -31,7 +30,7 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
   imports: [FormField, RequiredMarker, FieldErrorList],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="flex items-start" [class]="rowGapClass()">
+    <div class="flex items-start gap-2">
       <label class="flex items-center space-x-3">
         <input type="checkbox" [formField]="field()" class="h-4 w-4" />
         <span class="text-sm leading-6">
@@ -46,7 +45,6 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
 })
 export class CheckboxField {
   readonly field = input.required<Field<boolean>>();
-  readonly rowGapClass = input('gap-2');
 
   readonly state = computed(() => this.field()());
 }
