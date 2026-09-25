@@ -601,6 +601,25 @@ for Flowbite-JS-driven pieces.
       change at all (0.06%–0.92%, matching exactly what's described above); every other page — including about
       and commission, whose only changes were the two invisible-by-design normalizations — stays byte-for-byte
       0.00%. 11 tests (1 removed, matching the removed input); full suite 133/133.
+
+      **Second simplification round, same PR**: asked to keep pushing further, naming `imageWrapperExtraClass`,
+      `backgroundClass`, `flourishSizeClasses`, `heroImagePositionClasses`, and a merge of `cardAlign`/
+      `contentJustifyClass` into one left/right input. Two of those five turned out not to need any change:
+      `backgroundClass` holds each page's own distinct hero color — bespoke design tokens sampled from that
+      page's image (see Phase 2's own notes), not incidental duplication, so left alone; `contentJustifyClass`
+      was already a single computed value derived from the one `cardAlign` input, not a second input needing to
+      be merged, so also left alone. The other three were removed: `flourishSizeClasses` — standardized *to*
+      home's own original always-visible behavior rather than away from it, reversing the previous round's
+      explicit decision to keep it as a one-page difference; `heroImagePositionClasses`/`imageWrapperExtraClass`
+      — commission's inner hero image now positions the same way as every other page (plain `absolute inset-0`,
+      no `mt-14` offset), the two riskier, structural quirks the previous round had deliberately left alone.
+      Verified via another targeted before/after diff: home stays 0.00% (it already had the standardized
+      flourish behavior); every other page shows a small diff only at the 375px width (0.01%–0.11% — the
+      flourish was already visible at md/lg, so only the smallest breakpoint's "hidden" removal is visible);
+      commission shows a larger, consistent diff across all three widths (1.8%–2.9%, from losing both the
+      `mt-14` offset and the `lg:absolute`-only positioning at every width, not just below `lg`). 12 tests (1
+      added, replacing the removed default-value check with a behavioral "always visible" one); full suite
+      134/134.
 - [ ] `app-parallax` clean-up (single shared scroll source instead of one listener per instance; revisit the
       underlying technique later if a shared listener alone doesn't fix the motion lag the owner's noticed).
 
