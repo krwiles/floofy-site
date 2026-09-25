@@ -165,8 +165,10 @@ Choice components plus the `PricingService` move. One PR per page, in the order 
    [15-phase-5-reviews-plan.md](15-phase-5-reviews-plan.md).
 3. **Commission** — adds `RadioGroup` and `CheckboxField`, plus the `PricingService` move, then migrates
    commission. See [16-phase-5-commission-plan.md](16-phase-5-commission-plan.md).
-4. **Flowbite CSS removal** — done, [PR #39](https://github.com/krwiles/floofy-site/pull/39). A fresh grep
-   across `src/app` (including all 3 migrated forms) confirmed zero remaining Flowbite classes/JS hooks before
+4. **Flowbite CSS removal** — done, combined with commission's own PR as [PR #40]
+   (https://github.com/krwiles/floofy-site/pull/40) after a branch-mixup recovery (see `05-roadmap.md`'s
+   Phase 5 section for the full story — PR #38/#39 were closed in favor of this one). A fresh grep across
+   `src/app` (including all 3 migrated forms) confirmed zero remaining Flowbite classes/JS hooks before
    removing the theme/plugin import and `@source` line from `src/styles.css` and uninstalling the `flowbite`
    package. Visual diff came back 0.00% across all 8 routes × 3 widths.
 

@@ -25,11 +25,14 @@ normal PR instead. **Phase 4 is now fully done.** Phase 5 (forms and backend acc
 2026-09-25 via `/grill-with-docs`, design docs merged into `working` as [PR #35]
 (https://github.com/krwiles/floofy-site/pull/35) (docs only, no code). Phase 5 page 1 (contact) executed and
 **merged into `working`**, [PR #36](https://github.com/krwiles/floofy-site/pull/36) — builds every shared piece
-from scratch. Phase 5 page 2 (reviews) executed, [PR #37](https://github.com/krwiles/floofy-site/pull/37) —
-pending owner review; adds `CheckboxField`. Phase 5 page 3 (commission), the last page, executed, [PR #38]
-(https://github.com/krwiles/floofy-site/pull/38) — pending owner review, **stacked on PR #37** (targets
-`refactor/phase-5-reviews`, not `working`, since it needs `CheckboxField`; retarget once #37 merges); adds
-`RadioGroup` — see below. Phases 6–8 not started.
+from scratch. Phase 5 page 2 (reviews) executed and **merged into `working`**, [PR #37]
+(https://github.com/krwiles/floofy-site/pull/37) — adds `CheckboxField`. Phase 5 page 3 (commission) executed,
+adding `RadioGroup` — originally opened as PR #38 stacked on #37, but #38 merged into the `refactor/phase-5-
+reviews` *branch* (its declared base) rather than into `working`, after `working` had already absorbed #37 —
+so #38's content never actually reached `working` and was heading for silent loss once that branch was
+cleaned up. Flowbite removal (originally PR #39, stacked on #38) hit the same fate by extension. **Recovered
+as one combined PR, #40, opened directly against `working`** (no more stacking, precisely to stop this from
+happening a third time) — see below for the full recovery and what's in it. Phases 6–8 not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
 `slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
@@ -767,24 +770,22 @@ page's own execution plan, merged as [PR #35](https://github.com/krwiles/floofy-
   a `console.log` to a true no-op — matches this phase's explicit, roadmap-tracked console.log removal;
   user-visible behavior (silently staying on the loading placeholder) is unchanged, since the original handler
   never updated any UI state either.
-- [~] **Page 3: commission**, the last page. Executed, [PR #38](https://github.com/krwiles/floofy-site/pull/38)
-  — pending owner review, stacked on PR #37 (see the summary note above). Adds `RadioGroup` (`app-radio-group`,
-  Choice's pill-radio-group presentation, sharing `RequiredMarker`/`FieldErrorList` with `FormFieldGroup`/
-  `CheckboxField`) and an optional `[labelExtra]` projected slot on both `RadioGroup` and `CheckboxField`, for
-  commission's own jump-to-detail "?" buttons. `usageType`'s option labels append a live percent-addon suffix
-  for 3 of 5 options, built in TypeScript (`I18nService.t()` + a small percent formatter) rather than template
-  pipes, since `RadioGroup`'s options are plain data — verified in a real browser: picking a type updates the
-  price display correctly (e.g. illustration $80 × 1.5 promotion addon = $120), and `scrollToForm()` still
-  pre-selects the right pill. Migrated the rest onto `FormFieldGroup`/`Control`/`FormStatus`/
-  `createFormSubmission()`/`ApiService` (`submitCommission` already built, unused until now); `CommissionService`
-  deleted. Moved `totalPriceUsd` onto `PricingService` as `getTotalPriceUsd` (mechanical, 3 new tests). Added a
-  `required()` validator for `commissionType`, previously undeclared even though its label always showed a
-  required asterisk unconditionally — `RadioGroup` derives that asterisk from the field's own signal now, so
-  this keeps the marker showing with no behavioral change (a radio group always has a default value selected,
-  so this can never actually fail in practice). `scrollToElement`/focus-highlight left completely untouched,
-  out of scope. 19 new tests; full suite 200/200; real-browser check of the submit flow (price updates, pill
-  pre-selection, all 5 genuinely-invalidatable fields' errors) — stopped short of an actual submission, which
-  would send a real commission request through the live Lambda.
+- [~] **Page 3: commission**, the last page, **and Flowbite removal**. Both executed; **recovered and combined
+  into one PR, [#40](https://github.com/krwiles/floofy-site/pull/40)**, pending owner review — see the branch-
+  mixup note below for why. Commission adds `RadioGroup` (`app-radio-group`, Choice's pill-radio-group
+  presentation, sharing `RequiredMarker`/`FieldErrorList` with `FormFieldGroup`/`CheckboxField`) and an optional
+  `[labelExtra]` projected slot on both `RadioGroup` and `CheckboxField`, for commission's own jump-to-detail "?"
+  buttons. `usageType`'s option labels append a live percent-addon suffix for 3 of 5 options, built in
+  TypeScript (`I18nService.t()` + a small percent formatter) rather than template pipes, since `RadioGroup`'s
+  options are plain data — verified in a real browser: picking a type updates the price display correctly
+  (e.g. illustration $80 × 1.5 promotion addon = $120), and `scrollToForm()` still pre-selects the right pill.
+  Migrated the rest onto `FormFieldGroup`/`Control`/`FormStatus`/`createFormSubmission()`/`ApiService`
+  (`submitCommission` already built, unused until now); `CommissionService` deleted. Moved `totalPriceUsd` onto
+  `PricingService` as `getTotalPriceUsd` (mechanical, 3 new tests). Added a `required()` validator for
+  `commissionType`, previously undeclared even though its label always showed a required asterisk
+  unconditionally — `RadioGroup` derives that asterisk from the field's own signal now, so this keeps the
+  marker showing with no behavioral change (a radio group always has a default value selected, so this can
+  never actually fail in practice). `scrollToElement`/focus-highlight left completely untouched, out of scope.
 
   **Three real, pre-existing discrepancies found and standardized, per the owner's explicit call** (same
   "standardize rather than preserve" direction as Stage 3b/Phase 4's own precedent): `FormFieldGroup`'s label
@@ -797,27 +798,53 @@ page's own execution plan, merged as [PR #35](https://github.com/krwiles/floofy-
   unexplained size-mismatch in the scripted visual diff, which can't produce a percentage once page height
   itself changes. All three are small, deliberate, disclosed visual changes on this one page.
 
-  `/code-review` found and fixed 3 minor issues: `CheckboxField`'s `rowGapClass` input turned out genuinely
-  dead — no caller ever overrode it, since commission standardized on the default instead of using `gap-1` —
-  removed while PR #37 (which introduced it) was still open, rather than left in place. `RequiredMarker`'s and
-  `FieldErrorList`'s doc comments still said "and, soon, `RadioGroup`" even though this PR adds `RadioGroup`
-  and already wires it in as a consumer of both — updated to reflect that.
+  A first `/code-review` pass found and fixed 3 minor issues: `CheckboxField`'s `rowGapClass` input turned out
+  genuinely dead — no caller ever overrode it, since commission standardized on the default instead of using
+  `gap-1` — removed while it was still safe to do so; `RequiredMarker`'s and `FieldErrorList`'s doc comments
+  still said "and, soon, `RadioGroup`" even though `RadioGroup` already wires them in — updated to reflect
+  that.
 
-  **Phase 5 is now fully executed** (all 3 pages), pending merge of PR #37 and PR #38.
-- [~] **Flowbite removal.** Executed, [PR #39](https://github.com/krwiles/floofy-site/pull/39) — pending owner
-  review, stacked on PR #38 (which stacks on #37 — see the summary note above; retarget once earlier PRs
-  merge). Verified fresh (not just trusting earlier grepping) that no Flowbite-provided class or JS hook
-  remains anywhere in `src/app`, including the 3 now-migrated forms — confirmed zero matches for `flowbite`
-  imports, `rounded-base`, and every Flowbite JS data-attribute (`data-collapse-toggle`, `data-dropdown`,
-  `data-modal`, etc.) across the whole app. Removed all 3 Flowbite lines from `src/styles.css` (`@import
-  'flowbite/src/themes/default'`, `@plugin 'flowbite/plugin'`, `@source '../node_modules/flowbite'`);
-  uninstalled the `flowbite` package (14 packages removed with its own deps). **No interactive Flowbite JS or
-  CSS remains anywhere in the project** — the removal effort that spanned Phase 4 and Phase 5 is complete.
-  Bonus find: removing Flowbite's own CSS also silently fixed a "2 rules skipped due to selector errors: Empty
-  sub-selector" build warning that had appeared in every build all session — it was coming from Flowbite's own
-  stylesheet, not this project's code. CSS bundle dropped from 115 KB to 51 KB. Verified: typecheck, full suite
-  200/200, production build clean, visual diff **0.00% across all 8 routes × 3 widths** — confirming the
-  earlier grep-based verification was genuinely thorough, not just assumed.
+  **Branch mixup, at PR scale this time (2026-09-25):** while a *second* `/code-review` pass on commission's
+  work was running, the owner merged commission's PR — but it had been stacked on reviews' branch (to reach
+  `CheckboxField`), and *that* branch had itself already been merged into `working` moments earlier. So
+  commission's PR merged into a now-detached branch, not `working` — its content, and Flowbite removal stacked
+  on top of it, were heading for silent loss the next time that branch got cleaned up. Same root cause as the
+  smaller mixups documented earlier in this phase (a stacked PR's base merging out of order), just at the scale
+  of a whole PR rather than one stray commit. The second `/code-review` pass's own real findings still applied
+  once recovered: `RequiredMarker`/`FieldErrorList` now take `field` directly instead of three call sites each
+  redoing the same one-line adapter; commission's three identical "jump to detail" buttons extracted to
+  `JumpButton` (`app-jump-button`); `formatPercentAddon` now calls the already-injected `PercentPipe` directly
+  instead of a hand-rolled reimplementation of its rounding rule. That same review round also surfaced 3 false
+  positives from scoping its diff too broadly (against `main`, ~30 commits behind `working`) — each verified
+  against actual git history rather than acted on: commission's carousels rendering without `[noBackground]`
+  (Phase 4's own deliberate "no card framing" redesign, PR #28, already merged), the email social link's
+  aria-label wording (Stage 3c's own settled convention, already merged), and `hero.ts`'s `TONE_CLASSES`
+  duplicating `section-header.ts`'s map (already disclosed in `hero.ts`'s own doc comment as a known,
+  unresolved inconsistency). One pre-existing gap disclosed, not fixed: `referenceLinks`/`additionalNotes` have
+  `maxLength` validators but no `<app-form-field>` wrapper to show an error if violated — predates this whole
+  migration; a proper fix needs a new slot on `FormFieldGroup` for the "note" hint text these two fields have,
+  which its template has no room for today.
+
+  Recovered by rebasing everything unique (5 commits) directly onto the real, current `working` tip, then
+  re-verifying completely from scratch rather than trusting the rebase alone — typecheck, full suite 206/206,
+  production build clean, a full 8-route × 3-width visual diff **0.00% everywhere**, and a real-browser
+  re-check of the jump buttons post-extraction. Opened as PR #40 **directly against `working`, no stacking** —
+  deliberately, to stop this from happening again. PR #38 and PR #39 closed with an explanation pointing to it;
+  the now-superseded branches (`refactor/phase-5-commission`, `-reviews`, `-flowbite-removal`) deleted, each
+  verified byte-for-byte captured in PR #40's branch first.
+
+  Flowbite removal itself: verified fresh (not just trusting earlier grepping) that no Flowbite-provided class
+  or JS hook remains anywhere in `src/app`, including all 3 now-migrated forms — confirmed zero matches for
+  `flowbite` imports, `rounded-base`, and every Flowbite JS data-attribute across the whole app. Removed all 3
+  Flowbite lines from `src/styles.css` (`@import 'flowbite/src/themes/default'`, `@plugin 'flowbite/plugin'`,
+  `@source '../node_modules/flowbite'`); uninstalled the `flowbite` package (14 packages removed with its own
+  deps). **No interactive Flowbite JS or CSS remains anywhere in the project** — the removal effort that
+  spanned Phase 4 and Phase 5 is complete. Bonus find: removing Flowbite's own CSS also silently fixed a "2
+  rules skipped due to selector errors: Empty sub-selector" build warning that had appeared in every build all
+  session — it was coming from Flowbite's own stylesheet, not this project's code. CSS bundle dropped from
+  115 KB to 51 KB.
+
+  **Phase 5 is now fully executed** (all 3 pages + Flowbite removal), pending merge of PR #40.
 
 ## Phase 6 — Restructure
 
