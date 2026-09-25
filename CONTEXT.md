@@ -8,17 +8,18 @@ detail, no file paths as instructions, no code. See `docs/refactor/` for how the
 A section's place on the light → dark background scale. There are three: **Light**, **Middle**, **Dark** — each
 with an **Alt** variant (an alternate shade of the same tone, used to zebra-stripe consecutive sections of the same
 tone). Every tone has its own heading, body, and subtle-body text colors, so text always has a correct pairing for
-the tone it sits on. Tone is a property of a *section*, not of the page as a whole — a single page moves through
+the tone it sits on. Tone is a property of a _section_, not of the page as a whole — a single page moves through
 several tones top to bottom.
 
 ## Card
 
 An opaque content container with a tinted gradient fill and a soft shadow, used for pricing tiles, terms tiles, the
-about-page social block, and similar grouped content. A Card is always drawn *for* a specific Tone (its fill colors
+about-page social block, and similar grouped content. A Card is always drawn _for_ a specific Tone (its fill colors
 derive from that tone's palette) and has a plain and a "special" (featured) variant per tone.
 
 **Not the same as:**
-- **Glass Panel** — a *translucent*, blurred surface (backdrop-filter) used specifically for the panel that sits
+
+- **Glass Panel** — a _translucent_, blurred surface (backdrop-filter) used specifically for the panel that sits
   over a hero's background image. Glass Panels are not tied to a Tone the way Cards are; they read correctly over a
   photographic background rather than a flat section fill.
 - **Card Shadow** — the shadow alone, with no fill or border, used standalone where something needs elevation
@@ -35,7 +36,7 @@ Card Shadow radius that varied per usage) is Phase 3b's work — see `docs/refac
 A clickable call-to-action. Has two independent properties, same pattern as a Card: **Variant** (its shape/
 hierarchy — Primary, Secondary, Pill) and **Tone** (which section background it sits on — Light, Middle, Dark, the
 same three as a section's Tone). Unlike a Card, whose fill matches its Tone's own color family so it reads as a
-native surface, a Button's fill *contrasts* against its Tone so it always stands out rather than blending in — a
+native surface, a Button's fill _contrasts_ against its Tone so it always stands out rather than blending in — a
 Light or Middle Button renders darker than its background, a Dark Button renders lighter — mirroring the contrast
 direction of that Tone's heading/body text colors rather than its Card's.
 
@@ -93,3 +94,46 @@ Not one thing — two distinct presentations, each its own component, not two mo
 Both replace the site's previous single Carousel, which was a thin wrapper around Flowbite's own carousel JS and
 matched neither presentation cleanly (fixed grouped slides, a hardcoded shared id that broke with more than one
 instance on a page).
+
+## Form Field
+
+The wrapper around one form input: its label, its required marker, and its validation error list. A Form Field
+owns that surrounding chrome but not the input itself — it projects the actual control rather than rendering it,
+so it works the same way regardless of what kind of control sits inside it. Distinct from **Control** below,
+mirroring Angular Material's own `mat-form-field`/`matInput` split rather than one component doing both jobs.
+
+**Not the same as:**
+
+- **Control** — the thing _inside_ a Form Field that a person actually types into or activates (an `<input>`, a
+  `<textarea>`). A Control supplies its own shared styling and reads its own validity directly; it doesn't need a
+  Form Field to exist (a Choice, below, uses a Control's styling without ever sitting inside a Form Field's
+  label/error chrome, since its label and error placement work differently).
+
+## Choice
+
+Not one thing — two distinct presentations for picking a value, each its own component, not two modes of a
+shared one (same shape as **Carousel**, above):
+
+- **Pill-radio group**: a set of mutually-exclusive options, each rendered as a button-styled radio button
+  (`peer-checked` visual treatment), for choosing exactly one value from a small fixed set (commission's
+  commission-type and usage-type pickers).
+- **Checkbox**: a single boolean, its label rendered inline beside it rather than above it the way a Form
+  Field's label is — visually and structurally its own shape, not a Form Field variant (commission's
+  terms-of-service acceptance, reviews' publish-agreement).
+
+Neither renders inside a Form Field's label/error wrapper; each has its own error placement (below the whole
+group for a pill-radio group, below the checkbox row for a checkbox).
+
+## Form Status
+
+The single, page-visible readout of a form's current submission state — idle, pending, success, or error — text
+and color together, driven from one source of truth. Distinct from **Form Submission** (below): a Form Status
+is what the person sees; a Form Submission is the action that changes it.
+
+## Form Submission
+
+The async action a form runs when a valid submit happens: send the request to the backend, then update Form
+Status to success or error depending on the outcome. Shared shape across every form on the site (send a typed
+request, get back the same `{ message }` response shape, update Form Status) even though each form's actual
+request payload and on-success side effect differ (contact resets its fields; reviews refreshes its list;
+commission does neither).
