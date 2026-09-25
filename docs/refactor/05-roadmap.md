@@ -19,14 +19,15 @@ dimming backdrop + click-outside-to-close) executed and **merged into `working`*
 [PR #32](https://github.com/krwiles/floofy-site/pull/32) — pending owner review; parity-preserving (Track B),
 0.00% visual diff verified on every route/width, then an owner-requested simplification round on the same PR
 that deliberately changed 3 pages' visual output (home/gallery/contact) to remove one-page-only overrides —
-see below. Phase 4 step 7 (`app-parallax` clean-up) not started. Phases 5–8 (top-level)
-not started.
+see below. Phase 4 step 7 (`app-parallax` clean-up) executed, pushed to
+`refactor/phase-4-parallax-scroll-service`, pending `/code-review` and a merge decision — see below. Phases 5–8
+(top-level) not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
 `slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
 clone slot, `instant.set(true)` is set and a `0ms` resync retry is scheduled; only that retry's own callback ever
 sets `instant` back to `false`. If a fresh, opposite-direction `navigate()` call arrives before the retry fires, the
-guard that cancels the stale retry clears the timer *without* running its callback — so `instant` never resets.
+guard that cancels the stale retry clears the timer _without_ running its callback — so `instant` never resets.
 Once stuck, the auto-advance-restart effect (gated on `!instant()`) stops rescheduling (auto-advance silently
 stops), and every future manual navigation snaps instantly with no transition. This is a plausible contributor to
 the still-unreproduced "occasionally jumps/reverses after the arrows are used" symptom already documented in the
@@ -34,7 +35,7 @@ component's own doc comment. Reported to the owner rather than fixed inline — 
 awaiting a decision on a follow-up fix.
 
 **Branch/PR housekeeping note (2026-09-23):** the roadmap-doc commit recording PR #28's two follow-up rounds was
-pushed a few minutes *after* the owner had already merged #28 on GitHub, so it landed on the now-merged,
+pushed a few minutes _after_ the owner had already merged #28 on GitHub, so it landed on the now-merged,
 dangling `refactor/phase-4-slideshow-carousel` branch instead of `working`. Step 4's work was initially committed
 on top of that same stale branch by mistake. Both commits were moved onto a fresh `refactor/phase-4-language-toggle`
 branch based on the real `working` tip before pushing, so PR #29 contains only the roadmap-doc commit plus step 4's
@@ -61,9 +62,10 @@ remaining Track B item.
 
 **3 bugs found outside phase work, [PR #25](https://github.com/krwiles/floofy-site/pull/25) — merged into
 `working` — all in `<app-flourish>`, all from the same root gap:** every caller-facing sizing/positioning class (a
-height utility like `h-8`/`h-12`, `absolute`, `hidden md:inline-block`) goes on the `<app-flourish>` *host*, one
+height utility like `h-8`/`h-12`, `absolute`, `hidden md:inline-block`) goes on the `<app-flourish>` _host_, one
 element above the `<span class="flourish">` that actually has the mask/`aspect-ratio` CSS — so none of those
 classes ever reached the element that needed them.
+
 1. **Invisible** (the owner's original report, `variant="end" [flip]="true"`): `.flourish` never set its own
    `display`, so it was a plain `display: inline` span — `aspect-ratio`/`min-height`/`width: auto` have no effect
    on a non-replaced inline box, making it a genuine 0×0 box everywhere. It only ever looked like it worked when a
@@ -73,7 +75,7 @@ classes ever reached the element that needed them.
 2. **Wrong-sized** (found immediately after fixing #1): every flourish sized itself from `min-height: 1em` — the
    ambient font-size at that point in the DOM — ignoring the host's own height utility entirely; a `h-12` (48px)
    hero flourish rendered at 16px, `app-section-header`'s `h-8` flourish likewise. Fix: a `Flourish`-component-
-   *scoped* `.flourish { height: 100%; }` (in `flourish.ts`'s own `styles`, not the shared CSS file) — deliberately
+   _scoped_ `.flourish { height: 100%; }` (in `flourish.ts`'s own `styles`, not the shared CSS file) — deliberately
    not shared, since `app-section-divider` uses `.flourish` directly (unwrapped) with its own height utility on the
    same element, and an unscoped `height: 100%` there would be unlayered CSS unconditionally beating that
    utility's layered Tailwind rule, breaking the one usage that already worked.
@@ -185,7 +187,7 @@ slated for replacement by `appReveal`/`RevealService` in Phase 3.
 Concrete, ready-to-execute plan: **[08-phase-2-plan.md](08-phase-2-plan.md)** (settled 2026-09-22 via
 `grill-with-docs`). Narrower than originally sketched below — a shared shadow scale, z-index scale, and
 section-padding scale are all deferred to Phase 3 (no consumer yet; would be speculative). The card/glass system
-blocker is resolved (finished, see Phase 0) but its *application* across the site is also Phase 3 work, not this
+blocker is resolved (finished, see Phase 0) but its _application_ across the site is also Phase 3 work, not this
 reorganization.
 
 ✅ Done (2026-09-22). Executed via `08-phase-2-plan.md` on `refactor/phase-2-design-foundations`, fast-forward
@@ -198,7 +200,7 @@ phase's changes.
 - [x] Added 8 hero/backdrop color tokens (bespoke per page, sampled from each page's hero image — not a shared
       palette; see `CONTEXT.md`). Verified every value matches its original hex exactly in the built CSS.
 - [x] De-Flowbited three radius classes (`rounded-base`/`rounded-sm`/`rounded-lg` → `rounded-xl`/`rounded-md`/
-      `rounded-2xl`, 47 usages) — no custom radius token needed. `rounded-sm`/`rounded-lg` were *also* silently
+      `rounded-2xl`, 47 usages) — no custom radius token needed. `rounded-sm`/`rounded-lg` were _also_ silently
       Flowbite-dependent, not just `rounded-base`; verified exact pixel-value matches (12px/6px/16px) in the built
       CSS.
 - [x] Fixed `streaming.css`'s hand-duplicated brand-color gradient to reference `var(--color-brand)`/
@@ -253,30 +255,30 @@ sub-phases, each its own branch and merge decision — they have very different 
         nearly every instance, so narrowed scope to just the outer tone/pattern shell — the padding stays as the
         caller's own content, not a parametrized input.
   - **Real bug found during the visual-diff step, not by `ng build`/`ng test`**: `app-section`'s pattern-mode
-        content rendered completely empty (about's OC section, gallery's whole image grid, commission's inquire
-        section all silently disappeared) — two `<ng-content>` tags across `@if`/`@else` branches, which Angular
-        resolves at compile time rather than per the active runtime branch, so only one branch ever received
-        projected content. Fixed with `<ng-template>` + `*ngTemplateOutlet` (the standard idiom for this). Also
-        fixed: `app-section`/`app-section-header` both defaulted to `display: inline` (confirmed via computed
-        style), breaking layout height everywhere they're used — both now set `:host { display: block }`. The
-        test meant to catch the `ng-content` bug didn't, because it asserted content projection via a manual
-        `appendChild()` that never exercises Angular's real projection mechanism — replaced with a proper
-        host-component test, verified to fail pre-fix and pass post-fix.
+    content rendered completely empty (about's OC section, gallery's whole image grid, commission's inquire
+    section all silently disappeared) — two `<ng-content>` tags across `@if`/`@else` branches, which Angular
+    resolves at compile time rather than per the active runtime branch, so only one branch ever received
+    projected content. Fixed with `<ng-template>` + `*ngTemplateOutlet` (the standard idiom for this). Also
+    fixed: `app-section`/`app-section-header` both defaulted to `display: inline` (confirmed via computed
+    style), breaking layout height everywhere they're used — both now set `:host { display: block }`. The
+    test meant to catch the `ng-content` bug didn't, because it asserted content projection via a manual
+    `appendChild()` that never exercises Angular's real projection mechanism — replaced with a proper
+    host-component test, verified to fail pre-fix and pass post-fix.
   - **Correction (found during Stage 3b): the "honest, unresolved uncertainty" below was wrong.** At the time,
-        the visual diff against the Phase 0 baseline still showed 30–79% changed on most routes even after both
-        fixes above, and the best guess was below-the-fold `appReveal` content being legitimately unrevealed at
-        capture time. That guess was never actually verified, and it wasn't the real cause: `Section` computes
-        its tone class as a runtime string (`` `bg-section-${tone}` ``), which Tailwind's content scanner can
-        never see as a literal candidate — `bg-section-middle`/`bg-section-dark` were silently never generated,
-        so every `app-section` using either tone rendered with **no background color at all** from the moment
-        this component shipped. Found while investigating an owner report during Stage 3b (see that section
-        below); fixing it alone dropped the diff on unaffected routes from 30–79% down to 0.00–0.16%. Left here
-        rather than edited away, as a record that the original diagnosis was a guess that turned out incomplete,
-        not a verified fact — exactly the distinction this note tried to draw at the time.
+    the visual diff against the Phase 0 baseline still showed 30–79% changed on most routes even after both
+    fixes above, and the best guess was below-the-fold `appReveal` content being legitimately unrevealed at
+    capture time. That guess was never actually verified, and it wasn't the real cause: `Section` computes
+    its tone class as a runtime string (`` `bg-section-${tone}` ``), which Tailwind's content scanner can
+    never see as a literal candidate — `bg-section-middle`/`bg-section-dark` were silently never generated,
+    so every `app-section` using either tone rendered with **no background color at all** from the moment
+    this component shipped. Found while investigating an owner report during Stage 3b (see that section
+    below); fixing it alone dropped the diff on unaffected routes from 30–79% down to 0.00–0.16%. Left here
+    rather than edited away, as a record that the original diagnosis was a guess that turned out incomplete,
+    not a verified fact — exactly the distinction this note tried to draw at the time.
   - **PR creation blocked again, then fixed mid-phase**: the GitHub MCP token still returned `403` at first
-        (same issue as Phase 1); branch pushed, PR body handed to the owner to paste manually. The owner then
-        re-scoped the fine-grained PAT's permissions and it started working — see the PR #21 note above. PRs
-        #22 and #23 (and this note's own correction) were all created directly from here on.
+    (same issue as Phase 1); branch pushed, PR body handed to the owner to paste manually. The owner then
+    re-scoped the fine-grained PAT's permissions and it started working — see the PR #21 note above. PRs
+    #22 and #23 (and this note's own correction) were all created directly from here on.
 - [x] **3b — Surfaces & controls** (real visual change on every page — **always a PR**, regardless of diff) —
       executed on `refactor/phase-3b-surfaces-controls`, per **[10-phase-3b-plan.md](10-phase-3b-plan.md)**.
       `[appCard]` (`tone`/`special`/`noBackground`/`glass`) and `appButton` (`variant` × `tone`) directives,
@@ -289,7 +291,7 @@ sub-phases, each its own branch and merge decision — they have very different 
       `<div>` around the iframe instead.
     - Every full-card migration kept its original `border-white/N` utility alongside `[appCard]`, reasoning
       (wrongly) from `contact.html`'s one pre-existing `card-on-section-middle` usage as precedent. Worked out
-      the actual box geometry by hand: a `::before` with `inset:0` resolves against the parent's *padding*
+      the actual box geometry by hand: a `::before` with `inset:0` resolves against the parent's _padding_
       edge, so its own 1px border paints in the ring immediately inside the parent's own border — two adjacent,
       differently-colored 1px rings, not one hidden behind the other the way the already-removed `bg-white/N`
       classes were. Removed the redundant border from all ~15 instances, including retroactively fixing
@@ -339,7 +341,7 @@ sub-phases, each its own branch and merge decision — they have very different 
        visual-diff (`size-mismatch` on every route/width, not just the pages with visible social icons —
        footer's shared `flex-wrap` row was affected everywhere).
     2. Donate's migration to the shared chip dropped its `text-on-middle-heading` color and `shrink-0` — real
-       losses, not part of the plan's decision #2 (which standardizes chip *sizing* onto about/contact's, not
+       losses, not part of the plan's decision #2 (which standardizes chip _sizing_ onto about/contact's, not
        color or flex-shrink behavior). Restored via a forwarded class on the component's host.
     3. `app-brand`'s `<img>` needed `alt=""` (decorative), not `alt="Floofy"`: the adjacent wordmark text
        already names the link, and inside footer's `<h2 id="footer-brand">` (wrapping the whole component,
@@ -379,7 +381,7 @@ for Flowbite-JS-driven pieces.
       `prefers-reduced-motion` so `appReveal` content no longer captures as invisible below the fold.
 - [x] [`app-rolling-carousel`](specs/app-rolling-carousel.md); migrate home. Executed and merged,
       [PR #27](https://github.com/krwiles/floofy-site/pull/27) (real, intentional redesign on home only —
-      always a PR, not diff-decides-merge). Two real bugs found and fixed *before* code review even
+      always a PR, not diff-decides-merge). Two real bugs found and fixed _before_ code review even
       ran, neither showing as page overflow (masked by the strip's own `overflow: hidden`, so only computed-
       style inspection caught them): `align-items: center` on the outer container meant its flex child never got
       a definite height via flex stretch, so `height: 100%` resolved to `auto` per spec and every image rendered
@@ -415,7 +417,7 @@ for Flowbite-JS-driven pieces.
       clone of the first appended, so there's always a real neighbor to slide to in either direction and the
       transition always runs the correct way, even on the wrap; landing on a clone slot is harmless (pixel-
       identical to the real slide) and gets silently resynced the next time a real move is requested. `/code-
-      review` found and fixed two real issues: touch handlers never claimed the gesture, so a swipe could be
+review` found and fixed two real issues: touch handlers never claimed the gesture, so a swipe could be
       fought by page scroll or a mobile browser's own swipe-back navigation (fixed via a conditional
       `preventDefault` once horizontal intent is clear); a loop-boundary crossing restarted the auto-advance
       timer twice in quick succession instead of once (harmless churn, fixed by skipping the restart during the
@@ -424,68 +426,69 @@ for Flowbite-JS-driven pieces.
       testability trade-off, documented inline.
 
       **Owner-requested follow-up round, same PR**: after seeing the shipped component running, the owner
-      found two real bugs and asked for a spec change.
-      1. **Arrows permanently invisible, even while hovering.** Root cause: the reveal rule was written as a
-         plain descendant selector on the host's *own class* (`.slideshow-carousel:hover .slideshow-carousel__arrow`)
-         — Angular's emulated view encapsulation tags every element *inside* a component's template with an
-         `_ngcontent-*` attribute, but the host element itself gets `_nghost-*` instead, so a selector like this,
-         written from inside that same component's own stylesheet, can never match the host. Fixed with
-         `:host(:hover)`/`:host(:focus-within)`. This environment's `getComputedStyle` proved unreliable for
-         reading back `opacity` specifically (even a forced inline `!important` override wasn't reflected), so
-         verified structurally instead — the fixed selector matches the exact arrow element with higher
-         specificity than the base rule, confirmed via the live stylesheet's own compiled selector text.
-      2. **Spec change: no card framing of its own, at all.** The disclosed `cardTone` shadow-clipping item above
-         turned out to be the wrong thing to fix — the owner decided this component shouldn't have `[appCard]`
-         framing logic internally in the first place. `cardTone`, the `Card` import, and the per-slide
-         `[appCard][noBackground]` wrapper are all removed; every slide is now unconditionally a plain
-         rectangular `<img>`. Commission's 3 usages now apply `appCard tone="dark"` directly to the
-         `<app-slideshow-carousel>` tag instead — `card-on-section-dark`'s own `overflow: hidden` +
-         `border-radius` clips the image to match automatically, confirmed live, no extra CSS needed.
+                  found two real bugs and asked for a spec change.
+                  1. **Arrows permanently invisible, even while hovering.** Root cause: the reveal rule was written as a
+                     plain descendant selector on the host's *own class* (`.slideshow-carousel:hover .slideshow-carousel__arrow`)
+                     — Angular's emulated view encapsulation tags every element *inside* a component's template with an
+                     `_ngcontent-*` attribute, but the host element itself gets `_nghost-*` instead, so a selector like this,
+                     written from inside that same component's own stylesheet, can never match the host. Fixed with
+                     `:host(:hover)`/`:host(:focus-within)`. This environment's `getComputedStyle` proved unreliable for
+                     reading back `opacity` specifically (even a forced inline `!important` override wasn't reflected), so
+                     verified structurally instead — the fixed selector matches the exact arrow element with higher
+                     specificity than the base rule, confirmed via the live stylesheet's own compiled selector text.
+                  2. **Spec change: no card framing of its own, at all.** The disclosed `cardTone` shadow-clipping item above
+                     turned out to be the wrong thing to fix — the owner decided this component shouldn't have `[appCard]`
+                     framing logic internally in the first place. `cardTone`, the `Card` import, and the per-slide
+                     `[appCard][noBackground]` wrapper are all removed; every slide is now unconditionally a plain
+                     rectangular `<img>`. Commission's 3 usages now apply `appCard tone="dark"` directly to the
+                     `<app-slideshow-carousel>` tag instead — `card-on-section-dark`'s own `overflow: hidden` +
+                     `border-radius` clips the image to match automatically, confirmed live, no extra CSS needed.
 
-      **Second follow-up round, two more owner-reported issues**:
-      3. **Sub-pixel image seam**: a column of the neighboring image visible through the transparent edge of
-         alpha-background images (the emote/chibi art), since two adjacent slides — each `translateX()`'d by
-         exactly 100% of the viewport's own (rarely whole-number) pixel width — don't always tile perfectly
-         under the browser's sub-pixel rounding. First fix attempt (uniformly growing every slide via
-         `scale()`) made it *worse*, per the owner's live testing: growing every slide the same amount makes
-         adjacent (still 100%-apart) slides overlap *each other*, and plain DOM/array order — not which one is
-         actually current — decided whose edge won that overlap, letting an off-screen neighbor's transparent
-         edge paint right over the active slide. Corrected, per the owner's own suggested approach: shrink every
-         *inactive* slide slightly (`scaleX(0.99)`) instead, leaving the current slide at full size. No
-         equivalent failure mode — nothing here ever grows into a neighbor. The current slide's own position
-         (`translateX(0%)`) has zero rounding error to begin with; only adjacent slides' percentages are subject
-         to it, and shrinking them inward by a safety margin (~1.6px on a ~319px slide) larger than any possible
-         rounding error (~1px) leaves nothing at the seam for a neighbor to creep into. Verified via direct
-         `getBoundingClientRect` measurements (not just trusting the transform value): the active slide's
-         rendered width exactly matches the viewport's; every inactive slide's edge sits measurably inside the
-         viewport boundary.
-      4. **Occasional direction-reversal/jump-back**, reported as hard to reliably reproduce, more with 4 images
-         than 3, only after using the arrows. Root-caused via a deterministic unit test rather than chased live:
-         the loop-boundary resync's deferred retry captures its delta in a closure at schedule time; a
-         *different* navigate() call (opposite direction) landing before that 0ms-deferred retry fires would get
-         silently overridden once the retry fires and blindly replays its now-stale delta. First fix attempt
-         (clear any pending retry on every fresh call) was too broad — it also cancelled *same-direction* pending
-         retries, silently dropping a legitimate step out of a rapid burst, breaking the existing loop-point
-         test. Corrected to the narrower, direction-aware fix: only cancel the pending retry when the fresh
-         call's direction actually differs from what it was going to do. **This fix is confirmed correct for the
-         specific race it targets (a dedicated regression test proves it), but the owner's original symptom
-         persisted afterward and remains unreproduced** — documented as a known, deferred issue in the
-         component's own doc comment per the owner's explicit direction, rather than continued to be chased
-         without a reliable repro.
+                  **Second follow-up round, two more owner-reported issues**:
+                  3. **Sub-pixel image seam**: a column of the neighboring image visible through the transparent edge of
+                     alpha-background images (the emote/chibi art), since two adjacent slides — each `translateX()`'d by
+                     exactly 100% of the viewport's own (rarely whole-number) pixel width — don't always tile perfectly
+                     under the browser's sub-pixel rounding. First fix attempt (uniformly growing every slide via
+                     `scale()`) made it *worse*, per the owner's live testing: growing every slide the same amount makes
+                     adjacent (still 100%-apart) slides overlap *each other*, and plain DOM/array order — not which one is
+                     actually current — decided whose edge won that overlap, letting an off-screen neighbor's transparent
+                     edge paint right over the active slide. Corrected, per the owner's own suggested approach: shrink every
+                     *inactive* slide slightly (`scaleX(0.99)`) instead, leaving the current slide at full size. No
+                     equivalent failure mode — nothing here ever grows into a neighbor. The current slide's own position
+                     (`translateX(0%)`) has zero rounding error to begin with; only adjacent slides' percentages are subject
+                     to it, and shrinking them inward by a safety margin (~1.6px on a ~319px slide) larger than any possible
+                     rounding error (~1px) leaves nothing at the seam for a neighbor to creep into. Verified via direct
+                     `getBoundingClientRect` measurements (not just trusting the transform value): the active slide's
+                     rendered width exactly matches the viewport's; every inactive slide's edge sits measurably inside the
+                     viewport boundary.
+                  4. **Occasional direction-reversal/jump-back**, reported as hard to reliably reproduce, more with 4 images
+                     than 3, only after using the arrows. Root-caused via a deterministic unit test rather than chased live:
+                     the loop-boundary resync's deferred retry captures its delta in a closure at schedule time; a
+                     *different* navigate() call (opposite direction) landing before that 0ms-deferred retry fires would get
+                     silently overridden once the retry fires and blindly replays its now-stale delta. First fix attempt
+                     (clear any pending retry on every fresh call) was too broad — it also cancelled *same-direction* pending
+                     retries, silently dropping a legitimate step out of a rapid burst, breaking the existing loop-point
+                     test. Corrected to the narrower, direction-aware fix: only cancel the pending retry when the fresh
+                     call's direction actually differs from what it was going to do. **This fix is confirmed correct for the
+                     specific race it targets (a dedicated regression test proves it), but the owner's original symptom
+                     persisted afterward and remains unreproduced** — documented as a known, deferred issue in the
+                     component's own doc comment per the owner's explicit direction, rather than continued to be chased
+                     without a reliable repro.
 
-      **New candidate lead on the deferred symptom, found by `/code-review` during step 4's work, not yet
-      fixed**: that same direction-aware cancellation clears `resyncTimer`/`pendingResyncDelta` on a stale,
-      opposite-direction retry, but never resets `instant` back to `false` — only the timer callback it just
-      cancelled does that. `instant` can get stuck permanently `true`, silently stopping auto-advance (the
-      restart effect is gated on `!instant()`) and forcing every later manual move to snap with no transition.
-      Plausible contributor to point 4 above; reported to the owner as a follow-up candidate rather than fixed
-      inline, since PR #28 is already merged.
+                  **New candidate lead on the deferred symptom, found by `/code-review` during step 4's work, not yet
+                  fixed**: that same direction-aware cancellation clears `resyncTimer`/`pendingResyncDelta` on a stale,
+                  opposite-direction retry, but never resets `instant` back to `false` — only the timer callback it just
+                  cancelled does that. `instant` can get stuck permanently `true`, silently stopping auto-advance (the
+                  restart effect is gated on `!instant()`) and forcing every later manual move to snap with no transition.
+                  Plausible contributor to point 4 above; reported to the owner as a follow-up candidate rather than fixed
+                  inline, since PR #28 is already merged.
 
-      `ng build`/`tsc --noEmit`/`ng test` (101/101) all clean after both follow-up rounds. Verified live in a
-      real browser throughout (not just jsdom, per this refactor's established practice for anything touch/
-      timing/rendering-dependent): 3 independent instances, correct wraparound both directions, hover-pause/
-      resume, auto-advance timing, `appCard`-on-the-tag framing, i18n aria-labels, no console errors, no
-      horizontal page overflow, no sub-pixel seam.
+                  `ng build`/`tsc --noEmit`/`ng test` (101/101) all clean after both follow-up rounds. Verified live in a
+                  real browser throughout (not just jsdom, per this refactor's established practice for anything touch/
+                  timing/rendering-dependent): 3 independent instances, correct wraparound both directions, hover-pause/
+                  resume, auto-advance timing, `appCard`-on-the-tag framing, i18n aria-labels, no console errors, no
+                  horizontal page overflow, no sub-pixel seam.
+
 - [x] [`app-language-toggle`](specs/app-language-toggle.md); extract out of `navbar.html`, move the two flag
       `<svg>`s to real image files. Executed and **merged into `working`**,
       [PR #29](https://github.com/krwiles/floofy-site/pull/29). A plain extraction per the spec's own scope (not
@@ -579,60 +582,106 @@ for Flowbite-JS-driven pieces.
       hardcoded English, not translated, unlike every other page's hero — carried over unchanged from the
       markup it replaced (same pre-existing gap as `reviews.html`'s own hardcoded section heading, left for
       Phase 7). Also found, unrelated to correctness: this app runs zoneless Angular (no `zone.js` dependency) —
-      a test-host pattern of mutating a plain property *after* the first `detectChanges()` is silently never
+      a test-host pattern of mutating a plain property _after_ the first `detectChanges()` is silently never
       picked up by a child's input signal; saved to memory, since it'll affect any future spec using that
       pattern, not just this component's own. 12 new tests (TDD, written first); full suite 134/134; per-page
       and main bundle sizes dropped meaningfully now that the duplicated hero markup is shared.
 
       **Owner-requested simplification round, same PR**: reviewing the new component, the owner asked for fewer
-      inputs — several of the one-off overrides were judged worth standardizing away rather than preserving.
-      Removed 6 inputs: `bodyTextUsesHeadingColor` (gallery/contact/home's description/tagline now use the
-      standard body color, like every other page, instead of the heading color they used to — the very
-      inconsistency the original parity-preserving pass had deliberately kept); `cardPaddingClass` (home's card
-      now uses the same padding as everyone else); `contentWrapperExtraClass` (dropped home's extra `h-full`,
-      redundant next to `min-h-screen` in practice); `heroSectionAriaLabel` (commission's hero image now
-      announces "Hero section" like every other page — screen-reader text only, no visual change);
-      `outerParallaxStrength`/`heroImageParallaxStrength` (about's hero now scrolls at the same speed as every
-      other page instead of its own slightly faster one). `flourishSizeClasses` stays, by explicit owner choice:
-      home's always-visible flourish is a real, deliberate difference worth keeping, not a bug to iron out.
-      Commission's `mt-14`/`lg:absolute`-only image-positioning overrides also stay — riskier structural quirks
-      not raised in this round. Verified via a targeted before/after diff (`git stash` to capture the
-      pre-simplification state, then the post-simplification one): only home/gallery/contact show any visual
-      change at all (0.06%–0.92%, matching exactly what's described above); every other page — including about
-      and commission, whose only changes were the two invisible-by-design normalizations — stays byte-for-byte
-      0.00%. 11 tests (1 removed, matching the removed input); full suite 133/133.
+                  inputs — several of the one-off overrides were judged worth standardizing away rather than preserving.
+                  Removed 6 inputs: `bodyTextUsesHeadingColor` (gallery/contact/home's description/tagline now use the
+                  standard body color, like every other page, instead of the heading color they used to — the very
+                  inconsistency the original parity-preserving pass had deliberately kept); `cardPaddingClass` (home's card
+                  now uses the same padding as everyone else); `contentWrapperExtraClass` (dropped home's extra `h-full`,
+                  redundant next to `min-h-screen` in practice); `heroSectionAriaLabel` (commission's hero image now
+                  announces "Hero section" like every other page — screen-reader text only, no visual change);
+                  `outerParallaxStrength`/`heroImageParallaxStrength` (about's hero now scrolls at the same speed as every
+                  other page instead of its own slightly faster one). `flourishSizeClasses` stays, by explicit owner choice:
+                  home's always-visible flourish is a real, deliberate difference worth keeping, not a bug to iron out.
+                  Commission's `mt-14`/`lg:absolute`-only image-positioning overrides also stay — riskier structural quirks
+                  not raised in this round. Verified via a targeted before/after diff (`git stash` to capture the
+                  pre-simplification state, then the post-simplification one): only home/gallery/contact show any visual
+                  change at all (0.06%–0.92%, matching exactly what's described above); every other page — including about
+                  and commission, whose only changes were the two invisible-by-design normalizations — stays byte-for-byte
+                  0.00%. 11 tests (1 removed, matching the removed input); full suite 133/133.
 
-      **Second simplification round, same PR**: asked to keep pushing further, naming `imageWrapperExtraClass`,
-      `backgroundClass`, `flourishSizeClasses`, `heroImagePositionClasses`, and a merge of `cardAlign`/
-      `contentJustifyClass` into one left/right input. Two of those five turned out not to need any change:
-      `backgroundClass` holds each page's own distinct hero color — bespoke design tokens sampled from that
-      page's image (see Phase 2's own notes), not incidental duplication, so left alone; `contentJustifyClass`
-      was already a single computed value derived from the one `cardAlign` input, not a second input needing to
-      be merged, so also left alone. The other three were removed: `flourishSizeClasses` — standardized *to*
-      home's own original always-visible behavior rather than away from it, reversing the previous round's
-      explicit decision to keep it as a one-page difference; `heroImagePositionClasses`/`imageWrapperExtraClass`
-      — commission's inner hero image now positions the same way as every other page (plain `absolute inset-0`,
-      no `mt-14` offset), the two riskier, structural quirks the previous round had deliberately left alone.
-      Verified via another targeted before/after diff: home stays 0.00% (it already had the standardized
-      flourish behavior); every other page shows a small diff only at the 375px width (0.01%–0.11% — the
-      flourish was already visible at md/lg, so only the smallest breakpoint's "hidden" removal is visible);
-      commission shows a larger, consistent diff across all three widths (1.8%–2.9%, from losing both the
-      `mt-14` offset and the `lg:absolute`-only positioning at every width, not just below `lg`). 12 tests (1
-      added, replacing the removed default-value check with a behavioral "always visible" one); full suite
-      134/134.
+                  **Second simplification round, same PR**: asked to keep pushing further, naming `imageWrapperExtraClass`,
+                  `backgroundClass`, `flourishSizeClasses`, `heroImagePositionClasses`, and a merge of `cardAlign`/
+                  `contentJustifyClass` into one left/right input. Two of those five turned out not to need any change:
+                  `backgroundClass` holds each page's own distinct hero color — bespoke design tokens sampled from that
+                  page's image (see Phase 2's own notes), not incidental duplication, so left alone; `contentJustifyClass`
+                  was already a single computed value derived from the one `cardAlign` input, not a second input needing to
+                  be merged, so also left alone. The other three were removed: `flourishSizeClasses` — standardized *to*
+                  home's own original always-visible behavior rather than away from it, reversing the previous round's
+                  explicit decision to keep it as a one-page difference; `heroImagePositionClasses`/`imageWrapperExtraClass`
+                  — commission's inner hero image now positions the same way as every other page (plain `absolute inset-0`,
+                  no `mt-14` offset), the two riskier, structural quirks the previous round had deliberately left alone.
+                  Verified via another targeted before/after diff: home stays 0.00% (it already had the standardized
+                  flourish behavior); every other page shows a small diff only at the 375px width (0.01%–0.11% — the
+                  flourish was already visible at md/lg, so only the smallest breakpoint's "hidden" removal is visible);
+                  commission shows a larger, consistent diff across all three widths (1.8%–2.9%, from losing both the
+                  `mt-14` offset and the `lg:absolute`-only positioning at every width, not just below `lg`). 12 tests (1
+                  added, replacing the removed default-value check with a behavioral "always visible" one); full suite
+                  134/134.
 
-      **Input audit, no further changes**: asked for a full list of every remaining input, categorized by
-      whether it's genuinely page-specific (content strings, image src/position — never reducible),
-      genuinely-split design values with no single outlier to fix (`tone` 4/4, `cardAlign` 5/3,
-      `heroImageHeight` 4/4, `backgroundPatternImage` 6/2, plus the already-settled `backgroundClass`,
-      `cardMaxWidthClass`, `heroImageMaxWidthClass`), or one-outlier overrides worth a further look
-      (`titleClass`: streaming/commission/home; `kickerClass`/`taglineClass`: home only — the same shape
-      `flourishSizeClasses` had before that round standardized *to* home's behavior). Owner's call: lean
-      enough for now, stop here — `titleClass`/`kickerClass`/`taglineClass` left as one-outlier overrides,
-      not pursued further this pass. Component's final input count: 15 (down from roughly 24 before the two
-      simplification rounds).
-- [ ] `app-parallax` clean-up (single shared scroll source instead of one listener per instance; revisit the
-      underlying technique later if a shared listener alone doesn't fix the motion lag the owner's noticed).
+                  **Input audit, no further changes**: asked for a full list of every remaining input, categorized by
+                  whether it's genuinely page-specific (content strings, image src/position — never reducible),
+                  genuinely-split design values with no single outlier to fix (`tone` 4/4, `cardAlign` 5/3,
+                  `heroImageHeight` 4/4, `backgroundPatternImage` 6/2, plus the already-settled `backgroundClass`,
+                  `cardMaxWidthClass`, `heroImageMaxWidthClass`), or one-outlier overrides worth a further look
+                  (`titleClass`: streaming/commission/home; `kickerClass`/`taglineClass`: home only — the same shape
+                  `flourishSizeClasses` had before that round standardized *to* home's behavior). Owner's call: lean
+                  enough for now, stop here — `titleClass`/`kickerClass`/`taglineClass` left as one-outlier overrides,
+                  not pursued further this pass. Component's final input count: 15 (down from roughly 24 before the two
+                  simplification rounds).
+
+- [~] `app-parallax` clean-up. Executed, PR not yet opened (see below for why) — parity-preserving (Track B), no
+  formal spec. Adds `ParallaxScrollService` (`src/app/services/`), mirroring `RevealService`'s own
+  shared-registry pattern: one passive `window` scroll listener for the whole app, lazily attached on first
+  registration, fanning out to every registered callback. `ParallaxSection` registers/unregisters a callback
+  instead of managing its own listener — a page with a hero (2 layers) plus a couple of patterned
+  `app-section`s used to run several independent listeners at once. Same rect-based transform math as
+  before, unchanged; no visual difference by construction. Verified via unit tests (service + component, TDD)
+  plus typecheck/full-suite/build; also a real-browser check via `claude-in-chrome` — jsdom can't fire actual
+  `scroll` events, and even a script-driven `window.scrollTo()` didn't trigger one in that harness, so the
+  check used a real wheel-scroll instead, confirming multiple parallax layers on one page all update
+  correctly and independently from the single shared listener (each layer's observed translate matched its
+  own `parallaxStrength` exactly). 4 new service tests, 3 new/changed component tests; full suite 141/141.
+
+  **Owner question, same session, no code change**: whether a more conventional/modern technique exists for the
+  parallax effect itself, and whether the Angular MCP had anything useful — asked after this step's work was
+  already committed and pushed, mid-`/code-review`. It did: v22's `afterRenderEffect` (via `search_documentation`)
+  is the framework-native replacement for hand-rolled scroll+rAF throttling, with explicit
+  `earlyRead`/`write`/`mixedReadWrite`/`read` phases specifically to avoid the layout-thrashing this component's
+  own read-then-write-in-one-synchronous-tick pattern risks — a plausible contributor to the motion lag noted
+  below. Other real options surfaced: plain rAF-batching (smaller, hand-rolled, superseded by the above); Angular
+  CDK's `ScrollDispatcher` (does roughly what `ParallaxScrollService` now does, built-in and battle-tested, but
+  this repo has no CDK dependency today and already has the `RevealService`-style hand-rolled-shared-service
+  convention, so adding CDK for just this would be inconsistent); pure CSS scroll-driven animations
+  (`animation-timeline: scroll()`) — no JS listener at all, compositor-driven, immune to main-thread lag by
+  construction, broad enough browser support now to be viable, but a full rewrite of the mechanism, not a tweak.
+  Owner's call: defer — ship this step as scoped (shared listener only), keep `afterRenderEffect` phases and CSS
+  scroll-driven animations on record as the two candidate follow-ups if the motion lag isn't actually resolved by
+  the listener consolidation alone.
+
+  **`/code-review` found and fixed 3 real issues, same PR, all in `ParallaxScrollService`**: (1) `notify()`
+  looped over every registered callback with no per-callback isolation — before this step, each
+  `ParallaxSection` had its own listener, so one throwing didn't affect another; sharing one loop needed that
+  same isolation, now a `try`/`catch` per callback. (2) `unregister()` deleted from the callback set but never
+  removed the actual DOM listener (nor could it — the listener was an inline anonymous arrow, no reference ever
+  kept to remove), so a real `scroll` listener stayed attached forever once anything had ever registered, even
+  after every consumer unregistered — now the listener is a stable, stored reference, removed once the set is
+  empty and re-attached on the next registration. (3) `started = true` latched one line before the
+  `defaultView?.addEventListener(...)` call it was meant to guard, so a null `defaultView` (unreachable today —
+  this app has no SSR/prerender target — but a live trap for one) would permanently disable all future
+  registration with nothing thrown; now the flag is only set once the listener actually attaches. Fixing (2) also
+  resolved an unflagged-but-real test-hygiene gap (4): `hero.spec.ts`/`section.spec.ts` mount real
+  `ParallaxSection` trees without mocking the service (no established convention needed one, since `RevealService`
+  sidesteps the equivalent problem via `test-setup.ts`'s global `IntersectionObserver` stub, not per-spec mocking)
+  — every test's fresh `providedIn: 'root'` instance was attaching a real, unremovable listener to jsdom's shared
+  `window`, one per test, for the rest of each file's run; now that `unregister()` actually tears down once empty,
+  each test's own `fixture.destroy()` cleans up after itself instead of leaking. 4 more tests (teardown,
+  re-attachment, per-callback error isolation, missing-`defaultView` guard); full suite 145/145.
 
 ## Phase 5 — Forms and backend access
 
@@ -706,14 +755,14 @@ just not this stage's job. Move these into a dedicated `backlog.md` once the who
 
 ## Risks
 
-| Risk | Mitigation |
-| --- | --- |
-| Visual drift while consolidating styles | screenshot baseline per phase; move markup without changing classes first, then tidy |
-| Angular 22 breaking changes in Signal Forms | upgrade in isolation (Phase 1) with the three forms manually exercised |
-| Node / TypeScript peer conflicts | Node ≥ 24.15, TS pinned `~6.0`, Vitest 4 (documented in 04) |
-| Hidden Flowbite CSS dependency | staged removal (JS first, CSS last), built-CSS diff |
-| Large mechanical moves break imports | one folder per commit; the compiler finds every break |
-| Refactor stalls on unfinished card design | primitives that don't depend on cards go first |
+| Risk                                        | Mitigation                                                                           |
+| ------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Visual drift while consolidating styles     | screenshot baseline per phase; move markup without changing classes first, then tidy |
+| Angular 22 breaking changes in Signal Forms | upgrade in isolation (Phase 1) with the three forms manually exercised               |
+| Node / TypeScript peer conflicts            | Node ≥ 24.15, TS pinned `~6.0`, Vitest 4 (documented in 04)                          |
+| Hidden Flowbite CSS dependency              | staged removal (JS first, CSS last), built-CSS diff                                  |
+| Large mechanical moves break imports        | one folder per commit; the compiler finds every break                                |
+| Refactor stalls on unfinished card design   | primitives that don't depend on cards go first                                       |
 
 ## Definition of done
 
