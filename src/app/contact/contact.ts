@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import type { CreateContactRequest } from '../models/contact.model';
 import { Hero } from '../components/hero/hero';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
-import { ContactService } from '../services/contact.service';
+import { ApiService } from '../services/api.service';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
@@ -11,6 +11,11 @@ import { Section } from '../components/section/section';
 import { Card } from '../directives/card';
 import { Button } from '../directives/button';
 import { SocialLinks } from '../components/social-links/social-links';
+import { FormFieldGroup } from '../components/form-field/form-field';
+import { Control } from '../directives/control';
+import { FormStatus } from '../components/form-status/form-status';
+import { createFormSubmission } from '../forms/form-submission';
+import { FormSubmissionStatus } from '../models/form-submission-status';
 
 interface ContactFormData {
   name: string;
@@ -32,15 +37,17 @@ interface ContactFormData {
     Card,
     Button,
     SocialLinks,
+    FormFieldGroup,
+    Control,
+    FormStatus,
   ],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Contact implements OnInit {
-  private readonly contactService = inject(ContactService);
-  readonly status = signal<string>('');
-  statusElement: HTMLElement | null = null;
+export class Contact {
+  private readonly apiService = inject(ApiService);
+  readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
 
   private readonly contactFormModel = signal<ContactFormData>({
     name: '',
@@ -62,54 +69,21 @@ export class Contact implements OnInit {
       email(schemaPath.email, { message: 'Please enter a valid email address.' });
     },
     {
-      submission: {
-        action: async () => {
-          // Indicate to UI that the contact submission is in progress
-          this.status.set('Submitting contact...');
-          this.statusElement?.classList.remove('text-success', 'text-error');
-
-          // Prepare the contact submission data to be sent to the backend service
-          const contactRequest: CreateContactRequest = {
-            name: this.contactFormModel().name,
-            email: this.contactFormModel().email,
-            message: this.contactFormModel().message,
-          };
-
-          // Send the contact submission to the backend service (HttpClient returns an Observable that we subscribe to)
-          this.contactService.submitContact(contactRequest).subscribe({
-            next: (reply) => {
-              console.log('server response:', reply);
-              // Update the status message and UI to indicate successful contact submission
-              this.status.set(reply.message);
-              this.statusElement?.classList.add('text-success');
-              this.contactForm().reset({
-                name: '',
-                email: '',
-                message: '',
-              });
-            },
-            error: (err) => {
-              console.log('server error:', err.error ?? err.message);
-              // Update the status message and UI to indicate an error from the server
-              this.status.set(err.error?.message ?? err.message);
-              this.statusElement?.classList.add('text-error');
-            },
-          });
-
-          // Log to console that the POST request has been sent (the actual response will be handled in the subscription above)
-          console.log('Backend POST sent');
+      submission: createFormSubmission({
+        pendingMessage: 'Submitting contact...',
+        invalidMessage: 'Please correct the errors in the form before submitting.',
+        model: this.contactFormModel,
+        status: this.status,
+        buildRequest: (model): CreateContactRequest => ({
+          name: model.name,
+          email: model.email,
+          message: model.message,
+        }),
+        submit: (request) => this.apiService.submitContact(request),
+        onSuccess: () => {
+          this.contactForm().reset({ name: '', email: '', message: '' });
         },
-        // When the user submits the form but it is invalid, we update the status message and UI to indicate that there are errors in the form.
-        onInvalid: () => {
-          this.status.set('Please correct the errors in the form before submitting.');
-          this.statusElement?.classList.add('text-error');
-          this.statusElement?.classList.remove('text-success');
-        },
-      },
+      }),
     },
   );
-
-  ngOnInit(): void {
-    this.statusElement = document.getElementById('contact-status');
-  }
 }

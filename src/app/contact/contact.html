@@ -32,74 +32,22 @@
       <!-- Contact form -->
       <form appCard tone="middle" class="mx-auto max-w-3xl px-8 py-12 text-on-middle-heading" [formRoot]="contactForm">
         <div class="grid grid-cols-1 gap-6">
-          <!-- name field -->
-          <div>
-            <label class="text-sm font-semibold">
-              <p class="flex gap-2">
-                Name
-                <span class="text-error" aria-hidden="true">*</span>
-                @if (contactForm.name().invalid() && contactForm.name().touched()) {
-                  <div class="text-error">
-                    @for (error of contactForm.name().errors(); track error.kind) {
-                      <span>{{ error.message }}</span>
-                    }
-                  </div>
-                }
-              </p>
-              <input
-                type="text"
-                [formField]="contactForm.name"
-                placeholder="Enter your name or username"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
-              />
-            </label>
-          </div>
+          <app-form-field label="Name" [field]="contactForm.name">
+            <input appControl type="text" [formField]="contactForm.name" placeholder="Enter your name or username" />
+          </app-form-field>
 
-          <!-- email field -->
-          <div>
-            <label class="text-sm font-semibold">
-              <p class="flex gap-2">
-                Email
-                <span class="text-error" aria-hidden="true">*</span>
-                @if (contactForm.email().invalid() && contactForm.email().touched()) {
-                  <div class="text-error">
-                    @for (error of contactForm.email().errors(); track error.kind) {
-                      <span>{{ error.message }}</span>
-                    }
-                  </div>
-                }
-              </p>
-              <input
-                type="email"
-                [formField]="contactForm.email"
-                placeholder="Enter your email address"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
-              />
-            </label>
-          </div>
+          <app-form-field label="Email" [field]="contactForm.email">
+            <input appControl type="email" [formField]="contactForm.email" placeholder="Enter your email address" />
+          </app-form-field>
 
-          <!-- Message field -->
-          <div>
-            <label class="text-sm font-semibold">
-              <p class="flex gap-2">
-                Message
-                <span class="text-error" aria-hidden="true">*</span>
-                @if (contactForm.message().invalid() && contactForm.message().touched()) {
-                  <div class="text-error">
-                    @for (error of contactForm.message().errors(); track error.kind) {
-                      <span>{{ error.message }}</span>
-                    }
-                  </div>
-                }
-              </p>
-              <textarea
-                [formField]="contactForm.message"
-                placeholder="Write your message for Floofy."
-                rows="5"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
-              ></textarea>
-            </label>
-          </div>
+          <app-form-field label="Message" [field]="contactForm.message">
+            <textarea
+              appControl
+              [formField]="contactForm.message"
+              placeholder="Write your message for Floofy."
+              rows="5"
+            ></textarea>
+          </app-form-field>
         </div>
 
         <!-- Submit button -->
@@ -107,9 +55,7 @@
           <button type="submit" appButton variant="primary" tone="middle" class="shrink-0 whitespace-nowrap">
             {{ 'contact.form.submit' | translate }}
           </button>
-          <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="contact-status">
-            {{ status() }}
-          </p>
+          <app-form-status [status]="status()" />
         </div>
       </form>
     </div>
