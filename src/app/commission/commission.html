@@ -530,16 +530,12 @@
             [field]="commissionForm.commissionType"
             [options]="commissionTypeOptions()"
           >
-            <button
+            <app-jump-button
               labelExtra
-              type="button"
-              (click)="scrollToCommissionTypes()"
-              class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border text-xs leading-none font-bold text-on-middle-body transition-colors hover:bg-section-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-              aria-label="{{ 'commission.form.commission_type.jump_aria' | translate }}"
-              title="{{ 'commission.form.commission_type.jump_title' | translate }}"
-            >
-              ?
-            </button>
+              (activate)="scrollToCommissionTypes()"
+              [ariaLabel]="'commission.form.commission_type.jump_aria' | translate"
+              [title]="'commission.form.commission_type.jump_title' | translate"
+            />
           </app-radio-group>
 
           <app-form-field
@@ -572,16 +568,12 @@
             [field]="commissionForm.usageType"
             [options]="usageTypeOptions()"
           >
-            <button
+            <app-jump-button
               labelExtra
-              type="button"
-              (click)="scrollToArtworkUsage()"
-              class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border text-xs leading-none font-bold text-on-middle-body transition-colors hover:bg-section-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-              aria-label="{{ 'commission.form.usage_type.jump_aria' | translate }}"
-              title="{{ 'commission.form.usage_type.jump_title' | translate }}"
-            >
-              ?
-            </button>
+              (activate)="scrollToArtworkUsage()"
+              [ariaLabel]="'commission.form.usage_type.jump_aria' | translate"
+              [title]="'commission.form.usage_type.jump_title' | translate"
+            />
           </app-radio-group>
 
           <app-form-field
@@ -646,16 +638,13 @@
           <!-- TOS agreement -->
           <app-checkbox-field [field]="commissionForm.tosAccepted">
             {{ 'commission.form.tos.checkbox' | translate }}
-            <button
+            <app-jump-button
               labelExtra
-              type="button"
-              (click)="scrollToTerms()"
-              class="mt-px inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border text-xs leading-none font-bold text-on-middle-body transition-colors hover:bg-section-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-              aria-label="{{ 'commission.form.tos.jump_aria' | translate }}"
-              title="{{ 'commission.form.tos.jump_title' | translate }}"
-            >
-              ?
-            </button>
+              extraClass="mt-px"
+              (activate)="scrollToTerms()"
+              [ariaLabel]="'commission.form.tos.jump_aria' | translate"
+              [title]="'commission.form.tos.jump_title' | translate"
+            />
           </app-checkbox-field>
 
           <!-- Submit button -->
