@@ -3,7 +3,7 @@ import { ParallaxSection } from '../parallax-section/parallax-section';
 import { Card } from '../../directives/card';
 import { Flourish } from '../flourish/flourish';
 
-export type HeroTone = 'light' | 'dark';
+export type HeroTone = 'light' | 'middle' | 'dark';
 export type HeroCardAlign = 'start' | 'end';
 
 // Mirrors the shape (if not the literal type) of section-header.ts's own TONE_CLASSES map -- a lookup
@@ -15,6 +15,7 @@ export type HeroCardAlign = 'start' | 'end';
 // actually resolve it.
 const TONE_CLASSES: Record<HeroTone, { heading: string; body: string }> = {
   light: { heading: 'text-on-light-heading', body: 'text-on-light-body' },
+  middle: { heading: 'text-on-middle-heading', body: 'text-on-middle-body' },
   dark: { heading: 'text-on-dark-heading', body: 'text-on-dark-body' },
 };
 
@@ -38,14 +39,14 @@ function joinClasses(...parts: string[]): string {
  * that page carried over unchanged (see streaming.html's own comment), not something this component
  * enforces or should be assumed to guarantee.
  *
- * The remaining "override" class inputs each default to what the rest of the site shares, and exist
- * only for the few per-page differences the owner chose to keep as real, deliberate differences rather
- * than standardize away (commission's image position/offset quirks, home's always-visible flourish).
- * Several similar one-page-only overrides existed here originally (card padding, an extra content-
- * wrapper class, a body-text color quirk shared by gallery/contact/home, a capitalization difference
- * in one aria-label, and about.html's own slightly faster parallax speed) and were removed once the
- * owner reviewed this component and decided those specific differences should just go away instead of
- * being preserved -- see docs/refactor/05-roadmap.md for that follow-up round.
+ * The remaining "override" class inputs each default to what the rest of the site shares. Several
+ * one-page-only overrides existed here originally -- card padding, an extra content-wrapper class, a
+ * body-text color quirk shared by gallery/contact/home, a capitalization difference in one aria-label,
+ * about.html's own slightly faster parallax speed, commission's own image position/offset quirks, and
+ * a hidden-below-`md` flourish everywhere but home -- and were removed once the owner reviewed this
+ * component and decided each one should standardize to a single shared behavior instead of being
+ * preserved as a per-page difference (in the flourish's case, standardizing *to* home's own behavior --
+ * always visible -- rather than away from it) -- see docs/refactor/05-roadmap.md for those rounds.
  */
 @Component({
   selector: 'app-hero',
@@ -60,7 +61,7 @@ function joinClasses(...parts: string[]): string {
       [parallaxStrength]="0.8"
       ariaLabel="Hero Background"
     >
-      <div class="hero-image-wrapper absolute inset-0 mx-auto h-full max-w-7xl" [class]="imageWrapperExtraClass()">
+      <div class="hero-image-wrapper absolute inset-0 mx-auto h-full max-w-7xl">
         <app-parallax-section
           [class]="heroImageClass()"
           ariaLabel="Hero section"
@@ -110,22 +111,12 @@ export class Hero {
   readonly heroImagePosition = input.required<string>();
   readonly heroImageHeight = input('100%');
   readonly heroImageMaxWidthClass = input.required<string>();
-  // One-off escape hatch: every page but commission positions this layer with a plain `absolute
-  // inset-0`; commission's own is `inset-0` unconditionally plus `lg:absolute` (only absolute from
-  // `lg` up), for reasons not documented anywhere -- preserved exactly rather than guessed at.
-  readonly heroImagePositionClasses = input('absolute inset-0');
-  // One-off escape hatch: commission's image-wrapper carries an extra `mt-14` no other page has.
-  readonly imageWrapperExtraClass = input('');
 
   // Layout / tone.
   readonly tone = input<HeroTone>('light');
   readonly cardAlign = input<HeroCardAlign>('end');
   readonly cardMaxWidthClass = input.required<string>();
 
-  // Kept, unlike the other per-page typography overrides removed above: home's flourish is
-  // deliberately always-visible (not hidden below `md` like every other page's), the owner's explicit
-  // call to keep as a real per-page difference rather than standardize away.
-  readonly flourishSizeClasses = input('hidden h-12 md:inline-block');
   readonly titleClass = input('text-[clamp(3.4rem,10vw,6.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase');
   readonly kickerClass = input('mb-3 text-sm font-bold tracking-[0.32em] uppercase sm:text-[0.95rem]');
   readonly taglineClass = input('mt-6 text-xs font-semibold tracking-[0.28em] uppercase sm:text-sm');
@@ -151,7 +142,7 @@ export class Hero {
 
   readonly heroImageClass = computed(() =>
     joinClasses(
-      this.heroImagePositionClasses(),
+      'absolute inset-0',
       this.heroImageAlignClass(),
       'h-full',
       this.heroImageMaxWidthClass(),
@@ -172,12 +163,10 @@ export class Hero {
     ),
   );
 
+  // Always visible, at every width -- standardized to home's own original behavior, the one page that
+  // never hid this below `md` like the other 7 used to.
   readonly flourishClass = computed(() =>
-    joinClasses(
-      'absolute top-0 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2',
-      this.headingColorClass(),
-      this.flourishSizeClasses(),
-    ),
+    joinClasses('absolute top-0 left-1/2 z-10 h-8 -translate-x-1/2 -translate-y-1/2 md:h-12', this.headingColorClass()),
   );
 
   readonly kickerFullClass = computed(() => joinClasses(this.kickerClass(), this.headingColorClass()));

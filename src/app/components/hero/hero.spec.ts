@@ -143,10 +143,17 @@ describe('Hero', () => {
     expect(heroInstance().heroImagePosition()).toBe('center 50%');
   });
 
-  it('defaults to the shared background-pattern image, the common hero-image height, and the common (hidden-on-mobile) flourish size', () => {
+  it('defaults to the shared background-pattern image and the common hero-image height', () => {
     create();
     expect(heroInstance().backgroundPatternImage()).toBe('assets/4-point-stars.svg');
     expect(heroInstance().heroImageHeight()).toBe('100%');
-    expect(heroInstance().flourishSizeClasses()).toBe('hidden h-12 md:inline-block');
+  });
+
+  it("always shows the flourish, never hidden below md (standardized to what was originally only home's behavior)", () => {
+    create();
+    const flourish = heroEl().querySelector('app-flourish')!;
+    expect(flourish.classList.contains('hidden')).toBe(false);
+    expect(flourish.classList.contains('h-8')).toBe(true);
+    expect(flourish.classList.contains('md:h-12')).toBe(true);
   });
 });
