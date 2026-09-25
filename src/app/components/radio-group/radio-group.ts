@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Field, FormField } from '@angular/forms/signals';
 import { RequiredMarker } from '../required-marker/required-marker';
 import { FieldErrorList } from '../field-error-list/field-error-list';
@@ -8,7 +8,8 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
  * docs/refactor/13-phase-5-plan.md. A set of mutually-exclusive options, each rendered as a button-styled
  * radio button (`peer-checked` visual treatment). Renders its own label/error wrapper (error shown below the
  * whole group, not per-option) rather than reusing `FormFieldGroup`'s wrapper -- its own shape, same reasoning
- * as `CheckboxField`. Shares `RequiredMarker`/`FieldErrorList` with both of them.
+ * as `CheckboxField`. Shares `RequiredMarker`/`FieldErrorList` with both of them, passing `field` directly
+ * rather than a locally pre-computed `state` -- see `RequiredMarker`'s own doc comment for why.
  *
  * `[labelExtra]` is an optional projected slot after the label/required-marker, for commission's own
  * jump-to-detail "?" buttons -- not part of Choice's own concept, but real content some callers need next to
@@ -22,7 +23,7 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
     <div>
       <p class="inline-flex items-center gap-1 font-semibold">
         {{ label() }}
-        <app-required-marker [state]="state()" />
+        <app-required-marker [field]="field()" />
         <ng-content select="[labelExtra]" />
       </p>
       <div class="mt-2 flex flex-wrap gap-3">
@@ -38,13 +39,11 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
         }
       </div>
     </div>
-    <app-field-error-list [state]="state()" />
+    <app-field-error-list [field]="field()" />
   `,
 })
 export class RadioGroup {
   readonly label = input.required<string>();
   readonly field = input.required<Field<string>>();
   readonly options = input.required<readonly { value: string; label: string }[]>();
-
-  readonly state = computed(() => this.field()());
 }

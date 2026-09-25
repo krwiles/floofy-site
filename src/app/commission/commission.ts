@@ -20,6 +20,7 @@ import { Control } from '../directives/control';
 import { RadioGroup } from '../components/radio-group/radio-group';
 import { CheckboxField } from '../components/checkbox-field/checkbox-field';
 import { FormStatus } from '../components/form-status/form-status';
+import { JumpButton } from '../components/jump-button/jump-button';
 import { createFormSubmission } from '../forms/form-submission';
 import { FormSubmissionStatus } from '../models/form-submission-status';
 
@@ -37,6 +38,13 @@ import { FormSubmissionStatus } from '../models/form-submission-status';
  * per field) -- confirmed via landmark-position measurements in a real browser, not just accepted as an
  * unexplained size-mismatch in the scripted visual diff (which can't produce a percentage once page height
  * itself changes).
+ *
+ * A second `/code-review` pass (on a later, stacked PR, scoped too broadly and flagging several already-
+ * merged/already-disclosed decisions from unrelated earlier phases as if they were new -- verified via git
+ * history before acting on anything) found two real, in-scope issues here: the three identical "jump to
+ * detail" `?` buttons (Commission Type/Usage Type/ToS) were extracted to `JumpButton` (`app-jump-button`);
+ * `formatPercentAddon` now calls the already-injected `PercentPipe` directly instead of a hand-rolled
+ * reimplementation of its `'1.0-0'` rounding rule.
  */
 interface CommissionFormValue {
   name: string;
@@ -72,7 +80,11 @@ interface CommissionFormValue {
     RadioGroup,
     CheckboxField,
     FormStatus,
+    JumpButton,
   ],
+  // PercentPipe alone in `imports` only resolves it for the template's own `| percent` syntax (the Artwork
+  // Usage terms section) -- `inject(PercentPipe)` in the class body below needs it as a real provider too.
+  providers: [PercentPipe],
   templateUrl: './commission.html',
   styleUrl: './commission.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -81,6 +93,7 @@ export class Commission {
   private readonly galleryImageService = inject(GalleryImageService);
   private readonly apiService = inject(ApiService);
   private readonly i18n = inject(I18nService);
+  private readonly percentPipe = inject(PercentPipe);
   readonly pricingService = inject(PricingService);
   readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
 
@@ -243,7 +256,9 @@ export class Commission {
   }
 
   private formatPercentAddon(commercialTypeId: string): string {
-    // Matches the template pipe it replaces (`| percent: '1.0-0'`): 0 minimum/maximum fraction digits.
-    return `${Math.round((this.pricingService.getPercentAddon(commercialTypeId) ?? 0) * 100)}%`;
+    // Uses the real PercentPipe (already injected -- the Artwork Usage terms section still uses it via the
+    // template pipe syntax) rather than a hand-rolled reimplementation of its '1.0-0' rounding rule.
+    // /code-review flagged the original Math.round version as a duplicate-to-keep-in-sync of this same rule.
+    return this.percentPipe.transform(this.pricingService.getPercentAddon(commercialTypeId) ?? 0, '1.0-0') ?? '0%';
   }
 }

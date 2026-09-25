@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Field, FormField } from '@angular/forms/signals';
 import { RequiredMarker } from '../required-marker/required-marker';
 import { FieldErrorList } from '../field-error-list/field-error-list';
@@ -10,7 +10,8 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
  * checkbox itself directly (`class="h-4 w-4"`, unchanged from today) rather than via `appControl`, which is
  * built for text-like controls (`FormFieldGroup`'s own doc comment covers why). The required-marker and
  * error-list are shared with `FormFieldGroup` via `RequiredMarker`/`FieldErrorList` -- extracted after
- * `/code-review` flagged this markup as duplicated verbatim between the two.
+ * `/code-review` flagged this markup as duplicated verbatim between the two, and passed `field` directly
+ * rather than a locally pre-computed `state` -- see `RequiredMarker`'s own doc comment for why.
  *
  * Built here, in reviews' PR, rather than commission's: reviews is the first page to actually have a checkbox
  * to migrate, ahead of commission in the sequencing, so it creates this shared piece rather than waiting.
@@ -35,16 +36,14 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
         <input type="checkbox" [formField]="field()" class="h-4 w-4" />
         <span class="text-sm leading-6">
           <ng-content />
-          <app-required-marker [state]="state()" />
+          <app-required-marker [field]="field()" />
         </span>
       </label>
       <ng-content select="[labelExtra]" />
     </div>
-    <app-field-error-list [state]="state()" />
+    <app-field-error-list [field]="field()" />
   `,
 })
 export class CheckboxField {
   readonly field = input.required<Field<boolean>>();
-
-  readonly state = computed(() => this.field()());
 }
