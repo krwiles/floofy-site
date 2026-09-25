@@ -7,10 +7,16 @@ import { CheckboxField } from './checkbox-field';
   selector: 'app-checkbox-field-test-host',
   imports: [CheckboxField],
   template: `
-    <app-checkbox-field [field]="testForm.agreement">I agree to the terms.</app-checkbox-field>
+    <app-checkbox-field [field]="testForm.agreement" [rowGapClass]="rowGapClass">
+      I agree to the terms.
+    </app-checkbox-field>
   `,
 })
 class CheckboxFieldTestHost {
+  // Explicitly 'gap-2' (CheckboxField's own default) rather than leaving the binding unset -- an explicit
+  // `undefined` binding would override the component's default input value with `undefined`, not fall back to
+  // it, so tests for the default behavior bind the default's own value here on purpose.
+  rowGapClass = 'gap-2';
   private readonly model = signal({ agreement: false });
   testForm = form(this.model, (schemaPath) => {
     required(schemaPath.agreement, { message: 'You must agree.' });
@@ -20,13 +26,18 @@ class CheckboxFieldTestHost {
 describe('CheckboxField', () => {
   let fixture: ComponentFixture<CheckboxFieldTestHost>;
 
-  function create(): void {
+  function create(overrides: Partial<CheckboxFieldTestHost> = {}): void {
     fixture = TestBed.createComponent(CheckboxFieldTestHost);
+    Object.assign(fixture.componentInstance, overrides);
     fixture.detectChanges();
   }
 
   function checkboxEl(): HTMLInputElement {
     return fixture.nativeElement.querySelector('input[type="checkbox"]');
+  }
+
+  function rowEl(): HTMLElement {
+    return fixture.nativeElement.querySelector('.flex.items-start');
   }
 
   function labelText(): string {
@@ -78,5 +89,16 @@ describe('CheckboxField', () => {
     fixture.detectChanges();
 
     expect(errorEls().length).toBe(0);
+  });
+
+  it('defaults the row spacing to gap-2', () => {
+    create();
+    expect(rowEl().classList.contains('gap-2')).toBe(true);
+  });
+
+  it("uses a caller-supplied row gap class instead, e.g. commission's own gap-1", () => {
+    create({ rowGapClass: 'gap-1' });
+    expect(rowEl().classList.contains('gap-1')).toBe(true);
+    expect(rowEl().classList.contains('gap-2')).toBe(false);
   });
 });

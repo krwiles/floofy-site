@@ -81,6 +81,11 @@ export class Reviews implements OnInit {
         onSuccess: () => {
           // Refresh the reviews list after a successful submission to display the newly added review.
           this.requestReviews();
+          // Reset the form, matching contact's own established pattern -- /code-review flagged that without
+          // this, the form stayed populated and valid, so a second click (double-click, or an unsure user)
+          // would silently re-post the identical review. The original pre-migration code didn't do this
+          // either, so this is a deliberate small fix, not a preserved behavior.
+          this.reviewForm().reset({ author: '', comment: '', agreement: false });
         },
       }),
     },
