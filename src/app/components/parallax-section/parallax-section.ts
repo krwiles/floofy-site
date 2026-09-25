@@ -1,20 +1,11 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  signal,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, input, ViewChild, ElementRef, inject } from '@angular/core';
+import { ParallaxScrollService } from '../../services/parallax-scroll.service';
 
 @Component({
   selector: 'app-parallax-section',
   templateUrl: './parallax-section.html',
   styleUrl: './parallax-section.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // host binding for scroll removed; will add manual passive listener
 })
 export class ParallaxSection implements AfterViewInit {
   readonly ariaLabel = input<string>('Parallax section');
@@ -27,20 +18,19 @@ export class ParallaxSection implements AfterViewInit {
   @ViewChild('parallaxRoot', { static: true }) root!: ElementRef<HTMLElement>;
   private backgroundEl: HTMLElement | null = null;
 
-  // signals removed for direct DOM update
-
-  private scrollHandler = this.onWindowScroll.bind(this);
+  private readonly scrollService = inject(ParallaxScrollService);
+  private readonly scrollHandler = () => this.onWindowScroll();
 
   ngAfterViewInit(): void {
     if (this.root) {
       this.backgroundEl = this.root.nativeElement.querySelector('.parallax-background');
     }
-    window.addEventListener('scroll', this.scrollHandler, { passive: true });
+    this.scrollService.register(this.scrollHandler);
     this.onWindowScroll();
   }
 
   ngOnDestroy(): void {
-    window.removeEventListener('scroll', this.scrollHandler);
+    this.scrollService.unregister(this.scrollHandler);
   }
 
   onWindowScroll(): void {
