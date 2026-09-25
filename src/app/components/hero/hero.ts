@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { ParallaxSection } from '../parallax-section/parallax-section';
 import { Card } from '../../directives/card';
 import { Flourish } from '../flourish/flourish';
+import { joinClasses } from '../../utils/join-classes';
 
 export type HeroTone = 'light' | 'middle' | 'dark';
 export type HeroCardAlign = 'start' | 'end';
@@ -18,12 +19,6 @@ const TONE_CLASSES: Record<HeroTone, { heading: string; body: string }> = {
   middle: { heading: 'text-on-middle-heading', body: 'text-on-middle-body' },
   dark: { heading: 'text-on-dark-heading', body: 'text-on-dark-body' },
 };
-
-/** Joins class fragments with a single space, dropping any empty ones -- avoids the classic
- * off-by-one when building a class list by hand from several optional/required pieces. */
-function joinClasses(...parts: string[]): string {
-  return parts.filter(Boolean).join(' ');
-}
 
 /**
  * The parallax hero block repeated, with real per-page variation, at the top of all 8 pages --

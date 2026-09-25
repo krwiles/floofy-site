@@ -22,8 +22,10 @@ that deliberately changed 3 pages' visual output (home/gallery/contact) to remov
 see below. Phase 4 step 7 (`app-parallax` clean-up) executed and **merged into `working`**, [PR #34]
 (https://github.com/krwiles/floofy-site/pull/34) — same Track B/no-direct-push situation as step 6, opened as a
 normal PR instead. **Phase 4 is now fully done.** Phase 5 (forms and backend access) planning started
-2026-09-25 via `/grill-with-docs`, design docs opened as [PR #35]
-(https://github.com/krwiles/floofy-site/pull/35) (docs only, no code yet) — see below; Phases 6–8 not started.
+2026-09-25 via `/grill-with-docs`, design docs merged into `working` as [PR #35]
+(https://github.com/krwiles/floofy-site/pull/35) (docs only, no code). Phase 5 page 1 (contact) executed, [PR #36]
+(https://github.com/krwiles/floofy-site/pull/36) — pending owner review; builds every shared piece from scratch
+— see below. Phases 6–8 not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
 `slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
@@ -690,12 +692,52 @@ review` found and fixed two real issues: touch handlers never claimed the gestur
 
 ## Phase 5 — Forms and backend access
 
-- [ ] `app-form-field`, `appControl`, `app-choice`, `app-form-status`, `FormSubmission` helper.
-- [ ] `ApiService` + config for the three Lambda URLs; slim the services; consider `httpResource` for reviews.
-- [ ] Migrate contact → reviews → commission forms; remove `console.log`s and `getElementById`.
+Settled via `/grill-with-docs` (grilling + domain-modeling), 2026-09-25 — see
+[13-phase-5-plan.md](13-phase-5-plan.md) for the full component/service design and
+[14](14-phase-5-contact-plan.md)/[15](15-phase-5-reviews-plan.md)/[16](16-phase-5-commission-plan.md) for each
+page's own execution plan, merged as [PR #35](https://github.com/krwiles/floofy-site/pull/35) (docs only).
+
+- [~] **Page 1: contact.** Executed, [PR #36](https://github.com/krwiles/floofy-site/pull/36) — pending owner
+  review. Builds every shared piece from scratch, since contact needs almost all of them on day one:
+  `FormFieldGroup` (`app-form-field`, owns label/required-marker/error list, projects the control) and `Control`
+  (`appControl`, shared input styling — needs no explicit inputs of its own, reads the sibling `[formField]`
+  directive's own `state` signal via `inject(FormField, { self: true })` rather than a redundant second
+  binding); `FormStatus` (`app-form-status`, one discriminated-signal source of truth, replacing the old plain
+  string signal + `getElementById`/`classList` split); `createFormSubmission()` (a factory returning Signal
+  Forms' own `{ action, onInvalid }` shape, fire-and-forget on the returned action matching today's exact
+  behavior); `ApiService` (replaces `ContactService`, deleted — normalizes every failure to a plain `{ message }`
+  shape once instead of each form's own fallback chain; also adds `getReviews`/`submitReview`/`submitCommission`
+  now even though unused until their own PRs, cheaper than three separate edits; URLs moved to
+  `src/app/config/api-urls.ts`). `contact.ts`/`contact.html` migrated onto all of it; `console.log`s and the
+  `getElementById` status lookup are gone. One deliberate, small addition beyond today's exact pixel output,
+  settled across two grilling rounds before this PR: an error-colored border on a field once it's invalid *and*
+  touched (today only the error text above it turns red). 31 new tests (TDD throughout); full suite 175/175;
+  visual diff against contact's pre-migration render 0.00% at all 3 widths (the error-border only shows on
+  invalid+touched fields, which nothing at page load exercises); real-browser check of the actual submit flow
+  (error border + status text appear/clear correctly) — stopped short of an actual submission, which would send
+  a real message through the live contact Lambda.
+
+  `/code-review` found and fixed 3 real issues: `Control`'s placeholder color was built as a
+  `` placeholder:text-on-${tone}-body-subtle `` template literal — Tailwind only generates a utility class it
+  finds as a complete literal string somewhere in scanned source, so only whichever tone happened to appear
+  verbatim elsewhere (here, `dark`, because it appears literally in a test assertion) got its CSS generated;
+  `light` silently rendered with no themed placeholder color at all, no build error, no warning. Verified by
+  building and inspecting the compiled CSS before and after the fix. Fixed with a `PLACEHOLDER_CLASS` lookup
+  table — the same lesson `hero.ts`'s own `TONE_CLASSES` map already encodes, that should have been applied here
+  from the start. `joinClasses` was duplicated verbatim between `hero.ts` and the new `control.ts` — extracted
+  to `src/app/utils/join-classes.ts`. `FormFieldGroup` lived in `form-field.ts`/`form-field/`, not matching
+  CLAUDE.md's file-naming convention (files named after the class they define) — renamed to
+  `form-field-group.ts`/`form-field-group/` (the `app-form-field` selector itself is unchanged). Two findings
+  considered, not fixed: `inject(FormField, { self: true })` throws Angular's own generic error if `appControl`
+  is ever applied without a sibling `[formField]` — true, but every current and planned usage always pairs
+  them, so this is robustness for a misuse scenario that doesn't exist yet; hardcoded English field labels/
+  validation/status messages were re-flagged, but this is the same already-tracked, deliberately-deferred
+  decision from Phase 5 grilling (Phase 7's checklist), not a new finding.
+- [ ] Page 2: reviews — see [15-phase-5-reviews-plan.md](15-phase-5-reviews-plan.md).
+- [ ] Page 3: commission (adds `RadioGroup`/`CheckboxField` for Choice, moves `totalPriceUsd` into
+      `PricingService`) — see [16-phase-5-commission-plan.md](16-phase-5-commission-plan.md).
 - [ ] Verify Flowbite form-style dependency; **then** remove the Flowbite theme/plugin/`@source` CSS and uninstall
-      `flowbite`.
-- [ ] Move `totalPriceUsd` into `PricingService`.
+      `flowbite` — its own PR once all 3 pages are migrated.
 
 ## Phase 6 — Restructure
 
