@@ -22,7 +22,8 @@ that deliberately changed 3 pages' visual output (home/gallery/contact) to remov
 see below. Phase 4 step 7 (`app-parallax` clean-up) executed and **merged into `working`**, [PR #34]
 (https://github.com/krwiles/floofy-site/pull/34) — same Track B/no-direct-push situation as step 6, opened as a
 normal PR instead. **Phase 4 is now fully done.** Phase 5 (forms and backend access) planning started
-2026-09-25 via `/grill-with-docs` — see below; Phases 6–8 not started.
+2026-09-25 via `/grill-with-docs`, design docs opened as [PR #35]
+(https://github.com/krwiles/floofy-site/pull/35) (docs only, no code yet) — see below; Phases 6–8 not started.
 
 **Known issue carried over from PR #28, surfaced by `/code-review` while working on step 4, not yet fixed:**
 `slideshow-carousel.ts`'s `navigate()` can leave its `instant` signal stuck `true` forever. When a move lands on a
