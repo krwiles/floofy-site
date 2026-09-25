@@ -1,17 +1,22 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { Hero } from '../components/hero/hero';
 import { TranslatePipe } from '../pipes/translate.pipe';
-import { ReviewsService } from '../services/reviews.service';
+import { ApiService } from '../services/api.service';
 import { DatePipe } from '@angular/common';
-import { CreateReviewRequest, CreateReviewResponse, Review } from '../models/review.model';
-import { form, FormField, FormRoot, max, maxLength, required, submit } from '@angular/forms/signals';
-import { HttpErrorResponse } from '@angular/common/http';
+import { CreateReviewRequest, Review } from '../models/review.model';
+import { form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { Reveal } from '../directives/reveal';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
 import { Card } from '../directives/card';
 import { Button } from '../directives/button';
+import { FormFieldGroup } from '../components/form-field-group/form-field-group';
+import { Control } from '../directives/control';
+import { CheckboxField } from '../components/checkbox-field/checkbox-field';
+import { FormStatus } from '../components/form-status/form-status';
+import { createFormSubmission } from '../forms/form-submission';
+import { FormSubmissionStatus } from '../models/form-submission-status';
 
 interface ReviewFormValue {
   author: string;
@@ -33,16 +38,19 @@ interface ReviewFormValue {
     Section,
     Card,
     Button,
+    FormFieldGroup,
+    Control,
+    CheckboxField,
+    FormStatus,
   ],
   templateUrl: './reviews.html',
   styleUrl: './reviews.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Reviews implements OnInit {
-  private readonly reviewsService = inject(ReviewsService);
+  private readonly apiService = inject(ApiService);
   readonly reviews = signal<Review[]>([]);
-  readonly status = signal<string>('');
-  statusElement: HTMLElement | null = null;
+  readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
 
   private readonly reviewModel = signal<ReviewFormValue>({
     author: '',
@@ -50,10 +58,8 @@ export class Reviews implements OnInit {
     agreement: false,
   });
 
-  // Form configuration for the review submission form
   reviewForm = form(
     this.reviewModel,
-    // Validation rules for the form fields
     (schemaPath) => {
       required(schemaPath.author, { message: 'Name is required.' });
       required(schemaPath.comment, { message: 'Review is required.' });
@@ -61,66 +67,39 @@ export class Reviews implements OnInit {
       maxLength(schemaPath.author, 50, { message: 'Name cannot exceed 50 characters.' });
       maxLength(schemaPath.comment, 2000, { message: 'Review cannot exceed 2000 characters.' });
     },
-    // Submission configuration for the form
     {
-      submission: {
-        action: async () => {
-          // Indicate to UI thet the review submission is in progress
-          this.status.set('Submitting review...');
-          this.statusElement?.classList.remove('text-success', 'text-error');
-
-          // Prepare the review submission data to be sent to the backend service
-          const reviewRequest: CreateReviewRequest = {
-            author: this.reviewModel().author,
-            comment: this.reviewModel().comment,
-          };
-
-          // Send the review submission to the backend service (HttpClient returns an Observable that we subscribe to)
-          this.reviewsService.submitReview(reviewRequest).subscribe({
-            next: (reply: CreateReviewResponse) => {
-              console.log('server response:', reply);
-              // Update the status message and UI to indicate successful submission
-              this.status.set(reply.message);
-              this.statusElement?.classList.add('text-success');
-              this.requestReviews(); // Refresh the reviews list after successful submission to display the newly added review
-            },
-            error: (err: HttpErrorResponse) => {
-              console.log('server error:', err.error ?? err.message);
-              // Update the status message and UI to indicate an error from the server
-              this.status.set(err.error?.message ?? err.message);
-              this.statusElement?.classList.add('text-error');
-            },
-          });
-
-          // Log to console that the POST request has been sent (the actual response will be handled in the subscription above)
-          console.log('Backend POST sent');
+      submission: createFormSubmission({
+        pendingMessage: 'Submitting review...',
+        invalidMessage: 'Please correct the errors in the form before submitting.',
+        model: this.reviewModel,
+        status: this.status,
+        buildRequest: (model): CreateReviewRequest => ({
+          author: model.author,
+          comment: model.comment,
+        }),
+        submit: (request) => this.apiService.submitReview(request),
+        onSuccess: () => {
+          // Refresh the reviews list after a successful submission to display the newly added review.
+          this.requestReviews();
         },
-        // When the user submits the form but it is invalid, we update the status message and UI to indicate that there are errors in the form.
-        onInvalid: () => {
-          this.status.set('Please correct the errors in the form before submitting.');
-          this.statusElement?.classList.add('text-error');
-          this.statusElement?.classList.remove('text-success');
-        },
-      },
+      }),
     },
   );
 
   ngOnInit(): void {
     this.requestReviews();
-    this.statusElement = document.getElementById('review-status');
   }
 
   requestReviews(): void {
-    // Request from the backend service
-    this.reviewsService.getReviews().subscribe({
+    this.apiService.getReviews().subscribe({
       next: (reviews) => {
-        console.log('GET reviews:', reviews);
-        // Each review card carries appReveal, which registers itself with
-        // RevealService on creation -- no manual re-scan needed here.
+        // Each review card carries appReveal, which registers itself with RevealService on creation -- no
+        // manual re-scan needed here.
         this.reviews.set(reviews);
       },
-      error: (err) => {
-        console.log('GET error:', err);
+      error: () => {
+        // Silently keeps today's "Reviews loading..." placeholder state -- matches existing behavior, not
+        // introduced by this migration.
       },
     });
   }

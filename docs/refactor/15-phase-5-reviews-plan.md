@@ -1,12 +1,20 @@
 # 15 — Phase 5 execution plan: reviews (page 2 of 3)
 
 Builds on [13-phase-5-plan.md](13-phase-5-plan.md) and lands after
-[14-phase-5-contact-plan.md](14-phase-5-contact-plan.md), which builds every shared piece this PR needs. No new
-shared components — this PR is purely reviews' own migration onto what already exists.
+[14-phase-5-contact-plan.md](14-phase-5-contact-plan.md), which builds most of the shared pieces this PR needs.
+
+**Correction, found during implementation:** this doc originally said "no new shared components" here, but also
+referenced `<app-checkbox-field>` below without noticing that component didn't exist yet — contact has no
+checkbox, so nothing had built it. Reviews is actually the first page with a checkbox to migrate, ahead of
+commission in the sequencing, so **this PR builds `CheckboxField`**, per `16-phase-5-commission-plan.md`'s own
+"whichever page needs it first creates it" note.
 
 ## New files this PR creates
 
-None. `ApiService` gains `getReviews`/`submitReview` if contact's PR didn't already add all 4 methods (see
+- `src/app/components/checkbox-field/checkbox-field.ts` (+ template) — `CheckboxField`, selector
+  `app-checkbox-field`. See `13-phase-5-plan.md`'s design; commission's PR will just consume it.
+
+`ApiService` gains `getReviews`/`submitReview` if contact's PR didn't already add all 4 methods (see
 [14](14-phase-5-contact-plan.md)'s note on that either/or).
 
 ## What changes in `reviews.ts` / `reviews.html`
