@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormStatus } from './form-status';
-import { FormSubmissionStatus } from '../../models/form-submission-status';
+import { FormSubmissionStatus } from '../../../models/form-submission-status';
 
 describe('FormStatus', () => {
   let fixture: ComponentFixture<FormStatus>;

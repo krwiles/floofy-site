@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { FormSubmissionStatus } from '../../models/form-submission-status';
+import { FormSubmissionStatus } from '../../../models/form-submission-status';
 
 /**
  * The single, page-visible readout of a form's current submission state -- see CONTEXT.md's "Form Status"

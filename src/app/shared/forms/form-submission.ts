@@ -1,6 +1,6 @@
 import { Signal, WritableSignal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FormSubmissionStatus } from '../models/form-submission-status';
+import { FormSubmissionStatus } from '../../models/form-submission-status';
 
 interface CreateFormSubmissionConfig<TModel, TRequest, TResponse extends { message: string }> {
   /** Shown while the request is in flight. */

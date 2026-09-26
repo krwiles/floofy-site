@@ -15,13 +15,13 @@ import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
 import { Card } from '../shared/directives/card';
 import { Button } from '../shared/directives/button';
-import { FormFieldGroup } from '../components/form-field-group/form-field-group';
+import { FormFieldGroup } from '../shared/forms/form-field-group/form-field-group';
 import { Control } from '../shared/directives/control';
-import { RadioGroup } from '../components/radio-group/radio-group';
-import { CheckboxField } from '../components/checkbox-field/checkbox-field';
-import { FormStatus } from '../components/form-status/form-status';
+import { RadioGroup } from '../shared/forms/radio-group/radio-group';
+import { CheckboxField } from '../shared/forms/checkbox-field/checkbox-field';
+import { FormStatus } from '../shared/forms/form-status/form-status';
 import { JumpButton } from '../components/jump-button/jump-button';
-import { createFormSubmission } from '../forms/form-submission';
+import { createFormSubmission } from '../shared/forms/form-submission';
 import { FormSubmissionStatus } from '../models/form-submission-status';
 
 /**

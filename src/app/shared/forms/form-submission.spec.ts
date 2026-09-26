@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { NEVER, of, throwError } from 'rxjs';
 import { createFormSubmission } from './form-submission';
-import { FormSubmissionStatus } from '../models/form-submission-status';
+import { FormSubmissionStatus } from '../../models/form-submission-status';
 
 describe('createFormSubmission', () => {
   it('sets status to pending synchronously, before the submission resolves', () => {

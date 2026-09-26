@@ -11,10 +11,10 @@ import { Section } from '../components/section/section';
 import { Card } from '../shared/directives/card';
 import { Button } from '../shared/directives/button';
 import { SocialLinks } from '../components/social-links/social-links';
-import { FormFieldGroup } from '../components/form-field-group/form-field-group';
+import { FormFieldGroup } from '../shared/forms/form-field-group/form-field-group';
 import { Control } from '../shared/directives/control';
-import { FormStatus } from '../components/form-status/form-status';
-import { createFormSubmission } from '../forms/form-submission';
+import { FormStatus } from '../shared/forms/form-status/form-status';
+import { createFormSubmission } from '../shared/forms/form-submission';
 import { FormSubmissionStatus } from '../models/form-submission-status';
 
 interface ContactFormData {
