@@ -51,6 +51,6 @@ export class Section {
 
   readonly toneClass = computed(() => `bg-section-${this.tone()}`);
   readonly patternImage = computed(() =>
-    this.pattern() === 'circles' ? 'assets/intersecting-circles.svg' : 'assets/4-point-stars.svg',
+    this.pattern() === 'circles' ? 'assets/graphics/pattern-circles.svg' : 'assets/graphics/pattern-stars.svg',
   );
 }

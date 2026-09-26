@@ -857,7 +857,7 @@ time, each its own PR directly against `working` (never stacked). Supersedes the
 - [x] **Stage 1 — Folder restructure** (done 2026-09-26; 0.00% visual diff on all 8 routes × 3 widths, 206/206 tests, prod build clean): `pages/`, `layout/`, `shared/{components,directives,pipes,forms}`,
       `services/`; one commit per folder, imports fixed by the build; 0.00% visual diff expected. Also delete
       gallery.html's two stale TODOs.
-- [ ] **Stage 2 — Assets + `gallery.json`**: manifest generated ([asset-manifest.csv](asset-manifest.csv)), **⏸ owner
+- [x] **Stage 2 — Assets + `gallery.json`** (done 2026-09-26; 47 files renamed with extensions kept, 0.00% visual diff on all 8 routes × 3 widths, 216/216 tests, prod build clean; `showIn` is a page→sort-position map, not a plain list): manifest generated ([asset-manifest.csv](asset-manifest.csv)), **⏸ owner
       fills in `newName`/`folder`/`alt`**; then scripted `git mv` into `artwork/`, `graphics/`, `icons/` + reference
       rewrite; `gallery.json` (with `category` + `showIn`) drives the gallery page and home/commission carousels
       only. The 3 unreferenced files are kept.

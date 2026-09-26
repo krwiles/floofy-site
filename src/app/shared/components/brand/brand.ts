@@ -21,7 +21,7 @@ import { RouterLink } from '@angular/router';
            (the aria-labelledby target for footer's landmark section). -->
       <img
         class="block h-14 w-14 rounded-4xl border-2 border-bg-muted"
-        ngSrc="assets/G_Xl1MobAAAVbNn.jpeg"
+        ngSrc="assets/artwork/floofy-02.jpeg"
         alt=""
         width="621"
         height="621"

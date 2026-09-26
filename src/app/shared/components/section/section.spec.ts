@@ -55,10 +55,10 @@ describe('Section', () => {
     fixture.componentRef.setInput('tone', 'dark');
 
     fixture.componentRef.setInput('pattern', 'stars');
-    expect(fixture.componentInstance.patternImage()).toBe('assets/4-point-stars.svg');
+    expect(fixture.componentInstance.patternImage()).toBe('assets/graphics/pattern-stars.svg');
 
     fixture.componentRef.setInput('pattern', 'circles');
-    expect(fixture.componentInstance.patternImage()).toBe('assets/intersecting-circles.svg');
+    expect(fixture.componentInstance.patternImage()).toBe('assets/graphics/pattern-circles.svg');
   });
 });
 

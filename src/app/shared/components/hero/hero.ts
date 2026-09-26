@@ -99,7 +99,7 @@ export class Hero {
   // -- about.html used to run its outer/inner parallax slightly faster (0.9/0.7 vs. the common
   // 0.8/0.65); standardized away rather than kept as a one-page override, per the owner's own call.
   readonly backgroundClass = input.required<string>();
-  readonly backgroundPatternImage = input('assets/4-point-stars.svg');
+  readonly backgroundPatternImage = input('assets/graphics/pattern-stars.svg');
 
   // Inner hero-image parallax layer.
   readonly heroImageSrc = input.required<string>();
