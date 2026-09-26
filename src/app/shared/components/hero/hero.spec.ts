@@ -145,7 +145,7 @@ describe('Hero', () => {
 
   it('defaults to the shared background-pattern image and the common hero-image height', () => {
     create();
-    expect(heroInstance().backgroundPatternImage()).toBe('assets/4-point-stars.svg');
+    expect(heroInstance().backgroundPatternImage()).toBe('assets/graphics/pattern-stars.svg');
     expect(heroInstance().heroImageHeight()).toBe('100%');
   });
 

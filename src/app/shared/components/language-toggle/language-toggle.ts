@@ -12,8 +12,8 @@ interface FlagDisplay {
 // to) -- it isn't conventional per-locale copy, it's the language names themselves, so both locales
 // show the same pair of words in swapped order rather than something looked up per current locale.
 const FLAG_BY_LOCALE: Record<'en' | 'ja', FlagDisplay> = {
-  en: { src: 'assets/flag-en.svg', label: 'EN/日本語' },
-  ja: { src: 'assets/flag-ja.svg', label: '日本語/EN' },
+  en: { src: 'assets/icons/flag-en.svg', label: 'EN/日本語' },
+  ja: { src: 'assets/icons/flag-ja.svg', label: '日本語/EN' },
 };
 
 /**

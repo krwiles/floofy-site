@@ -31,7 +31,7 @@ describe('Brand', () => {
 
     const img: HTMLImageElement = fixture.nativeElement.querySelector('img');
     expect(img.getAttribute('ng-img')).toBe('true');
-    expect(img.src).toContain('G_Xl1MobAAAVbNn.jpeg');
+    expect(img.src).toContain('floofy-02.jpeg');
     // Empty, not missing -- the adjacent "Floofy" text already names the
     // link, so a real alt would double-announce it to a screen reader (see
     // brand.ts's comment).
