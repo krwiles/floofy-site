@@ -9,10 +9,10 @@ import { CreateReviewRequest, CreateReviewResponse, Review } from '../models/rev
 
 /**
  * One merged service for all 3 backend Lambdas, replacing `ContactService`/`ReviewsService`/`CommissionService`
- * -- see docs/refactor/13-phase-5-plan.md's "ApiService" section. `submitContact` has this PR's only real
- * caller; `getReviews`/`submitReview`/`submitCommission` are built now too (cheaper than editing this file
- * three separate times) but stay unused until reviews'/commission's own migration PRs delete the old services
- * they still use today.
+ * -- see docs/refactor/13-phase-5-plan.md's "ApiService" section. Built with all 4 methods
+ * (`submitContact`/`getReviews`/`submitReview`/`submitCommission`) at once in contact's own PR, cheaper than
+ * editing this file three separate times as reviews' and commission's migrations landed -- all 4 now have real
+ * callers.
  *
  * Normalizes every failure to a plain `{ message: string }` shape here, once, instead of each form doing its
  * own `err.error?.message ?? err.message` fallback chain.

@@ -9,11 +9,11 @@ export type HeroCardAlign = 'start' | 'end';
 
 // Mirrors the shape (if not the literal type) of section-header.ts's own TONE_CLASSES map -- a lookup
 // table, not ad hoc ternaries, so a future rename of any of these color tokens is one map to update,
-// not a scattered set of conditionals. HeroTone stays its own narrower 'light' | 'dark' rather than the
-// shared, 3-value Tone from models/tone.ts: every real usage across all 8 pages is one or the other,
-// never 'middle', and section-header.ts's own tone map is likewise local rather than reusing it -- an
-// existing inconsistency this doesn't originate, and adding an unused 'middle' branch here wouldn't
-// actually resolve it.
+// not a scattered set of conditionals. HeroTone stays its own local type rather than reusing the shared
+// Tone from models/tone.ts -- section-header.ts's own tone map is likewise local rather than reusing it,
+// an existing inconsistency this doesn't originate or resolve. 'middle' was added directly by the owner
+// (not from any of the 8 real page usages, which are still only 'light'/'dark') for future use -- kept
+// per their explicit instruction, not dead code to prune.
 const TONE_CLASSES: Record<HeroTone, { heading: string; body: string }> = {
   light: { heading: 'text-on-light-heading', body: 'text-on-light-body' },
   middle: { heading: 'text-on-middle-heading', body: 'text-on-middle-body' },
