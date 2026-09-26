@@ -7,7 +7,7 @@ import { RequiredMarker } from './required-marker';
   selector: 'app-required-marker-test-host',
   imports: [RequiredMarker],
   template: `
-    <app-required-marker [state]="testForm.name()" />
+    <app-required-marker [field]="testForm.name" />
   `,
 })
 class RequiredFieldHost {
@@ -21,7 +21,7 @@ class RequiredFieldHost {
   selector: 'app-required-marker-optional-test-host',
   imports: [RequiredMarker],
   template: `
-    <app-required-marker [state]="testForm.name()" />
+    <app-required-marker [field]="testForm.name" />
   `,
 })
 class OptionalFieldHost {

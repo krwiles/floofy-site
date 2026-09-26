@@ -7,7 +7,7 @@ import { FieldErrorList } from './field-error-list';
   selector: 'app-field-error-list-test-host',
   imports: [FieldErrorList],
   template: `
-    <app-field-error-list [state]="testForm.name()" />
+    <app-field-error-list [field]="testForm.name" />
   `,
 })
 class FieldErrorListTestHost {

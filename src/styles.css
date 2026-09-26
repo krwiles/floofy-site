@@ -1,4 +1,3 @@
-@import 'flowbite/src/themes/default';
 @import 'tailwindcss';
 @import './styles/tokens.css';
 @import './styles/base.css';
@@ -8,5 +7,3 @@
 @import './styles/components/cards.css';
 @import './styles/components/buttons.css';
 @import './styles/utilities/icons.css';
-@plugin 'flowbite/plugin';
-@source '../node_modules/flowbite';

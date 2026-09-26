@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Hero } from '../components/hero/hero';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { SlideshowCarousel } from '../components/slideshow-carousel/slideshow-carousel';
@@ -7,14 +7,45 @@ import { email, form, FormField, FormRoot, maxLength, required } from '@angular/
 import { PricingService } from '../services/pricing.service';
 import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { CreateCommissionRequest } from '../models/commission.model';
-import { CommissionService } from '../services/commission.service';
+import { ApiService } from '../services/api.service';
+import { I18nService } from '../services/i18n.service';
 import { Reveal } from '../directives/reveal';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';
 import { Section } from '../components/section/section';
 import { Card } from '../directives/card';
 import { Button } from '../directives/button';
+import { FormFieldGroup } from '../components/form-field-group/form-field-group';
+import { Control } from '../directives/control';
+import { RadioGroup } from '../components/radio-group/radio-group';
+import { CheckboxField } from '../components/checkbox-field/checkbox-field';
+import { FormStatus } from '../components/form-status/form-status';
+import { JumpButton } from '../components/jump-button/jump-button';
+import { createFormSubmission } from '../forms/form-submission';
+import { FormSubmissionStatus } from '../models/form-submission-status';
 
+/**
+ * Migrated onto Phase 5's shared form pieces (FormFieldGroup/Control/RadioGroup/CheckboxField/FormStatus/
+ * createFormSubmission/ApiService) -- see docs/refactor/16-phase-5-commission-plan.md. Three real,
+ * pre-existing differences between commission's own markup and the shared components' hardcoded defaults
+ * (built to match contact's/reviews' own original markup, per PRs #36/#37) were found during this migration
+ * and, per the owner's explicit call, standardized away rather than preserved: (1) `FormFieldGroup`'s label
+ * row uses `gap-2`; commission's fields used `gap-1`. (2) `CheckboxField`'s row likewise defaults to `gap-2`;
+ * commission's ToS row used `gap-1`. (3) `FormFieldGroup`'s label is `text-sm font-semibold`; commission's own
+ * labels were plain `font-semibold` (base text size) -- found only once actual rendered page height came out
+ * shorter than expected after the gap changes, not caught in the initial design pass. All three are small,
+ * deliberate visual changes on this one page (label text slightly smaller, a few pixels more breathing room
+ * per field) -- confirmed via landmark-position measurements in a real browser, not just accepted as an
+ * unexplained size-mismatch in the scripted visual diff (which can't produce a percentage once page height
+ * itself changes).
+ *
+ * A second `/code-review` pass (on a later, stacked PR, scoped too broadly and flagging several already-
+ * merged/already-disclosed decisions from unrelated earlier phases as if they were new -- verified via git
+ * history before acting on anything) found two real, in-scope issues here: the three identical "jump to
+ * detail" `?` buttons (Commission Type/Usage Type/ToS) were extracted to `JumpButton` (`app-jump-button`);
+ * `formatPercentAddon` now calls the already-injected `PercentPipe` directly instead of a hand-rolled
+ * reimplementation of its `'1.0-0'` rounding rule.
+ */
 interface CommissionFormValue {
   name: string;
   email: string;
@@ -44,17 +75,27 @@ interface CommissionFormValue {
     Section,
     Card,
     Button,
+    FormFieldGroup,
+    Control,
+    RadioGroup,
+    CheckboxField,
+    FormStatus,
+    JumpButton,
   ],
+  // PercentPipe alone in `imports` only resolves it for the template's own `| percent` syntax (the Artwork
+  // Usage terms section) -- `inject(PercentPipe)` in the class body below needs it as a real provider too.
+  providers: [PercentPipe],
   templateUrl: './commission.html',
   styleUrl: './commission.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Commission implements OnInit {
+export class Commission {
   private readonly galleryImageService = inject(GalleryImageService);
-  private readonly commissionService = inject(CommissionService);
+  private readonly apiService = inject(ApiService);
+  private readonly i18n = inject(I18nService);
+  private readonly percentPipe = inject(PercentPipe);
   readonly pricingService = inject(PricingService);
-  readonly status = signal<string>('');
-  statusElement: HTMLElement | null = null;
+  readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
 
   private readonly scrollOffset = 108;
   private readonly scrollFocusClass = 'scroll-focus-highlight';
@@ -64,6 +105,33 @@ export class Commission implements OnInit {
   readonly chibiCarouselImages = this.galleryImageService.chibiImages;
   readonly emoteCarouselImages = this.galleryImageService.emoteImages;
   readonly illustrationCarouselImages = this.galleryImageService.illustrationImages;
+
+  // Option lists for the two RadioGroup pickers below. Built here, not as static template literals, because
+  // usageType's labels append a live percent-addon suffix for 3 of the 5 options -- computed so both the
+  // translated text and the addon percentage stay reactive to locale/pricing-data changes, same as the
+  // template pipes they replace.
+  readonly commissionTypeOptions = computed(() => [
+    { value: 'chibi', label: this.i18n.t('commission.form.commission_type.chibi') },
+    { value: 'emotes', label: this.i18n.t('commission.form.commission_type.emote') },
+    { value: 'illustration', label: this.i18n.t('commission.form.commission_type.illustration') },
+  ]);
+
+  readonly usageTypeOptions = computed(() => [
+    { value: 'personal', label: this.i18n.t('commission.form.usage_type.personal') },
+    {
+      value: 'promotion',
+      label: `${this.i18n.t('commission.form.usage_type.promotion')} (+${this.formatPercentAddon('promotion')})`,
+    },
+    {
+      value: 'distribution',
+      label: `${this.i18n.t('commission.form.usage_type.distribution')} (+${this.formatPercentAddon('distribution')})`,
+    },
+    {
+      value: 'products',
+      label: `${this.i18n.t('commission.form.usage_type.products')} (+${this.formatPercentAddon('products')})`,
+    },
+    { value: 'unsure', label: this.i18n.t('commission.form.usage_type.unsure') },
+  ]);
 
   private readonly commissionModel = signal<CommissionFormValue>({
     name: '',
@@ -84,6 +152,12 @@ export class Commission implements OnInit {
       required(schemaPath.name, { message: 'Name is required.' });
       required(schemaPath.email, { message: 'Email is required.' });
       required(schemaPath.description, { message: 'Description is required.' });
+      // Previously undeclared, even though the field's label always showed a required asterisk unconditionally
+      // -- RadioGroup now derives that asterisk from this signal (matching FormFieldGroup/CheckboxField), so
+      // this was added to keep the marker showing. No behavioral change: a radio group always has some value
+      // selected (its own default), so this can never actually fail validation in practice, same as usageType's
+      // own long-standing required validator below.
+      required(schemaPath.commissionType, { message: 'Commission type is required.' });
       required(schemaPath.usageType, { message: 'Usage type is required.' });
       required(schemaPath.tosAccepted, { message: 'You must accept the terms of service to submit the form.' });
       required(schemaPath.usageExplanation, { message: 'Usage explanation is required.' });
@@ -96,58 +170,28 @@ export class Commission implements OnInit {
       email(schemaPath.email, { message: 'Please enter a valid email address.' });
     },
     {
-      submission: {
-        action: async () => {
-          // Indicate to UI that the commission submission is in progress
-          this.status.set('Submitting commission...');
-          this.statusElement?.classList.remove('text-success', 'text-error');
-
-          // Prepare the commission submission data to be sent to the backend service
-          const commissionRequest: CreateCommissionRequest = {
-            name: this.commissionModel().name,
-            email: this.commissionModel().email,
-            commissionType: this.commissionModel().commissionType,
-            description: this.commissionModel().description,
-            referenceLinks: this.commissionModel().referenceLinks,
-            usageType: this.commissionModel().usageType,
-            usageExplanation: this.commissionModel().usageExplanation,
-            estimatedPrice: this.totalPriceUsd(this.commissionModel().commissionType, this.commissionModel().usageType),
-            deadline: this.commissionModel().deadline,
-            additionalNotes: this.commissionModel().additionalNotes,
-          };
-
-          // Send the commission submission to the backend service (HttpClient returns an Observable that we subscribe to)
-          this.commissionService.submitCommission(commissionRequest).subscribe({
-            next: (reply) => {
-              console.log('server response:', reply);
-              // Update the status message and UI to indicate successful submission
-              this.status.set(reply.message);
-              this.statusElement?.classList.add('text-success');
-            },
-            error: (err) => {
-              console.log('server error:', err.error ?? err.message);
-              // Update the status message and UI to indicate an error from the server
-              this.status.set(err.error?.message ?? err.message);
-              this.statusElement?.classList.add('text-error');
-            },
-          });
-
-          // Log to console that the POST request has been sent (the actual response will be handled in the subscription above)
-          console.log('Backend POST sent');
-        },
-        // When the user submits the form but it is invalid, we update the status message and UI to indicate that there are errors in the form.
-        onInvalid: () => {
-          this.status.set('Please correct the errors in the form before submitting.');
-          this.statusElement?.classList.add('text-error');
-          this.statusElement?.classList.remove('text-success');
-        },
-      },
+      submission: createFormSubmission({
+        pendingMessage: 'Submitting commission...',
+        invalidMessage: 'Please correct the errors in the form before submitting.',
+        model: this.commissionModel,
+        status: this.status,
+        buildRequest: (model): CreateCommissionRequest => ({
+          name: model.name,
+          email: model.email,
+          commissionType: model.commissionType,
+          description: model.description,
+          referenceLinks: model.referenceLinks,
+          usageType: model.usageType,
+          usageExplanation: model.usageExplanation,
+          estimatedPrice: this.pricingService.getTotalPriceUsd(model.commissionType, model.usageType),
+          deadline: model.deadline,
+          additionalNotes: model.additionalNotes,
+        }),
+        submit: (request) => this.apiService.submitCommission(request),
+        // No post-success side effect today (no reset, no refresh) -- kept exactly as-is.
+      }),
     },
   );
-
-  ngOnInit(): void {
-    this.statusElement = document.getElementById('commission-form-status');
-  }
 
   scrollToCommissionTypes(): void {
     this.scrollToElement('commission-types');
@@ -211,8 +255,10 @@ export class Commission implements OnInit {
     }, this.focusDelay);
   }
 
-  totalPriceUsd(commission: string, commercial: string): number {
-    const multiplier = (this.pricingService.getPercentAddon(commercial) ?? 0) + 1;
-    return (this.pricingService.getBasePriceUsd(commission) ?? 0) * multiplier;
+  private formatPercentAddon(commercialTypeId: string): string {
+    // Uses the real PercentPipe (already injected -- the Artwork Usage terms section still uses it via the
+    // template pipe syntax) rather than a hand-rolled reimplementation of its '1.0-0' rounding rule.
+    // /code-review flagged the original Math.round version as a duplicate-to-keep-in-sync of this same rule.
+    return this.percentPipe.transform(this.pricingService.getPercentAddon(commercialTypeId) ?? 0, '1.0-0') ?? '0%';
   }
 }

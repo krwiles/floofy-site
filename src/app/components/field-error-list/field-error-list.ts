@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { FieldState } from '@angular/forms/signals';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Field } from '@angular/forms/signals';
 
 /**
  * A field's active validation errors, shown once it's both invalid and touched -- never before, so a field
- * doesn't scold the person before they've had a chance to fill it in. Shared by `FormFieldGroup` and
- * `CheckboxField` (and, soon, `RadioGroup`) -- extracted after `/code-review` flagged this markup as
- * duplicated verbatim between the first two.
+ * doesn't scold the person before they've had a chance to fill it in. Shared by `FormFieldGroup`,
+ * `CheckboxField`, and `RadioGroup` -- extracted after `/code-review` flagged this markup as duplicated
+ * verbatim between the first two, before `RadioGroup` existed to make it a third.
+ *
+ * Takes `field`, not `state`, same reasoning as `RequiredMarker`'s own doc comment -- see there.
  */
 @Component({
   selector: 'app-field-error-list',
@@ -23,5 +25,6 @@ import { FieldState } from '@angular/forms/signals';
   `,
 })
 export class FieldErrorList {
-  readonly state = input.required<FieldState<unknown>>();
+  readonly field = input.required<Field<unknown>>();
+  readonly state = computed(() => this.field()());
 }

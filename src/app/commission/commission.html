@@ -502,231 +502,91 @@
             {{ 'commission.form.sections.requester' | translate }}
           </p>
 
-          <!-- Name field -->
-          <div>
-            <label class="font-semibold">
-              <p class="flex gap-1">
-                {{ 'commission.form.name.label' | translate }}
-                <span class="text-error" aria-hidden="true">*</span>
-                @if (commissionForm.name().invalid() && commissionForm.name().touched()) {
-                  <div class="text-error">
-                    @for (error of commissionForm.name().errors(); track error.kind) {
-                      <span>{{ error.message }}</span>
-                    }
-                  </div>
-                }
-              </p>
-              <input
-                type="text"
-                [formField]="commissionForm.name"
-                placeholder="{{ 'commission.form.name.placeholder' | translate }}"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
-              />
-            </label>
-          </div>
-          <!-- Email field -->
-          <div>
-            <label class="font-semibold">
-              <p class="flex gap-1">
-                {{ 'commission.form.email.label' | translate }}
-                <span class="text-error" aria-hidden="true">*</span>
-                @if (commissionForm.email().invalid() && commissionForm.email().touched()) {
-                  <div class="text-error">
-                    @for (error of commissionForm.email().errors(); track error.kind) {
-                      <span>{{ error.message }}</span>
-                    }
-                  </div>
-                }
-              </p>
-              <input
-                type="email"
-                [formField]="commissionForm.email"
-                placeholder="{{ 'commission.form.email.placeholder' | translate }}"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
-              />
-            </label>
-          </div>
+          <app-form-field [label]="'commission.form.name.label' | translate" [field]="commissionForm.name">
+            <input
+              appControl
+              type="text"
+              [formField]="commissionForm.name"
+              placeholder="{{ 'commission.form.name.placeholder' | translate }}"
+            />
+          </app-form-field>
+
+          <app-form-field [label]="'commission.form.email.label' | translate" [field]="commissionForm.email">
+            <input
+              appControl
+              type="email"
+              [formField]="commissionForm.email"
+              placeholder="{{ 'commission.form.email.placeholder' | translate }}"
+            />
+          </app-form-field>
 
           <!-- Commission details -->
           <p class="mt-8 mb-2 border-b-2 border-border font-semibold tracking-widest text-on-middle-heading uppercase">
             {{ 'commission.form.sections.details' | translate }}
           </p>
 
-          <!-- Commission Type -->
-          <div>
-            <p class="inline-flex items-center gap-1 font-semibold">
-              {{ 'commission.form.commission_type.label' | translate }}
-              <span class="text-error" aria-hidden="true">*</span>
-              <button
-                type="button"
-                (click)="scrollToCommissionTypes()"
-                class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border text-xs leading-none font-bold text-on-middle-body transition-colors hover:bg-section-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-                aria-label="{{ 'commission.form.commission_type.jump_aria' | translate }}"
-                title="{{ 'commission.form.commission_type.jump_title' | translate }}"
-              >
-                ?
-              </button>
-            </p>
+          <app-radio-group
+            [label]="'commission.form.commission_type.label' | translate"
+            [field]="commissionForm.commissionType"
+            [options]="commissionTypeOptions()"
+          >
+            <app-jump-button
+              labelExtra
+              (activate)="scrollToCommissionTypes()"
+              [ariaLabel]="'commission.form.commission_type.jump_aria' | translate"
+              [title]="'commission.form.commission_type.jump_title' | translate"
+            />
+          </app-radio-group>
 
-            <div class="mt-2 flex flex-wrap gap-3">
-              <label class="block min-w-40 cursor-pointer">
-                <input type="radio" [formField]="commissionForm.commissionType" value="chibi" class="peer sr-only" />
-                <span
-                  class="block rounded-xl border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-                >
-                  {{ 'commission.form.commission_type.chibi' | translate }}
-                </span>
-              </label>
-
-              <label class="block min-w-40 cursor-pointer">
-                <input type="radio" [formField]="commissionForm.commissionType" value="emotes" class="peer sr-only" />
-                <span
-                  class="block rounded-xl border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-                >
-                  {{ 'commission.form.commission_type.emote' | translate }}
-                </span>
-              </label>
-
-              <label class="block min-w-40 cursor-pointer">
-                <input
-                  type="radio"
-                  [formField]="commissionForm.commissionType"
-                  value="illustration"
-                  class="peer sr-only"
-                />
-                <span
-                  class="block rounded-xl border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-                >
-                  {{ 'commission.form.commission_type.illustration' | translate }}
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Description -->
-          <div>
-            <label class="font-semibold">
-              <p class="flex gap-1">
-                {{ 'commission.form.description.label' | translate }}
-                <span class="text-error" aria-hidden="true">*</span>
-                @if (commissionForm.description().invalid() && commissionForm.description().touched()) {
-                  <div class="text-error">
-                    @for (error of commissionForm.description().errors(); track error.kind) {
-                      <span>{{ error.message }}</span>
-                    }
-                  </div>
-                }
-              </p>
-              <textarea
-                [formField]="commissionForm.description"
-                placeholder="{{ 'commission.form.description.placeholder' | translate }}"
-                rows="5"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
-              ></textarea>
-            </label>
-          </div>
+          <app-form-field
+            [label]="'commission.form.description.label' | translate"
+            [field]="commissionForm.description"
+          >
+            <textarea
+              appControl
+              [formField]="commissionForm.description"
+              placeholder="{{ 'commission.form.description.placeholder' | translate }}"
+              rows="5"
+            ></textarea>
+          </app-form-field>
 
           <!-- Reference links -->
           <div>
             <label class="font-semibold">
               {{ 'commission.form.reference_links.label' | translate }}
               <textarea
+                appControl
                 type="text"
                 [formField]="commissionForm.referenceLinks"
                 placeholder="{{ 'commission.form.reference_links.placeholder' | translate }}"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
               ></textarea>
             </label>
           </div>
 
-          <!-- Usage Type -->
-          <div>
-            <p class="inline-flex items-center gap-1 font-semibold">
-              {{ 'commission.form.usage_type.label' | translate }}
-              <span class="text-error" aria-hidden="true">*</span>
-              <button
-                type="button"
-                (click)="scrollToArtworkUsage()"
-                class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border text-xs leading-none font-bold text-on-middle-body transition-colors hover:bg-section-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-                aria-label="{{ 'commission.form.usage_type.jump_aria' | translate }}"
-                title="{{ 'commission.form.usage_type.jump_title' | translate }}"
-              >
-                ?
-              </button>
-            </p>
-            <div class="mt-2 flex flex-wrap gap-3">
-              <label class="block min-w-40 cursor-pointer">
-                <input type="radio" [formField]="commissionForm.usageType" value="personal" class="peer sr-only" />
-                <span
-                  class="block rounded-xl border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-                >
-                  {{ 'commission.form.usage_type.personal' | translate }}
-                </span>
-              </label>
+          <app-radio-group
+            [label]="'commission.form.usage_type.label' | translate"
+            [field]="commissionForm.usageType"
+            [options]="usageTypeOptions()"
+          >
+            <app-jump-button
+              labelExtra
+              (activate)="scrollToArtworkUsage()"
+              [ariaLabel]="'commission.form.usage_type.jump_aria' | translate"
+              [title]="'commission.form.usage_type.jump_title' | translate"
+            />
+          </app-radio-group>
 
-              <label class="block min-w-40 cursor-pointer">
-                <input type="radio" [formField]="commissionForm.usageType" value="promotion" class="peer sr-only" />
-                <span
-                  class="block rounded-xl border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-                >
-                  {{ 'commission.form.usage_type.promotion' | translate }}
-                  (+{{ pricingService.getPercentAddon('promotion') ?? 0 | percent: '1.0-0' }})
-                </span>
-              </label>
-
-              <label class="block min-w-40 cursor-pointer">
-                <input type="radio" [formField]="commissionForm.usageType" value="distribution" class="peer sr-only" />
-                <span
-                  class="block rounded-xl border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-                >
-                  {{ 'commission.form.usage_type.distribution' | translate }}
-                  (+{{ pricingService.getPercentAddon('distribution') ?? 0 | percent: '1.0-0' }})
-                </span>
-              </label>
-
-              <label class="block min-w-40 cursor-pointer">
-                <input type="radio" [formField]="commissionForm.usageType" value="products" class="peer sr-only" />
-                <span
-                  class="block rounded-xl border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-                >
-                  {{ 'commission.form.usage_type.products' | translate }}
-                  (+{{ pricingService.getPercentAddon('products') ?? 0 | percent: '1.0-0' }})
-                </span>
-              </label>
-
-              <label class="block min-w-40 cursor-pointer">
-                <input type="radio" [formField]="commissionForm.usageType" value="unsure" class="peer sr-only" />
-                <span
-                  class="block rounded-xl border border-border bg-section-light px-4 py-3 text-center text-sm font-semibold text-on-middle-heading transition-colors peer-checked:border-brand-strong peer-checked:bg-brand peer-checked:text-on-light-heading"
-                >
-                  {{ 'commission.form.usage_type.unsure' | translate }}
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Usage Explanation -->
-          <div>
-            <label class="font-semibold">
-              <p class="flex gap-1">
-                {{ 'commission.form.usage_explanation.label' | translate }}
-                <span class="text-error" aria-hidden="true">*</span>
-                @if (commissionForm.usageExplanation().invalid() && commissionForm.usageExplanation().touched()) {
-                  <div class="text-error">
-                    @for (error of commissionForm.usageExplanation().errors(); track error.kind) {
-                      <span>{{ error.message }}</span>
-                    }
-                  </div>
-                }
-              </p>
-              <textarea
-                [formField]="commissionForm.usageExplanation"
-                placeholder="{{ 'commission.form.usage_explanation.placeholder' | translate }}"
-                rows="3"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
-              ></textarea>
-            </label>
-          </div>
+          <app-form-field
+            [label]="'commission.form.usage_explanation.label' | translate"
+            [field]="commissionForm.usageExplanation"
+          >
+            <textarea
+              appControl
+              [formField]="commissionForm.usageExplanation"
+              placeholder="{{ 'commission.form.usage_explanation.placeholder' | translate }}"
+              rows="3"
+            ></textarea>
+          </app-form-field>
 
           <!-- Price estimate -->
           <div>
@@ -737,8 +597,10 @@
             <p class="mt-6 flex items-baseline">
               <span class="text-5xl font-extrabold text-on-light-heading">
                 {{
-                  totalPriceUsd(commissionForm.commissionType().value(), commissionForm.usageType().value())
-                    | currency: 'USD' : 'symbol' : '2.0-0'
+                  pricingService.getTotalPriceUsd(
+                    commissionForm.commissionType().value(),
+                    commissionForm.usageType().value()
+                  ) | currency: 'USD' : 'symbol' : '2.0-0'
                 }}
               </span>
               <span class="ml-2 text-base font-semibold tracking-wide text-on-middle-body-subtle uppercase">USD</span>
@@ -755,11 +617,7 @@
             <label class="font-semibold">
               {{ 'commission.form.deadline.label' | translate }}
               <i>{{ 'commission.form.deadline.note' | translate }}</i>
-              <input
-                type="date"
-                [formField]="commissionForm.deadline"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
-              />
+              <input appControl type="date" [formField]="commissionForm.deadline" />
             </label>
           </div>
 
@@ -769,49 +627,32 @@
               {{ 'commission.form.additional_notes.label' | translate }}
               <i>{{ 'commission.form.additional_notes.note' | translate }}</i>
               <textarea
+                appControl
                 [formField]="commissionForm.additionalNotes"
                 placeholder="{{ 'commission.form.additional_notes.placeholder' | translate }}"
                 rows="3"
-                class="mt-2 w-full rounded-xl border border-border bg-section-light p-3 placeholder:text-on-middle-body-subtle focus-visible:outline-2 focus-visible:outline-brand-strong"
               ></textarea>
             </label>
           </div>
 
           <!-- TOS agreement -->
-          <div class="flex items-start gap-1">
-            <label class="flex items-center space-x-3">
-              <input type="checkbox" [formField]="commissionForm.tosAccepted" id="tos" class="h-4 w-4" />
-              <span class="text-sm leading-6">
-                {{ 'commission.form.tos.checkbox' | translate }}
-                <span class="text-error" aria-hidden="true">*</span>
-              </span>
-            </label>
-            <button
-              type="button"
-              (click)="scrollToTerms()"
-              class="mt-px inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border text-xs leading-none font-bold text-on-middle-body transition-colors hover:bg-section-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-              aria-label="{{ 'commission.form.tos.jump_aria' | translate }}"
-              title="{{ 'commission.form.tos.jump_title' | translate }}"
-            >
-              ?
-            </button>
-          </div>
-          @if (commissionForm.tosAccepted().invalid() && commissionForm.tosAccepted().touched()) {
-            <div class="text-error">
-              @for (error of commissionForm.tosAccepted().errors(); track error.kind) {
-                <span>{{ error.message }}</span>
-              }
-            </div>
-          }
+          <app-checkbox-field [field]="commissionForm.tosAccepted">
+            {{ 'commission.form.tos.checkbox' | translate }}
+            <app-jump-button
+              labelExtra
+              extraClass="mt-px"
+              (activate)="scrollToTerms()"
+              [ariaLabel]="'commission.form.tos.jump_aria' | translate"
+              [title]="'commission.form.tos.jump_title' | translate"
+            />
+          </app-checkbox-field>
 
           <!-- Submit button -->
           <div class="flex items-center gap-5 pt-4 text-on-middle-body">
             <button type="submit" appButton variant="primary" tone="middle">
               {{ 'commission.form.submit' | translate }}
             </button>
-            <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" id="commission-form-status">
-              {{ status() }}
-            </p>
+            <app-form-status [status]="status()" />
           </div>
         </div>
       </form>

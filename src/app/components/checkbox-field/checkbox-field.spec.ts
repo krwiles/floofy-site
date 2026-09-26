@@ -7,16 +7,16 @@ import { CheckboxField } from './checkbox-field';
   selector: 'app-checkbox-field-test-host',
   imports: [CheckboxField],
   template: `
-    <app-checkbox-field [field]="testForm.agreement" [rowGapClass]="rowGapClass">
+    <app-checkbox-field [field]="testForm.agreement">
       I agree to the terms.
+      @if (withLabelExtra) {
+        <button labelExtra type="button">?</button>
+      }
     </app-checkbox-field>
   `,
 })
 class CheckboxFieldTestHost {
-  // Explicitly 'gap-2' (CheckboxField's own default) rather than leaving the binding unset -- an explicit
-  // `undefined` binding would override the component's default input value with `undefined`, not fall back to
-  // it, so tests for the default behavior bind the default's own value here on purpose.
-  rowGapClass = 'gap-2';
+  withLabelExtra = false;
   private readonly model = signal({ agreement: false });
   testForm = form(this.model, (schemaPath) => {
     required(schemaPath.agreement, { message: 'You must agree.' });
@@ -91,14 +91,19 @@ describe('CheckboxField', () => {
     expect(errorEls().length).toBe(0);
   });
 
-  it('defaults the row spacing to gap-2', () => {
+  it('uses gap-2 row spacing', () => {
     create();
     expect(rowEl().classList.contains('gap-2')).toBe(true);
   });
 
-  it("uses a caller-supplied row gap class instead, e.g. commission's own gap-1", () => {
-    create({ rowGapClass: 'gap-1' });
-    expect(rowEl().classList.contains('gap-1')).toBe(true);
-    expect(rowEl().classList.contains('gap-2')).toBe(false);
+  it('projects labelExtra content as a sibling of the label row', () => {
+    create({ withLabelExtra: true });
+    const button = fixture.nativeElement.querySelector('button');
+    expect(button?.textContent?.trim()).toBe('?');
+  });
+
+  it('renders no labelExtra content when none is projected', () => {
+    create();
+    expect(fixture.nativeElement.querySelector('button')).toBeNull();
   });
 });

@@ -1,11 +1,16 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { FieldState } from '@angular/forms/signals';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Field } from '@angular/forms/signals';
 
 /**
  * The `*` shown next to a field's label when it's actually required, derived from the field's own `required`
- * signal rather than a second, independently-set input. Shared by `FormFieldGroup` and `CheckboxField` (and,
- * soon, `RadioGroup`) -- extracted after `/code-review` flagged this markup as duplicated verbatim between the
- * first two.
+ * signal rather than a second, independently-set input. Shared by `FormFieldGroup`, `CheckboxField`, and
+ * `RadioGroup` -- extracted after `/code-review` flagged this markup as duplicated verbatim between the first
+ * two, before `RadioGroup` existed to make it a third.
+ *
+ * Takes `field` (the Signal Forms callable itself), not `state`, and calls it internally -- `/code-review`
+ * flagged that all three callers were independently redoing the identical one-line
+ * `computed(() => this.field()())` adapter just to convert their own `field` input into what this component
+ * (and `FieldErrorList`) expected. Centralizing that here means a future caller needs one input, not two.
  */
 @Component({
   selector: 'app-required-marker',
@@ -22,5 +27,6 @@ import { FieldState } from '@angular/forms/signals';
   `,
 })
 export class RequiredMarker {
-  readonly state = input.required<FieldState<unknown>>();
+  readonly field = input.required<Field<unknown>>();
+  readonly state = computed(() => this.field()());
 }
