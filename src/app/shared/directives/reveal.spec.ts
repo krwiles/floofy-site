@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { Reveal } from './reveal';
-import { RevealService } from '../services/reveal.service';
+import { RevealService } from '../../services/reveal.service';
 
 @Component({
   template: `<div appReveal></div>`,

@@ -1,5 +1,5 @@
 import { Directive, ElementRef, OnDestroy, OnInit, inject } from '@angular/core';
-import { RevealService } from '../services/reveal.service';
+import { RevealService } from '../../services/reveal.service';
 
 /**
  * Registers its host element with RevealService for the scroll-reveal

@@ -1,5 +1,5 @@
 import { Directive, computed, input } from '@angular/core';
-import { Tone } from '../models/tone';
+import { Tone } from '../../models/tone';
 
 type Variant = 'primary' | 'secondary' | 'pill';
 

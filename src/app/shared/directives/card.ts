@@ -1,5 +1,5 @@
 import { Directive, computed, input } from '@angular/core';
-import { Tone } from '../models/tone';
+import { Tone } from '../../models/tone';
 
 /**
  * Applies the finished card/glass-panel design system (src/styles/components/cards.css) to its host element.

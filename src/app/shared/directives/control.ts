@@ -1,7 +1,7 @@
 import { Directive, computed, inject, input } from '@angular/core';
 import { FormField } from '@angular/forms/signals';
-import { Tone } from '../models/tone';
-import { joinClasses } from '../utils/join-classes';
+import { Tone } from '../../models/tone';
+import { joinClasses } from '../../utils/join-classes';
 
 // A lookup table, not a `placeholder:text-on-${tone}-body-subtle` template literal -- Tailwind can only
 // generate a utility class it finds as a complete literal string somewhere in scanned source. A template
