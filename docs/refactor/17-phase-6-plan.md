@@ -12,7 +12,7 @@ parked one item as a future idea.
 
 | Stage | Work                                        | Spec status                                           |
 | ----- | ------------------------------------------- | ----------------------------------------------------- |
-| 1     | Folder restructure                          | Settled below                                         |
+| 1     | Folder restructure                          | **Done** (2026-09-26)                                 |
 | 2     | Asset naming/organisation + `gallery.json`  | Settled below (manifest generated, awaiting owner)    |
 | 3     | Split `commission.html` into sub-components | Needs its own grilling round before it starts         |
 | 4     | Script loading + `StreamScheduleService`    | Needs its own grilling round before it starts         |

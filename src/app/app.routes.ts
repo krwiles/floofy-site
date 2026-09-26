@@ -3,34 +3,34 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./home/home').then((m) => m.Home),
+    loadComponent: () => import('./pages/home/home').then((m) => m.Home),
   },
   {
     path: 'about',
-    loadComponent: () => import('./about/about').then((m) => m.About),
+    loadComponent: () => import('./pages/about/about').then((m) => m.About),
   },
   {
     path: 'streaming',
-    loadComponent: () => import('./streaming/streaming').then((m) => m.Streaming),
+    loadComponent: () => import('./pages/streaming/streaming').then((m) => m.Streaming),
   },
   {
     path: 'gallery',
-    loadComponent: () => import('./gallery/gallery').then((m) => m.Gallery),
+    loadComponent: () => import('./pages/gallery/gallery').then((m) => m.Gallery),
   },
   {
     path: 'reviews',
-    loadComponent: () => import('./reviews/reviews').then((m) => m.Reviews),
+    loadComponent: () => import('./pages/reviews/reviews').then((m) => m.Reviews),
   },
   {
     path: 'donate',
-    loadComponent: () => import('./donate/donate').then((m) => m.Donate),
+    loadComponent: () => import('./pages/donate/donate').then((m) => m.Donate),
   },
   {
     path: 'contact',
-    loadComponent: () => import('./contact/contact').then((m) => m.Contact),
+    loadComponent: () => import('./pages/contact/contact').then((m) => m.Contact),
   },
   {
     path: 'commission',
-    loadComponent: () => import('./commission/commission').then((m) => m.Commission),
+    loadComponent: () => import('./pages/commission/commission').then((m) => m.Commission),
   },
 ];

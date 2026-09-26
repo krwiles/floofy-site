@@ -1,0 +1,66 @@
+<!-- Gallery Hero -->
+<app-hero
+  backgroundClass="bg-hero-gallery"
+  heroImageSrc="assets/HGl6r3xbcAAy7uU.jpeg"
+  heroImagePosition="center 20%"
+  heroImageMaxWidthClass="max-w-4xl"
+  tone="dark"
+  cardMaxWidthClass="max-w-2xl"
+  [kicker]="'gallery.hero.kicker' | translate"
+  [description]="'gallery.hero.description' | translate"
+  [tagline]="'gallery.hero.tagline' | translate"
+>
+  <span heroTitle>{{ 'gallery.hero.title' | translate }}</span>
+</app-hero>
+
+<app-section-divider />
+
+<!-- Gallery Section -->
+<app-section tone="dark" pattern="circles" ariaLabel="Streaming Section">
+  <div class="mx-auto max-w-7xl columns-1 gap-8 px-4 py-8 sm:py-16 md:columns-2 lg:columns-3 lg:px-6">
+    @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index) {
+      @defer (on viewport) {
+        <img
+          class="gallery-image mb-8 w-full break-inside-avoid"
+          [ngSrc]="galleryImage.src"
+          [alt]="galleryImage.alt"
+          [height]="galleryImage.height"
+          [width]="galleryImage.width"
+          (click)="showImage(galleryImage)"
+          animate.enter="enter-image"
+        />
+      } @placeholder {
+        <div
+          class="mb-8 w-full break-inside-avoid"
+          [style.aspect-ratio]="galleryImage.width + '/' + galleryImage.height"
+        ></div>
+      }
+    }
+  </div>
+</app-section>
+
+<!-- Lightbox Modal -->
+@if (showLightBox()) {
+  <div
+    class="lightbox-overlay fixed inset-0 z-20000 flex items-center justify-center bg-black/80"
+    (click)="closeImage()"
+    animate.enter="enter-lightbox"
+    animate.leave="leave-lightbox"
+  >
+    <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
+      <img
+        animate.enter="enter-image"
+        class="lightbox-image max-h-screen max-w-screen bg-lightbox-backdrop shadow-[0_0_3rem_rgb(0,0,0)]"
+        [src]="$safeNavigationMigration(selectedImage()?.src)"
+        [alt]="$safeNavigationMigration(selectedImage()?.alt)"
+        loading="eager"
+      />
+      <button
+        class="close-btn absolute right-8 cursor-pointer border-0 bg-transparent text-[4rem] text-white lg:text-transparent"
+        (click)="closeImage()"
+      >
+        ×
+      </button>
+    </div>
+  </div>
+}

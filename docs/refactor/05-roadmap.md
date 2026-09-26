@@ -854,7 +854,7 @@ Plan: **[17-phase-6-plan.md](17-phase-6-plan.md)** (settled 2026-09-26 via `gril
 time, each its own PR directly against `working` (never stacked). Supersedes the folder layout in
 `03-target-architecture.md` (`pages/` not `features/`, `services/` kept, no `core/`).
 
-- [ ] **Stage 1 — Folder restructure**: `pages/`, `layout/`, `shared/{components,directives,pipes,forms}`,
+- [x] **Stage 1 — Folder restructure** (done 2026-09-26; 0.00% visual diff on all 8 routes × 3 widths, 206/206 tests, prod build clean): `pages/`, `layout/`, `shared/{components,directives,pipes,forms}`,
       `services/`; one commit per folder, imports fixed by the build; 0.00% visual diff expected. Also delete
       gallery.html's two stale TODOs.
 - [ ] **Stage 2 — Assets + `gallery.json`**: manifest generated ([asset-manifest.csv](asset-manifest.csv)), **⏸ owner

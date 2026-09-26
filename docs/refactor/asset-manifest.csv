@@ -1,48 +1,48 @@
-"currentName","newName","folder","alt","suggestedFolder","format","width","height","bytes","referencedIn"
-"0062bdc3-69f5-4380-93d2-d30f82a0d2b9_Floofy-t09.webp","","","","artwork","webp","400","400","12682","src/app/about/about.html"
-"4-point-stars.svg","","","","graphics","svg","30","50","970","src/app/components/hero/hero.spec.ts | src/app/components/hero/hero.ts | src/app/components/section/section.spec.ts | src/app/components/section/section.ts"
-"6BA33836.jpeg","","","","artwork","jpeg","1718","966","136938","docs/refactor/03-target-architecture.md | src/app/home/home.html"
-"A6757DF0.jpeg","","","","artwork","jpeg","3840","1864","653921","docs/refactor/03-target-architecture.md"
-"bluesky.svg","","","","icons","svg","24","24","665","src/styles/utilities/icons.css"
-"chibi1.webp","","","","artwork","webp","1080","1080","77600","src/app/services/gallery-image.service.ts"
-"chibi2.webp","","","","artwork","webp","1080","1080","47650","src/app/services/gallery-image.service.ts"
-"chibi3.webp","","","","artwork","webp","1080","1080","57886","src/app/services/gallery-image.service.ts"
-"chibi4.jfif","","","","artwork","jfif","1080","1080","144291","src/app/services/gallery-image.service.ts"
-"email.svg","","","","icons","svg","512","512","1899","src/styles/utilities/icons.css"
-"emote1.webp","","","","artwork","webp","400","400","16836","src/app/services/gallery-image.service.ts"
-"emote2.webp","","","","artwork","webp","512","512","31238","src/app/services/gallery-image.service.ts"
-"emote3.webp","","","","artwork","webp","323","340","13902","src/app/services/gallery-image.service.ts"
-"emote4.webp","","","","artwork","webp","500","500","11142","src/app/services/gallery-image.service.ts"
-"emote5.webp","","","","artwork","webp","512","512","31932","src/app/services/gallery-image.service.ts"
-"flag-en.svg","","","","icons","svg","18","18","2227","src/app/components/language-toggle/language-toggle.spec.ts | src/app/components/language-toggle/language-toggle.ts"
-"flag-ja.svg","","","","icons","svg","18","18","176","src/app/components/language-toggle/language-toggle.spec.ts | src/app/components/language-toggle/language-toggle.ts"
-"Floofy_Illustration_T03.png","","","","artwork","png","1080","1861","1771290","src/app/about/about.html | src/app/services/gallery-image.service.ts"
-"flourish-end-short.svg","","","","graphics","svg","144","54","733","src/styles/utilities/flourishes.css"
-"flourish-end.svg","","","","graphics","svg","241","54","731","src/styles/utilities/flourishes.css"
-"flourish.svg","","","","graphics","svg","493","54","2134","src/styles/utilities/flourishes.css"
-"flourish2.svg","","","","graphics","svg","646","54","2760","src/styles/utilities/flourishes.css"
-"G_CQjK1XkAALluE.jpeg","","","","artwork","jpeg","1200","1800","394591","docs/refactor/03-target-architecture.md | src/app/home/home.ts | src/app/services/gallery-image.service.ts"
-"G_Xl1MobAAAVbNn.jpeg","","","","artwork","jpeg","621","621","54043","docs/refactor/11-phase-3c-plan.md | src/app/components/brand/brand.spec.ts | src/app/components/brand/brand.ts | src/app/home/home.html"
-"G-Ewq9pagAA7Z-b.jpeg","","","","artwork","jpeg","1442","2048","255679","src/app/home/home.ts | src/app/services/gallery-image.service.ts"
-"G-lXyxKbQAMHkV_.jpeg","","","","artwork","jpeg","1080","1350","185919","src/app/home/home.ts | src/app/services/gallery-image.service.ts"
-"G0iHCdnaIAA5IDY.jpg","","","","artwork","jpg","1500","2000","158682","src/app/home/home.ts | src/app/services/gallery-image.service.ts | src/app/streaming/streaming.html"
-"G1yNfrpbAAAEPTp.jfif","","","","artwork","jfif","1200","1600","182522","src/app/contact/contact.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts"
-"G25GkrnbsAAv-8K.jfif","","","","artwork","jfif","1080","1080","58133","docs/refactor/03-target-architecture.md"
-"G3CEwsxbwAAvo2n.jfif","","","","artwork","jfif","2048","1536","155608","src/app/about/about.html"
-"G8oM0YEasAAWxIg.jpeg","","","","artwork","jpeg","999","1332","158705","src/app/home/home.ts | src/app/reviews/reviews.html | src/app/services/gallery-image.service.ts"
-"G8s5y4ZakAA0XN9.jpeg","","","","artwork","jpeg","1080","1350","176951","src/app/home/home.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts | src/index.html"
-"G9bdIEcbEAAFxwd.jpeg","","","","artwork","jpeg","1080","1440","122075","src/app/services/gallery-image.service.ts"
-"GkuDuFAbwAAMiur.jfif","","","","artwork","jfif","1080","1080","111307","src/app/about/about.html"
-"GyfSzJfaIAAn9qh.jfif","","","","artwork","jfif","900","1200","75123","docs/refactor/05-roadmap.md | src/app/donate/donate.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts"
-"HE_aWzObYAAc7MN.jpeg","","","","artwork","jpeg","900","1200","99847","src/app/home/home.html"
-"HFImiOIbkAAPgg6.jpeg","","","","artwork","jpeg","900","1200","99183","src/app/home/home.ts | src/app/services/gallery-image.service.ts"
-"HFT6u19bsAAQG-z.jpeg","","","","artwork","jpeg","900","1200","98680","docs/refactor/03-target-architecture.md | src/app/home/home.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts"
-"HGl6r3xbcAAy7uU.jpeg","","","","artwork","jpeg","1500","2000","258463","src/app/gallery/gallery.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts"
-"HJLDmNTbgAAbNwI.jfif","","","","artwork","jfif","1090","1600","174061","src/app/commission/commission.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts"
-"icon.png","","","","","png","1080","1080","709501","docs/refactor/03-target-architecture.md"
-"intersecting-circles.svg","","","","graphics","svg","30","30","912","src/app/components/section/section.spec.ts | src/app/components/section/section.ts | src/app/contact/contact.html | src/app/streaming/streaming.html"
-"kofi-svgrepo-com.svg","","","","icons","svg","24","24","840","src/styles/utilities/icons.css"
-"pixiv-svgrepo-com.svg","","","","icons","svg","24","24","950","src/styles/utilities/icons.css"
-"twitch-svgrepo-com.svg","","","","icons","svg","311","326","427","src/styles/utilities/icons.css"
-"VGen Badge - outline.png","","","","icons","png","168","168","16691","docs/refactor/03-target-architecture.md | src/styles/utilities/icons.css"
-"x-twitter.svg","","","","icons","svg","22","20","341","src/styles/utilities/icons.css"
+currentName,newName,folder,alt,suggestedFolder,format,width,height,bytes,referencedIn
+0062bdc3-69f5-4380-93d2-d30f82a0d2b9_Floofy-t09.webp,floofy-profile-01,artwork,Profile view of floofy,artwork,webp,400,400,12682,src/app/about/about.html
+4-point-stars.svg,pattern-stars,graphics,Star pattern,graphics,svg,30,50,970,src/app/components/hero/hero.spec.ts | src/app/components/hero/hero.ts | src/app/components/section/section.spec.ts | src/app/components/section/section.ts
+6BA33836.jpeg,floofy-streaming-01,artwork,Screenshot of a floofy stream,artwork,jpeg,1718,966,136938,docs/refactor/03-target-architecture.md | src/app/home/home.html
+A6757DF0.jpeg,nimi-commission,artwork,Progress steps of a nimi artwork,artwork,jpeg,3840,1864,653921,docs/refactor/03-target-architecture.md
+bluesky.svg,bluesky,icons,Bsky icon,icons,svg,24,24,665,src/styles/utilities/icons.css
+chibi1.webp,fauna-chibi-01,artwork,Fauna chibi,artwork,webp,1080,1080,77600,src/app/services/gallery-image.service.ts
+chibi2.webp,nimi-chibi-01,artwork,Nimi chibi,artwork,webp,1080,1080,47650,src/app/services/gallery-image.service.ts
+chibi3.webp,fauna-chibi-02,artwork,Fauna chibi,artwork,webp,1080,1080,57886,src/app/services/gallery-image.service.ts
+chibi4.jfif,raora-chibi-01,artwork,Raora chibi,artwork,jfif,1080,1080,144291,src/app/services/gallery-image.service.ts
+email.svg,email,icons,Email icon,icons,svg,512,512,1899,src/styles/utilities/icons.css
+emote1.webp,otomo-emote-01,artwork,Otomo emote,artwork,webp,400,400,16836,src/app/services/gallery-image.service.ts
+emote2.webp,emote-01,artwork,emote,artwork,webp,512,512,31238,src/app/services/gallery-image.service.ts
+emote3.webp,duckie-emote-01,artwork,Duckie emote,artwork,webp,323,340,13902,src/app/services/gallery-image.service.ts
+emote4.webp,oko-emote-01,artwork,Oko emote,artwork,webp,500,500,11142,src/app/services/gallery-image.service.ts
+emote5.webp,emote-02,artwork,emote,artwork,webp,512,512,31932,src/app/services/gallery-image.service.ts
+flag-en.svg,flag-en,icons,American flag icon,icons,svg,18,18,2227,src/app/components/language-toggle/language-toggle.spec.ts | src/app/components/language-toggle/language-toggle.ts
+flag-ja.svg,flag-ja,icons,Japanese flag icon,icons,svg,18,18,176,src/app/components/language-toggle/language-toggle.spec.ts | src/app/components/language-toggle/language-toggle.ts
+Floofy_Illustration_T03.png,floofy-01,artwork,Floofy illustration,artwork,png,1080,1861,1771290,src/app/about/about.html | src/app/services/gallery-image.service.ts
+flourish-end-short.svg,flourish-end-short,graphics,Flourish,graphics,svg,144,54,733,src/styles/utilities/flourishes.css
+flourish-end.svg,flourish-end,graphics,Flourish,graphics,svg,241,54,731,src/styles/utilities/flourishes.css
+flourish.svg,flourish,graphics,Flourish,graphics,svg,493,54,2134,src/styles/utilities/flourishes.css
+flourish2.svg,flourish-full,graphics,Flourish,graphics,svg,646,54,2760,src/styles/utilities/flourishes.css
+G_CQjK1XkAALluE.jpeg,kiara-01,artwork,Kiara illustration,artwork,jpeg,1200,1800,394591,docs/refactor/03-target-architecture.md | src/app/home/home.ts | src/app/services/gallery-image.service.ts
+G_Xl1MobAAAVbNn.jpeg,floofy-02,artwork,Floofy illustration,artwork,jpeg,621,621,54043,docs/refactor/11-phase-3c-plan.md | src/app/components/brand/brand.spec.ts | src/app/components/brand/brand.ts | src/app/home/home.html
+G-Ewq9pagAA7Z-b.jpeg,fauna-01,artwork,Fauna illustration,artwork,jpeg,1442,2048,255679,src/app/home/home.ts | src/app/services/gallery-image.service.ts
+G-lXyxKbQAMHkV_.jpeg,kronii-01,artwork,Kronii illustration,artwork,jpeg,1080,1350,185919,src/app/home/home.ts | src/app/services/gallery-image.service.ts
+G0iHCdnaIAA5IDY.jpg,cecilia-01,artwork,Cecilia illustration,artwork,jpg,1500,2000,158682,src/app/home/home.ts | src/app/services/gallery-image.service.ts | src/app/streaming/streaming.html
+G1yNfrpbAAAEPTp.jfif,shiori-01,artwork,Shiori illustration,artwork,jfif,1200,1600,182522,src/app/contact/contact.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts
+G25GkrnbsAAv-8K.jfif,floofy-03,artwork,Floofy illustration,artwork,jfif,1080,1080,58133,docs/refactor/03-target-architecture.md
+G3CEwsxbwAAvo2n.jfif,floofy-reference,artwork,Floofy character sheet,artwork,jfif,2048,1536,155608,src/app/about/about.html
+G8oM0YEasAAWxIg.jpeg,fauna-02,artwork,Fauna illustration,artwork,jpeg,999,1332,158705,src/app/home/home.ts | src/app/reviews/reviews.html | src/app/services/gallery-image.service.ts
+G8s5y4ZakAA0XN9.jpeg,nimi-01,artwork,Nimi illustration,artwork,jpeg,1080,1350,176951,src/app/home/home.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts | src/index.html
+G9bdIEcbEAAFxwd.jpeg,nimi-02,artwork,Nimi illustration,artwork,jpeg,1080,1440,122075,src/app/services/gallery-image.service.ts
+GkuDuFAbwAAMiur.jfif,floofy-04,artwork,Floofy illustration,artwork,jfif,1080,1080,111307,src/app/about/about.html
+GyfSzJfaIAAn9qh.jfif,nimi-03,artwork,Nimi illustration,artwork,jfif,900,1200,75123,docs/refactor/05-roadmap.md | src/app/donate/donate.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts
+HE_aWzObYAAc7MN.jpeg,nimi-04-sketch,artwork,Nimi sketch,artwork,jpeg,900,1200,99847,src/app/home/home.html
+HFImiOIbkAAPgg6.jpeg,roka-01,artwork,Roka illustration,artwork,jpeg,900,1200,99183,src/app/home/home.ts | src/app/services/gallery-image.service.ts
+HFT6u19bsAAQG-z.jpeg,nimi-04,artwork,Nimi illustration,artwork,jpeg,900,1200,98680,docs/refactor/03-target-architecture.md | src/app/home/home.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts
+HGl6r3xbcAAy7uU.jpeg,nimi-05,artwork,Nimi illustration,artwork,jpeg,1500,2000,258463,src/app/gallery/gallery.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts
+HJLDmNTbgAAbNwI.jfif,nimi-06,artwork,Nimi illustration,artwork,jfif,1090,1600,174061,src/app/commission/commission.html | src/app/home/home.ts | src/app/services/gallery-image.service.ts
+icon.png,floofy-icon,graphics,Floofy website icon,,png,1080,1080,709501,docs/refactor/03-target-architecture.md
+intersecting-circles.svg,pattern-circles,graphics,Circle star pattern,graphics,svg,30,30,912,src/app/components/section/section.spec.ts | src/app/components/section/section.ts | src/app/contact/contact.html | src/app/streaming/streaming.html
+kofi-svgrepo-com.svg,kofi,icons,Kofi icon,icons,svg,24,24,840,src/styles/utilities/icons.css
+pixiv-svgrepo-com.svg,pixiv,icons,Pixiv icon,icons,svg,24,24,950,src/styles/utilities/icons.css
+twitch-svgrepo-com.svg,twitch,icons,Twitch icon,icons,svg,311,326,427,src/styles/utilities/icons.css
+VGen Badge - outline.png,vgen,icons,Vgen icon,icons,png,168,168,16691,docs/refactor/03-target-architecture.md | src/styles/utilities/icons.css
+x-twitter.svg,x,icons,X icon,icons,svg,22,20,341,src/styles/utilities/icons.css
