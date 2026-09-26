@@ -7,9 +7,7 @@ import { Component, input } from '@angular/core';
  */
 @Component({
   selector: 'app-flourish',
-  template: `
-    <span class="flourish" [class]="'f-' + variant()" [class.flip]="flip()" aria-hidden="true"></span>
-  `,
+  template: `<span class="flourish" [class]="'f-' + variant()" [class.flip]="flip()" aria-hidden="true"></span>`,
   styles: `
     /* display: inline-block, not the default inline -- callers size this component via an
        explicit height utility (h-6/h-8/h-12/...) on <app-flourish> itself, and that utility has
