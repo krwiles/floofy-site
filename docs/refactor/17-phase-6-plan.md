@@ -13,7 +13,7 @@ parked one item as a future idea.
 | Stage | Work                                        | Spec status                                           |
 | ----- | ------------------------------------------- | ----------------------------------------------------- |
 | 1     | Folder restructure                          | **Done** (2026-09-26)                                 |
-| 2     | Asset naming/organisation + `gallery.json`  | Settled below (manifest generated, awaiting owner)    |
+| 2     | Asset naming/organisation + `gallery.json`  | **Done** (2026-09-26)                                 |
 | 3     | Split `commission.html` into sub-components | Needs its own grilling round before it starts         |
 | 4     | Script loading + `StreamScheduleService`    | Needs its own grilling round before it starts         |
 | —     | Gallery lightbox/grid a11y rebuild          | **Parked** — moved to "Open ideas" in `05-roadmap.md` |
@@ -78,12 +78,14 @@ Done together so each image gets described exactly once.
    source file that mentions it.
 2. **Owner fills in** `newName`, `folder` (artwork | graphics | icons) and `alt`. `alt` is only required for files
    that will be in `gallery.json`. `suggestedFolder` is a guess by filename to override. Renames use lowercase
-   kebab-case; `.jfif` becomes `.jpg` unless the owner gives another extension.
+   kebab-case; **every file keeps its exact existing extension** (owner's call — no `.jfif` → `.jpg`).
 3. **Script** `git mv`s every file into its folder and rewrites every reference: templates, TS, CSS `url()`s,
    `index.html`'s preload link, `src/robots.txt` (`Disallow` path must keep matching), `README.md`/
    `LICENSE-media.md`. `ng build` then catches any miss.
-4. **`gallery.json`**: `{ src, alt, width, height, category: 'illustration' | 'chibi' | 'emote', showIn: string[] }`
-   per entry, with `showIn` values `gallery`, `home`, `commission` (expandable). `GalleryImageService` becomes a
+4. **`gallery.json`**: `{ src, alt, width, height, category: 'illustration' | 'chibi' | 'emote', showIn: Record<page, number> }`
+   per entry. As built, `showIn` is a map from page name (`gallery`, `home`, `commission`, expandable) to that entry's
+   sort position on that page rather than a plain list, because the three pages already showed the same images in
+   different orders and a list can't carry that. `GalleryImageService` becomes a
    thin reader that filters by `showIn`/`category` — the hardcoded arrays (and home.ts's third duplicate list)
    go away. Width/height are typed by hand, seeded from the manifest; no build-time script for now.
 5. Verification: build, tests, visual diff. Expected 0.00% (same images, new paths). Anything else is a real

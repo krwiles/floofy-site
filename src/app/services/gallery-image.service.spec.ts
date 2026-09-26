@@ -66,6 +66,10 @@ describe('GalleryImageService', () => {
     expect(service.imagesFor('a-page-that-does-not-exist')).toEqual([]);
   });
 
+  it('does not treat inherited object keys as pages', () => {
+    expect(service.imagesFor('constructor')).toEqual([]);
+  });
+
   it('returns plain image assets, not the raw data entries', () => {
     const [first] = service.imagesFor('gallery');
 

@@ -152,7 +152,7 @@ The three kinds of image file the site owns, each its own home in the asset libr
 
 The curated set of Artwork shown on the site's gallery page, home page carousel, and commission page carousels. Each
 entry is an **Image asset** plus two extra facts: its **Category** (illustration, chibi, or emote) and the **pages it
-appears on**. Neither implies the other — an entry's Category never decides on its own which page shows it; a page
+appears on** (and its position on each). Neither implies the other — an entry's Category never decides on its own which page shows it; a page
 shows exactly the entries that list it, so a new page (or a change of what an existing one shows) is a data edit,
 not a code change. Artwork used as a page's hero image is _not_ part of this collection — those are fixed, per-page
 choices, not members of a shared set.

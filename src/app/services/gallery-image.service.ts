@@ -15,7 +15,7 @@ export class GalleryImageService {
 
   imagesFor(page: string, category?: GalleryCategory): ImageAsset[] {
     return this.entries
-      .filter((entry) => page in entry.showIn && (category === undefined || entry.category === category))
+      .filter((entry) => Object.hasOwn(entry.showIn, page) && (category === undefined || entry.category === category))
       .sort((a, b) => a.showIn[page] - b.showIn[page])
       .map(({ src, alt, width, height }) => ({ src, alt, width, height }));
   }
