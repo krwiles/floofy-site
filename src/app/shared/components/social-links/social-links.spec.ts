@@ -4,7 +4,9 @@ import { SocialId } from '../../../models/social';
 import { SocialLinks } from './social-links';
 
 @Component({
-  template: `<app-social-links [ids]="ids" [variant]="variant" />`,
+  template: `
+    <app-social-links [ids]="ids" [variant]="variant" />
+  `,
   imports: [SocialLinks],
 })
 class HostComponent {

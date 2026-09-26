@@ -7,9 +7,11 @@ import { Component } from '@angular/core';
  */
 @Component({
   selector: 'app-section-divider',
-  template: `<span
-    class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
-    aria-hidden="true"
-  ></span>`,
+  template: `
+    <span
+      class="flourish f-full-wide absolute left-1/2 z-10 hidden h-16 -translate-x-1/2 -translate-y-1/2 text-border-strong md:inline-block"
+      aria-hidden="true"
+    ></span>
+  `,
 })
 export class SectionDivider {}

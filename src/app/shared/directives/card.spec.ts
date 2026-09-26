@@ -3,7 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Card } from './card';
 
 @Component({
-  template: `<div appCard [tone]="tone" [special]="special" [noBackground]="noBackground" [glass]="glass"></div>`,
+  template: `
+    <div appCard [tone]="tone" [special]="special" [noBackground]="noBackground" [glass]="glass"></div>
+  `,
   imports: [Card],
 })
 class HostComponent {
@@ -20,14 +22,18 @@ function createFixture(): ComponentFixture<HostComponent> {
 
 // No [tone] binding at all -- glass-panel's own CSS doesn't vary by tone, so glass usage shouldn't need one.
 @Component({
-  template: `<div appCard [glass]="true"></div>`,
+  template: `
+    <div appCard [glass]="true"></div>
+  `,
   imports: [Card],
 })
 class GlassOnlyHostComponent {}
 
 // No [tone] and no [glass] -- tone is required in practice for every other mode.
 @Component({
-  template: `<div appCard></div>`,
+  template: `
+    <div appCard></div>
+  `,
   imports: [Card],
 })
 class NoToneNoGlassHostComponent {}

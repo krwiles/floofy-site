@@ -5,7 +5,9 @@ import { Reveal } from './reveal';
 import { RevealService } from '../../services/reveal.service';
 
 @Component({
-  template: `<div appReveal></div>`,
+  template: `
+    <div appReveal></div>
+  `,
   imports: [Reveal],
 })
 class HostComponent {}

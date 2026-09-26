@@ -3,7 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Button } from './button';
 
 @Component({
-  template: `<a appButton [variant]="variant" [tone]="tone" href="#"></a>`,
+  template: `
+    <a appButton [variant]="variant" [tone]="tone" href="#"></a>
+  `,
   imports: [Button],
 })
 class HostComponent {
@@ -14,7 +16,9 @@ class HostComponent {
 // Separate host with no bindings at all -- binding [variant]/[tone] to an explicit `undefined` would override
 // the directive's own defaults, so the "defaults apply" case needs the attributes genuinely absent.
 @Component({
-  template: `<a appButton href="#"></a>`,
+  template: `
+    <a appButton href="#"></a>
+  `,
   imports: [Button],
 })
 class DefaultsHostComponent {}
