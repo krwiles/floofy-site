@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { Hero } from '../components/hero/hero';
-import { TranslatePipe } from '../pipes/translate.pipe';
+import { TranslatePipe } from '../shared/pipes/translate.pipe';
 import { ApiService } from '../services/api.service';
 import { DatePipe } from '@angular/common';
 import { CreateReviewRequest, Review } from '../models/review.model';

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Hero } from '../components/hero/hero';
-import { TranslatePipe } from '../pipes/translate.pipe';
+import { TranslatePipe } from '../shared/pipes/translate.pipe';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { SectionHeader } from '../components/section-header/section-header';

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Hero } from '../components/hero/hero';
-import { TranslatePipe } from '../pipes/translate.pipe';
+import { TranslatePipe } from '../shared/pipes/translate.pipe';
 import { SlideshowCarousel } from '../components/slideshow-carousel/slideshow-carousel';
 import { GalleryImageService } from '../services/gallery-image.service';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';

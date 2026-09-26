@@ -1,6 +1,6 @@
 import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { TranslatePipe } from '../../pipes/translate.pipe';
+import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 import { I18nService } from '../../services/i18n.service';
 
 interface FlagDisplay {

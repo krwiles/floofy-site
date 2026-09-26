@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import type { CreateContactRequest } from '../models/contact.model';
 import { Hero } from '../components/hero/hero';
-import { TranslatePipe } from '../pipes/translate.pipe';
+import { TranslatePipe } from '../shared/pipes/translate.pipe';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { ApiService } from '../services/api.service';
 import { Flourish } from '../components/flourish/flourish';

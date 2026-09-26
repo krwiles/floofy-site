@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Brand } from '../../components/brand/brand';
 import { SocialLinks } from '../../components/social-links/social-links';
-import { TranslatePipe } from '../../pipes/translate.pipe';
+import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-footer',

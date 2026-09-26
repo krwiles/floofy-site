@@ -4,7 +4,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { ImageAsset } from '../models/image-asset';
 import { RouterLink } from '@angular/router';
 import { Hero } from '../components/hero/hero';
-import { TranslatePipe } from '../pipes/translate.pipe';
+import { TranslatePipe } from '../shared/pipes/translate.pipe';
 import { Reveal } from '../directives/reveal';
 import { Flourish } from '../components/flourish/flourish';
 import { SectionDivider } from '../components/section-divider/section-divider';

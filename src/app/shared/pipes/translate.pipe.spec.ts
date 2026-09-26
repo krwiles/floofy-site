@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { TranslatePipe } from './translate.pipe';
-import { I18nService } from '../services/i18n.service';
+import { I18nService } from '../../services/i18n.service';
 
 describe('TranslatePipe', () => {
   it('create an instance', () => {

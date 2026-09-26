@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, computed, effect, input, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { ImageAsset } from '../../models/image-asset';
-import { TranslatePipe } from '../../pipes/translate.pipe';
+import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 
 /**
  * One image at a time, auto-advancing, looping endlessly forward and backward, usable by mouse,

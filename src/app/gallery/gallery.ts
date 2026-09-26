@@ -4,7 +4,7 @@ import { ImageAsset } from '../models/image-asset';
 import { DOCUMENT } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
 import { Hero } from '../components/hero/hero';
-import { TranslatePipe } from '../pipes/translate.pipe';
+import { TranslatePipe } from '../shared/pipes/translate.pipe';
 import { SectionDivider } from '../components/section-divider/section-divider';
 import { Section } from '../components/section/section';
 

@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Hero } from '../components/hero/hero';
-import { TranslatePipe } from '../pipes/translate.pipe';
+import { TranslatePipe } from '../shared/pipes/translate.pipe';
 import { NgOptimizedImage } from '@angular/common';
 import { Reveal } from '../directives/reveal';
 import { Flourish } from '../components/flourish/flourish';
