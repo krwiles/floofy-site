@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SocialId } from '../../models/social';
+import { SocialId } from '../../../models/social';
 import { SocialLinks } from './social-links';
 
 @Component({

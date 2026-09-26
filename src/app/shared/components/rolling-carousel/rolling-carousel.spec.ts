@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RollingCarousel } from './rolling-carousel';
-import { ImageAsset } from '../../models/image-asset';
+import { ImageAsset } from '../../../models/image-asset';
 
 const IMAGES: ImageAsset[] = [
   { src: 'assets/one.jpg', alt: 'One', width: 400, height: 600 },

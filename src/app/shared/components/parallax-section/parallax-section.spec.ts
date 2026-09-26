@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
 import { ParallaxSection } from './parallax-section';
-import { ParallaxScrollService } from '../../services/parallax-scroll.service';
+import { ParallaxScrollService } from '../../../services/parallax-scroll.service';
 
 describe('ParallaxSection', () => {
   let component: ParallaxSection;

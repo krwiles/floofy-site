@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import { joinClasses } from '../../utils/join-classes';
+import { joinClasses } from '../../../utils/join-classes';
 
 /**
  * A small round "?" button that jumps to more detail lower on the page -- commission's Commission-Type/

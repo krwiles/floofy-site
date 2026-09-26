@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Brand } from '../../components/brand/brand';
-import { SocialLinks } from '../../components/social-links/social-links';
+import { Brand } from '../../shared/components/brand/brand';
+import { SocialLinks } from '../../shared/components/social-links/social-links';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 
 @Component({

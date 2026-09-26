@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { ImageAsset } from '../../models/image-asset';
-import { Tone } from '../../models/tone';
-import { Card } from '../../shared/directives/card';
+import { ImageAsset } from '../../../models/image-asset';
+import { Tone } from '../../../models/tone';
+import { Card } from '../../directives/card';
 
 /**
  * A continuously auto-scrolling horizontal strip of images -- a purely

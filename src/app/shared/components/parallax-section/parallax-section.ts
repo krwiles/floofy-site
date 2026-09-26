@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, input, ViewChild, ElementRef, inject } from '@angular/core';
-import { ParallaxScrollService } from '../../services/parallax-scroll.service';
+import { ParallaxScrollService } from '../../../services/parallax-scroll.service';
 
 @Component({
   selector: 'app-parallax-section',

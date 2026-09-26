@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { Reveal } from '../../shared/directives/reveal';
+import { Reveal } from '../../directives/reveal';
 import { Flourish } from '../flourish/flourish';
 
 type Tone = 'light' | 'middle' | 'dark';

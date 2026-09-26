@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LanguageToggle } from './language-toggle';
-import { I18nService } from '../../services/i18n.service';
+import { I18nService } from '../../../services/i18n.service';
 
 describe('LanguageToggle', () => {
   let fixture: ComponentFixture<LanguageToggle>;

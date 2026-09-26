@@ -3,10 +3,10 @@ import { GalleryImageService } from '../services/gallery-image.service';
 import { ImageAsset } from '../models/image-asset';
 import { DOCUMENT } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
-import { Hero } from '../components/hero/hero';
+import { Hero } from '../shared/components/hero/hero';
 import { TranslatePipe } from '../shared/pipes/translate.pipe';
-import { SectionDivider } from '../components/section-divider/section-divider';
-import { Section } from '../components/section/section';
+import { SectionDivider } from '../shared/components/section-divider/section-divider';
+import { Section } from '../shared/components/section/section';
 
 @Component({
   selector: 'app-gallery',

@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { Hero } from '../components/hero/hero';
+import { Hero } from '../shared/components/hero/hero';
 import { TranslatePipe } from '../shared/pipes/translate.pipe';
 import { ApiService } from '../services/api.service';
 import { DatePipe } from '@angular/common';
 import { CreateReviewRequest, Review } from '../models/review.model';
 import { form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { Reveal } from '../shared/directives/reveal';
-import { SectionDivider } from '../components/section-divider/section-divider';
-import { SectionHeader } from '../components/section-header/section-header';
-import { Section } from '../components/section/section';
+import { SectionDivider } from '../shared/components/section-divider/section-divider';
+import { SectionHeader } from '../shared/components/section-header/section-header';
+import { Section } from '../shared/components/section/section';
 import { Card } from '../shared/directives/card';
 import { Button } from '../shared/directives/button';
 import { FormFieldGroup } from '../shared/forms/form-field-group/form-field-group';

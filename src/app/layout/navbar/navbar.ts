@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChi
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
-import { Brand } from '../../components/brand/brand';
-import { LanguageToggle } from '../../components/language-toggle/language-toggle';
+import { Brand } from '../../shared/components/brand/brand';
+import { LanguageToggle } from '../../shared/components/language-toggle/language-toggle';
 import { I18nService } from '../../services/i18n.service';
 
 // Tailwind's default `lg` breakpoint -- unmodified in this project (no `--breakpoint-lg` override in

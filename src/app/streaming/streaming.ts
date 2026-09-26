@@ -1,8 +1,8 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { Hero } from '../components/hero/hero';
-import { SectionDivider } from '../components/section-divider/section-divider';
-import { Section } from '../components/section/section';
+import { Hero } from '../shared/components/hero/hero';
+import { SectionDivider } from '../shared/components/section-divider/section-divider';
+import { Section } from '../shared/components/section/section';
 
 @Component({
   selector: 'app-streaming',

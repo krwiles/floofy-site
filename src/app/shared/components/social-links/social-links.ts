@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { Social, SOCIALS, SocialId } from '../../models/social';
+import { Social, SOCIALS, SocialId } from '../../../models/social';
 
 type Variant = 'plain' | 'chip';
 

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { ParallaxSection } from '../parallax-section/parallax-section';
-import { Card } from '../../shared/directives/card';
+import { Card } from '../../directives/card';
 import { Flourish } from '../flourish/flourish';
-import { joinClasses } from '../../utils/join-classes';
+import { joinClasses } from '../../../utils/join-classes';
 
 export type HeroTone = 'light' | 'middle' | 'dark';
 export type HeroCardAlign = 'start' | 'end';
