@@ -137,3 +137,22 @@ Status to success or error depending on the outcome. Shared shape across every f
 request, get back the same `{ message }` response shape, update Form Status) even though each form's actual
 request payload and on-success side effect differ (contact resets its fields; reviews refreshes its list;
 commission does neither).
+
+## Artwork, Graphic, Icon
+
+The three kinds of image file the site owns, each its own home in the asset library:
+
+- **Artwork**: the owner's own art pieces — illustrations, chibi, and emotes. The _kind_ of piece (illustration,
+  chibi, emote) is a property of the piece itself (its Category, below), not of where the file is kept.
+- **Graphic**: site decoration and identity — background patterns, flourishes, the brand logo (in both its sizes).
+  Not something the owner would sell or credit as a piece of art.
+- **Icon**: a small symbol standing for something else — a social network's mark, a language flag, the VGen badge.
+
+## Gallery collection
+
+The curated set of Artwork shown on the site's gallery page, home page carousel, and commission page carousels. Each
+entry is an **Image asset** plus two extra facts: its **Category** (illustration, chibi, or emote) and the **pages it
+appears on**. Neither implies the other — an entry's Category never decides on its own which page shows it; a page
+shows exactly the entries that list it, so a new page (or a change of what an existing one shows) is a data edit,
+not a code change. Artwork used as a page's hero image is _not_ part of this collection — those are fixed, per-page
+choices, not members of a shared set.

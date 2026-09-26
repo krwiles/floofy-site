@@ -44,6 +44,8 @@ design system (Tone, Card, Glass Panel, Hero color, …), kept up to date as ter
 | [14-phase-5-contact-plan.md](14-phase-5-contact-plan.md)       | Phase 5 execution plan, page 1: contact (builds every shared piece)                                                         |
 | [15-phase-5-reviews-plan.md](15-phase-5-reviews-plan.md)       | Phase 5 execution plan, page 2: reviews                                                                                     |
 | [16-phase-5-commission-plan.md](16-phase-5-commission-plan.md) | Phase 5 execution plan, page 3: commission (adds the Choice components)                                                     |
+| [17-phase-6-plan.md](17-phase-6-plan.md)                       | Phase 6 (Restructure) overall plan: 4 stages, folder layout, asset/`gallery.json` design                                    |
+| [asset-manifest.csv](asset-manifest.csv)                       | Asset rename manifest for Phase 6 stage 2 — owner fills in `newName`/`folder`/`alt`                                         |
 
 ## Ground rules while this is in progress
 
