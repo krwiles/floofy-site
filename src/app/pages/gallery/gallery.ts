@@ -19,6 +19,7 @@ export class Gallery {
   private readonly document = inject(DOCUMENT);
 
   galleryImageService = inject(GalleryImageService);
+  readonly images = this.galleryImageService.imagesFor('gallery');
   selectedImage = signal<ImageAsset | null>(null);
   showLightBox = signal<boolean>(false);
   scrollY = 0;

@@ -102,9 +102,9 @@ export class Commission {
   private readonly scrollFocusDurationMs = 1600;
   private readonly focusDelay = 1000;
 
-  readonly chibiCarouselImages = this.galleryImageService.chibiImages;
-  readonly emoteCarouselImages = this.galleryImageService.emoteImages;
-  readonly illustrationCarouselImages = this.galleryImageService.illustrationImages;
+  readonly chibiCarouselImages = this.galleryImageService.imagesFor('commission', 'chibi');
+  readonly emoteCarouselImages = this.galleryImageService.imagesFor('commission', 'emote');
+  readonly illustrationCarouselImages = this.galleryImageService.imagesFor('commission', 'illustration');
 
   // Option lists for the two RadioGroup pickers below. Built here, not as static template literals, because
   // usageType's labels append a live percent-addon suffix for 3 of the 5 options -- computed so both the

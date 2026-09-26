@@ -18,7 +18,7 @@
 <!-- Gallery Section -->
 <app-section tone="dark" pattern="circles" ariaLabel="Streaming Section">
   <div class="mx-auto max-w-7xl columns-1 gap-8 px-4 py-8 sm:py-16 md:columns-2 lg:columns-3 lg:px-6">
-    @for (galleryImage of galleryImageService.galleryImages; track $index; let i = $index) {
+    @for (galleryImage of images; track $index; let i = $index) {
       @defer (on viewport) {
         <img
           class="gallery-image mb-8 w-full break-inside-avoid"
