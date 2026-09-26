@@ -1,12 +1,12 @@
 import { Component, HostListener, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { GalleryImageService } from '../services/gallery-image.service';
-import { ImageAsset } from '../models/image-asset';
+import { GalleryImageService } from '../../services/gallery-image.service';
+import { ImageAsset } from '../../models/image-asset';
 import { DOCUMENT } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
-import { Hero } from '../shared/components/hero/hero';
-import { TranslatePipe } from '../shared/pipes/translate.pipe';
-import { SectionDivider } from '../shared/components/section-divider/section-divider';
-import { Section } from '../shared/components/section/section';
+import { Hero } from '../../shared/components/hero/hero';
+import { TranslatePipe } from '../../shared/pipes/translate.pipe';
+import { SectionDivider } from '../../shared/components/section-divider/section-divider';
+import { Section } from '../../shared/components/section/section';
 
 @Component({
   selector: 'app-gallery',

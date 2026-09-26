@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { Home } from './home';
-import { routes } from '../app.routes';
+import { routes } from '../../app.routes';
 
 describe('Home', () => {
   let component: Home;
