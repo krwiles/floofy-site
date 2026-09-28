@@ -73,11 +73,11 @@ Do 3a → 3b → 3c in order, each merged before the next starts. Don't skip str
   rather their art not be sent to an AI provider's servers at all. Concretely: never `Read` an
   image file, never screenshot a page that renders art, never use a browser tool's screenshot
   action on such a page. Use file metadata, source text, DOM/console/network inspection, and
-  *numeric* pixel-diffs (the `scripts/visual-baseline/` tooling reports only percentages and file
+  _numeric_ pixel-diffs (the `scripts/visual-baseline/` tooling reports only percentages and file
   sizes, never image content) instead. This matters directly for Stage 3c's visual verification.
 - **Zoneless Angular testing gotcha**: this app has no `zone.js` dependency. In a unit test that
   uses a wrapping host component with plain (non-signal) properties, mutating a host property
-  *after* the first `fixture.detectChanges()` is silently never picked up by a child's input
+  _after_ the first `fixture.detectChanges()` is silently never picked up by a child's input
   signal — nothing marks the host dirty. Set every per-scenario value on the host **before** the
   first `detectChanges()` call (e.g. `Object.assign(fixture.componentInstance, overrides)` right
   after `TestBed.createComponent()`), not after.
