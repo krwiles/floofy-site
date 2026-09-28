@@ -142,8 +142,8 @@ commission does neither).
 
 The three kinds of image file the site owns, each its own home in the asset library:
 
-- **Artwork**: the owner's own art pieces — illustrations, chibi, and emotes. The _kind_ of piece (illustration,
-  chibi, emote) is a property of the piece itself (its Category, below), not of where the file is kept.
+- **Artwork**: the owner's own art pieces — illustrations, chibi, and emotes. The _kind_ of piece is a property of
+  the piece itself (its **Artwork category**, below), not of where the file is kept.
 - **Graphic**: site decoration and identity — background patterns, flourishes, the brand logo (in both its sizes).
   Not something the owner would sell or credit as a piece of art.
 - **Icon**: a small symbol standing for something else — a social network's mark, a language flag, the VGen badge.
@@ -151,8 +151,23 @@ The three kinds of image file the site owns, each its own home in the asset libr
 ## Gallery collection
 
 The curated set of Artwork shown on the site's gallery page, home page carousel, and commission page carousels. Each
-entry is an **Image asset** plus two extra facts: its **Category** (illustration, chibi, or emote) and the **pages it
-appears on** (and its position on each). Neither implies the other — an entry's Category never decides on its own which page shows it; a page
-shows exactly the entries that list it, so a new page (or a change of what an existing one shows) is a data edit,
-not a code change. Artwork used as a page's hero image is _not_ part of this collection — those are fixed, per-page
-choices, not members of a shared set.
+entry is an **Image asset** plus two extra facts: its **Artwork category** and the **pages it appears on** (and its
+position on each). Neither implies the other — an entry's Artwork category never decides on its own which page
+shows it; a page shows exactly the entries that list it, so a new page (or a change of what an existing one shows)
+is a data edit, not a code change. Artwork used as a page's hero image is _not_ part of this collection — those are
+fixed, per-page choices, not members of a shared set.
+
+## Artwork category
+
+The three fixed kinds of Artwork: **Illustration**, **Chibi**, **Emote**. One property, used for two different
+purposes that used to be modelled as two separate, mismatched ideas: it decides where a piece belongs in the
+**Gallery collection**, and it's also the first thing a commissioner picks when starting a commission (each
+category has its own base price). Not the same as **Usage type**, below — a commissioner picks one of each,
+independently.
+
+## Usage type
+
+What a commissioner intends to use the finished artwork for, chosen alongside the **Artwork category** being
+commissioned: **Personal**, **Promotion**, **Distribution**, **Products**, or **Unsure**. Each adds its own price
+percentage on top of the Artwork category's base price, except Personal, which adds nothing. Previously called
+"commercial type" in places — that name is retired in favor of Usage type, the name a visitor actually sees.
