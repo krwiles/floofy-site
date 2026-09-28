@@ -82,6 +82,10 @@ build; visual diff **will show real changes** on the commission route only — c
 standardization list above (not expected 0.00%), no code review needed elsewhere since other routes are
 untouched.
 
+Carried over from 3a's review (not in 3a's scope, pick up here): `CommissionTypePricing` / `commissionTypes` /
+`getCommissionTypePricing` still say "commission type" for what is now an `ArtworkCategory` — rename to the
+glossary term; and `PricingService`'s lookups still take `id: string` rather than `ArtworkCategory` / `UsageTypeId`.
+
 ## Definition of done for this stage
 
 - `commission.html` is an outline: hero + 3 section components, no page template over ~150 lines anywhere in the

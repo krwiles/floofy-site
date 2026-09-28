@@ -20,6 +20,7 @@ describe('PricingService', () => {
   });
 
   it('should price emotes under the singular ArtworkCategory id shared with the gallery', () => {
+    // Load the real pricing.json through the service.
     const service = TestBed.inject(PricingService);
 
     // 'emote' (singular) is the one ArtworkCategory spelling; the old plural id no longer resolves.
@@ -28,6 +29,7 @@ describe('PricingService', () => {
   });
 
   it('should expose usage-type addons under usageTypes', () => {
+    // Load the real pricing.json through the service.
     const service = TestBed.inject(PricingService);
 
     // All four priced usage types load from pricing.json's renamed usageTypes list.

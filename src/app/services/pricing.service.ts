@@ -7,6 +7,7 @@ import { CommissionTypePricing, PricingData, UsageTypeId, UsageTypePricing } fro
   providedIn: 'root',
 })
 export class PricingService {
+  // Narrow the JSON's plain-string ids to the domain types; the JSON import alone types them as `string`.
   readonly data: PricingData = {
     commissionTypes: pricingJson.commissionTypes.map((type) => ({
       id: type.id as ArtworkCategory,
