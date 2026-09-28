@@ -19,6 +19,31 @@ Guidance for Claude Code (and other agents) working in this repository.
 - User-facing strings come from `src/assets/i18n/{en,ja}.json` via `I18nService` / `TranslatePipe` — don't hardcode
   English text in templates.
 
+## Comments
+
+- Every distinct logical step in a function gets a short comment above it — not just the steps that seem
+  non-trivial. Skimming just the comments should show the whole shape of the function, top to bottom, without
+  reading the code itself.
+- A comment states what the block accomplishes and, where it's not obvious, why — not the mechanics already
+  visible in the line(s) below it.
+- Keep it to one line. A second line is fine only when a real nuance would otherwise be lost — if a comment is
+  stretching to three-plus lines, cut it down rather than explaining more. Skimmable in a second, not a paragraph
+  to read. (Docstrings/JSDoc can run longer.)
+- A decision documented elsewhere (`docs/refactor/*`, an ADR) gets a pointer next to the code, not a second copy
+  of the reasoning — name the decision and cite the doc, don't restate it.
+- A call whose name or return value isn't obvious from how it's used gets a brief note on what it actually does
+  and returns.
+- Comment at the block level, not line-by-line: one comment per logical step, not a separate comment for every
+  line inside a multi-line block.
+- Applies to test files exactly the same as source files.
+
+**Enforced by a Claude Code `PostToolUse` hook** (`scripts/check_comment_length.py`, run via `.claude/settings.json`
+on every `Write`/`Edit`) that warns — advisory, doesn't block the edit — when a `//` comment block in a `.ts`/`.tsx`
+file runs over 2 lines. Ported from `ticker-news-analysis`'s own copy of this rule. This only affects new comments
+going forward: this codebase already has several long, historical rationale comments (e.g. `hero.ts`,
+`commission.ts`) predating the rule — they aren't retroactive violations to fix opportunistically, just don't add
+more like them.
+
 ## This repo is mid-refactor
 
 See `docs/refactor/` for the full audit, target architecture, upgrade plan and phased roadmap.
