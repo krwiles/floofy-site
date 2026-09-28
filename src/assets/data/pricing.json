@@ -5,7 +5,7 @@
       "basePriceUsd": 27
     },
     {
-      "id": "emotes",
+      "id": "emote",
       "basePriceUsd": 30
     },
     {
@@ -13,7 +13,7 @@
       "basePriceUsd": 80
     }
   ],
-  "commercialTypes": [
+  "usageTypes": [
     {
       "id": "personal",
       "percentAddon": 0

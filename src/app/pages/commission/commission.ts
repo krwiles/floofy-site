@@ -23,6 +23,8 @@ import { FormStatus } from '../../shared/forms/form-status/form-status';
 import { JumpButton } from '../../shared/components/jump-button/jump-button';
 import { createFormSubmission } from '../../shared/forms/form-submission';
 import { FormSubmissionStatus } from '../../models/form-submission-status';
+import { ArtworkCategory } from '../../models/artwork-category';
+import { UsageTypeId } from '../../models/pricing.model';
 
 /**
  * Migrated onto Phase 5's shared form pieces (FormFieldGroup/Control/RadioGroup/CheckboxField/FormStatus/
@@ -49,10 +51,10 @@ import { FormSubmissionStatus } from '../../models/form-submission-status';
 interface CommissionFormValue {
   name: string;
   email: string;
-  commissionType: 'illustration' | 'chibi' | 'emotes';
+  commissionType: ArtworkCategory;
   description: string;
   referenceLinks: string;
-  usageType: 'personal' | 'promotion' | 'distribution' | 'products' | 'unsure';
+  usageType: UsageTypeId | 'unsure';
   usageExplanation: string;
   deadline: string;
   additionalNotes: string;
@@ -112,7 +114,7 @@ export class Commission {
   // template pipes they replace.
   readonly commissionTypeOptions = computed(() => [
     { value: 'chibi', label: this.i18n.t('commission.form.commission_type.chibi') },
-    { value: 'emotes', label: this.i18n.t('commission.form.commission_type.emote') },
+    { value: 'emote', label: this.i18n.t('commission.form.commission_type.emote') },
     { value: 'illustration', label: this.i18n.t('commission.form.commission_type.illustration') },
   ]);
 
@@ -205,7 +207,7 @@ export class Commission {
     this.scrollToElement('commission-terms');
   }
 
-  scrollToForm(type: 'illustration' | 'chibi' | 'emotes'): void {
+  scrollToForm(type: ArtworkCategory): void {
     this.scrollToElement('commission-form', false);
     this.commissionForm.commissionType().value.set(type);
   }
@@ -255,10 +257,10 @@ export class Commission {
     }, this.focusDelay);
   }
 
-  private formatPercentAddon(commercialTypeId: string): string {
+  private formatPercentAddon(usageTypeId: UsageTypeId): string {
     // Uses the real PercentPipe (already injected -- the Artwork Usage terms section still uses it via the
     // template pipe syntax) rather than a hand-rolled reimplementation of its '1.0-0' rounding rule.
     // /code-review flagged the original Math.round version as a duplicate-to-keep-in-sync of this same rule.
-    return this.percentPipe.transform(this.pricingService.getPercentAddon(commercialTypeId) ?? 0, '1.0-0') ?? '0%';
+    return this.percentPipe.transform(this.pricingService.getPercentAddon(usageTypeId) ?? 0, '1.0-0') ?? '0%';
   }
 }

@@ -1,6 +1,5 @@
+import { ArtworkCategory } from './artwork-category';
 import { ImageAsset } from './image-asset';
-
-export type GalleryCategory = 'illustration' | 'chibi' | 'emote';
 
 /**
  * One member of the gallery collection: an image asset plus its category and the pages that show it. `showIn`
@@ -9,6 +8,6 @@ export type GalleryCategory = 'illustration' | 'chibi' | 'emote';
  * page; only `showIn` does.
  */
 export interface GalleryEntry extends ImageAsset {
-  readonly category: GalleryCategory;
+  readonly category: ArtworkCategory;
   readonly showIn: Readonly<Record<string, number>>;
 }
