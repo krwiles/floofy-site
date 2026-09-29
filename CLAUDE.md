@@ -4,6 +4,8 @@ Guidance for Claude Code (and other agents) working in this repository.
 
 ## Commands
 
+Requires Node `^22.22.3 || ^24.15.0 || >=26.0.0` (the Angular CLI's own floor) — run `nvm use` to pick up `.nvmrc`.
+
 - `npm start` — dev server (`ng serve --hmr=false --live-reload=true`)
 - `npm run build` — production build
 - `npm test` — unit tests (Vitest via `@angular/build:unit-test`)
