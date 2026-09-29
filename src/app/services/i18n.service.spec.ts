@@ -179,6 +179,19 @@ describe('I18nService', () => {
     });
   });
 
+  describe('commission form keys', () => {
+    it('has the usage explanation label and placeholder in both locales', () => {
+      // The service reads the real en/ja JSON.
+      const service = TestBed.inject(I18nService);
+      const keys = ['commission.form.usage_explanation.label', 'commission.form.usage_explanation.placeholder'];
+
+      // t() echoes a missing key back, so a real translation never equals its own key.
+      keys.forEach((key) => expect(service.t(key)).not.toBe(key));
+      service.setLocale('ja');
+      keys.forEach((key) => expect(service.t(key)).not.toBe(key));
+    });
+  });
+
   describe('commission card keys and removed terms', () => {
     it('keys the emote card by its singular ArtworkCategory id', () => {
       // The service reads the real en.json, English by default.

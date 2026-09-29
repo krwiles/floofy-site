@@ -355,6 +355,10 @@
         "products": "商品化",
         "unsure": "未定"
       },
+      "usage_explanation": {
+        "label": "利用用途の説明",
+        "placeholder": "（作品の利用予定を簡単にご説明ください。適切な利用ライセンスの確認に役立ちます。）"
+      },
       "price_estimate": {
         "label": "料金目安",
         "note": "（最終見積もりは変動する場合があります）"
