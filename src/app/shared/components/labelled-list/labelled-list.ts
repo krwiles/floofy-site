@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { ListGroup } from '../../../models/list-group';
 import { Tone } from '../../../models/tone';
 
+// Class names spelled out in full so Tailwind finds and generates them.
 const HEADING_CLASS: Record<Tone, string> = {
   light: 'text-on-light-heading',
   middle: 'text-on-middle-heading',
@@ -54,5 +55,5 @@ export class LabelledList {
   readonly numbered = input(false);
   readonly groups = input<readonly ListGroup[]>([]);
 
-  readonly headingClass = computed(() => HEADING_CLASS[this.tone()]);
+  protected readonly headingClass = computed(() => HEADING_CLASS[this.tone()]);
 }

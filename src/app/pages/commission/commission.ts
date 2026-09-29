@@ -7,12 +7,13 @@ import { scrollToElement } from '../../utils/scroll-to-element';
 import { PricingSection } from './pricing-section/pricing-section';
 import { RequestForm, RequestFormDetail } from './request-form/request-form';
 import { TermsSection } from './terms-section/terms-section';
+import { COMMISSION_ANCHORS } from './commission-content';
 
 // The section each "?" button in the form jumps to.
 const DETAIL_ANCHOR: Record<RequestFormDetail, string> = {
-  categories: 'commission-types',
-  usage: 'artwork-usage',
-  terms: 'commission-terms',
+  categories: COMMISSION_ANCHORS.pricing,
+  usage: COMMISSION_ANCHORS.artworkUsage,
+  terms: COMMISSION_ANCHORS.terms,
 };
 
 /**
@@ -31,7 +32,7 @@ export class Commission {
   /** A pricing card was picked: preselect it in the form, then scroll there (no focus -- the form isn't one spot). */
   protected onPick(category: ArtworkCategory): void {
     this.requestForm().selectCategory(category);
-    scrollToElement('commission-form', { focus: false });
+    scrollToElement(COMMISSION_ANCHORS.form, { focus: false });
   }
 
   /** A form "?" button asked for more detail: jump to and focus that section. */

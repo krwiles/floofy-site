@@ -3,7 +3,15 @@ import { ArtworkCategory } from '../../models/artwork-category';
 // Page layout facts for the commission page: code constants, not translated content --
 // see docs/refactor/18-phase-6-stage-3-plan.md (stage 3c).
 
-/** Left-to-right order of the pricing cards. */
+/** Element ids the page scrolls to, kept in one place so a rename can't miss a spot. */
+export const COMMISSION_ANCHORS = {
+  pricing: 'commission-types',
+  artworkUsage: 'artwork-usage',
+  terms: 'commission-terms',
+  form: 'commission-form',
+} as const;
+
+/** Left-to-right order of the pricing cards (also the order of the form's category options). */
 export const PRICING_CARD_ORDER: readonly ArtworkCategory[] = ['chibi', 'emote', 'illustration'];
 
 /** The five lists every pricing card shows, in order; each id also names its `commission.labels.<id>` heading. */
@@ -28,7 +36,7 @@ export const TERMS_CARDS: Readonly<Record<TermsCardId, { body: TermsBody; anchor
   workflow: { body: 'numbered' },
   communication: { body: 'paragraph' },
   pricing: { body: 'items' },
-  artwork_usage: { body: 'groups', anchorId: 'artwork-usage' },
+  artwork_usage: { body: 'groups', anchorId: COMMISSION_ANCHORS.artworkUsage },
   payment: { body: 'items' },
   tos: { body: 'groups' },
 };

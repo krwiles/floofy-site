@@ -34,6 +34,6 @@ export class TermsCard {
   readonly tone = input.required<Tone>();
   readonly anchorId = input<string>();
 
-  readonly headingClass = computed(() => TONE_CLASSES[this.tone()].heading);
-  readonly bodyClass = computed(() => TONE_CLASSES[this.tone()].body);
+  protected readonly headingClass = computed(() => TONE_CLASSES[this.tone()].heading);
+  protected readonly bodyClass = computed(() => TONE_CLASSES[this.tone()].body);
 }

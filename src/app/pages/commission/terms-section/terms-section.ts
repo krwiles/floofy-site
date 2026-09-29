@@ -8,7 +8,7 @@ import { SectionHeader } from '../../../shared/components/section-header/section
 import { LabelledList } from '../../../shared/components/labelled-list/labelled-list';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { TermsCard } from '../terms-card/terms-card';
-import { TERMS_CARDS, TERMS_COLUMNS, TermsCardId } from '../commission-content';
+import { COMMISSION_ANCHORS, TERMS_CARDS, TERMS_COLUMNS, TermsCardId } from '../commission-content';
 
 /** The commission terms: seven `TermsCard`s in the hand-balanced columns from `commission-content.ts`. */
 @Component({
@@ -19,7 +19,7 @@ import { TERMS_CARDS, TERMS_COLUMNS, TermsCardId } from '../commission-content';
   template: `
     <app-section tone="middle">
       <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div id="commission-terms" class="rounded-4xl">
+        <div [id]="anchors.terms" class="rounded-4xl">
           <app-section-header
             [eyebrow]="'commission.terms.kicker' | translate"
             [title]="'commission.terms.title' | translate"
@@ -65,6 +65,7 @@ export class TermsSection {
   protected readonly i18n = inject(I18nService);
   private readonly pricing = inject(PricingService);
 
+  protected readonly anchors = COMMISSION_ANCHORS;
   protected readonly columns = TERMS_COLUMNS;
   protected readonly cards = TERMS_CARDS;
 

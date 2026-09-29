@@ -21,6 +21,7 @@ import { FormFieldGroup } from '../../../shared/forms/form-field-group/form-fiel
 import { FormStatus } from '../../../shared/forms/form-status/form-status';
 import { RadioGroup } from '../../../shared/forms/radio-group/radio-group';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
+import { COMMISSION_ANCHORS, PRICING_CARD_ORDER } from '../commission-content';
 
 /** Which detail a "?" button asks the page to jump to; the page maps it to the right section. */
 export type RequestFormDetail = 'categories' | 'usage' | 'terms';
@@ -84,9 +85,11 @@ export class RequestForm {
   readonly detailRequested = output<RequestFormDetail>();
   readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
 
-  // Radio options, rebuilt when the locale changes so labels stay translated.
-  protected readonly commissionTypeOptions = computed(() =>
-    (['chibi', 'emote', 'illustration'] as const).map((value) => ({
+  protected readonly anchors = COMMISSION_ANCHORS;
+
+  // Radio options in pricing-card order, rebuilt when the locale changes so labels stay translated.
+  protected readonly artworkCategoryOptions = computed(() =>
+    PRICING_CARD_ORDER.map((value) => ({
       value,
       label: this.i18n.t(`commission.form.commission_type.${value}`),
     })),

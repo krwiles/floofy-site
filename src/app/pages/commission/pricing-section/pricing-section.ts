@@ -4,7 +4,7 @@ import { Section } from '../../../shared/components/section/section';
 import { SectionHeader } from '../../../shared/components/section-header/section-header';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { PricingCard } from '../pricing-card/pricing-card';
-import { CAROUSEL_SHAPE, PRICING_CARD_ORDER } from '../commission-content';
+import { CAROUSEL_SHAPE, COMMISSION_ANCHORS, PRICING_CARD_ORDER } from '../commission-content';
 
 /** The commission pricing section: one `PricingCard` per artwork category, in `PRICING_CARD_ORDER`. */
 @Component({
@@ -15,7 +15,7 @@ import { CAROUSEL_SHAPE, PRICING_CARD_ORDER } from '../commission-content';
   template: `
     <app-section tone="dark">
       <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div id="commission-types" class="rounded-4xl">
+        <div [id]="anchors.pricing" class="rounded-4xl">
           <app-section-header
             [eyebrow]="'commission.pricing_section.kicker' | translate"
             [title]="'commission.pricing_section.title' | translate"
@@ -38,6 +38,7 @@ import { CAROUSEL_SHAPE, PRICING_CARD_ORDER } from '../commission-content';
   `,
 })
 export class PricingSection {
+  protected readonly anchors = COMMISSION_ANCHORS;
   protected readonly cardOrder = PRICING_CARD_ORDER;
   protected readonly carouselShape = CAROUSEL_SHAPE;
 

@@ -5,6 +5,7 @@ export const SCROLL_FOCUS_CLASS = 'scroll-focus-highlight';
 const SCROLL_OFFSET_PX = 108;
 // Waits for the smooth scroll to settle, so the focus ring appears on a visible element.
 const FOCUS_DELAY_MS = 1000;
+// How long the highlight ring stays before clearing itself.
 const HIGHLIGHT_DURATION_MS = 1600;
 
 /**

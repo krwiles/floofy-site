@@ -1,7 +1,4 @@
-/* Brief ring on an element the page just jumped to -- added/removed by utils/scroll-to-element.ts. Global
-   (not page-scoped) because the jump targets live in several different components. Imported after
-   components/cards.css on purpose: a jump target can be a card, and at equal specificity the later rule
-   wins, so this ring has to come after the card's own box-shadow to replace it. */
+/* Jump-target ring for utils/scroll-to-element.ts; must load after cards.css -- see 05-roadmap.md, Phase 6 Stage 3. */
 .scroll-focus-highlight {
   animation: scroll-focus-ring 420ms cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-brand-strong) 72%, transparent);

@@ -870,9 +870,10 @@ time, each its own PR directly against `working` (never stacked). Supersedes the
       reference links/deadline/additional notes on `app-form-field`, notes folded into labels. Every other route
       stayed 0.00%; commission checked via DOM/computed styles plus the owner's screenshot review. Found along the
       way: moving the jump-highlight style out of the page's scoped CSS made a card's own shadow override it, so
-      it now lives in `styles/utilities/scroll-focus.css`, imported after `cards.css`. `HANDOFF.md` deleted; its
-      two rules not recorded anywhere else in the repo (never view artwork; zoneless test setup) moved to
-      `CLAUDE.md`.
+      it now lives in `styles/utilities/scroll-focus.css`, imported after `cards.css`. `HANDOFF.md` deleted; three of
+      its rules moved to `CLAUDE.md` (never view artwork and zoneless test setup, recorded nowhere else; plus
+      never stack PRs, already in `17-phase-6-plan.md`). Its `/code-review` note was dropped on purpose: review
+      now runs as part of every stage.
 - [ ] **Stage 4 — Twitch embed + `ScriptLoader`; `StreamScheduleService` with tests; lazy Twitter widgets** (own
       grilling round first).
 - **Parked (moved to Open ideas):** gallery lightbox/grid a11y rebuild.
