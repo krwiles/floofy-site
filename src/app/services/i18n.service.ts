@@ -62,7 +62,7 @@ export class I18nService {
       return value as ListGroup[];
     }
 
-    // Same missing-key handling as list().
+    // Warn and return nothing for a missing key, so one bad key can't break the page.
     console.warn(`I18nService.groups: no groups at "${key}"`);
     return [];
   }
