@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import en from '../../assets/i18n/en.json';
 import ja from '../../assets/i18n/ja.json';
+import { ListGroup } from '../models/list-group';
 
 export type Locale = 'en' | 'ja';
 
@@ -33,16 +34,37 @@ export class I18nService {
   }
 
   t(key: string): string {
-    const keys = key.split('.');
-    let current: unknown = translations[this.localeSignal()];
-    for (const k of keys) {
-      if (current !== null && typeof current === 'object' && k in (current as object)) {
-        current = (current as Record<string, unknown>)[k];
-      } else {
-        return key;
-      }
+    // Echo the key back when it's missing, so a typo shows up visibly on the page.
+    const value = this.lookup(key);
+    return typeof value === 'string' ? value : key;
+  }
+
+  /** A flat list of strings, e.g. a pricing card's `includes`. Array-shaped content that `t()` can't return. */
+  list(key: string): string[] {
+    const value = this.lookup(key);
+
+    // Only a real array of strings counts; anything else is a missing or mistyped key.
+    if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {
+      return value;
     }
-    return typeof current === 'string' ? current : key;
+
+    // Warn instead of throwing, so a bad key empties one list rather than breaking the page.
+    console.warn(`I18nService.list: no string list at "${key}"`);
+    return [];
+  }
+
+  /** Labelled sub-lists, e.g. the Artwork Usage and Terms of Service cards -- see `ListGroup`. */
+  groups(key: string): ListGroup[] {
+    const value = this.lookup(key);
+
+    // Shape is guaranteed by the JSON (pinned by i18n.service.spec.ts), so an array check is enough.
+    if (Array.isArray(value)) {
+      return value as ListGroup[];
+    }
+
+    // Same missing-key handling as list().
+    console.warn(`I18nService.groups: no groups at "${key}"`);
+    return [];
   }
 
   nav(): NavItem[] {
@@ -52,6 +74,22 @@ export class I18nService {
       label: value.label,
       route: value.route,
     }));
+  }
+
+  /** Walks a dotted key (`a.b.c`) through the current locale's JSON; `undefined` if any segment is missing. */
+  private lookup(key: string): unknown {
+    // Reading the locale signal here makes every caller reactive to setLocale().
+    let current: unknown = translations[this.localeSignal()];
+
+    // Step one segment at a time, bailing out as soon as a segment doesn't exist.
+    for (const segment of key.split('.')) {
+      if (current === null || typeof current !== 'object' || !(segment in current)) {
+        return undefined;
+      }
+      current = (current as Record<string, unknown>)[segment];
+    }
+
+    return current;
   }
 
   private getInitialLocale(): Locale {
