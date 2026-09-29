@@ -1,4 +1,4 @@
-/** Global class (styles/utilities/motion.css) for the brief ring shown on a jumped-to element. */
+/** Global class (styles/utilities/scroll-focus.css) for the brief ring shown on a jumped-to element. */
 export const SCROLL_FOCUS_CLASS = 'scroll-focus-highlight';
 
 // Clears the fixed navbar so the target isn't hidden underneath it.

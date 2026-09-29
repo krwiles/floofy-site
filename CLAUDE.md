@@ -19,6 +19,18 @@ Guidance for Claude Code (and other agents) working in this repository.
 - User-facing strings come from `src/assets/i18n/{en,ja}.json` via `I18nService` / `TranslatePipe` — don't hardcode
   English text in templates.
 
+## Working rules
+
+- **Never view the site's artwork.** The owner is an illustrator, the images are all rights reserved
+  (`LICENSE-media.md`, `noai` meta tags), and they'd rather their art not be sent to an AI provider at all. Never
+  read an image file, and never screenshot a page that renders art. Verify visual changes with file metadata, DOM
+  and computed styles, and the numeric diffs from `npm run baseline:capture` / `baseline:diff`, which report only
+  percentages. Leave screenshots on disk for the owner to look at.
+- **Zoneless tests:** there's no `zone.js`, so in a spec with a wrapping host component, changing a plain host
+  property _after_ the first `fixture.detectChanges()` is silently never seen by the child's inputs. Set every
+  per-test value before the first `detectChanges()` (e.g. `Object.assign(fixture.componentInstance, overrides)`).
+- **Never stack PRs:** every branch comes straight off `working` and PRs straight back into it.
+
 ## Comments
 
 - Every distinct logical step in a function gets a short comment above it — not just the steps that seem
@@ -40,8 +52,8 @@ Guidance for Claude Code (and other agents) working in this repository.
 **Enforced by a Claude Code `PostToolUse` hook** (`scripts/check_comment_length.py`, run via `.claude/settings.json`
 on every `Write`/`Edit`) that warns — advisory, doesn't block the edit — when a `//` comment block in a `.ts`/`.tsx`
 file runs over 2 lines. Ported from `ticker-news-analysis`'s own copy of this rule. This only affects new comments
-going forward: this codebase already has several long, historical rationale comments (e.g. `hero.ts`,
-`commission.ts`) predating the rule — they aren't retroactive violations to fix opportunistically, just don't add
+going forward: this codebase already has several long, historical rationale comments (e.g. `hero.ts`) predating
+the rule — they aren't retroactive violations to fix opportunistically, just don't add
 more like them.
 
 ## This repo is mid-refactor

@@ -54,8 +54,9 @@ sees it). Both get fixed as part of this stage, not deferred.
   `<ng-content>`; **`LabelledList`** renders one bulleted/numbered/grouped list and is used inside that
   projection. No "kind" flag on `TermsCard` itself.
 - **Cross-section wiring stays coordinated by the page**: `Commission` is the one place that legitimately knows
-  about all three siblings. `PricingSection` emits a pick event with the chosen `ArtworkCategory`; `RequestForm`
-  takes that as an input it applies to its own form model; the form's 3 "?" buttons emit outputs `Commission`
+  about all three siblings. `PricingSection` emits a pick event with the chosen `ArtworkCategory`; the page applies it
+  through `RequestForm.selectCategory()` (changed from an input during 3c: an input can't re-fire for the same
+  value, so re-picking the same card after changing the radio by hand would have been ignored); the form's 3 "?" buttons emit outputs `Commission`
   forwards to a shared `scrollToElement` helper (moved out of commission-only code into
   `utils/scroll-to-element.ts`, next to `join-classes.ts`, since nothing about it is commission-specific).
 - **Standardize while splitting, not a pure move**: the 3 hand-rolled fields move onto `app-form-field` (gaining
