@@ -45,10 +45,11 @@ sees it). Both get fixed as part of this stage, not deferred.
   (`promotion`, `ownership_licensing`, …), so 3c can attach Artwork Usage's percent add-ons by
   `UsageTypeId` rather than by array position. Two readers, one per shape: `I18nService.list(key): string[]`
   and `I18nService.groups(key): ListGroup[]`.
-- **The pricing cards' list order and the terms' 3-column groupings are typed code constants** (not translated
-  content) in a feature-local `commission-content.ts`. All three cards have the same five lists, so the list
-  order is one shared constant (`['includes', 'excludes', 'details', 'notes', 'turnaround']`, each also naming
-  its `commission.labels.<id>` heading), not per-card config (revised in the 3b grilling, 2026-09-29).
+- **The pricing cards' order, list order and carousel shapes, and the terms' 3-column groupings, are typed code
+  constants** (not translated content) in a feature-local `commission-content.ts`. All three cards have the same
+  five lists, so the list order is one shared constant (`['includes', 'excludes', 'details', 'notes',
+'turnaround']`, each also naming its `commission.labels.<id>` heading), not per-card config (revised in the 3b
+  grilling, 2026-09-29).
 - **`TermsCard`** supplies chrome only (title, tone, optional scroll-anchor id) and projects its body via
   `<ng-content>`; **`LabelledList`** renders one bulleted/numbered/grouped list and is used inside that
   projection. No "kind" flag on `TermsCard` itself.
@@ -56,10 +57,11 @@ sees it). Both get fixed as part of this stage, not deferred.
   about all three siblings. `PricingSection` emits a pick event with the chosen `ArtworkCategory`; `RequestForm`
   takes that as an input it applies to its own form model; the form's 3 "?" buttons emit outputs `Commission`
   forwards to a shared `scrollToElement` helper (moved out of commission-only code into
-  `shared/utils/scroll-to-element.ts`, since nothing about it is commission-specific).
+  `utils/scroll-to-element.ts`, next to `join-classes.ts`, since nothing about it is commission-specific).
 - **Standardize while splitting, not a pure move**: the 3 hand-rolled fields move onto `app-form-field` (gaining
-  real error display); Terms of Service's body text grows from `11px` to Artwork Usage's `14px`/`text-sm`, so
-  both grouped cards match. This means **stage 3c does not produce a 0.00% visual diff** — expected, real changes
+  real error display), and the italic "(optional…)" notes on deadline/additional notes fold into their label
+  text; Terms of Service's body text grows from `11px` to Artwork Usage's `14px`/`text-sm`, so both grouped cards
+  match. This means **stage 3c does not produce a 0.00% visual diff** — expected, real changes
   reviewed by hand, same as Stage 3b/3c's precedent for a real design change.
 
 ## Sub-stages
@@ -112,15 +114,51 @@ routes are untouched, so they're covered by 3c's diff.
 
 Build `PricingCard`, `TermsCard`, `LabelledList`, `PricingSection`, `TermsSection`, `RequestForm`; wire them per
 "Cross-section wiring" above; consume `I18nService.list()`/`groups()` and the new `commission-content.ts`
-constants (the shared list order plus the terms' column groupings); migrate
-the 3 hand-rolled fields onto `app-form-field`; standardize ToS's text size. Verify: `tsc`, full suite, prod
-build; visual diff **will show real changes** on the commission route only — captured, reviewed against the
-standardization list above (not expected 0.00%), no code review needed elsewhere since other routes are
-untouched.
+constants; migrate the 3 hand-rolled fields onto `app-form-field`; standardize ToS's text size. Details below
+were settled in a grilling round on 2026-09-29.
 
-Carried over from 3a's review (not in 3a's scope, pick up here): `CommissionTypePricing` / `commissionTypes` /
-`getCommissionTypePricing` still say "commission type" for what is now an `ArtworkCategory` — rename to the
-glossary term; and `PricingService`'s lookups still take `id: string` rather than `ArtworkCategory` / `UsageTypeId`.
+**Where things live**
+
+- `LabelledList` → `shared/components/labelled-list/`: a bulleted/numbered/grouped list isn't commission-specific.
+- `PricingCard`, `PricingSection`, `TermsCard`, `TermsSection`, `RequestForm` → their own folders under
+  `pages/commission/`: they only exist on this page.
+- `commission-content.ts` (feature-local) holds: card order (`chibi`, `emote`, `illustration`); the shared list
+  order; each card's carousel shape, keyed by `ArtworkCategory` (`chibi`/`emote` square, `illustration` 3:4),
+  passed to `PricingCard` by `PricingSection`; and the terms' columns, read off the current layout —
+  Revisions/Workflow/Communication, Pricing/Artwork Usage/Payment, ToS alone.
+- `scrollToElement` → `utils/scroll-to-element.ts`. Anchor ids stay `commission-types`, `artwork-usage`,
+  `commission-terms`, `commission-form`.
+
+**Behaviour**
+
+- **Percent add-ons are formatted once.** `PricingService.formatPercentAddon(id: UsageTypeId)` replaces
+  `Commission`'s private copy, with the same `'1.0-0'` rounding. `TermsSection` uses it to append "(+50%)"-style
+  suffixes to Artwork Usage's group labels (matched by group `id`) before passing the groups to `LabelledList`,
+  which knows nothing about pricing. `RequestForm` uses it for the usage-type radio labels.
+- **Form notes fold into labels in the JSON.** `en.json`/`ja.json`'s `commission.form.deadline.label` and
+  `additional_notes.label` absorb their `note` text — "Deadline (optional and not guaranteed)",
+  "希望納期（任意・確約ではありません）", each locale keeping its own spacing — and both `note` keys are deleted.
+  `app-form-field` itself doesn't change. `price_estimate.note` is untouched (that field isn't migrated).
+- **3a's carried-over renames** (flagged in 3a's review): `CommissionTypePricing` → `ArtworkCategoryPricing`,
+  `commissionTypes` → `artworkCategories` (model and `pricing.json`), `getCommissionTypePricing` →
+  `getArtworkCategoryPricing`. `PricingService` lookups take `ArtworkCategory`/`UsageTypeId` instead of
+  `string`, except `getTotalPriceUsd`'s usage argument, which must still accept the form's `'unsure'`. The
+  request field `commissionType` stays — it's the Lambda's API contract.
+
+**Verify**
+
+- One spec per new component, written test-first at its inputs/outputs (e.g. `PricingCard` renders its five lists
+  in order and emits a pick; `LabelledList` renders bulleted, numbered and grouped content; `RequestForm` applies
+  a picked category and shows errors on the 3 migrated fields). Zoneless: set every host value before the first
+  `detectChanges()`.
+- `tsc` (app + spec), full suite, prod build.
+- Visual diff: every route except commission must stay **0.00%**. Commission changes by design, so it's checked
+  two ways. Claude verifies each intended change through the DOM and computed styles in a headless browser —
+  ToS body text is 14px, the 3 migrated fields show errors, the merged labels render, every card and terms block
+  has content, no raw i18n keys remain — without viewing any image (art rule). The owner then looks at the
+  commission screenshots and diff images left in `__screenshots__/`. Stop the dev server the capture script
+  starts once done.
+- Delivered as a PR into `working`, where the owner's visual sign-off happens before merge.
 
 ## Definition of done for this stage
 
@@ -130,3 +168,5 @@ glossary term; and `PricingService`'s lookups still take `id: string` rather tha
 - `ArtworkCategory`/`UsageTypeId` used consistently; no remaining `CommissionTypeId`/`CommercialTypeId` reference.
 - Reference-links/deadline/additional-notes fields show validation errors like every other field.
 - `docs/refactor/05-roadmap.md` and memory updated to what actually shipped.
+- `docs/refactor/HANDOFF.md` deleted in 3c's final commit, after checking everything useful in it is recorded
+  elsewhere; anything that isn't moves into `05-roadmap.md` first.
