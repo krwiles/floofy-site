@@ -169,5 +169,7 @@ independently.
 
 What a commissioner intends to use the finished artwork for, chosen alongside the **Artwork category** being
 commissioned: **Personal**, **Promotion**, **Distribution**, **Products**, or **Unsure**. Each adds its own price
-percentage on top of the Artwork category's base price, except Personal, which adds nothing. Previously called
+percentage on top of the Artwork category's base price, except Personal, which adds nothing. Unsure is a form-only
+choice with no price of its own (it adds nothing either), so the code's `UsageTypeId` covers only the four priced
+types and the form uses `UsageTypeId | 'unsure'`. Previously called
 "commercial type" in places — that name is retired in favor of Usage type, the name a visitor actually sees.

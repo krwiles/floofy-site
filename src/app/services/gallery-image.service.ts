@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import galleryJson from '../../assets/data/gallery.json';
-import { GalleryCategory, GalleryEntry } from '../models/gallery-entry';
+import { ArtworkCategory } from '../models/artwork-category';
+import { GalleryEntry } from '../models/gallery-entry';
 import { ImageAsset } from '../models/image-asset';
 
 /**
@@ -13,7 +14,7 @@ import { ImageAsset } from '../models/image-asset';
 export class GalleryImageService {
   private readonly entries = galleryJson as GalleryEntry[];
 
-  imagesFor(page: string, category?: GalleryCategory): ImageAsset[] {
+  imagesFor(page: string, category?: ArtworkCategory): ImageAsset[] {
     return this.entries
       .filter((entry) => Object.hasOwn(entry.showIn, page) && (category === undefined || entry.category === category))
       .sort((a, b) => a.showIn[page] - b.showIn[page])

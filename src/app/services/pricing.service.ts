@@ -1,24 +1,20 @@
 import { Injectable } from '@angular/core';
 import pricingJson from '../../assets/data/pricing.json';
-import {
-  CommissionTypeId,
-  CommercialTypeId,
-  CommissionTypePricing,
-  CommercialTypePricing,
-  PricingData,
-} from '../models/pricing.model';
+import { ArtworkCategory } from '../models/artwork-category';
+import { CommissionTypePricing, PricingData, UsageTypeId, UsageTypePricing } from '../models/pricing.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PricingService {
+  // Narrow the JSON's plain-string ids to the domain types; the JSON import alone types them as `string`.
   readonly data: PricingData = {
     commissionTypes: pricingJson.commissionTypes.map((type) => ({
-      id: type.id as CommissionTypeId,
+      id: type.id as ArtworkCategory,
       basePriceUsd: type.basePriceUsd,
     })),
-    commercialTypes: pricingJson.commercialTypes.map((type) => ({
-      id: type.id as CommercialTypeId,
+    usageTypes: pricingJson.usageTypes.map((type) => ({
+      id: type.id as UsageTypeId,
       percentAddon: type.percentAddon,
     })),
   };
@@ -31,17 +27,19 @@ export class PricingService {
     return this.getCommissionTypePricing(id)?.basePriceUsd;
   }
 
-  getCommercialTypePricing(id: string): CommercialTypePricing | undefined {
-    return this.data.commercialTypes.find((type) => type.id === id);
+  getUsageTypePricing(id: string): UsageTypePricing | undefined {
+    return this.data.usageTypes.find((type) => type.id === id);
   }
 
   getPercentAddon(id: string): number | undefined {
-    return this.getCommercialTypePricing(id)?.percentAddon;
+    return this.getUsageTypePricing(id)?.percentAddon;
   }
 
   /** Mechanical move from `Commission`'s own `totalPriceUsd` -- same formula, no behavior change. */
-  getTotalPriceUsd(commissionTypeId: string, commercialTypeId: string): number {
-    const multiplier = (this.getPercentAddon(commercialTypeId) ?? 0) + 1;
-    return (this.getBasePriceUsd(commissionTypeId) ?? 0) * multiplier;
+  getTotalPriceUsd(artworkCategory: string, usageTypeId: string): number {
+    // Unknown usage types (e.g. the form's 'unsure') add nothing on top of the base price.
+    const multiplier = (this.getPercentAddon(usageTypeId) ?? 0) + 1;
+    // Unknown categories price at zero rather than throwing.
+    return (this.getBasePriceUsd(artworkCategory) ?? 0) * multiplier;
   }
 }
