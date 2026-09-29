@@ -45,8 +45,10 @@ sees it). Both get fixed as part of this stage, not deferred.
   (`promotion`, `ownership_licensing`, …), so 3c can attach Artwork Usage's percent add-ons by
   `UsageTypeId` rather than by array position. Two readers, one per shape: `I18nService.list(key): string[]`
   and `I18nService.groups(key): ListGroup[]`.
-- **Which list-categories each pricing card has, and the terms' 3-column groupings, are typed code constants**
-  (not translated content) in a feature-local `commission-content.ts`.
+- **The pricing cards' list order and the terms' 3-column groupings are typed code constants** (not translated
+  content) in a feature-local `commission-content.ts`. All three cards have the same five lists, so the list
+  order is one shared constant (`['includes', 'excludes', 'details', 'notes', 'turnaround']`, each also naming
+  its `commission.labels.<id>` heading), not per-card config (revised in the 3b grilling, 2026-09-29).
 - **`TermsCard`** supplies chrome only (title, tone, optional scroll-anchor id) and projects its body via
   `<ng-content>`; **`LabelledList`** renders one bulleted/numbered/grouped list and is used inside that
   projection. No "kind" flag on `TermsCard` itself.
@@ -72,33 +74,45 @@ suite, prod build, **0.00% visual diff** (pure rename, nothing rendered changes)
 
 A one-off script (run once, not committed) reshapes `en.json`/`ja.json`'s `commission.cards.*` and
 `commission.terms.*` numbered keys into arrays. Both files share one key structure (checked), so one script
-covers both:
+covers both. Details below were settled in a grilling round on 2026-09-29.
 
-| Where                                                 | Becomes                                                                                                                                     |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cards.{chibi,emotes,illustration}`                   | `includes`, `excludes`, `details`, `notes`, `turnaround` → `string[]`; `title`, `cta` unchanged                                             |
-| `terms.{pricing,revisions,workflow,payment}`          | `item_N` → `items: string[]`; `title` unchanged                                                                                             |
-| `terms.artwork_usage`                                 | `groups: ListGroup[]` in the old order (`personal`, `promotion`, `distribution`, `products`, `unsure`); `unsure` has no items → `items: []` |
-| `terms.tos`                                           | `groups: ListGroup[]` in the old order                                                                                                      |
-| `terms.communication`, `kicker`/`title`/`description` | unchanged (not lists)                                                                                                                       |
+| Where                                                 | Becomes                                                                                         |
+| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `cards.{chibi,emotes,illustration}`                   | `includes`, `excludes`, `details`, `notes`, `turnaround` → `string[]`; `title`, `cta` unchanged |
+| `cards.emotes`                                        | renamed to `cards.emote`, so all three card keys are exactly the `ArtworkCategory` values       |
+| `terms.{pricing,revisions,workflow,payment}`          | `item_N` → `items: string[]`; `title` unchanged                                                 |
+| `terms.artwork_usage`                                 | `groups: ListGroup[]` in the old order: `personal`, `promotion`, `distribution`, `products`     |
+| `terms.artwork_usage.unsure`                          | **deleted** from both locales — a sentence the page never rendered (see below)                  |
+| `terms.tos`                                           | `groups: ListGroup[]` in the old order                                                          |
+| `terms.communication`, `kicker`/`title`/`description` | unchanged (not lists)                                                                           |
 
-Adds `ListGroup` (`{ id: string; label: string; items: string[] }`) in `models/`, plus `I18nService.list(key)` and
-`I18nService.groups(key)`. Both follow `nav()`'s pattern: they read the current locale's JSON directly and
-return `[]` for a missing key. Unit-tested against the real JSON.
+- **`ListGroup`** (`{ id: string; label: string; items: string[] }`) goes in `models/`. Every group has an
+  `id`, ToS included, so there's one group shape and a stable `@for` track key.
+- **`I18nService.list(key): string[]` and `groups(key): ListGroup[]`** follow `nav()`'s pattern: they read the
+  current locale's JSON directly. A missing key returns `[]` and logs a `console.warn` naming the key, so a
+  typo shows up in the console instead of as a silently empty card. Unit-tested against the real JSON.
+- **A test pins Artwork Usage's group ids to `PricingService`'s `usageTypes`** in both locales. 3c attaches
+  the percent add-ons by that `id`, so a renamed or added group must fail a test, not silently drop a percent.
+- **The deleted `unsure` sentence is not the form's Unsure option.** That option uses its own key,
+  `commission.form.usage_type.unsure`, which 3b doesn't touch, and its value stays typed inline as
+  `UsageTypeId | 'unsure'`. No named type: it's used in one place, and still will be after 3c.
+- **Out of scope:** `home.hero.name_1`/`name_2`, the only other numbered keys. They're the two separately
+  styled lines of the landing page's name, not a list.
 
 **Nothing consumes the new shape yet, so the commission page's cards and terms render raw keys (e.g.
 `commission.cards.chibi.includes_1`) until 3c.** That's accepted: the site is pre-launch, and no shims or
-duplicated data are added to keep the old keys working. The `cards.emotes` key is left as-is here and is
-3c's call.
+duplicated data are added to keep the old keys working.
 
-Verify: the script's own lossless check (every old string appears exactly once in the new shape, in the same
-order, in both locales), `tsc`, full suite, prod build. No visual diff for this stage; other routes are
-untouched, so they're covered by 3c's diff.
+Verify: the script's own lossless check — every old string appears exactly once in the new shape, in the same
+order, in both locales, with exactly two deliberate differences (the deleted `unsure` sentence and the
+`emotes` → `emote` key rename) — then `tsc`, full suite, prod build. No visual diff for this stage; other
+routes are untouched, so they're covered by 3c's diff.
 
 ### 3c — Component split + standardization (real, reviewed visual change)
 
 Build `PricingCard`, `TermsCard`, `LabelledList`, `PricingSection`, `TermsSection`, `RequestForm`; wire them per
-"Cross-section wiring" above; consume `I18nService.list()`/`groups()` and the new `commission-content.ts` constants; migrate
+"Cross-section wiring" above; consume `I18nService.list()`/`groups()` and the new `commission-content.ts`
+constants (the shared list order plus the terms' column groupings); migrate
 the 3 hand-rolled fields onto `app-form-field`; standardize ToS's text size. Verify: `tsc`, full suite, prod
 build; visual diff **will show real changes** on the commission route only — captured, reviewed against the
 standardization list above (not expected 0.00%), no code review needed elsewhere since other routes are
