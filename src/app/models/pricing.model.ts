@@ -3,7 +3,7 @@ import { ArtworkCategory } from './artwork-category';
 /** The priced usage types -- see CONTEXT.md's "Usage type" entry. The form's extra 'unsure' option has no price. */
 export type UsageTypeId = 'personal' | 'promotion' | 'distribution' | 'products';
 
-export interface CommissionTypePricing {
+export interface ArtworkCategoryPricing {
   id: ArtworkCategory;
   basePriceUsd: number;
 }
@@ -14,6 +14,6 @@ export interface UsageTypePricing {
 }
 
 export interface PricingData {
-  commissionTypes: CommissionTypePricing[];
+  artworkCategories: ArtworkCategoryPricing[];
   usageTypes: UsageTypePricing[];
 }

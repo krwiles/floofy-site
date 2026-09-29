@@ -378,12 +378,10 @@
         "note": "(final quote may vary)"
       },
       "deadline": {
-        "label": "Deadline",
-        "note": "(optional and not guaranteed)"
+        "label": "Deadline (optional and not guaranteed)"
       },
       "additional_notes": {
-        "label": "Additional Notes",
-        "note": "(optional)",
+        "label": "Additional Notes (optional)",
         "placeholder": "Please specify any additional concerns or requirements regarding the commission if needed, such as deadline."
       },
       "tos": {
