@@ -14,7 +14,7 @@ class CommissionRequest:
     description: str
     reference_links: str
     usage_type: str
-    usage_explaination: str
+    usage_explanation: str
     estimated_price: float
     deadline: str
     additional_notes: str
@@ -28,7 +28,7 @@ class CommissionRequest:
             description=str(body.get("description", "")).strip(),
             reference_links=str(body.get("referenceLinks", "")).strip(),
             usage_type=str(body.get("usageType", "")).strip(),
-            usage_explaination=str(body.get("usageExplaination", "")).strip(),
+            usage_explanation=str(body.get("usageExplanation", "")).strip(),
             estimated_price=float(body.get("estimatedPrice", -1.0)),
             deadline=str(body.get("deadline", "")).strip(),
             additional_notes=str(body.get("additionalNotes", "")).strip(),
@@ -80,7 +80,7 @@ def email_floofy(commission_request: CommissionRequest, sender_ip_address: str):
         <p><strong>Description:</strong> {commission_request.description}</p>
         <p><strong>Reference Links:</strong> {commission_request.reference_links}</p>
         <p><strong>Usage Type:</strong> {commission_request.usage_type}</p>
-        <p><strong>Usage Explanation:</strong> {commission_request.usage_explaination}</p>
+        <p><strong>Usage Explanation:</strong> {commission_request.usage_explanation}</p>
         <p><strong>Estimated Price:</strong> ${commission_request.estimated_price:.2f} USD</p>
         <p><strong>Deadline:</strong> {commission_request.deadline}</p>
         <p><strong>Additional Notes:</strong> {commission_request.additional_notes}</p>
@@ -106,7 +106,7 @@ def email_customer(commission_request: CommissionRequest):
             <li><strong>Description:</strong> {commission_request.description}</li>
             <li><strong>Reference Links:</strong> {commission_request.reference_links}</li>
             <li><strong>Usage Type:</strong> {commission_request.usage_type}</li>
-            <li><strong>Usage Explanation:</strong> {commission_request.usage_explaination}</li>
+            <li><strong>Usage Explanation:</strong> {commission_request.usage_explanation}</li>
             <li><strong>Estimated Price:</strong> ${commission_request.estimated_price:.2f} USD</li>
             <li><strong>Deadline:</strong> {commission_request.deadline}</li>
             <li><strong>Additional Notes:</strong> {commission_request.additional_notes}</li>
@@ -135,7 +135,7 @@ def validate_request(commission_request: CommissionRequest):
         return response(400, {"message": "Bad Request: usage type must be fewer than 50 characters"})
     if len(commission_request.commission_type) > 50:
         return response(400, {"message": "Bad Request: commission type must be fewer than 50 characters"})
-    if len(commission_request.usage_explaination) > 2000:
+    if len(commission_request.usage_explanation) > 2000:
         return response(400, {"message": "Bad Request: usage explanation must be fewer than 2000 characters"})
 
     return None
