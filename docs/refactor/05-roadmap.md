@@ -864,8 +864,9 @@ time, each its own PR directly against `working` (never stacked). Supersedes the
 - [ ] **Stage 3 — Split `commission.html`**: plan settled 2026-09-28 via `grill-with-docs`, see
       [18-phase-6-stage-3-plan.md](18-phase-6-stage-3-plan.md). Split into 3 sub-stages, each its own PR: **3a**
       rename `CommercialTypeId`->`UsageTypeId`, unify gallery `category`/commission's type into one
-      `ArtworkCategory` (no visual change); **3b** reshape `en.json`/`ja.json` card/terms content into arrays +
-      `I18nService.list()` (no visual change); **3c** the actual split (`PricingCard`, `TermsCard`,
+      `ArtworkCategory` (no visual change; **done, PR #47**); **3b** reshape `en.json`/`ja.json` card/terms
+      content into arrays + `I18nService.list()`/`groups()` (commission page shows raw keys until 3c, accepted —
+      no shims while pre-launch); **3c** the actual split (`PricingCard`, `TermsCard`,
       `LabelledList`, `PricingSection`, `TermsSection`, `RequestForm`) plus standardizing the 3 hand-rolled form
       fields onto `app-form-field` and ToS's text size -- **real, reviewed visual change, not 0.00%**.
 - [ ] **Stage 4 — Twitch embed + `ScriptLoader`; `StreamScheduleService` with tests; lazy Twitter widgets** (own

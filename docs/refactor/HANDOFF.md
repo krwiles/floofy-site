@@ -53,9 +53,9 @@ actually read, so it's 3 sub-stages, **each its own PR against `working`, never 
     nothing rendered should change.
 - **3b**: reshape `en.json`/`ja.json`'s commission card/terms content from numbered keys
   (`includes_1`/`_2`/`_3`) into real arrays; grouped cards (Artwork Usage, ToS) become an array of
-  `{ label, items: string[] }`. Add `I18nService.list(key)` (same pattern as its existing `nav()`
-  method, since `t()` only returns strings). Also 0.00% diff expected — the component doesn't
-  consume the new shape yet, this stage only proves the data migration is lossless.
+  `{ id, label, items: string[] }`. Add `I18nService.list(key)` / `groups(key)`. The commission
+  page shows raw keys until 3c consumes the new shape — accepted, no shims (revised 2026-09-29; see
+  the plan doc's 3b section).
 - **3c**: the real work — build `PricingCard`, `TermsCard` (chrome only, projects body via
   `ng-content`), `LabelledList`, `PricingSection`, `TermsSection`, `RequestForm`; wire them with
   `Commission` (the page) staying the cross-section coordinator; migrate the 3 hand-rolled form

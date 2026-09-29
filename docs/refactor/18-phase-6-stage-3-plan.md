@@ -41,7 +41,10 @@ sees it). Both get fixed as part of this stage, not deferred.
   `getCommercialTypePricing` → `getUsageTypePricing`, parameter names throughout.
 - **Card list content becomes real arrays** in `en.json`/`ja.json` (e.g. `includes: [...]` replacing
   `includes_1`/`includes_2`/`includes_3`), reshaped by script with no re-translation. Grouped cards
-  (Artwork Usage, ToS) become an array of `{ label, items: string[] }`. `I18nService.list(key)` reads them.
+  (Artwork Usage, ToS) become an array of `{ id, label, items: string[] }` — `id` is the old key name
+  (`promotion`, `ownership_licensing`, …), so 3c can attach Artwork Usage's percent add-ons by
+  `UsageTypeId` rather than by array position. Two readers, one per shape: `I18nService.list(key): string[]`
+  and `I18nService.groups(key): ListGroup[]`.
 - **Which list-categories each pricing card has, and the terms' 3-column groupings, are typed code constants**
   (not translated content) in a feature-local `commission-content.ts`.
 - **`TermsCard`** supplies chrome only (title, tone, optional scroll-anchor id) and projects its body via
@@ -65,18 +68,37 @@ sees it). Both get fixed as part of this stage, not deferred.
 `UsageTypeId` and all its call sites; `pricing.json`'s `commercialTypes` → `usageTypes`. Verify: `tsc`, full
 suite, prod build, **0.00% visual diff** (pure rename, nothing rendered changes).
 
-### 3b — i18n list restructure (no visual change)
+### 3b — i18n list restructure (commission page intentionally broken until 3c)
 
-Script reshapes `en.json`/`ja.json`'s commission card/terms entries from numbered keys into arrays (flat for
-simple cards, `{ label, items }` for grouped ones). Adds `I18nService.list(key)`. `commission.ts`/`.html` keep
-reading the old numbered keys until stage 3c actually consumes the new shape — this stage only proves the data
-migration is lossless. Verify: `tsc`, full suite, prod build, **0.00% visual diff** (JSON shape changed, nothing
-consumes it differently yet).
+A one-off script (run once, not committed) reshapes `en.json`/`ja.json`'s `commission.cards.*` and
+`commission.terms.*` numbered keys into arrays. Both files share one key structure (checked), so one script
+covers both:
+
+| Where                                                 | Becomes                                                                                                                                     |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cards.{chibi,emotes,illustration}`                   | `includes`, `excludes`, `details`, `notes`, `turnaround` → `string[]`; `title`, `cta` unchanged                                             |
+| `terms.{pricing,revisions,workflow,payment}`          | `item_N` → `items: string[]`; `title` unchanged                                                                                             |
+| `terms.artwork_usage`                                 | `groups: ListGroup[]` in the old order (`personal`, `promotion`, `distribution`, `products`, `unsure`); `unsure` has no items → `items: []` |
+| `terms.tos`                                           | `groups: ListGroup[]` in the old order                                                                                                      |
+| `terms.communication`, `kicker`/`title`/`description` | unchanged (not lists)                                                                                                                       |
+
+Adds `ListGroup` (`{ id: string; label: string; items: string[] }`) in `models/`, plus `I18nService.list(key)` and
+`I18nService.groups(key)`. Both follow `nav()`'s pattern: they read the current locale's JSON directly and
+return `[]` for a missing key. Unit-tested against the real JSON.
+
+**Nothing consumes the new shape yet, so the commission page's cards and terms render raw keys (e.g.
+`commission.cards.chibi.includes_1`) until 3c.** That's accepted: the site is pre-launch, and no shims or
+duplicated data are added to keep the old keys working. The `cards.emotes` key is left as-is here and is
+3c's call.
+
+Verify: the script's own lossless check (every old string appears exactly once in the new shape, in the same
+order, in both locales), `tsc`, full suite, prod build. No visual diff for this stage; other routes are
+untouched, so they're covered by 3c's diff.
 
 ### 3c — Component split + standardization (real, reviewed visual change)
 
 Build `PricingCard`, `TermsCard`, `LabelledList`, `PricingSection`, `TermsSection`, `RequestForm`; wire them per
-"Cross-section wiring" above; consume `I18nService.list()` and the new `commission-content.ts` constants; migrate
+"Cross-section wiring" above; consume `I18nService.list()`/`groups()` and the new `commission-content.ts` constants; migrate
 the 3 hand-rolled fields onto `app-form-field`; standardize ToS's text size. Verify: `tsc`, full suite, prod
 build; visual diff **will show real changes** on the commission route only — captured, reviewed against the
 standardization list above (not expected 0.00%), no code review needed elsewhere since other routes are
