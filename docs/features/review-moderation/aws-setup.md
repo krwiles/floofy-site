@@ -59,16 +59,23 @@ under **Configuration → General configuration**, its **Architecture** (`x86_64
 including the new `floof-admin`, should use the **same** runtime and architecture, because the zips are built for one
 of them.
 
+The runtime must be **Python 3.10 or newer** (psycopg 3.3 needs it), and on `arm64` it must be **3.12 or newer**
+(psycopg's ARM build needs the newer Linux those runtimes use). If a function is older, change its runtime under
+**Code → Runtime settings → Edit** before uploading.
+
 ## 5. Build the deployment zips
 
-From the repo root, run the command once per function, with the architecture from step 4:
+The script needs [uv](https://docs.astral.sh/uv/) (`brew install uv`). macOS's built-in `pip` can't download Linux
+packages for a different Python version.
+
+From the repo root, run the command once per function, with the architecture and Python version from step 4:
 
 ```bash
 cd aws_lambda
-./build.sh floof-api x86_64
-./build.sh floof-comm x86_64
-./build.sh floof-contact x86_64
-./build.sh floof-admin x86_64
+./build.sh floof-api x86_64 3.12
+./build.sh floof-comm x86_64 3.12
+./build.sh floof-contact x86_64 3.12
+./build.sh floof-admin x86_64 3.12
 ```
 
 The zips land in `aws_lambda/dist/`.
@@ -165,7 +172,7 @@ SELECT ip_address, reason, blocked_at FROM blocked_ips ORDER BY blocked_at DESC;
 
 - **Something fails:** open the function → **Monitor → View CloudWatch logs**, then the latest log stream. Email
   failures in `floof-api` are logged there, and the review is still saved.
-- **`No module named 'psycopg'` / `'resend'`:** the zip was built for the wrong architecture, or without its
-  dependencies. Rebuild with `build.sh` and the architecture from step 4.
+- **`No module named 'psycopg'` / `'resend'`:** the zip was built for the wrong architecture or Python version, or
+  without its dependencies. Rebuild with `build.sh` and the values from step 4.
 - **Timeouts on the first request after a while:** Neon was waking up. Raise the timeout a little.
 - **Customer emails missing:** check `summerfloofy.com` shows **Verified** in Resend (step 3).
