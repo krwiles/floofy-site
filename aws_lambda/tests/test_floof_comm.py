@@ -1,7 +1,10 @@
 import json
+import re
+import time
 
 import pytest
 
+import admin_links
 from conftest import make_event
 
 EVIL = '<a href="//evil.example">x</a>'
@@ -47,3 +50,102 @@ def test_every_user_value_is_escaped_in_both_emails(comm, emails):
     for sent in emails.sent:
         assert "&lt;a href=" in sent["html"]
         assert '<a href="//evil.example">' not in sent["html"]
+
+
+def admin_tokens(html):
+    """Every admin-link token found in an email body."""
+    return re.findall(r"https://admin\.example/\?token=([A-Za-z0-9_\-.]+)", html)
+
+
+def test_blocked_ip_gets_the_vague_403_with_no_insert_or_email(comm, cursor, emails):
+    # Arrange: this IP is in blocked_ips.
+    cursor.on("FROM blocked_ips", rows=[{"blocked": 1}])
+
+    # Act: submit a valid request from it.
+    result = comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: vague refusal, nothing recorded, nothing sent.
+    assert result["statusCode"] == 403
+    assert json.loads(result["body"]) == {"message": "Internal Server Error"}
+    assert cursor.queries("INSERT") == []
+    assert emails.sent == []
+
+
+def test_third_request_in_24_hours_is_refused(comm, cursor, emails):
+    # Arrange: this IP already sent two requests in the last day.
+    cursor.on("FROM commission_requests", rows=[{"recent": 2}])
+
+    # Act: send a third.
+    result = comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: 429 with a "try again later" message, nothing recorded, nothing sent.
+    assert result["statusCode"] == 429
+    assert "try again later" in json.loads(result["body"])["message"].lower()
+    assert cursor.queries("INSERT") == []
+    assert emails.sent == []
+
+    # The count covers this IP over exactly the last 24 hours.
+    [(sql, params)] = cursor.queries("COUNT(*)")
+    assert "INTERVAL '24 hours'" in sql
+    assert params == ("203.0.113.7",)
+
+
+def test_second_request_in_24_hours_still_goes_through(comm, cursor, emails):
+    # Arrange: one earlier request today.
+    cursor.on("FROM commission_requests", rows=[{"recent": 1}])
+
+    # Act and assert: the second is accepted and emailed.
+    result = comm.lambda_handler(make_event("POST", commission_body()), None)
+    assert result["statusCode"] == 200
+    assert len(emails.sent) == 2
+
+
+def test_valid_request_is_recorded_with_every_field_and_the_ip(comm, cursor, connection, emails):
+    # Act: submit a valid request.
+    comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: one parameterised insert carrying every field plus the sender's IP.
+    [(sql, params)] = cursor.queries("INSERT INTO commission_requests")
+    assert "RETURNING id" in sql
+    assert params == (
+        "203.0.113.7", "Sam", "sam@example.com", "portrait", "personal", "A fox in a scarf",
+        "https://ref.example/fox", "Profile picture", 120.0, "December", "Thanks!",
+    )
+
+    # It was committed before any email went out, so an email failure can't lose it.
+    assert connection.commits == 1
+
+
+def test_owner_email_has_a_block_link_for_the_new_request(comm, emails):
+    # Act: submit a valid request (the fake insert returns id 42).
+    comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: the owner's email carries one admin link, which decodes to "block request #42".
+    owner, customer = emails.sent
+    [token] = admin_tokens(owner["html"])
+    assert admin_links.verify(token, now=time.time()) == ("block-commission-ip", 42)
+    assert "Block this requester" in owner["html"]
+
+    # The customer's copy must never contain an admin link.
+    assert admin_tokens(customer["html"]) == []
+    assert customer["to"] == ["sam@example.com"]
+
+
+def test_email_failure_is_reported_but_the_request_is_already_saved(comm, connection, emails):
+    # Arrange: Resend is down.
+    emails.fail = True
+
+    # Act: submit a valid request.
+    result = comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: an error reaches the visitor, as today, but the row was committed first.
+    assert result["statusCode"] == 500
+    assert connection.commits == 1
+
+
+def test_emails_come_from_the_site_address(comm, emails):
+    # Act: submit a valid request.
+    comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: both emails use the shared sender constant.
+    assert {sent["from"] for sent in emails.sent} == {"FloofySite <no-reply@summerfloofy.com>"}

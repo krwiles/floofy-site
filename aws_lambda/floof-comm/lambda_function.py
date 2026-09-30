@@ -5,6 +5,32 @@ import resend
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from dataclasses import dataclass, fields, replace
+from psycopg.rows import dict_row
+
+# Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
+from admin_links import link
+from blocklist import is_blocked
+from db import connect_to_db
+from email_sender import EMAIL_FROM
+
+# More than this many requests from one IP in 24 hours are refused — see spec.md "floof-comm"
+MAX_REQUESTS_PER_DAY = 2
+
+RECENT_REQUESTS_QUERY = """
+SELECT COUNT(*) AS recent
+FROM commission_requests
+WHERE ip_address = %s
+    AND created_at >= NOW() - INTERVAL '24 hours'
+"""
+
+INSERT_QUERY = """
+INSERT INTO commission_requests (
+    ip_address, name, email, commission_type, usage_type, description,
+    reference_links, usage_explanation, estimated_price, deadline, additional_notes
+)
+VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+RETURNING id
+"""
 
 
 @dataclass(frozen=True)
@@ -56,9 +82,37 @@ def main(event):
         return validation_response
 
     
-    # Format and send emails
+    # Check the blocklist and rate limit, then record the request before any email is attempted
     sender_ip_address = event["requestContext"]["http"]["sourceIp"]
-    floofy_email_result = email_floofy(commission_request, sender_ip_address)
+    with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
+        # Refuse blocked IPs with the same vague reply the other endpoints give
+        if is_blocked(cur, sender_ip_address):
+            return response(403, {"message": "Internal Server Error"})
+
+        # Refuse a third request from the same IP within 24 hours
+        cur.execute(RECENT_REQUESTS_QUERY, (sender_ip_address,))
+        if cur.fetchone()["recent"] >= MAX_REQUESTS_PER_DAY:
+            return response(429, {"message": "You have sent several commission requests recently. Please try again later."})
+
+        # Save the request; RETURNING id hands back the new row's id for the admin link
+        cur.execute(INSERT_QUERY, (
+            sender_ip_address,
+            commission_request.name,
+            commission_request.email,
+            commission_request.commission_type,
+            commission_request.usage_type,
+            commission_request.description,
+            commission_request.reference_links,
+            commission_request.usage_explanation,
+            commission_request.estimated_price,
+            commission_request.deadline,
+            commission_request.additional_notes,
+        ))
+        request_id = cur.fetchone()["id"]
+    # Leaving the `with` block commits the insert and closes the connection
+
+    # Format and send emails
+    floofy_email_result = email_floofy(commission_request, request_id, sender_ip_address)
     if floofy_email_result["statusCode"] >= 400:
         return floofy_email_result
 
@@ -78,12 +132,15 @@ def escaped(commission_request: CommissionRequest) -> CommissionRequest:
     })
 
 
-def email_floofy(commission_request: CommissionRequest, sender_ip_address: str):
+def email_floofy(commission_request: CommissionRequest, request_id: int, sender_ip_address: str):
     # Subjects are plain text (never rendered as HTML), so they use the raw values
     email_subject = f"New Commission Request: {commission_request.name}"
 
     # Escape every user value before it goes into the HTML body
     commission_request = escaped(commission_request)
+
+    # A signed link that blocks this request's IP after a confirm step — see spec.md "Security model"
+    block_url = link(os.environ["ADMIN_URL"], "block-commission-ip", request_id)
     
     email_body = f"""
         <h1>{commission_request.commission_type.capitalize()} Request</h1>
@@ -99,6 +156,8 @@ def email_floofy(commission_request: CommissionRequest, sender_ip_address: str):
         <p><strong>Additional Notes:</strong> {commission_request.additional_notes}</p>
         <p><em>Submitted at: {datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
         <p><em>Sender IP Address: {sender_ip_address}</em></p>
+        <p><em>Request #{request_id}</em></p>
+        <p><a href="{html.escape(block_url)}">Block this requester</a></p>
     """
     
     # Send the email to Floofy
@@ -164,7 +223,7 @@ def send_email(to_email, subject, body):
     
     try:
         commission_details: resend.Emails.SendParams = {
-        "from": "FloofySite <no-reply@summerfloofy.com>",
+        "from": EMAIL_FROM,
         "to": [to_email],
         "subject": subject,
         "html": body
