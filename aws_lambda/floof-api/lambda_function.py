@@ -12,8 +12,11 @@ from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM
+from request_log import log, log_request
 
 def lambda_handler(event, context):
+    # Record every call: requests are rare, so each one is worth seeing in CloudWatch
+    log_request(event)
     method = event["requestContext"]["http"]["method"]
     
     if method == "GET":
@@ -56,8 +59,10 @@ def create_review(event):
 
     # Input validation
     if len(author) >= 50:
+        log("refused", reason="invalid", ip=ip_address)
         return response(400, {"message": "Bad Request: author must be fewer than 50 characters"})
     if len(comment) >= 2000:
+        log("refused", reason="invalid", ip=ip_address)
         return response(400, {"message": "Bad Request: comment must be fewer than 2000 characters"})
 
     # Query strings
@@ -83,6 +88,7 @@ def create_review(event):
     with conn.cursor(row_factory=dict_row) as cur:
         # Check if the IP address is blocked (the same shared check every endpoint uses)
         if is_blocked(cur, ip_address):
+            log("refused", reason="blocked", ip=ip_address)
             conn.close()
             return response(403, {"message": "Internal Server Error"})
 
@@ -90,6 +96,7 @@ def create_review(event):
         cur.execute(rate_limit_query, (ip_address,))
         result = cur.fetchone()
         if result and result["count"] > 0:
+            log("refused", reason="rate_limited", ip=ip_address)
             conn.close()
             return response(429, {"message": "You have exceeded the limit of 1 comment per hour. Please try again later or contact the site administrator to request a change to your existing review."})
 
@@ -98,15 +105,17 @@ def create_review(event):
         saved = cur.fetchone()
         review_id = saved["id"]
         conn.commit()
+        log("review_saved", review_id=review_id, ip=ip_address)
 
         # Tell the owner, but never let a notification problem undo or fail a saved review
         try:
             cur.execute(earlier_reviews_query, (ip_address, review_id))
             earlier_reviews = cur.fetchone()["earlier"]
             email_floofy(review_id, saved["created_at"], author, comment, ip_address, earlier_reviews)
+            log("owner_email_sent", review_id=review_id)
         except Exception as error:
-            # print() lands in CloudWatch, where the owner can see which review went un-emailed
-            print(f"Review #{review_id} was saved, but the owner email failed: {error!r}")
+            # Recorded so the owner can see which saved review went un-emailed, and why
+            log("owner_email_failed", review_id=review_id, error=repr(error))
     
     conn.close()
 

@@ -75,6 +75,9 @@ token     = base64url(payload) + "." + base64url(signature)
   - `X-Robots-Tag: noindex`.
   - `Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'`.
 - **Parameterised SQL only.** Values always go through `cur.execute(query, params)`, never f-strings or `+`.
+- **Logging.** Every Lambda logs each request (method, path, IP, user agent) and each outcome as one JSON line in
+  CloudWatch, via `aws_lambda/shared/request_log.py`. Logs carry ids, never request bodies, tokens or the secret. See
+  [aws-setup.md](aws-setup.md#reading-the-logs).
 - **Separate Lambda.** `floof-admin`'s URL never appears in the site's JavaScript, and a bug in admin code can't
   affect the public endpoints.
 

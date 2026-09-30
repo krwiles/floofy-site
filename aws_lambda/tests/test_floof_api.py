@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import pytest
 
 import admin_links
-from conftest import admin_tokens, make_event
+from conftest import admin_tokens, logged, make_event
 
 
 @pytest.fixture
@@ -88,7 +88,7 @@ def test_email_failure_still_returns_201(api, connection, emails, capsys):
     # Assert: the visitor still sees success, the review was committed, and the failure was logged for CloudWatch.
     assert result["statusCode"] == 201
     assert connection.commits >= 1
-    assert "#7" in capsys.readouterr().out
+    assert any(line["event"] == "owner_email_failed" and line["review_id"] == 7 for line in logged(capsys))
 
 
 def test_missing_admin_config_still_returns_201(api, emails, monkeypatch):

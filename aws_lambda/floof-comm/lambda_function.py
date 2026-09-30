@@ -13,6 +13,7 @@ from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM
+from request_log import log, log_request
 
 # More than this many requests from one IP in 24 hours are refused — see spec.md "floof-comm"
 MAX_REQUESTS_PER_DAY = 2
@@ -67,6 +68,8 @@ class CommissionRequest:
 
 
 def lambda_handler(event, context):
+    # Record every call: requests are rare, so each one is worth seeing in CloudWatch
+    log_request(event)
     method = event["requestContext"]["http"]["method"]
     
     if method == "POST":
@@ -81,22 +84,25 @@ def main(event):
     commission_request = CommissionRequest.from_body(body)
     
     # Validate the request
+    sender_ip_address = event["requestContext"]["http"]["sourceIp"]
     validation_response = validate_request(commission_request)
     if validation_response is not None:
+        log("refused", reason="invalid", ip=sender_ip_address)
         return validation_response
 
     
     # Check the blocklist and rate limit, then record the request before any email is attempted
     # (leaving the `with` block commits the insert and closes the connection)
-    sender_ip_address = event["requestContext"]["http"]["sourceIp"]
     with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
         # Refuse blocked IPs with the same vague reply the other endpoints give
         if is_blocked(cur, sender_ip_address):
+            log("refused", reason="blocked", ip=sender_ip_address)
             return response(403, {"message": "Internal Server Error"})
 
         # Refuse a third request from the same IP within 24 hours
         cur.execute(RECENT_REQUESTS_QUERY, (sender_ip_address,))
         if cur.fetchone()["recent"] >= MAX_REQUESTS_PER_DAY:
+            log("refused", reason="rate_limited", ip=sender_ip_address)
             return response(429, {"message": "You have sent several commission requests recently. Please try again later."})
 
         # Save the request; RETURNING id hands back the new row's id for the admin link
@@ -114,6 +120,7 @@ def main(event):
             commission_request.additional_notes,
         ))
         request_id = cur.fetchone()["id"]
+    log("commission_saved", request_id=request_id, ip=sender_ip_address)
 
     # Format and send emails
     floofy_email_result = email_floofy(commission_request, request_id, sender_ip_address)
@@ -123,6 +130,7 @@ def main(event):
     customer_email_result = email_customer(commission_request)
     if customer_email_result["statusCode"] >= 400:
         return customer_email_result
+    log("commission_emails_sent", request_id=request_id)
     
     return response(200, {"message": "Thank you! Your commission request submitted successfully. You will receive a confirmation email soon."})
 
@@ -241,6 +249,8 @@ def send_email(to_email, subject, body):
         resend.Emails.send(commission_details)
     
     except Exception as e:
+        # Record the real error; the visitor only sees the generic message below
+        log("email_failed", error=repr(e))
         return response(500, {"message": f"Failed to send email to {to_email}, please report this issue to the site administrator.",})
             
     return response(200, {"message": "Email sent successfully"})

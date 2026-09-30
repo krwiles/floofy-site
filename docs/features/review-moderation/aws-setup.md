@@ -144,6 +144,41 @@ Use a phone on mobile data for the "visitor" steps, so blocking it doesn't block
       and contact message are all refused with the vague error.
 - [ ] Clean up: unblock the phone's IP (see below) and delete the test rows.
 
+## 10. Keep it free
+
+Everything here fits in free allowances: Lambda's always-free 1M requests a month, CloudWatch's 5 GB of logs, and
+Neon's and Resend's free plans (Resend allows 100 emails a day). Two settings make sure it stays that way:
+
+1. **A $1 budget alert.** In **Billing and Cost Management → Budgets → Create budget**, choose **Use a template →
+   Zero spend budget** (or a monthly cost budget of $1), and enter your email. AWS then emails you as soon as anything
+   starts costing money. The first two budgets are free.
+2. **Log retention.** By default CloudWatch keeps logs forever. For each of the four functions, open **CloudWatch →
+   Log groups → `/aws/lambda/<function name>`** → **Actions → Edit retention setting**, and choose **2 weeks**
+   (or 1 month if you want a longer history).
+
+When AWS asks about encrypting environment variables, keep the default **AWS managed key**: a customer-managed KMS
+key costs $1 a month.
+
+## Reading the logs
+
+Every Lambda writes one JSON line per request (method, path, IP and browser, never what the visitor typed), plus a line
+for each outcome: `review_saved`, `commission_saved`, `refused` (with `reason`: `invalid`, `blocked` or
+`rate_limited`), `owner_email_failed` / `email_failed`, and on `floof-admin`, `admin_invalid_link`,
+`admin_confirm_shown` and `admin_action`. Admin tokens are never logged.
+
+To search them, open **CloudWatch → Logs Insights**, pick one or more `/aws/lambda/floof-*` log groups, and run, for
+example:
+
+```
+fields @timestamp, event, ip, reason, action, target_id
+| filter ispresent(event) and event != "request"
+| sort @timestamp desc
+| limit 100
+```
+
+Change the filter to `event = "request"` to see every call, or `ip = "203.0.113.7"` to follow one visitor. Logs Insights
+charges per GB scanned beyond a small free amount; with these tiny logs a query costs effectively nothing.
+
 ## Rotating the secret
 
 If an email may have leaked, or just periodically:
@@ -170,8 +205,9 @@ SELECT ip_address, reason, blocked_at FROM blocked_ips ORDER BY blocked_at DESC;
 
 ## Troubleshooting
 
-- **Something fails:** open the function → **Monitor → View CloudWatch logs**, then the latest log stream. Email
-  failures in `floof-api` are logged there, and the review is still saved.
+- **Something fails:** open the function → **Monitor → View CloudWatch logs**, then the latest log stream, or search
+  with [Logs Insights](#reading-the-logs). Email failures are logged there (`owner_email_failed` / `email_failed`), and
+  the review or commission request is still saved.
 - **`No module named 'psycopg'` / `'resend'`:** the zip was built for the wrong architecture or Python version, or
   without its dependencies. Rebuild with `build.sh` and the values from step 4.
 - **Timeouts on the first request after a while:** Neon was waking up. Raise the timeout a little.

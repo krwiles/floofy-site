@@ -16,6 +16,7 @@ from psycopg.rows import dict_row
 from admin_links import verify
 from blocklist import block, is_blocked
 from db import connect_to_db
+from request_log import log, log_request
 
 # Headers on every page, so tokens aren't cached, leaked via Referer, indexed or framed — see spec.md
 SECURITY_HEADERS = {
@@ -44,13 +45,16 @@ SGT = ZoneInfo("Asia/Singapore")
 
 
 def lambda_handler(event, context):
+    # Record every call: anyone reaching this Lambda is either the owner or someone probing it
+    log_request(event)
     method = event["requestContext"]["http"]["method"]
+    ip = event["requestContext"]["http"]["sourceIp"]
 
     # GET only ever shows the confirm page; POST (the Confirm button) is the only thing that acts
     if method == "GET":
-        return show_confirm_page(query_token(event))
+        return show_confirm_page(query_token(event), ip)
     if method == "POST":
-        return perform_action(form_token(event))
+        return perform_action(form_token(event), ip)
 
     return page(405, "Method not allowed", "<p>This page only supports opening a link and pressing Confirm.</p>")
 
@@ -71,10 +75,11 @@ def form_token(event):
     return parse_qs(body).get("token", [None])[0]
 
 
-def show_confirm_page(token):
-    # Refuse bad or expired links before touching the database
+def show_confirm_page(token, ip):
+    # Refuse bad or expired links before touching the database (logged without the token, which is a credential)
     verified = verify(token, now=time.time())
     if verified is None:
+        log("admin_invalid_link", method="GET", ip=ip)
         return invalid_link_page()
     action, target_id = verified
 
@@ -82,8 +87,10 @@ def show_confirm_page(token):
     with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
         target = load_target(cur, action, target_id)
         if target is None:
+            log("admin_not_found", action=action, target_id=target_id, ip=ip)
             return not_found_page()
         done = already_done(cur, action, target)
+    log("admin_confirm_shown", action=action, target_id=target_id, ip=ip)
 
     # Describe the target, and offer a Confirm button only if there's something left to do
     title, consequence = describe(action, target_id, target)
@@ -101,10 +108,11 @@ def show_confirm_page(token):
     return page(200, title, f"{details}<p>{consequence}</p>{form}")
 
 
-def perform_action(token):
+def perform_action(token, ip):
     # Re-check the token: the POST is a fresh request and could come from anywhere
     verified = verify(token, now=time.time())
     if verified is None:
+        log("admin_invalid_link", method="POST", ip=ip)
         return invalid_link_page()
     action, target_id = verified
 
@@ -112,6 +120,7 @@ def perform_action(token):
     with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
         target = load_target(cur, action, target_id)
         if target is None:
+            log("admin_not_found", action=action, target_id=target_id, ip=ip)
             return not_found_page()
 
         if action == "delete-review":
@@ -123,7 +132,8 @@ def perform_action(token):
             # Block the IP stored on the row; the token only ever names an id, never an IP
             changed = block(cur, target["ip_address"], f"admin email: {source_label(action, target_id)}")
 
-    # Report what happened
+    # Record and report what happened
+    log("admin_action", action=action, target_id=target_id, result="done" if changed else "already_done", ip=ip)
     title, _ = describe(action, target_id, target)
     if not changed:
         return page(200, title, "<p><strong>Already done.</strong> Nothing changed.</p>")

@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM
+from request_log import log, log_request
 
 
 @dataclass(frozen=True)
@@ -28,6 +29,8 @@ class ContactRequest:
 
 
 def lambda_handler(event, context):
+    # Record every call: requests are rare, so each one is worth seeing in CloudWatch
+    log_request(event)
     method = event["requestContext"]["http"]["method"]
     
     if method == "POST":
@@ -42,21 +45,24 @@ def main(event):
     contact_request = ContactRequest.from_body(body)
     
     # Validate the request
+    sender_ip_address = event["requestContext"]["http"]["sourceIp"]
     validation_response = validate_request(contact_request)
     if validation_response is not None:
+        log("refused", reason="invalid", ip=sender_ip_address)
         return validation_response
 
     # Refuse blocked IPs with the same vague reply the other endpoints give
-    sender_ip_address = event["requestContext"]["http"]["sourceIp"]
     with connect_to_db() as conn, conn.cursor() as cur:
         blocked = is_blocked(cur, sender_ip_address)
     if blocked:
+        log("refused", reason="blocked", ip=sender_ip_address)
         return response(403, {"message": "Internal Server Error"})
 
     # Format and send emails
     floofy_email_result = email_floofy(contact_request, sender_ip_address)
     if floofy_email_result["statusCode"] >= 400:
         return floofy_email_result
+    log("contact_email_sent", ip=sender_ip_address)
     
     return response(200, {"message": "Commission request submitted successfully! You will receive a confirmation email shortly."})
 
@@ -110,6 +116,8 @@ def send_email(to_email, subject, body):
         resend.Emails.send(commission_details)
     
     except Exception as e:
+        # Record the real error; the visitor only sees the generic message below
+        log("email_failed", error=repr(e))
         return response(500, {"message": f"Failed to send email to {to_email}, please report this issue to the site owner.",})
             
     return response(200, {"message": "email sent successfully"})

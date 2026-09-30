@@ -164,10 +164,16 @@ def admin_tokens(html):
     return re.findall(r"https://admin\.example/\?token=([A-Za-z0-9_\-.]+)", html)
 
 
+def logged(capsys):
+    """Every structured log line printed so far, parsed from JSON (other output is ignored)."""
+    lines = capsys.readouterr().out.splitlines()
+    return [json.loads(line) for line in lines if line.startswith("{")]
+
+
 def make_event(method, body=None, ip="203.0.113.7", query=None, base64_body=False):
     """Build the minimal Lambda function URL event the handlers read."""
     return {
-        "requestContext": {"http": {"method": method, "sourceIp": ip}},
+        "requestContext": {"http": {"method": method, "sourceIp": ip, "path": "/", "userAgent": "test-agent/1.0"}},
         "body": body if isinstance(body, str) or body is None else json.dumps(body),
         "isBase64Encoded": base64_body,
         "queryStringParameters": query,
