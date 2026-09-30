@@ -76,7 +76,7 @@ def email_floofy(contact_request: ContactRequest, sender_ip_address):
         <p><strong>Email:</strong> {email}</p>
         <p><strong>Message:</strong> {message}</p>
         <p><em>Submitted at: {datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
-        <p><em>Sender IP Address: {sender_ip_address}</em></p>
+        <p><em>Sender IP Address: {html.escape(sender_ip_address)}</em></p>
     """
     
     # Send the email to Floofy

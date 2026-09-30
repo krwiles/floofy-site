@@ -140,8 +140,11 @@ def load_target(cur, action, target_id):
 
 def already_done(cur, action, target):
     """Whether confirming would change nothing: the review is already hidden, or its IP already blocked."""
+    # A delete is done once the review's flag is set
     if action == "delete-review":
         return target["deleted"]
+
+    # A block is done once the row's IP is in blocked_ips
     return is_blocked(cur, target["ip_address"])
 
 
@@ -152,18 +155,16 @@ def source_label(action, target_id):
 
 def describe(action, target_id, target):
     """The page title and a sentence saying exactly what Confirm will do."""
-    ip = html.escape(str(target["ip_address"]))
+    # Deleting only hides the one review
     if action == "delete-review":
         return f"Delete review #{target_id}?", "The review will be hidden from the site."
+
+    # Both blocks have the same effect; only the title names a different source
+    ip = html.escape(str(target["ip_address"]))
+    block_effect = f"IP {ip} will no longer be able to post reviews, send commission requests or send contact messages."
     if action == "block-review-ip":
-        return (
-            f"Block the reviewer behind review #{target_id}?",
-            f"IP {ip} will no longer be able to post reviews, send commission requests or send contact messages.",
-        )
-    return (
-        f"Block the requester behind commission request #{target_id}?",
-        f"IP {ip} will no longer be able to post reviews, send commission requests or send contact messages.",
-    )
+        return f"Block the reviewer behind review #{target_id}?", block_effect
+    return f"Block the requester behind commission request #{target_id}?", block_effect
 
 
 def target_details(action, target):

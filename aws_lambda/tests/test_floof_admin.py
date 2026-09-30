@@ -249,6 +249,7 @@ def test_post_for_a_missing_target_is_not_found(admin, cursor):
 
 @pytest.mark.parametrize("method", ["PUT", "DELETE", "HEAD", "PATCH"])
 def test_other_methods_are_405(admin, method):
+    # Act and assert: anything but GET/POST is refused outright.
     assert admin.lambda_handler(make_event(method), None)["statusCode"] == 405
 
 

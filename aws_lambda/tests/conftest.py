@@ -5,6 +5,7 @@ Nothing here touches the network: the database connection and `resend.Emails.sen
 
 import importlib.util
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -37,7 +38,6 @@ class FakeCursor:
     def on(self, fragment, rows=(), rowcount=None):
         """Answer any query containing `fragment` with `rows` (later rules win over earlier ones)."""
         self.rules.append((fragment, list(rows), rowcount))
-        return self
 
     def execute(self, query, params=None):
         # Record the call so tests can assert on the exact SQL and parameters.
@@ -157,6 +157,11 @@ def load_lambda(monkeypatch, connection):
         return module
 
     return load
+
+
+def admin_tokens(html):
+    """Every admin-link token found in an email body."""
+    return re.findall(r"https://admin\.example/\?token=([A-Za-z0-9_\-.]+)", html)
 
 
 def make_event(method, body=None, ip="203.0.113.7", query=None, base64_body=False):

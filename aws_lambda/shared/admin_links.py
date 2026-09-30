@@ -5,15 +5,16 @@ Only someone holding ADMIN_LINK_SECRET can make one, and changing any part of it
 """
 
 import base64
-import binascii
 import hashlib
 import hmac
 import os
+import re
 import time
 
 ACTIONS = frozenset({"delete-review", "block-review-ip", "block-commission-ip"})
 LINK_LIFETIME_SECONDS = 7 * 24 * 60 * 60
 MIN_SECRET_LENGTH = 32
+URL_SAFE_BASE64 = re.compile(r"[A-Za-z0-9_-]*")
 
 
 def _secret():
@@ -30,8 +31,12 @@ def _b64encode(raw):
 
 
 def _b64decode(text):
-    # Put back the padding _b64encode stripped; raises ValueError (binascii.Error) on bad input.
-    return base64.b64decode(text + "=" * (-len(text) % 4), altchars=b"-_", validate=True)
+    # Accept only the URL-safe alphabet, so each token has exactly one valid spelling
+    if not URL_SAFE_BASE64.fullmatch(text):
+        raise ValueError("not URL-safe base64")
+
+    # Put back the padding _b64encode stripped; raises ValueError (binascii.Error) on a bad length
+    return base64.urlsafe_b64decode(text + "=" * (-len(text) % 4))
 
 
 def _signature(payload):
@@ -84,5 +89,8 @@ def verify(token, now):
 
 def link(admin_url, action, target_id):
     """The full admin URL for one action on one target, valid for seven days from now."""
+    # Links expire a week after the email is sent
     expires_at = int(time.time()) + LINK_LIFETIME_SECONDS
+
+    # Token characters are all URL-safe, so it goes into the query string as-is
     return f"{admin_url}?token={sign(action, target_id, expires_at)}"

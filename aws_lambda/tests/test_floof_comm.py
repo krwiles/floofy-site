@@ -1,11 +1,10 @@
 import json
-import re
 import time
 
 import pytest
 
 import admin_links
-from conftest import make_event
+from conftest import admin_tokens, make_event
 
 EVIL = '<a href="//evil.example">x</a>'
 
@@ -50,11 +49,6 @@ def test_every_user_value_is_escaped_in_both_emails(comm, emails):
     for sent in emails.sent:
         assert "&lt;a href=" in sent["html"]
         assert '<a href="//evil.example">' not in sent["html"]
-
-
-def admin_tokens(html):
-    """Every admin-link token found in an email body."""
-    return re.findall(r"https://admin\.example/\?token=([A-Za-z0-9_\-.]+)", html)
 
 
 def test_blocked_ip_gets_the_vague_403_with_no_insert_or_email(comm, cursor, emails):
@@ -149,3 +143,29 @@ def test_emails_come_from_the_site_address(comm, emails):
 
     # Assert: both emails use the shared sender constant.
     assert {sent["from"] for sent in emails.sent} == {"FloofySite <no-reply@summerfloofy.com>"}
+
+
+@pytest.mark.parametrize(
+    "price",
+    [None, -5, 100_000_000, float("inf"), float("nan")],
+    ids=["missing", "negative", "too-big-for-numeric-10-2", "infinity", "nan"],
+)
+def test_unusable_price_is_rejected_before_touching_the_database(comm, cursor, emails, price):
+    # Arrange: a request whose price the database column numeric(10, 2) can't store (or that makes no sense).
+    body = commission_body(estimatedPrice=price)
+    if price is None:
+        del body["estimatedPrice"]
+
+    # Act: submit it (json.dumps writes inf/nan as Infinity/NaN, which json.loads accepts).
+    result = comm.lambda_handler(make_event("POST", body), None)
+
+    # Assert: a 400 about the price, with no database work and no email.
+    assert result["statusCode"] == 400
+    assert "price" in json.loads(result["body"])["message"].lower()
+    assert cursor.executed == []
+    assert emails.sent == []
+
+
+def test_zero_price_is_allowed(comm, emails):
+    # A price of 0 is a valid choice (e.g. "not sure yet"), so it must still go through.
+    assert comm.lambda_handler(make_event("POST", commission_body(estimatedPrice=0)), None)["statusCode"] == 200

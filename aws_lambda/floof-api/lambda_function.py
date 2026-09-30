@@ -9,6 +9,7 @@ from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import link
+from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM
 
@@ -60,13 +61,6 @@ def create_review(event):
         return response(400, {"message": "Bad Request: comment must be fewer than 2000 characters"})
 
     # Query strings
-    ip_query = """
-    SELECT EXISTS (
-        SELECT 1
-        FROM blocked_ips
-        WHERE ip_address = %s
-    )
-    """
     rate_limit_query = """
     SELECT COUNT(*)
     FROM reviews
@@ -76,7 +70,7 @@ def create_review(event):
     insert_query = """
     INSERT INTO reviews (author, comment, ip_address)
     VALUES (%s, %s, %s)
-    RETURNING id
+    RETURNING id, created_at
     """
     earlier_reviews_query = """
     SELECT COUNT(*) AS earlier
@@ -87,10 +81,8 @@ def create_review(event):
     
     conn = connect_to_db()
     with conn.cursor(row_factory=dict_row) as cur:
-        # Check if the IP address is blocked
-        cur.execute(ip_query, (ip_address,))
-        result = cur.fetchone()
-        if result and result["exists"]:
+        # Check if the IP address is blocked (the same shared check every endpoint uses)
+        if is_blocked(cur, ip_address):
             conn.close()
             return response(403, {"message": "Internal Server Error"})
 
@@ -101,16 +93,17 @@ def create_review(event):
             conn.close()
             return response(429, {"message": "You have exceeded the limit of 1 comment per hour. Please try again later or contact the site administrator to request a change to your existing review."})
 
-        # Insert the review; RETURNING id hands back the new row's id for the admin links
+        # Insert the review; RETURNING hands back its new id (for the admin links) and saved time
         cur.execute(insert_query, (author, comment, ip_address))
-        review_id = cur.fetchone()["id"]
+        saved = cur.fetchone()
+        review_id = saved["id"]
         conn.commit()
 
         # Tell the owner, but never let a notification problem undo or fail a saved review
         try:
             cur.execute(earlier_reviews_query, (ip_address, review_id))
             earlier_reviews = cur.fetchone()["earlier"]
-            email_floofy(review_id, author, comment, ip_address, earlier_reviews)
+            email_floofy(review_id, saved["created_at"], author, comment, ip_address, earlier_reviews)
         except Exception as error:
             # print() lands in CloudWatch, where the owner can see which review went un-emailed
             print(f"Review #{review_id} was saved, but the owner email failed: {error!r}")
@@ -120,7 +113,7 @@ def create_review(event):
     return response(201, {"message": "Review created successfully"})
 
 
-def email_floofy(review_id, author, comment, ip_address, earlier_reviews):
+def email_floofy(review_id, created_at, author, comment, ip_address, earlier_reviews):
     """Email the owner a new review, with signed Delete / Block links. Raises if anything goes wrong."""
     # Signed links that act only after a confirm step — see spec.md "Security model"
     admin_url = os.environ["ADMIN_URL"]
@@ -135,7 +128,7 @@ def email_floofy(review_id, author, comment, ip_address, earlier_reviews):
         <h1>New review #{review_id}</h1>
         <p><strong>Author:</strong> {safe_author}</p>
         <p><strong>Comment:</strong> {safe_comment}</p>
-        <p><em>Posted at: {datetime.datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
+        <p><em>Posted at: {created_at.astimezone(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
         <p><em>Sender IP Address: {html.escape(ip_address)}</em></p>
         <p><strong>Earlier reviews from this IP:</strong> {earlier_reviews}</p>
         <p><a href="{html.escape(delete_url)}">Delete this review</a></p>

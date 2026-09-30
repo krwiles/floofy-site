@@ -57,8 +57,10 @@ def test_expired_token_is_refused():
 
 
 def test_token_is_refused_at_the_exact_expiry_second():
-    # Expiry is exclusive: the link dies at expires_at, not one second after.
+    # Arrange: a link whose expiry is exactly "now".
     token = admin_links.sign("delete-review", 123, NOW)
+
+    # Assert: expiry is exclusive, so the link dies at expires_at, not one second after.
     assert admin_links.verify(token, now=NOW) is None
 
 
@@ -129,3 +131,18 @@ def test_link_points_at_the_admin_url_and_lasts_seven_days():
     assert admin_links.verify(token, now=time.time()) == ("block-commission-ip", 42)
     assert admin_links.verify(token, now=time.time() + seven_days - 60) == ("block-commission-ip", 42)
     assert admin_links.verify(token, now=time.time() + seven_days + 60) is None
+
+
+def test_standard_base64_characters_are_refused():
+    # Arrange: find a genuine token whose signature contains "-" or "_" (the URL-safe-only characters).
+    token = next(
+        t for t in (admin_links.sign("delete-review", i, NOW + 3600) for i in range(1, 1000))
+        if set("-_") & set(t.split(".")[1])
+    )
+    payload_part, signature_part = token.split(".")
+
+    # Respell that signature with the standard alphabet's "+" and "/", which decode to the same bytes.
+    standard = signature_part.replace("-", "+").replace("_", "/")
+
+    # Act and assert: only the URL-safe spelling is accepted.
+    assert admin_links.verify(f"{payload_part}.{standard}", now=NOW) is None

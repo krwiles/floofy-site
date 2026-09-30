@@ -1,5 +1,6 @@
 import html
 import json
+import math
 import os
 import resend
 from datetime import datetime
@@ -15,6 +16,9 @@ from email_sender import EMAIL_FROM
 
 # More than this many requests from one IP in 24 hours are refused — see spec.md "floof-comm"
 MAX_REQUESTS_PER_DAY = 2
+
+# numeric(10, 2) in commission_requests holds prices below 100,000,000
+MAX_PRICE = 100_000_000
 
 RECENT_REQUESTS_QUERY = """
 SELECT COUNT(*) AS recent
@@ -83,6 +87,7 @@ def main(event):
 
     
     # Check the blocklist and rate limit, then record the request before any email is attempted
+    # (leaving the `with` block commits the insert and closes the connection)
     sender_ip_address = event["requestContext"]["http"]["sourceIp"]
     with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
         # Refuse blocked IPs with the same vague reply the other endpoints give
@@ -109,7 +114,6 @@ def main(event):
             commission_request.additional_notes,
         ))
         request_id = cur.fetchone()["id"]
-    # Leaving the `with` block commits the insert and closes the connection
 
     # Format and send emails
     floofy_email_result = email_floofy(commission_request, request_id, sender_ip_address)
@@ -155,7 +159,7 @@ def email_floofy(commission_request: CommissionRequest, request_id: int, sender_
         <p><strong>Deadline:</strong> {commission_request.deadline}</p>
         <p><strong>Additional Notes:</strong> {commission_request.additional_notes}</p>
         <p><em>Submitted at: {datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
-        <p><em>Sender IP Address: {sender_ip_address}</em></p>
+        <p><em>Sender IP Address: {html.escape(sender_ip_address)}</em></p>
         <p><em>Request #{request_id}</em></p>
         <p><a href="{html.escape(block_url)}">Block this requester</a></p>
     """
@@ -213,6 +217,11 @@ def validate_request(commission_request: CommissionRequest):
         return response(400, {"message": "Bad Request: commission type must be fewer than 50 characters"})
     if len(commission_request.usage_explanation) > 2000:
         return response(400, {"message": "Bad Request: usage explanation must be fewer than 2000 characters"})
+
+    # The price must be a real number the database column can store (a missing price arrives as -1)
+    price = commission_request.estimated_price
+    if not math.isfinite(price) or price < 0 or price >= MAX_PRICE:
+        return response(400, {"message": "Bad Request: estimated price must be a number from 0 to 99,999,999.99"})
 
     return None
 

@@ -1,18 +1,19 @@
 import json
 import re
 import time
+from datetime import datetime, timezone
 
 import pytest
 
 import admin_links
-from conftest import make_event
+from conftest import admin_tokens, make_event
 
 
 @pytest.fixture
 def api(load_lambda, cursor):
-    # Default database state: not blocked, no review this hour, new review gets id 7, and 3 earlier reviews from this IP.
+    # Default database state: not blocked, no review this hour, new review #7 saved at 04:00 UTC, and 3 earlier reviews.
     cursor.on("INTERVAL '1 hour'", rows=[{"count": 0}])
-    cursor.on("INSERT INTO reviews", rows=[{"id": 7}])
+    cursor.on("INSERT INTO reviews", rows=[{"id": 7, "created_at": datetime(2026, 9, 30, 4, 0, tzinfo=timezone.utc)}])
     cursor.on("AS earlier", rows=[{"earlier": 3}])
     return load_lambda("floof-api")
 
@@ -20,11 +21,6 @@ def api(load_lambda, cursor):
 def post_review(api, author="Robin", comment="Lovely art!"):
     """Submit a review through the handler, the way the site does."""
     return api.lambda_handler(make_event("POST", {"author": author, "comment": comment}), None)
-
-
-def admin_tokens(html):
-    """Every admin-link token found in an email body."""
-    return re.findall(r"https://admin\.example/\?token=([A-Za-z0-9_\-.]+)", html)
 
 
 def test_new_review_emails_the_owner_with_delete_and_block_links(api, emails):
@@ -48,9 +44,10 @@ def test_email_shows_the_review_details_and_earlier_review_count(api, cursor, em
     # Act: post a review.
     post_review(api)
 
-    # Assert: the body names the review number, author, comment, IP and the earlier-review count.
+    # Assert: the body names the review number, author, comment, saved time (in SGT), IP and earlier-review count.
     html = emails.sent[0]["html"]
-    for expected in ["#7", "Robin", "Lovely art!", "203.0.113.7", "Earlier reviews from this IP:</strong> 3"]:
+    posted = "Wednesday, 30 September 2026 at 12:00 PM (SGT)"
+    for expected in ["#7", "Robin", "Lovely art!", posted, "203.0.113.7", "Earlier reviews from this IP:</strong> 3"]:
         assert expected in html
 
     # The count covers this IP's reviews before the new one, passed as parameters.
@@ -74,9 +71,9 @@ def test_insert_returns_the_new_id_and_is_committed(api, cursor, connection, ema
     # Act: post a review.
     post_review(api)
 
-    # Assert: the insert asks for the new id back, and the review was committed.
+    # Assert: the insert asks for the new id and saved time back, and the review was committed.
     [(sql, params)] = cursor.queries("INSERT INTO reviews")
-    assert "RETURNING id" in sql
+    assert "RETURNING id, created_at" in sql
     assert params == ("Robin", "Lovely art!", "203.0.113.7")
     assert connection.commits >= 1
 
