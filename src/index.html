@@ -6,8 +6,8 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Disallow friendly scrapers from using images for AI training -->
-    <meta name="robots" content="noai, noimageai, noindex, noimageindex" />
+    <!-- Allow search indexing, but refuse AI use and image indexing (see public/robots.txt and public/llms.txt) -->
+    <meta name="robots" content="noai, noimageai, noimageindex" />
 
     <!-- Preload the main image with high priority -->
     <link rel="preload" as="image" href="assets/artwork/nimi-01.jpeg" fetchpriority="high" />
