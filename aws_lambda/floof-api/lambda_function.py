@@ -1,10 +1,16 @@
+import html
 import json
 import datetime
 import os
+from zoneinfo import ZoneInfo
 
-# NOTE: for lambda you must include the binaries AND ensure they are the linux versions not
-import psycopg
+import resend
 from psycopg.rows import dict_row
+
+# Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
+from admin_links import link
+from db import connect_to_db
+from email_sender import EMAIL_FROM
 
 def lambda_handler(event, context):
     method = event["requestContext"]["http"]["method"]
@@ -15,17 +21,6 @@ def lambda_handler(event, context):
         return create_review(event)
     
     return response(405, {"message": "Method Not Allowed"})
-
-
-def connect_to_db():
-    return psycopg.connect(
-        host=os.environ["DB_HOST"],
-        dbname=os.environ["DB_NAME"],
-        user=os.environ["DB_USER"],
-        password=os.environ["DB_PASSWORD"],
-        port=5432,
-        sslmode="require",
-    )
 
 
 def get_reviews():
@@ -81,6 +76,13 @@ def create_review(event):
     insert_query = """
     INSERT INTO reviews (author, comment, ip_address)
     VALUES (%s, %s, %s)
+    RETURNING id
+    """
+    earlier_reviews_query = """
+    SELECT COUNT(*) AS earlier
+    FROM reviews
+    WHERE ip_address = %s
+        AND id < %s
     """
     
     conn = connect_to_db()
@@ -99,13 +101,56 @@ def create_review(event):
             conn.close()
             return response(429, {"message": "You have exceeded the limit of 1 comment per hour. Please try again later or contact the site administrator to request a change to your existing review."})
 
-        # Insert the review
+        # Insert the review; RETURNING id hands back the new row's id for the admin links
         cur.execute(insert_query, (author, comment, ip_address))
+        review_id = cur.fetchone()["id"]
         conn.commit()
+
+        # Tell the owner, but never let a notification problem undo or fail a saved review
+        try:
+            cur.execute(earlier_reviews_query, (ip_address, review_id))
+            earlier_reviews = cur.fetchone()["earlier"]
+            email_floofy(review_id, author, comment, ip_address, earlier_reviews)
+        except Exception as error:
+            # print() lands in CloudWatch, where the owner can see which review went un-emailed
+            print(f"Review #{review_id} was saved, but the owner email failed: {error!r}")
     
     conn.close()
 
     return response(201, {"message": "Review created successfully"})
+
+
+def email_floofy(review_id, author, comment, ip_address, earlier_reviews):
+    """Email the owner a new review, with signed Delete / Block links. Raises if anything goes wrong."""
+    # Signed links that act only after a confirm step — see spec.md "Security model"
+    admin_url = os.environ["ADMIN_URL"]
+    delete_url = link(admin_url, "delete-review", review_id)
+    block_url = link(admin_url, "block-review-ip", review_id)
+
+    # Escape every user value so it shows as text in the email instead of live markup
+    safe_author = html.escape(author)
+    safe_comment = html.escape(comment)
+
+    email_body = f"""
+        <h1>New review #{review_id}</h1>
+        <p><strong>Author:</strong> {safe_author}</p>
+        <p><strong>Comment:</strong> {safe_comment}</p>
+        <p><em>Posted at: {datetime.datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
+        <p><em>Sender IP Address: {html.escape(ip_address)}</em></p>
+        <p><strong>Earlier reviews from this IP:</strong> {earlier_reviews}</p>
+        <p><a href="{html.escape(delete_url)}">Delete this review</a></p>
+        <p><a href="{html.escape(block_url)}">Block this reviewer</a></p>
+    """
+
+    # Send it; resend.Emails.send raises on any API or network error
+    resend.api_key = os.environ["RESEND_API_KEY"]
+    resend.Emails.send({
+        "from": EMAIL_FROM,
+        "to": [os.environ["FLOOFY_EMAIL"]],
+        # Subjects are plain text (never rendered as HTML), so they use the raw value
+        "subject": f"New review #{review_id} from {author}",
+        "html": email_body,
+    })
 
 
 def response(status, body):
