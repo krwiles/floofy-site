@@ -84,7 +84,7 @@ def send_email(to_email, subject, body):
     
     try:
         commission_details: resend.Emails.SendParams = {
-        "from": "FloofySite <onboarding@resend.dev>",
+        "from": "FloofySite <no-reply@summerfloofy.com>",
         "to": [to_email],
         "subject": subject,
         "html": body
