@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from conftest import make_event
@@ -24,3 +26,30 @@ def test_every_user_value_is_escaped_in_the_email(contact, emails):
     assert "&lt;b&gt;x&lt;/b&gt;" in sent["html"]
     assert '<a href="//evil.example">' not in sent["html"]
     assert "<b>x</b>" not in sent["html"]
+
+
+def test_blocked_ip_gets_the_vague_403_and_no_email(contact, emails, cursor, connection):
+    # Arrange: this IP is in blocked_ips.
+    cursor.on("FROM blocked_ips", rows=[{"blocked": 1}])
+
+    # Act: try to send a message from it.
+    result = contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
+
+    # Assert: the same deliberately vague reply as reviews, the IP was checked, and nothing was sent.
+    assert result["statusCode"] == 403
+    assert json.loads(result["body"]) == {"message": "Internal Server Error"}
+    assert cursor.queries("FROM blocked_ips")[0][1] == ("203.0.113.7",)
+    assert emails.sent == []
+    assert connection.closed
+
+
+def test_unblocked_ip_still_sends_from_the_site_address(contact, emails, connection):
+    # Act: send from an IP with no blocked_ips row (the fake returns none by default).
+    result = contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
+
+    # Assert: one email to the owner, from the shared sender constant, and the connection was closed.
+    assert result["statusCode"] == 200
+    [sent] = emails.sent
+    assert sent["from"] == "FloofySite <no-reply@summerfloofy.com>"
+    assert sent["to"] == ["owner@example.com"]
+    assert connection.closed

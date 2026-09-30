@@ -1,3 +1,4 @@
 certifi
 requests
 resend
+psycopg[binary]==3.3.4

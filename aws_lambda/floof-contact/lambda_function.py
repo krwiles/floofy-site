@@ -6,6 +6,11 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from dataclasses import dataclass
 
+# Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
+from blocklist import is_blocked
+from db import connect_to_db
+from email_sender import EMAIL_FROM
+
 
 @dataclass(frozen=True)
 class ContactRequest:
@@ -41,8 +46,14 @@ def main(event):
     if validation_response is not None:
         return validation_response
 
-    # Format and send emails
+    # Refuse blocked IPs with the same vague reply the other endpoints give
     sender_ip_address = event["requestContext"]["http"]["sourceIp"]
+    with connect_to_db() as conn, conn.cursor() as cur:
+        blocked = is_blocked(cur, sender_ip_address)
+    if blocked:
+        return response(403, {"message": "Internal Server Error"})
+
+    # Format and send emails
     floofy_email_result = email_floofy(contact_request, sender_ip_address)
     if floofy_email_result["statusCode"] >= 400:
         return floofy_email_result
@@ -90,7 +101,7 @@ def send_email(to_email, subject, body):
     
     try:
         commission_details: resend.Emails.SendParams = {
-        "from": "FloofySite <no-reply@summerfloofy.com>",
+        "from": EMAIL_FROM,
         "to": [to_email],
         "subject": subject,
         "html": body
