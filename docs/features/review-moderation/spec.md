@@ -148,13 +148,11 @@ A Lambda function URL (auth `NONE`; the token is the authentication).
 | `DB_HOST/NAME/USER/PASSWORD` |   ✓ (has)   |     new      |       new       |      new      |
 | `RESEND_API_KEY`             |     new     |   ✓ (has)    |     ✓ (has)     |               |
 | `FLOOFY_EMAIL`               |     new     |   ✓ (has)    |     ✓ (has)     |               |
-| `EMAIL_FROM`                 |     new     |     new      |       new       |               |
 | `ADMIN_LINK_SECRET`          |     new     |     new      |                 |      new      |
 | `ADMIN_URL`                  |     new     |     new      |                 |               |
 
-`EMAIL_FROM` replaces the hard-coded `onboarding@resend.dev` sender. That test sender can normally only deliver to
-the Resend account's own address, which would break customer confirmation emails. Setup verifies the site's domain
-in Resend, so emails can come from an address like `noreply@<your-domain>`.
+Every email is sent as `FloofySite <no-reply@summerfloofy.com>`, from the site's own domain, verified in Resend. It's
+not a secret and won't vary by environment, so it's a constant (`EMAIL_FROM` in `aws_lambda/shared/`), not a setting.
 
 ## Future ideas
 

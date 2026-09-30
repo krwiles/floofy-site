@@ -46,18 +46,11 @@ python3 -c "import secrets; print(secrets.token_urlsafe(48))"
 Copy the output (about 64 characters) somewhere temporary, such as a password manager entry. You'll paste the **same
 value** into three Lambdas in steps 6–8, then you can delete the temporary copy.
 
-## 3. Let Resend send from your own domain
+## 3. Confirm the email domain is verified
 
-`onboarding@resend.dev` is Resend's shared test sender, and it can normally only deliver to your own Resend account
-address. So customer confirmation emails need a verified domain.
-
-1. In **Resend**, go to **Domains → Add Domain** and enter the site's domain. A subdomain such as
-   `mail.<your-domain>` keeps email records separate from the site.
-2. Resend lists a few DNS records (TXT/MX for SPF and DKIM). In **Cloudflare**, go to your domain → **DNS → Records**,
-   and add each one exactly as shown. Set every one to **DNS only (grey cloud)**, not proxied.
-3. Back in Resend, click **Verify**. It can take a few minutes.
-4. Choose the sender, e.g. `FloofySite <noreply@mail.your-domain>`. That full string is **`EMAIL_FROM`** in the steps
-   below.
+Every email is sent as `FloofySite <no-reply@summerfloofy.com>` (a constant in the code, not a setting). In **Resend →
+Domains**, check that `summerfloofy.com` shows **Verified**. If not, add the DNS records Resend lists in **Cloudflare
+→ DNS → Records**, each set to **DNS only (grey cloud)**, not proxied, then click **Verify**.
 
 ## 4. Note each Lambda's runtime and architecture
 
@@ -105,7 +98,6 @@ Opening `ADMIN_URL` with no token should show "This link is invalid or has expir
 1. **Code → Upload from → .zip file**: `dist/floof-api.zip`.
 2. **Environment variables**, add:
    - `RESEND_API_KEY` and `FLOOFY_EMAIL`: copy them from `floof-comm`.
-   - `EMAIL_FROM`: from step 3.
    - `ADMIN_LINK_SECRET`: from step 2.
    - `ADMIN_URL`: from step 6.
 3. **General configuration**: set the timeout to **10 seconds**, since sending the email adds a little time.
@@ -117,7 +109,6 @@ Opening `ADMIN_URL` with no token should show "This link is invalid or has expir
 1. Upload `dist/floof-comm.zip`.
 2. Add these environment variables:
    - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`: copied from `floof-api`.
-   - `EMAIL_FROM`.
    - `ADMIN_LINK_SECRET`.
    - `ADMIN_URL`.
 3. Set the timeout to **15 seconds**.
@@ -127,7 +118,6 @@ Opening `ADMIN_URL` with no token should show "This link is invalid or has expir
 1. Upload `dist/floof-contact.zip`.
 2. Add these environment variables:
    - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`.
-   - `EMAIL_FROM`.
 3. Set the timeout to **10 seconds**.
 
 ## 9. Test it end to end
@@ -141,7 +131,7 @@ Use a phone on mobile data for the "visitor" steps, so blocking it doesn't block
 - [ ] Tap the same Delete link again, then Confirm. The page says "already done".
 - [ ] Change one character of a link's token and open it. You get "invalid or has expired".
 - [ ] Send a commission request from the phone. Both emails arrive (including the customer copy, sent from
-      `EMAIL_FROM`), and a row appears in `SELECT * FROM commission_requests ORDER BY id DESC LIMIT 1;`.
+      `no-reply@summerfloofy.com`), and a row appears in `SELECT * FROM commission_requests ORDER BY id DESC LIMIT 1;`.
 - [ ] Send two more requests from the phone within 24 hours. The third is refused ("try again later").
 - [ ] From the commission email, **Block this requester**, then Confirm. From the phone, a new review, commission
       and contact message are all refused with the vague error.
@@ -178,4 +168,4 @@ SELECT ip_address, reason, blocked_at FROM blocked_ips ORDER BY blocked_at DESC;
 - **`No module named 'psycopg'` / `'resend'`:** the zip was built for the wrong architecture, or without its
   dependencies. Rebuild with `build.sh` and the architecture from step 4.
 - **Timeouts on the first request after a while:** Neon was waking up. Raise the timeout a little.
-- **Customer emails missing:** check the domain shows **Verified** in Resend, and that `EMAIL_FROM` uses that domain.
+- **Customer emails missing:** check `summerfloofy.com` shows **Verified** in Resend (step 3).

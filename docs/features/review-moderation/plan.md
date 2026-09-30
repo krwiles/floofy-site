@@ -21,6 +21,8 @@ Implements [spec.md](spec.md). Each step is its own commit, tests first. One PR 
   `(action, target_id)` or `None`), and `link(admin_url, action, target_id)` (7-day expiry).
 - `aws_lambda/shared/blocklist.py`: `is_blocked(cur, ip)` and `block(cur, ip, reason)` (the `ON CONFLICT DO NOTHING`
   insert).
+- `aws_lambda/shared/email_sender.py`: the `EMAIL_FROM = "FloofySite <no-reply@summerfloofy.com>"` constant, used by
+  every Lambda that sends email.
 - `aws_lambda/tests/`: `conftest.py` puts `shared/` and each Lambda folder on the import path and provides a
   `FakeCursor` and a `FakeResend`.
 - **Tests:**
@@ -41,15 +43,15 @@ Implements [spec.md](spec.md). Each step is its own commit, tests first. One PR 
 ### 3. `floof-contact`: check the blocklist
 
 - Connect to Neon, the same way as `floof-api`, and return the vague `403` for a blocked IP before sending anything.
-- `EMAIL_FROM` replaces the hard-coded sender.
+- The sender comes from the shared `EMAIL_FROM` constant.
 - **Tests:** a blocked IP gets `403` and no email is sent; an unblocked IP still sends.
 
 ### 4. `floof-comm`: blocklist, rate limit, record, block link
 
 - Order: validate → blocked (`403`) → more than 2 in the last 24 hours (`429`) → insert into
   `commission_requests … RETURNING id` → emails.
-- The owner's email gains a **Block this requester** link (`block-commission-ip`, request id). `EMAIL_FROM` replaces
-  the hard-coded sender.
+- The owner's email gains a **Block this requester** link (`block-commission-ip`, request id). The sender comes from
+  the shared `EMAIL_FROM` constant.
 - **Tests:**
   - A blocked IP gets `403`, with no insert and no email.
   - A 3rd request within 24 hours gets `429`; the 2nd still goes through.
