@@ -1,3 +1,4 @@
+import html
 import json
 import os
 import resend
@@ -50,14 +51,19 @@ def main(event):
 
 
 def email_floofy(contact_request: ContactRequest, sender_ip_address):
-    # Format the email content
+    # Subjects are plain text (never rendered as HTML), so they use the raw values
     email_subject = f"Website Contact: {contact_request.name}"
-    
+
+    # Escape every user value so it shows as text in the email instead of live markup
+    name = html.escape(contact_request.name)
+    email = html.escape(contact_request.email)
+    message = html.escape(contact_request.message)
+
     email_body = f"""
-        <h1>Floofy site contact sent by {contact_request.name}</h1>
-        <p><strong>Name:</strong> {contact_request.name}</p>
-        <p><strong>Email:</strong> {contact_request.email}</p>
-        <p><strong>Message:</strong> {contact_request.message}</p>
+        <h1>Floofy site contact sent by {name}</h1>
+        <p><strong>Name:</strong> {name}</p>
+        <p><strong>Email:</strong> {email}</p>
+        <p><strong>Message:</strong> {message}</p>
         <p><em>Submitted at: {datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
         <p><em>Sender IP Address: {sender_ip_address}</em></p>
     """

@@ -1,9 +1,10 @@
+import html
 import json
 import os
 import resend
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from dataclasses import dataclass
+from dataclasses import dataclass, fields, replace
 
 
 @dataclass(frozen=True)
@@ -68,9 +69,21 @@ def main(event):
     return response(200, {"message": "Thank you! Your commission request submitted successfully. You will receive a confirmation email soon."})
 
 
+def escaped(commission_request: CommissionRequest) -> CommissionRequest:
+    """A copy with every text field HTML-escaped, so user input shows as text in an email instead of live markup."""
+    return replace(commission_request, **{
+        field.name: html.escape(getattr(commission_request, field.name))
+        for field in fields(commission_request)
+        if isinstance(getattr(commission_request, field.name), str)
+    })
+
+
 def email_floofy(commission_request: CommissionRequest, sender_ip_address: str):
-    # Format the email content
+    # Subjects are plain text (never rendered as HTML), so they use the raw values
     email_subject = f"New Commission Request: {commission_request.name}"
+
+    # Escape every user value before it goes into the HTML body
+    commission_request = escaped(commission_request)
     
     email_body = f"""
         <h1>{commission_request.commission_type.capitalize()} Request</h1>
@@ -95,6 +108,10 @@ def email_floofy(commission_request: CommissionRequest, sender_ip_address: str):
 def email_customer(commission_request: CommissionRequest):
     # Format the email content
     email_subject = "Commission Request Confirmation"
+    to_email = commission_request.email
+
+    # Escape every user value before it goes into the HTML body
+    commission_request = escaped(commission_request)
     
     email_body = f"""
         <h1>Thank you for your commission request!</h1>
@@ -114,7 +131,7 @@ def email_customer(commission_request: CommissionRequest):
     """
     
     # Send the email to the customer
-    return send_email(commission_request.email, email_subject, email_body)
+    return send_email(to_email, email_subject, email_body)
 
 
 def validate_request(commission_request: CommissionRequest):
