@@ -1,3 +1,4 @@
+/* Jump-target ring for utils/scroll-to-element.ts; must load after cards.css -- see 05-roadmap.md, Phase 6 Stage 3. */
 .scroll-focus-highlight {
   animation: scroll-focus-ring 420ms cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-brand-strong) 72%, transparent);

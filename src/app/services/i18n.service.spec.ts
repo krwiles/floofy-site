@@ -190,6 +190,24 @@ describe('I18nService', () => {
       service.setLocale('ja');
       keys.forEach((key) => expect(service.t(key)).not.toBe(key));
     });
+
+    it("folds deadline's and additional notes' notes into their labels, each locale with its own spacing", () => {
+      // The service reads the real en/ja JSON.
+      const service = TestBed.inject(I18nService);
+
+      // English: a space before the bracketed note.
+      expect(service.t('commission.form.deadline.label')).toBe('Deadline (optional and not guaranteed)');
+      expect(service.t('commission.form.additional_notes.label')).toBe('Additional Notes (optional)');
+
+      // Japanese: full-width brackets, no space.
+      service.setLocale('ja');
+      expect(service.t('commission.form.deadline.label')).toBe('希望納期（任意・確約ではありません）');
+      expect(service.t('commission.form.additional_notes.label')).toBe('補足事項（任意）');
+
+      // The separate note keys are gone (t() echoes a missing key back).
+      expect(service.t('commission.form.deadline.note')).toBe('commission.form.deadline.note');
+      expect(service.t('commission.form.additional_notes.note')).toBe('commission.form.additional_notes.note');
+    });
   });
 
   describe('commission card keys and removed terms', () => {

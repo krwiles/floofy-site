@@ -861,14 +861,19 @@ time, each its own PR directly against `working` (never stacked). Supersedes the
       fills in `newName`/`folder`/`alt`**; then scripted `git mv` into `artwork/`, `graphics/`, `icons/` + reference
       rewrite; `gallery.json` (with `category` + `showIn`) drives the gallery page and home/commission carousels
       only. The 3 unreferenced files are kept.
-- [ ] **Stage 3 — Split `commission.html`**: plan settled 2026-09-28 via `grill-with-docs`, see
-      [18-phase-6-stage-3-plan.md](18-phase-6-stage-3-plan.md). Split into 3 sub-stages, each its own PR: **3a**
-      rename `CommercialTypeId`->`UsageTypeId`, unify gallery `category`/commission's type into one
-      `ArtworkCategory` (no visual change; **done, PR #47**); **3b** reshape `en.json`/`ja.json` card/terms
-      content into arrays + `I18nService.list()`/`groups()` (commission page shows raw keys until 3c, accepted —
-      no shims while pre-launch); **3c** the actual split (`PricingCard`, `TermsCard`,
-      `LabelledList`, `PricingSection`, `TermsSection`, `RequestForm`) plus standardizing the 3 hand-rolled form
-      fields onto `app-form-field` and ToS's text size -- **real, reviewed visual change, not 0.00%**.
+- [x] **Stage 3 — Split `commission.html`** (done 2026-09-29): see
+      [18-phase-6-stage-3-plan.md](18-phase-6-stage-3-plan.md). **3a** (PR #47) `ArtworkCategory` +
+      `UsageTypeId` renames, 0.00% diff. **3b** (pushed straight to `working`) `en.json`/`ja.json` card/terms
+      lists became arrays + `I18nService.list()`/`groups()`; also added the missing Japanese
+      `usage_explanation` label. **3c** (its own PR) `commission.html` is a 25-line outline over `PricingSection`/
+      `PricingCard`, `TermsSection`/`TermsCard`, `RequestForm` and the shared `LabelledList`; ToS text 11px -> 14px;
+      reference links/deadline/additional notes on `app-form-field`, notes folded into labels. Every other route
+      stayed 0.00%; commission checked via DOM/computed styles plus the owner's screenshot review. Found along the
+      way: moving the jump-highlight style out of the page's scoped CSS made a card's own shadow override it, so
+      it now lives in `styles/utilities/scroll-focus.css`, imported after `cards.css`. `HANDOFF.md` deleted; three of
+      its rules moved to `CLAUDE.md` (never view artwork and zoneless test setup, recorded nowhere else; plus
+      never stack PRs, already in `17-phase-6-plan.md`). Its `/code-review` note was dropped on purpose: review
+      now runs as part of every stage.
 - [ ] **Stage 4 — Twitch embed + `ScriptLoader`; `StreamScheduleService` with tests; lazy Twitter widgets** (own
       grilling round first).
 - **Parked (moved to Open ideas):** gallery lightbox/grid a11y rebuild.
