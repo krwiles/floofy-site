@@ -9,7 +9,6 @@ import { Field } from '@angular/forms/signals';
   selector: 'app-field-error-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
   // `display: contents` keeps the empty host out of the parent's flex layout -- see RequiredMarker.
-  // Same layout-transparency reasoning as RequiredMarker's own host binding -- see its comment.
   host: { style: 'display: contents' },
   template: `
     @if (state().invalid() && state().touched()) {

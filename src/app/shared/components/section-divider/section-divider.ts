@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 
 /**
- * The "between sections" flourish ornament -- always the same shape (a wide
- * flourish centred on the seam, hidden below md), confirmed with zero
- * variation across all 13 usages before extracting this. No inputs needed.
+ * The ornament between sections: a wide flourish centered on the seam, hidden below `md`. Identical everywhere, so
+ * it has no inputs.
  */
 @Component({
   selector: 'app-section-divider',

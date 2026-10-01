@@ -23,7 +23,6 @@ function createFixture(): ComponentFixture<HostComponent> {
 }
 
 // Host with only [glass]: glass ignores tone, so it shouldn't need one.
-// No [tone] binding at all -- glass-panel's own CSS doesn't vary by tone, so glass usage shouldn't need one.
 @Component({
   template: `
     <div appCard [glass]="true"></div>
@@ -33,7 +32,6 @@ function createFixture(): ComponentFixture<HostComponent> {
 class GlassOnlyHostComponent {}
 
 // Host with neither [tone] nor [glass], which must be rejected.
-// No [tone] and no [glass] -- tone is required in practice for every other mode.
 @Component({
   template: `
     <div appCard></div>

@@ -5,16 +5,9 @@ import { Tone } from '../../../models/tone';
 import { Card } from '../../directives/card';
 
 /**
- * A continuously auto-scrolling horizontal strip of images -- a purely
- * decorative, ambient preview, not a navigable carousel (see
- * docs/refactor/specs/app-rolling-carousel.md). No manual controls, no
- * indicators, no click interactivity by design.
- *
- * The image list is rendered twice, back to back, and the whole track is
- * translated by exactly one copy's width (see rolling-carousel.css) -- since
- * the second copy is identical to the first, the loop point is invisible.
- * The second copy is `aria-hidden` so assistive tech only ever encounters
- * each image once, not twice.
+ * A decorative, continuously scrolling strip of images, with no controls by design -- see
+ * docs/refactor/specs/app-rolling-carousel.md. The list renders twice back to back and the track slides by one copy's
+ * width, so the loop is seamless; the second copy is `aria-hidden` so screen readers meet each image once.
  */
 @Component({
   selector: 'app-rolling-carousel',
@@ -29,20 +22,9 @@ export class RollingCarousel {
   /** CSS height every image scales to (its width follows its own aspect ratio). */
   readonly height = input('16rem');
 
-  /**
-   * When set, every image is framed in `[appCard][noBackground]` for this
-   * tone (shadow + rounded corners, no fill -- see cards.css). `null`
-   * (default) renders plain images with no frame. One setting for the
-   * whole strip, not per image -- [appCard] itself requires a `tone`
-   * outside `glass` mode, so this can't be a plain boolean without also
-   * knowing which tone's shadow to use.
-   */
+  /** Frames every image as an `[appCard][noBackground]` for this tone (shadow, rounded corners); `null` means plain. */
   readonly cardTone = input<Tone | null>(null);
 
-  /**
-   * Seconds for one full loop of the image list -- lower is faster. A
-   * component input for the page author to tune, not a visitor-facing
-   * control (see the spec's Non-goals).
-   */
+  /** Seconds for one full loop of the images (lower is faster); set by the page, not the visitor. */
   readonly speed = input(30);
 }
