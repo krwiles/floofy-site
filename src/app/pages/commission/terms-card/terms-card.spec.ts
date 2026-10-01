@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TermsCard } from './terms-card';
 
+// Host that projects a body into a middle-tone card, with an optional anchor id.
 @Component({
   imports: [TermsCard],
   template: `
@@ -27,10 +28,12 @@ describe('TermsCard', () => {
   }
 
   beforeEach(async () => {
+    // Compile the host once per test.
     await TestBed.configureTestingModule({ imports: [TermsCardTestHost] }).compileComponents();
   });
 
   it('renders the title as the card heading', () => {
+    // Act: render.
     const el = create();
 
     // The title is the card's h3.
@@ -38,6 +41,7 @@ describe('TermsCard', () => {
   });
 
   it('projects its body into the standard text-sm body area', () => {
+    // Act: render.
     const el = create();
 
     // The projected content sits inside the body wrapper that fixes size and tone colour for every card.

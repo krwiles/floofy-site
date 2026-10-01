@@ -49,18 +49,23 @@ interface ReviewFormValue {
 })
 export class Reviews implements OnInit {
   private readonly apiService = inject(ApiService);
+  // Every visible review, newest first (empty until loaded).
   readonly reviews = signal<Review[]>([]);
+  // The message shown beside the submit button.
   readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
 
+  // The form's current values.
   private readonly reviewModel = signal<ReviewFormValue>({
     author: '',
     comment: '',
     agreement: false,
   });
 
+  // The form: its validation rules, then what happens on submit.
   reviewForm = form(
     this.reviewModel,
     (schemaPath) => {
+      // Name, review and the terms checkbox are required; lengths match the Lambda's limits.
       required(schemaPath.author, { message: 'Name is required.' });
       required(schemaPath.comment, { message: 'Review is required.' });
       required(schemaPath.agreement, { message: 'You must agree to the terms and conditions.' });
@@ -68,6 +73,7 @@ export class Reviews implements OnInit {
       maxLength(schemaPath.comment, 2000, { message: 'Review cannot exceed 2000 characters.' });
     },
     {
+      // Show progress, send the review, then refresh the list and clear the form on success.
       submission: createFormSubmission({
         pendingMessage: 'Submitting review...',
         invalidMessage: 'Please correct the errors in the form before submitting.',
@@ -79,12 +85,10 @@ export class Reviews implements OnInit {
         }),
         submit: (request) => this.apiService.submitReview(request),
         onSuccess: () => {
+          // Reload the list so the new review appears.
           // Refresh the reviews list after a successful submission to display the newly added review.
           this.requestReviews();
-          // Reset the form, matching contact's own established pattern -- /code-review flagged that without
-          // this, the form stayed populated and valid, so a second click (double-click, or an unsure user)
-          // would silently re-post the identical review. The original pre-migration code didn't do this
-          // either, so this is a deliberate small fix, not a preserved behavior.
+          // Clear the form, so a double-click can't post the same review twice.
           this.reviewForm().reset({ author: '', comment: '', agreement: false });
         },
       }),
@@ -92,19 +96,19 @@ export class Reviews implements OnInit {
   );
 
   ngOnInit(): void {
+    // Load reviews when the page opens.
     this.requestReviews();
   }
 
   requestReviews(): void {
+    // Fetch reviews and show them.
     this.apiService.getReviews().subscribe({
       next: (reviews) => {
-        // Each review card carries appReveal, which registers itself with RevealService on creation -- no
-        // manual re-scan needed here.
+        // Each card's appReveal registers itself, so nothing needs re-scanning here.
         this.reviews.set(reviews);
       },
       error: () => {
-        // Silently keeps today's "Reviews loading..." placeholder state -- matches existing behavior, not
-        // introduced by this migration.
+        // On failure, leave the "loading" placeholder showing.
       },
     });
   }

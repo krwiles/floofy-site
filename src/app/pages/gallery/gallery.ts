@@ -19,15 +19,20 @@ export class Gallery {
   private readonly document = inject(DOCUMENT);
 
   galleryImageService = inject(GalleryImageService);
+  // This page's gallery images, in its own order.
   readonly images = this.galleryImageService.imagesFor('gallery');
+  // The image open in the lightbox, and whether the lightbox is showing.
   selectedImage = signal<ImageAsset | null>(null);
   showLightBox = signal<boolean>(false);
+  // Where the page was scrolled to when the lightbox opened, so closing can return there.
   scrollY = 0;
 
   showImage(image: ImageAsset) {
+    // Open the lightbox on this image.
     this.selectedImage.set(image);
     this.showLightBox.set(true);
 
+    // Lock page scroll: remember the position, then pin the body in place at it.
     // Lock scroll
     this.scrollY = window.scrollY;
     const body = this.document.body;
@@ -39,6 +44,7 @@ export class Gallery {
     body.style.top = `-${this.scrollY}px`;
     body.style.width = '100%';
 
+    // Pad for the scrollbar that just disappeared, so content doesn't shift sideways.
     // Compensate for removed scrollbar to prevent horizontal content shift.
     if (scrollbarWidth > 0) {
       body.style.paddingRight = `${scrollbarWidth}px`;
@@ -47,13 +53,16 @@ export class Gallery {
 
   @HostListener('document:keydown.escape')
   onEscape() {
+    // Escape closes the lightbox if it's open.
     if (this.showLightBox()) this.closeImage();
   }
 
   closeImage() {
+    // Close the lightbox.
     this.showLightBox.set(false);
     this.selectedImage.set(null);
 
+    // Unlock page scroll: undo the body pinning, then jump back to where the visitor was.
     // Unlock scroll
     const body = this.document.body;
     const root = this.document.documentElement;

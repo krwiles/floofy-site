@@ -62,15 +62,18 @@ import { COMMISSION_ANCHORS, TERMS_CARDS, TERMS_COLUMNS, TermsCardId } from '../
   `,
 })
 export class TermsSection {
+  // i18n is used directly by the template, for the plain list cards.
   protected readonly i18n = inject(I18nService);
   private readonly pricing = inject(PricingService);
 
+  // Layout constants from commission-content.ts, exposed to the template.
   protected readonly anchors = COMMISSION_ANCHORS;
   protected readonly columns = TERMS_COLUMNS;
   protected readonly cards = TERMS_CARDS;
 
   /** A grouped card's groups; Artwork Usage's labels also get their "(+50%)"-style add-on. */
   protected groupsFor(id: TermsCardId): ListGroup[] {
+    // This card's groups, in the current locale.
     const groups = this.i18n.groups(`commission.terms.${id}.groups`);
 
     // Only Artwork Usage is priced; ToS groups pass through untouched.

@@ -31,12 +31,15 @@ export class Commission {
 
   /** A pricing card was picked: preselect it in the form, then scroll there (no focus -- the form isn't one spot). */
   protected onPick(category: ArtworkCategory): void {
+    // Preselect the picked category in the form.
     this.requestForm().selectCategory(category);
+    // Then scroll to the form.
     scrollToElement(COMMISSION_ANCHORS.form, { focus: false });
   }
 
   /** A form "?" button asked for more detail: jump to and focus that section. */
   protected onDetailRequested(detail: RequestFormDetail): void {
+    // Jump to the matching section and focus it.
     scrollToElement(DETAIL_ANCHOR[detail]);
   }
 }

@@ -85,6 +85,7 @@ export class RequestForm {
   readonly detailRequested = output<RequestFormDetail>();
   readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
 
+  // Element ids from commission-content.ts, exposed to the template.
   protected readonly anchors = COMMISSION_ANCHORS;
 
   // Radio options in pricing-card order, rebuilt when the locale changes so labels stay translated.
@@ -107,6 +108,7 @@ export class RequestForm {
     }),
   );
 
+  // The form's current values; defaults match the first pricing card and the cheapest usage.
   private readonly commissionModel = signal<CommissionFormValue>({
     name: '',
     email: '',
@@ -120,9 +122,11 @@ export class RequestForm {
     tosAccepted: false,
   });
 
+  // The form: its validation rules, then what happens on submit.
   readonly commissionForm = form(
     this.commissionModel,
     (schemaPath) => {
+      // Required fields, length caps matching the Lambda, and a valid email.
       required(schemaPath.name, { message: 'Name is required.' });
       required(schemaPath.email, { message: 'Email is required.' });
       required(schemaPath.description, { message: 'Description is required.' });
@@ -140,6 +144,7 @@ export class RequestForm {
       email(schemaPath.email, { message: 'Please enter a valid email address.' });
     },
     {
+      // Show progress, then send the request with the price computed from the current picks.
       submission: createFormSubmission({
         pendingMessage: 'Submitting commission...',
         invalidMessage: 'Please correct the errors in the form before submitting.',
@@ -172,6 +177,7 @@ export class RequestForm {
 
   /** Applies a pricing card's pick. A method, not an input, so picking the same card twice still re-applies it. */
   selectCategory(category: ArtworkCategory): void {
+    // Set the form's category to the picked one.
     this.commissionForm.commissionType().value.set(category);
   }
 }

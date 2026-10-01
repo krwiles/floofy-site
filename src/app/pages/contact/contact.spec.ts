@@ -7,6 +7,7 @@ describe('Contact', () => {
   let fixture: ComponentFixture<Contact>;
 
   beforeEach(async () => {
+    // Render the real page once per test.
     await TestBed.configureTestingModule({
       imports: [Contact],
     }).compileComponents();
@@ -17,6 +18,7 @@ describe('Contact', () => {
   });
 
   it('should create', () => {
+    // Assert: the page builds.
     expect(component).toBeTruthy();
   });
 });

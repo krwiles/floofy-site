@@ -34,7 +34,6 @@ import { Button } from '../../shared/directives/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
-  // Flat list -- app-rolling-carousel flows every image individually, it doesn't group them into
-  // fixed "slides" the way the old Flowbite-wrapped app-carousel did.
+  // Every home-page gallery image, as one flat list for the rolling strip.
   readonly images = inject(GalleryImageService).imagesFor('home');
 }

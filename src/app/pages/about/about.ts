@@ -11,6 +11,7 @@ import { Card } from '../../shared/directives/card';
 import { Button } from '../../shared/directives/button';
 import { SocialLinks } from '../../shared/components/social-links/social-links';
 
+// The global set by Twitter's widgets script (loaded in index.html), declared so TypeScript knows its shape.
 // Declare the Twitter widgets object to avoid TypeScript errors
 declare const twttr: { widgets: { load: () => void } };
 
@@ -35,8 +36,7 @@ declare const twttr: { widgets: { load: () => void } };
 })
 export class About implements AfterViewInit {
   ngAfterViewInit(): void {
-    // Load Twitter widgets after the view has initialized
-    // This is needed to ensure that any embedded tweets are properly rendered after routing
+    // Ask Twitter's script to render embeds now this view exists; the script only scans once on first page load.
     if (typeof twttr !== 'undefined') {
       twttr.widgets.load();
     }
