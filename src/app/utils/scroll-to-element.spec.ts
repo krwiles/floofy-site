@@ -25,6 +25,7 @@ describe('scrollToElement', () => {
     // jsdom lays nothing out, so pin where the element "is".
     vi.spyOn(target, 'getBoundingClientRect').mockReturnValue({ top: 500 } as DOMRect);
 
+    // Act: jump to it.
     scrollToElement('jump-target');
 
     // 500px down, minus the navbar offset.
@@ -32,12 +33,15 @@ describe('scrollToElement', () => {
   });
 
   it('does nothing when no element has that id', () => {
+    // Act: jump to an id that isn't on the page.
     scrollToElement('no-such-id');
 
+    // Assert: no scroll happened.
     expect(scrollTo).not.toHaveBeenCalled();
   });
 
   it('focuses and briefly highlights the element after the scroll settles', () => {
+    // Act: jump to the element.
     scrollToElement('jump-target');
 
     // Nothing yet: focus waits for the scroll so the ring appears on a visible element.
@@ -54,6 +58,7 @@ describe('scrollToElement', () => {
   });
 
   it('makes a non-focusable element focusable only until it loses focus', () => {
+    // Act: jump to the element.
     scrollToElement('jump-target');
 
     // A plain div needs a temporary tabindex to take focus.
@@ -66,6 +71,7 @@ describe('scrollToElement', () => {
   });
 
   it('only scrolls, without focusing, when focus is turned off', () => {
+    // Act: jump with focus turned off.
     scrollToElement('jump-target', { focus: false });
 
     // The scroll happens, but no tabindex, focus or highlight follows.
