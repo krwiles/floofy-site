@@ -91,6 +91,10 @@ def check_blocks(path: str, opening: str, closing: str) -> list[tuple[int, int, 
     for match in pattern.finditer(text):
         if opening == "/*" and match.group().startswith("/**"):
             continue
+        # Skip trailing notes after code on the same line (`color: red; /* why */`), like the // check does.
+        line_start = text.rfind("\n", 0, match.start()) + 1
+        if text[line_start : match.start()].strip():
+            continue
         start = text.count("\n", 0, match.start()) + 1
         spans.append((start, start + match.group().count("\n")))
 
