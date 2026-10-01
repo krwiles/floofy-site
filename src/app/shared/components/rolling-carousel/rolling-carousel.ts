@@ -7,7 +7,7 @@ import { Card } from '../../directives/card';
 /**
  * A decorative, continuously scrolling strip of images, with no controls by design -- see
  * docs/refactor/specs/app-rolling-carousel.md. The list renders twice back to back and the track slides by one copy's
- * width, so the loop is seamless; the second copy is `aria-hidden` so screen readers meet each image once.
+ * width, so the loop is seamless. The whole strip is `aria-hidden`, being decoration.
  */
 @Component({
   selector: 'app-rolling-carousel',
