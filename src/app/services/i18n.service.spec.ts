@@ -8,6 +8,7 @@ describe('I18nService', () => {
   let document: Document;
 
   beforeEach(() => {
+    // Start each test with no saved locale and no <html lang>, since the service reads/writes both.
     localStorage.clear();
     TestBed.configureTestingModule({});
     document = TestBed.inject(DOCUMENT);
@@ -15,14 +16,17 @@ describe('I18nService', () => {
   });
 
   afterEach(() => {
+    // Leave nothing behind for the next test file.
     localStorage.clear();
     document.documentElement.lang = '';
   });
 
   it('should be created with english as the default locale', () => {
+    // Act: create the service with nothing saved, and let its effect run.
     const service = TestBed.inject(I18nService);
     TestBed.flushEffects();
 
+    // Assert: English, saved for next visit, and set on <html lang>.
     expect(service).toBeTruthy();
     expect(service.locale()).toBe('en');
     expect(localStorage.getItem('locale')).toBe('en');
@@ -30,34 +34,43 @@ describe('I18nService', () => {
   });
 
   it('should initialize the locale from localStorage', () => {
+    // Arrange: a returning visitor who chose Japanese.
     localStorage.setItem('locale', 'ja');
 
+    // Act: create the service and let its effect run.
     const service = TestBed.inject(I18nService);
     TestBed.flushEffects();
 
+    // Assert: it starts in Japanese, translations included.
     expect(service.locale()).toBe('ja');
     expect(service.t('footer.legal.backToTop')).toBe('上へ戻る');
     expect(document.documentElement.lang).toBe('ja');
   });
 
   it('should fall back to english for unsupported saved locales', () => {
+    // Arrange: a saved locale the site doesn't support.
     localStorage.setItem('locale', 'fr');
 
+    // Act: create the service and let its effect run.
     const service = TestBed.inject(I18nService);
     TestBed.flushEffects();
 
+    // Assert: it falls back to English.
     expect(service.locale()).toBe('en');
     expect(service.t('footer.legal.backToTop')).toBe('Back to top');
     expect(document.documentElement.lang).toBe('en');
   });
 
   it('should update the locale, persisted value, and translations', () => {
+    // Arrange: a service starting in English.
     const service = TestBed.inject(I18nService);
     TestBed.flushEffects();
 
+    // Act: switch to Japanese.
     service.setLocale('ja');
     TestBed.flushEffects();
 
+    // Assert: the locale, translations, saved value and <html lang> all follow.
     expect(service.locale()).toBe('ja');
     expect(service.t('footer.legal.backToTop')).toBe('上へ戻る');
     expect(localStorage.getItem('locale')).toBe('ja');
@@ -183,6 +196,7 @@ describe('I18nService', () => {
     it('has the usage explanation label and placeholder in both locales', () => {
       // The service reads the real en/ja JSON.
       const service = TestBed.inject(I18nService);
+      // The two keys the request form's usage-explanation field needs.
       const keys = ['commission.form.usage_explanation.label', 'commission.form.usage_explanation.placeholder'];
 
       // t() echoes a missing key back, so a real translation never equals its own key.

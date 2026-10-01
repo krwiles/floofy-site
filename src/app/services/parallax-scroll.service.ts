@@ -2,14 +2,9 @@ import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 
 /**
- * Shared scroll broadcaster for `ParallaxSection`. One passive window scroll
- * listener for the whole app, attached lazily on first registration and torn
- * down once the last callback unregisters -- previously every
- * `ParallaxSection` instance added its own (a page with a hero and a couple
- * of patterned `app-section`s ran several at once). Callbacks are plain
- * functions rather than elements (contrast `RevealService`, which owns the
- * intersection logic itself): the actual parallax math stays in
- * `ParallaxSection`, this only fans out the "a scroll happened" notification.
+ * Shared scroll broadcaster for `ParallaxSection`: one passive window scroll listener for the whole app, attached on
+ * the first registration and removed when the last callback unregisters. It only fans out "a scroll happened"; the
+ * parallax math stays in `ParallaxSection`.
  */
 @Injectable({ providedIn: 'root' })
 export class ParallaxScrollService {
@@ -19,11 +14,13 @@ export class ParallaxScrollService {
   private listening = false;
 
   register(callback: () => void): void {
+    // Add the callback, and start listening if it's the first one.
     this.callbacks.add(callback);
     this.ensureListening();
   }
 
   unregister(callback: () => void): void {
+    // Remove the callback, and stop listening once nobody is left.
     this.callbacks.delete(callback);
     if (this.callbacks.size === 0) {
       this.stopListening();
@@ -31,25 +28,25 @@ export class ParallaxScrollService {
   }
 
   private ensureListening(): void {
+    // Already attached, or no window (e.g. server rendering): nothing to do.
     if (this.listening) return;
     const view = this.document.defaultView;
     if (!view) return;
+
+    // `passive` tells the browser we never block scrolling, so it can scroll smoothly.
     view.addEventListener('scroll', this.handleScroll, { passive: true });
     this.listening = true;
   }
 
   private stopListening(): void {
+    // Detach the one shared listener, if it's attached.
     if (!this.listening) return;
     this.document.defaultView?.removeEventListener('scroll', this.handleScroll);
     this.listening = false;
   }
 
-  // Isolated per callback -- previously each ParallaxSection had its own
-  // listener, so native addEventListener dispatched them independently, and
-  // one throwing didn't affect another. Sharing one loop must keep that same
-  // isolation rather than letting one bad callback stop every later one in
-  // the same scroll tick.
   private notify(): void {
+    // Call each callback in isolation, so one that throws can't stop the rest in the same scroll tick.
     for (const callback of this.callbacks) {
       try {
         callback();

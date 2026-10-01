@@ -22,6 +22,7 @@ export class I18nService {
   readonly locale = computed(() => this.localeSignal());
 
   constructor() {
+    // Whenever the locale changes, remember it for next visit and set <html lang> for screen readers and fonts.
     effect(() => {
       const locale = this.localeSignal();
       localStorage.setItem('locale', locale);
@@ -30,6 +31,7 @@ export class I18nService {
   }
 
   setLocale(locale: Locale): void {
+    // Every t()/list()/groups() caller re-renders, because they all read this signal.
     this.localeSignal.set(locale);
   }
 
@@ -68,7 +70,10 @@ export class I18nService {
   }
 
   nav(): NavItem[] {
+    // The current locale's `nav` section maps each page key to its label and route.
     const navSection = translations[this.localeSignal()]['nav'] as Record<string, { label: string; route: string }>;
+
+    // Flatten it into a list, in the JSON's order, for the navbar to loop over.
     return Object.entries(navSection).map(([key, value]) => ({
       key,
       label: value.label,
@@ -93,6 +98,7 @@ export class I18nService {
   }
 
   private getInitialLocale(): Locale {
+    // Restore the visitor's last choice; anything unrecognised (or nothing saved) means English.
     const savedLocale = localStorage.getItem('locale');
     return savedLocale === 'ja' ? 'ja' : 'en';
   }

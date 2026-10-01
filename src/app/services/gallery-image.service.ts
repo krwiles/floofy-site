@@ -15,6 +15,7 @@ export class GalleryImageService {
   private readonly entries = galleryJson as GalleryEntry[];
 
   imagesFor(page: string, category?: ArtworkCategory): ImageAsset[] {
+    // Keep the entries this page lists (optionally one category), in this page's order, as plain image fields.
     return this.entries
       .filter((entry) => Object.hasOwn(entry.showIn, page) && (category === undefined || entry.category === category))
       .sort((a, b) => a.showIn[page] - b.showIn[page])
