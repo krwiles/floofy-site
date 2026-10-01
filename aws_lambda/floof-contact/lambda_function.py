@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
-from email_sender import EMAIL_FROM
+from email_sender import EMAIL_FROM, admin_recipients
 from request_log import log, log_request
 
 
@@ -92,7 +92,7 @@ def email_floofy(contact_request: ContactRequest, sender_ip_address):
     """
     
     # Send the email to Floofy
-    return send_email(os.environ.get("FLOOFY_EMAIL"), email_subject, email_body)
+    return send_email(admin_recipients(), email_subject, email_body)
 
 
 def validate_request(contact_request: ContactRequest):
@@ -107,14 +107,14 @@ def validate_request(contact_request: ContactRequest):
     return None
 
 
-def send_email(to_email, subject, body):
+def send_email(to_emails, subject, body):
     
     resend.api_key = os.environ.get("RESEND_API_KEY")
     
     try:
         commission_details: resend.Emails.SendParams = {
         "from": EMAIL_FROM,
-        "to": [to_email],
+        "to": to_emails,
         "subject": subject,
         "html": body
         }
@@ -124,7 +124,7 @@ def send_email(to_email, subject, body):
     except Exception as e:
         # Record the real error; the visitor only sees the generic message below
         log("email_failed", error=repr(e))
-        return response(500, {"message": f"Failed to send email to {to_email}, please report this issue to the site owner.",})
+        return response(500, {"message": f"Failed to send email to {', '.join(to_emails)}, please report this issue to the site owner.",})
             
     return response(200, {"message": "email sent successfully"})
 

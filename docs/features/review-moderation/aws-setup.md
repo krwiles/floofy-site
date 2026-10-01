@@ -104,7 +104,9 @@ Opening `ADMIN_URL` with no token should show "This link is invalid or has expir
 
 1. **Code → Upload from → .zip file**: `dist/floof-api.zip`.
 2. **Environment variables**, add:
-   - `RESEND_API_KEY` and `FLOOFY_EMAIL`: copy them from `floof-comm`.
+   - `RESEND_API_KEY` and `FLOOFY_EMAIL`: copy them from `floof-comm`. `FLOOFY_EMAIL` may list several admins,
+     separated by commas (e.g. `you@example.com,other@example.com`); use the same list on `floof-comm` and
+     `floof-contact`.
    - `ADMIN_LINK_SECRET`: from step 2.
    - `ADMIN_URL`: from step 6.
 3. **General configuration**: set the timeout to **10 seconds**, since sending the email adds a little time.

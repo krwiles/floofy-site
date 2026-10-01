@@ -169,3 +169,14 @@ def test_unusable_price_is_rejected_before_touching_the_database(comm, cursor, e
 def test_zero_price_is_allowed(comm, emails):
     # A price of 0 is a valid choice (e.g. "not sure yet"), so it must still go through.
     assert comm.lambda_handler(make_event("POST", commission_body(estimatedPrice=0)), None)["statusCode"] == 200
+
+
+def test_owner_email_goes_to_every_admin(comm, emails, monkeypatch):
+    # Arrange: two admins in FLOOFY_EMAIL.
+    monkeypatch.setenv("FLOOFY_EMAIL", "a@example.com, b@example.com")
+
+    # Act: trigger the owner email.
+    comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: the first email (the owner's) lists both admins as separate recipients.
+    assert emails.sent[0]["to"] == ["a@example.com", "b@example.com"]

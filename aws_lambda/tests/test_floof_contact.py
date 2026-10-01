@@ -70,3 +70,14 @@ def test_owner_email_has_a_block_link_for_the_sender_ip(contact, emails, ip):
     assert action == "block-contact-ip"
     assert str(ipaddress.ip_address(target)) == ip
     assert "Block this sender" in sent["html"]
+
+
+def test_owner_email_goes_to_every_admin(contact, emails, monkeypatch):
+    # Arrange: two admins in FLOOFY_EMAIL.
+    monkeypatch.setenv("FLOOFY_EMAIL", "a@example.com, b@example.com")
+
+    # Act: trigger the owner email.
+    contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
+
+    # Assert: the first email (the owner's) lists both admins as separate recipients.
+    assert emails.sent[0]["to"] == ["a@example.com", "b@example.com"]

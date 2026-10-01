@@ -122,3 +122,14 @@ def test_rate_limited_review_sends_no_email(api, cursor, emails):
     assert post_review(api)["statusCode"] == 429
     assert cursor.queries("INSERT") == []
     assert emails.sent == []
+
+
+def test_owner_email_goes_to_every_admin(api, emails, monkeypatch):
+    # Arrange: two admins in FLOOFY_EMAIL.
+    monkeypatch.setenv("FLOOFY_EMAIL", "a@example.com, b@example.com")
+
+    # Act: trigger the owner email.
+    post_review(api)
+
+    # Assert: the first email (the owner's) lists both admins as separate recipients.
+    assert emails.sent[0]["to"] == ["a@example.com", "b@example.com"]

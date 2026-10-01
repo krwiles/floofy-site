@@ -12,7 +12,7 @@ from psycopg.rows import dict_row
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
-from email_sender import EMAIL_FROM
+from email_sender import EMAIL_FROM, admin_recipients
 from request_log import log, log_request
 
 # More than this many requests from one IP in 24 hours are refused — see spec.md "floof-comm"
@@ -173,7 +173,7 @@ def email_floofy(commission_request: CommissionRequest, request_id: int, sender_
     """
     
     # Send the email to Floofy
-    return send_email(os.environ.get("FLOOFY_EMAIL"), email_subject, email_body)
+    return send_email(admin_recipients(), email_subject, email_body)
 
 
 def email_customer(commission_request: CommissionRequest):
@@ -202,7 +202,7 @@ def email_customer(commission_request: CommissionRequest):
     """
     
     # Send the email to the customer
-    return send_email(to_email, email_subject, email_body)
+    return send_email([to_email], email_subject, email_body)
 
 
 def validate_request(commission_request: CommissionRequest):
@@ -234,14 +234,14 @@ def validate_request(commission_request: CommissionRequest):
     return None
 
 
-def send_email(to_email, subject, body):
+def send_email(to_emails, subject, body):
     
     resend.api_key = os.environ.get("RESEND_API_KEY")
     
     try:
         commission_details: resend.Emails.SendParams = {
         "from": EMAIL_FROM,
-        "to": [to_email],
+        "to": to_emails,
         "subject": subject,
         "html": body
         }
@@ -251,7 +251,7 @@ def send_email(to_email, subject, body):
     except Exception as e:
         # Record the real error; the visitor only sees the generic message below
         log("email_failed", error=repr(e))
-        return response(500, {"message": f"Failed to send email to {to_email}, please report this issue to the site administrator.",})
+        return response(500, {"message": f"Failed to send email to {', '.join(to_emails)}, please report this issue to the site administrator.",})
             
     return response(200, {"message": "Email sent successfully"})
 
