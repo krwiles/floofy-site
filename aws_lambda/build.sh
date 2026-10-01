@@ -40,6 +40,9 @@ uv pip install --quiet --target "$stage" --python-platform "$platform" \
 
 # Put the handler and the shared helpers side by side at the top of the zip, where Lambda imports from
 cp "$name/lambda_function.py" shared/*.py "$stage/"
+
+# Include requirements.txt as a record of what's installed (Lambda itself never reads it)
+cp "$name/requirements.txt" "$stage/"
 find "$stage" -name __pycache__ -type d -prune -exec rm -rf {} +
 
 # Zip it fresh (zip adds to an existing archive instead of replacing it)
