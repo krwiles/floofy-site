@@ -11,7 +11,7 @@ import os
 import re
 import time
 
-ACTIONS = frozenset({"delete-review", "block-review-ip", "block-commission-ip"})
+ACTIONS = frozenset({"delete-review", "block-review-ip", "block-commission-ip", "block-contact-ip"})
 LINK_LIFETIME_SECONDS = 7 * 24 * 60 * 60
 MIN_SECRET_LENGTH = 32
 URL_SAFE_BASE64 = re.compile(r"[A-Za-z0-9_-]*")

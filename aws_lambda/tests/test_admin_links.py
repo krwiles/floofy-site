@@ -1,6 +1,7 @@
 import base64
 import hashlib
 import hmac
+import ipaddress
 import time
 from urllib.parse import parse_qs, urlparse
 
@@ -146,3 +147,17 @@ def test_standard_base64_characters_are_refused():
 
     # Act and assert: only the URL-safe spelling is accepted.
     assert admin_links.verify(f"{payload_part}.{standard}", now=NOW) is None
+
+
+@pytest.mark.parametrize("ip", ["203.0.113.7", "2001:db8::1"])
+def test_contact_block_link_carries_the_ip_as_a_number(ip):
+    # Arrange: contact messages aren't stored, so the link names the sender's IP itself, as an integer.
+    target = int(ipaddress.ip_address(ip))
+
+    # Act: sign and verify it.
+    token = admin_links.sign("block-contact-ip", target, NOW + 3600)
+
+    # Assert: it round-trips back to the same address.
+    action, verified = admin_links.verify(token, now=NOW)
+    assert action == "block-contact-ip"
+    assert str(ipaddress.ip_address(verified)) == ip

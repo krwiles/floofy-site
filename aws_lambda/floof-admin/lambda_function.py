@@ -6,6 +6,7 @@ button's POST acts. Design: docs/features/review-moderation/spec.md.
 
 import base64
 import html
+import ipaddress
 import time
 from urllib.parse import parse_qs
 from zoneinfo import ZoneInfo
@@ -142,6 +143,10 @@ def perform_action(token, ip):
 
 def load_target(cur, action, target_id):
     """The review or commission request the action applies to, or None if it doesn't exist."""
+    # Contact messages aren't stored: the link itself carries the sender's IP, as a number
+    if action == "block-contact-ip":
+        return {"ip_address": ipaddress.ip_address(target_id), "deleted": False}
+
     # Commission links read commission_requests; both review actions read reviews
     query = COMMISSION_QUERY if action == "block-commission-ip" else REVIEW_QUERY
     cur.execute(query, (target_id,))
@@ -159,7 +164,9 @@ def already_done(cur, action, target):
 
 
 def source_label(action, target_id):
-    """How the block reason names its source, e.g. 'review #7' or 'commission #42'."""
+    """How the block reason names its source, e.g. 'review #7', 'commission #42' or 'contact message'."""
+    if action == "block-contact-ip":
+        return "contact message"
     return f"commission #{target_id}" if action == "block-commission-ip" else f"review #{target_id}"
 
 
@@ -174,11 +181,17 @@ def describe(action, target_id, target):
     block_effect = f"IP {ip} will no longer be able to post reviews, send commission requests or send contact messages."
     if action == "block-review-ip":
         return f"Block the reviewer behind review #{target_id}?", block_effect
+    if action == "block-contact-ip":
+        return "Block the sender of a contact message?", block_effect
     return f"Block the requester behind commission request #{target_id}?", block_effect
 
 
 def target_details(action, target):
     """The escaped who / when / what of the target; blocks show a snippet, deletes show the full review."""
+    # A contact block has only the IP to show
+    if action == "block-contact-ip":
+        return f"<p><strong>IP:</strong> {html.escape(str(target['ip_address']))}</p>"
+
     # Deletes show the whole review so the owner can judge it; blocks just need enough to recognise it
     text = target["text"]
     if action != "delete-review" and len(text) > SNIPPET_LENGTH:

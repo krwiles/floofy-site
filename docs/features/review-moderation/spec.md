@@ -111,8 +111,9 @@ POST, in order:
 
 ### `floof-contact`, changed
 
-POST: a **blocked IP** gets the same vague `403`. The email escapes every user value. There's no rate limit and no
-new table.
+POST: a **blocked IP** gets the same vague `403`. The email escapes every user value and has a **Block this sender**
+link (`block-contact-ip`). Contact messages aren't stored, so that one link carries the sender's IP itself (as an
+integer) instead of an id; the signature makes it just as tamper-proof. There's no rate limit and no new table.
 
 ### `floof-admin`, new
 
@@ -151,8 +152,8 @@ A Lambda function URL (auth `NONE`; the token is the authentication).
 | `DB_HOST/NAME/USER/PASSWORD` |   ✓ (has)   |     new      |       new       |      new      |
 | `RESEND_API_KEY`             |     new     |   ✓ (has)    |     ✓ (has)     |               |
 | `FLOOFY_EMAIL`               |     new     |   ✓ (has)    |     ✓ (has)     |               |
-| `ADMIN_LINK_SECRET`          |     new     |     new      |                 |      new      |
-| `ADMIN_URL`                  |     new     |     new      |                 |               |
+| `ADMIN_LINK_SECRET`          |     new     |     new      |       new       |      new      |
+| `ADMIN_URL`                  |     new     |     new      |       new       |               |
 
 Every email is sent as `FloofySite <no-reply@summerfloofy.com>`, from the site's own domain, verified in Resend. It's
 not a secret and won't vary by environment, so it's a constant (`EMAIL_FROM` in `aws_lambda/shared/`), not a setting.

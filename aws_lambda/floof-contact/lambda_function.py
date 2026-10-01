@@ -1,4 +1,5 @@
 import html
+import ipaddress
 import json
 import os
 import resend
@@ -7,6 +8,7 @@ from zoneinfo import ZoneInfo
 from dataclasses import dataclass
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
+from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM
@@ -76,6 +78,9 @@ def email_floofy(contact_request: ContactRequest, sender_ip_address):
     email = html.escape(contact_request.email)
     message = html.escape(contact_request.message)
 
+    # A signed Block link naming the sender's IP as a number, since contact messages aren't stored -- see spec.md
+    block_url = link(os.environ["ADMIN_URL"], "block-contact-ip", int(ipaddress.ip_address(sender_ip_address)))
+
     email_body = f"""
         <h1>Floofy site contact sent by {name}</h1>
         <p><strong>Name:</strong> {name}</p>
@@ -83,6 +88,7 @@ def email_floofy(contact_request: ContactRequest, sender_ip_address):
         <p><strong>Message:</strong> {message}</p>
         <p><em>Submitted at: {datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
         <p><em>Sender IP Address: {html.escape(sender_ip_address)}</em></p>
+        <p><a href="{html.escape(block_url)}">Block this sender</a></p>
     """
     
     # Send the email to Floofy

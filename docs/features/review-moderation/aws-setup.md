@@ -44,7 +44,7 @@ python3 -c "import secrets; print(secrets.token_urlsafe(48))"
 ```
 
 Copy the output (about 64 characters) somewhere temporary, such as a password manager entry. You'll paste the **same
-value** into three Lambdas in steps 6–8, then you can delete the temporary copy.
+value** into four Lambdas in steps 6–8, then you can delete the temporary copy.
 
 ## 3. Confirm the email domain is verified
 
@@ -125,6 +125,8 @@ Opening `ADMIN_URL` with no token should show "This link is invalid or has expir
 1. Upload `dist/floof-contact.zip`.
 2. Add these environment variables:
    - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`.
+   - `ADMIN_LINK_SECRET`.
+   - `ADMIN_URL`.
 3. Set the timeout to **10 seconds**.
 
 ## 9. Test it end to end
@@ -184,7 +186,7 @@ charges per GB scanned beyond a small free amount; with these tiny logs a query 
 If an email may have leaked, or just periodically:
 
 1. Generate a new value (step 2).
-2. Replace `ADMIN_LINK_SECRET` on **all three** Lambdas (`floof-api`, `floof-comm`, `floof-admin`).
+2. Replace `ADMIN_LINK_SECRET` on **all four** Lambdas (`floof-api`, `floof-comm`, `floof-contact`, `floof-admin`).
 
 Every link already sent stops working immediately.
 

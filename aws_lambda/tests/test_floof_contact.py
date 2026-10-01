@@ -1,8 +1,11 @@
+import ipaddress
 import json
+import time
 
 import pytest
 
-from conftest import make_event
+import admin_links
+from conftest import admin_tokens, make_event
 
 EVIL = '<a href="//evil.example">x</a>'
 
@@ -53,3 +56,17 @@ def test_unblocked_ip_still_sends_from_the_site_address(contact, emails, connect
     assert sent["from"] == "FloofySite <no-reply@summerfloofy.com>"
     assert sent["to"] == ["owner@example.com"]
     assert connection.closed
+
+
+@pytest.mark.parametrize("ip", ["203.0.113.7", "2001:db8::1"])
+def test_owner_email_has_a_block_link_for_the_sender_ip(contact, emails, ip):
+    # Act: send a message from this IP.
+    contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}, ip=ip), None)
+
+    # Assert: one admin link, which decodes to "block this sender's IP".
+    [sent] = emails.sent
+    [token] = admin_tokens(sent["html"])
+    action, target = admin_links.verify(token, now=time.time())
+    assert action == "block-contact-ip"
+    assert str(ipaddress.ip_address(target)) == ip
+    assert "Block this sender" in sent["html"]

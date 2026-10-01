@@ -272,3 +272,51 @@ def test_every_response_carries_the_security_headers(admin, call):
     for name, value in SECURITY_HEADERS.items():
         assert headers[name] == value
     assert headers["Content-Type"] == "text/html; charset=utf-8"
+
+
+# --- Contact-message blocks (the link carries the IP, as a number) -------------------------------------------
+
+
+def contact_token(ip="203.0.113.7"):
+    """A block link for a contact message's sender."""
+    return token_for("block-contact-ip", int(ipaddress.ip_address(ip)))
+
+
+def test_get_contact_block_shows_the_ip_and_a_confirm_form(admin, cursor):
+    # Act: open a contact block link.
+    page = get(admin, contact_token())["body"]
+
+    # Assert: it names the IP and offers Confirm, after only checking the blocklist (no message to look up).
+    assert "203.0.113.7" in page
+    assert "contact message" in page
+    assert '<form method="post">' in page
+    assert [sql for sql, _ in cursor.executed if "FROM blocked_ips" not in sql] == []
+
+
+def test_get_contact_block_for_an_already_blocked_ip_says_so(admin, cursor):
+    # Arrange: the IP is already blocked.
+    cursor.on("FROM blocked_ips", rows=[{"blocked": 1}])
+
+    # Act and assert: no form, just "already done".
+    page = get(admin, contact_token())["body"]
+    assert "already" in page.lower()
+    assert "<form" not in page
+
+
+@pytest.mark.parametrize("ip", ["203.0.113.7", "2001:db8::1"])
+def test_post_contact_block_blocks_the_ip_from_the_link(admin, cursor, ip):
+    # Act: confirm the block.
+    result = post(admin, contact_token(ip))
+
+    # Assert: that exact IP is blocked, with the contact message as the reason.
+    assert "Done" in result["body"]
+    [(_, params)] = cursor.queries("INSERT INTO blocked_ips")
+    assert params == (ipaddress.ip_address(ip), "admin email: contact message")
+
+
+def test_post_contact_block_on_an_already_blocked_ip_is_already_done(admin, cursor):
+    # Arrange: the insert hits the existing row.
+    cursor.on("INSERT INTO blocked_ips", rowcount=0)
+
+    # Act and assert: nothing changed.
+    assert "already done" in post(admin, contact_token())["body"].lower()
