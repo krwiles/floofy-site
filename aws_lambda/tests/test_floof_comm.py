@@ -180,3 +180,26 @@ def test_owner_email_goes_to_every_admin(comm, emails, monkeypatch):
 
     # Assert: the first email (the owner's) lists both admins as separate recipients.
     assert emails.sent[0]["to"] == ["a@example.com", "b@example.com"]
+
+
+def test_every_email_has_a_full_html_document_and_a_text_version(comm, emails):
+    # Act: trigger this Lambda's emails.
+    comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: each one is a complete HTML page plus a tag-free plain-text copy.
+    assert emails.sent
+    for sent in emails.sent:
+        assert sent["html"].startswith("<!doctype html>")
+        assert sent["text"].strip() and "<p>" not in sent["text"]
+
+
+def test_customer_confirmation_replies_to_the_admins(comm, emails, monkeypatch):
+    # Arrange: two admins.
+    monkeypatch.setenv("FLOOFY_EMAIL", "a@example.com,b@example.com")
+
+    # Act: submit a request.
+    comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: a customer's reply goes to the admins, not to the unanswered no-reply address.
+    owner, customer = emails.sent
+    assert customer["reply_to"] == ["a@example.com", "b@example.com"]

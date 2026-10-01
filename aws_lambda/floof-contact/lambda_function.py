@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
-from email_sender import EMAIL_FROM, admin_recipients
+from email_sender import EMAIL_FROM, admin_recipients, email_content
 from request_log import log, log_request
 
 
@@ -116,7 +116,8 @@ def send_email(to_emails, subject, body):
         "from": EMAIL_FROM,
         "to": to_emails,
         "subject": subject,
-        "html": body
+        # Full HTML document plus a plain-text copy
+        **email_content(body),
         }
         
         resend.Emails.send(commission_details)

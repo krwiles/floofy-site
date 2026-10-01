@@ -52,6 +52,10 @@ Every email is sent as `FloofySite <no-reply@summerfloofy.com>` (a constant in t
 Domains**, check that `summerfloofy.com` shows **Verified**. If not, add the DNS records Resend lists in **Cloudflare
 → DNS → Records**, each set to **DNS only (grey cloud)**, not proxied, then click **Verify**.
 
+**Keep it out of spam:** also add a DMARC record in **Cloudflare → DNS → Records**: type `TXT`, name `_dmarc`,
+content `v=DMARC1; p=none; rua=mailto:<your email>`, set to **DNS only**. To check, send a test commission using an
+address from mail-tester.com as the customer email; it scores the confirmation email and lists any problems.
+
 ## 4. Note each Lambda's runtime and architecture
 
 In the **AWS console**, go to **Lambda → Functions**. For `floof-api`, check its **Runtime** (e.g. Python 3.12) and,

@@ -11,7 +11,7 @@ from psycopg.rows import dict_row
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
-from email_sender import EMAIL_FROM, admin_recipients
+from email_sender import EMAIL_FROM, admin_recipients, email_content
 from request_log import log, log_request
 
 def lambda_handler(event, context):
@@ -151,7 +151,8 @@ def email_floofy(review_id, created_at, author, comment, ip_address, earlier_rev
         "to": admin_recipients(),
         # Subjects are plain text (never rendered as HTML), so they use the raw value
         "subject": f"New review #{review_id} from {author}",
-        "html": email_body,
+        # Full HTML document plus a plain-text copy
+        **email_content(email_body),
     })
 
 

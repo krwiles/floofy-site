@@ -12,7 +12,7 @@ from psycopg.rows import dict_row
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
-from email_sender import EMAIL_FROM, admin_recipients
+from email_sender import EMAIL_FROM, admin_recipients, email_content
 from request_log import log, log_request
 
 # More than this many requests from one IP in 24 hours are refused — see spec.md "floof-comm"
@@ -202,7 +202,7 @@ def email_customer(commission_request: CommissionRequest):
     """
     
     # Send the email to the customer
-    return send_email([to_email], email_subject, email_body)
+    return send_email([to_email], email_subject, email_body, reply_to=admin_recipients())
 
 
 def validate_request(commission_request: CommissionRequest):
@@ -234,7 +234,7 @@ def validate_request(commission_request: CommissionRequest):
     return None
 
 
-def send_email(to_emails, subject, body):
+def send_email(to_emails, subject, body, reply_to=None):
     
     resend.api_key = os.environ.get("RESEND_API_KEY")
     
@@ -243,8 +243,13 @@ def send_email(to_emails, subject, body):
         "from": EMAIL_FROM,
         "to": to_emails,
         "subject": subject,
-        "html": body
+        # Full HTML document plus a plain-text copy
+        **email_content(body),
         }
+
+        # Let the recipient reply to a real person rather than the no-reply sender
+        if reply_to:
+            commission_details["reply_to"] = reply_to
         
         resend.Emails.send(commission_details)
     

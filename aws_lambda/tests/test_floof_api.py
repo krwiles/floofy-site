@@ -133,3 +133,14 @@ def test_owner_email_goes_to_every_admin(api, emails, monkeypatch):
 
     # Assert: the first email (the owner's) lists both admins as separate recipients.
     assert emails.sent[0]["to"] == ["a@example.com", "b@example.com"]
+
+
+def test_every_email_has_a_full_html_document_and_a_text_version(api, emails):
+    # Act: trigger this Lambda's emails.
+    post_review(api)
+
+    # Assert: each one is a complete HTML page plus a tag-free plain-text copy.
+    assert emails.sent
+    for sent in emails.sent:
+        assert sent["html"].startswith("<!doctype html>")
+        assert sent["text"].strip() and "<p>" not in sent["text"]
