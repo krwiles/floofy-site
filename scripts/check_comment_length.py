@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Flags inline comment blocks longer than 2 lines (CLAUDE.md's "Comments" rule).
-Checks .py files (# comments) and .ts/.tsx files (// comments); docstrings/JSDoc are exempt.
+Checks .py (# comments), .ts/.tsx (// comments), .css (/* */ comments) and .html (<!-- --> comments).
+Docstrings, JSDoc and CSS `/** */` doc comments are exempt.
 
 Two modes: no args checks staged files and exits 1 on a violation (a pre-commit hook, blocking);
 `--file PATH [PATH ...]` checks specific files and always exits 0 (the PostToolUse hook, advisory
@@ -66,6 +67,42 @@ def check(path: str, prefix: str) -> list[tuple[int, int, int]]:
     return violations
 
 
+# Block-comment syntaxes, by file extension: (opening, closing).
+BLOCK_DELIMITERS = {".css": ("/*", "*/"), ".html": ("<!--", "-->")}
+
+
+def check_blocks(path: str, opening: str, closing: str) -> list[tuple[int, int, int]]:
+    """Like check(), for /* */ or <!-- --> comments: a block is one comment, or several on consecutive lines."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+    except FileNotFoundError:
+        return []
+
+    # Find every comment's first and last line, skipping `/** */` doc comments (exempt, like JSDoc).
+    spans: list[tuple[int, int]] = []
+    pattern = re.compile(re.escape(opening) + r".*?" + re.escape(closing), re.DOTALL)
+    for match in pattern.finditer(text):
+        if opening == "/*" and match.group().startswith("/**"):
+            continue
+        start = text.count("\n", 0, match.start()) + 1
+        spans.append((start, start + match.group().count("\n")))
+
+    # Merge comments that sit on back-to-back lines into one block, then flag blocks over the limit.
+    violations: list[tuple[int, int, int]] = []
+    block: tuple[int, int] | None = None
+    for start, end in spans:
+        if block and start <= block[1] + 1:
+            block = (block[0], max(block[1], end))
+            continue
+        if block and block[1] - block[0] + 1 > MAX_LINES:
+            violations.append((block[0], block[1], block[1] - block[0] + 1))
+        block = (start, end)
+    if block and block[1] - block[0] + 1 > MAX_LINES:
+        violations.append((block[0], block[1], block[1] - block[0] + 1))
+    return violations
+
+
 def prefix_for(path: str) -> str | None:
     if path.endswith(".py"):
         return "#"
@@ -84,10 +121,16 @@ def main() -> int:
 
     had_violation = False
     for path in paths:
+        # Pick the right checker for the file type; anything else is skipped.
         prefix = prefix_for(path)
-        if prefix is None:
+        delimiters = BLOCK_DELIMITERS.get(path[path.rfind(".") :]) if "." in path else None
+        if prefix is not None:
+            found = check(path, prefix)
+        elif delimiters is not None:
+            found = check_blocks(path, *delimiters)
+        else:
             continue
-        for start, end, n in check(path, prefix):
+        for start, end, n in found:
             had_violation = True
             print(f"{path}:{start}-{end}: comment block is {n} lines (CLAUDE.md caps inline comments at {MAX_LINES})")
 

@@ -52,11 +52,9 @@ Requires Node `^22.22.3 || ^24.15.0 || >=26.0.0` (the Angular CLI's own floor) �
 - Applies to test files exactly the same as source files.
 
 **Enforced by a Claude Code `PostToolUse` hook** (`scripts/check_comment_length.py`, run via `.claude/settings.json`
-on every `Write`/`Edit`) that warns — advisory, doesn't block the edit — when a `//` comment block in a `.ts`/`.tsx`
-file runs over 2 lines. Ported from `ticker-news-analysis`'s own copy of this rule. This only affects new comments
-going forward: this codebase already has several long, historical rationale comments (e.g. `hero.ts`) predating
-the rule — they aren't retroactive violations to fix opportunistically, just don't add
-more like them.
+on every `Write`/`Edit`) that warns — advisory, doesn't block the edit — when a comment block runs over 2 lines: `//`
+in `.ts`/`.tsx`, `#` in `.py`, `/* */` in `.css` and `<!-- -->` in `.html`. Docstrings, JSDoc and CSS `/** */` doc
+comments are exempt. The whole codebase follows these rules, so any warning is a real one to fix.
 
 ## This repo is mid-refactor
 
