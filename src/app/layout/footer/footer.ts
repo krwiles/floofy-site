@@ -12,6 +12,7 @@ import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 })
 export class Footer {
   scrollToTop(): void {
+    // Smoothly scroll back to the top of the page (the footer's "Back to top" link).
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
