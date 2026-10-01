@@ -2,23 +2,13 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { Field } from '@angular/forms/signals';
 
 /**
- * The `*` shown next to a field's label when it's actually required, derived from the field's own `required`
- * signal rather than a second, independently-set input. Shared by `FormFieldGroup`, `CheckboxField`, and
- * `RadioGroup` -- extracted after `/code-review` flagged this markup as duplicated verbatim between the first
- * two, before `RadioGroup` existed to make it a third.
- *
- * Takes `field` (the Signal Forms callable itself), not `state`, and calls it internally -- `/code-review`
- * flagged that all three callers were independently redoing the identical one-line
- * `computed(() => this.field()())` adapter just to convert their own `field` input into what this component
- * (and `FieldErrorList`) expected. Centralizing that here means a future caller needs one input, not two.
+ * The `*` beside a field's label, shown only when the field's own validators make it required. Shared by
+ * `FormFieldGroup`, `CheckboxField` and `RadioGroup`; takes the `field` itself, so callers pass one input.
  */
 @Component({
   selector: 'app-required-marker',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // Angular custom elements default to display: inline, so without this the host itself would always be
-  // present as a flex item in FormFieldGroup's/CheckboxField's `gap`-based row, even while rendering nothing
-  // -- consuming a real gap slot it never used to when the *@if was directly in the parent's own template.
-  // display: contents makes an empty host contribute nothing to the flex layout, same as before extraction.
+  // `display: contents` so an empty marker doesn't take up a gap in its parent's flex row.
   host: { style: 'display: contents' },
   template: `
     @if (state().required()) {
@@ -28,5 +18,6 @@ import { Field } from '@angular/forms/signals';
 })
 export class RequiredMarker {
   readonly field = input.required<Field<unknown>>();
+  // Calling a Signal Forms field returns its live state (required, ...).
   readonly state = computed(() => this.field()());
 }

@@ -4,16 +4,9 @@ import { RequiredMarker } from '../required-marker/required-marker';
 import { FieldErrorList } from '../field-error-list/field-error-list';
 
 /**
- * Choice's pill-radio-group presentation -- see CONTEXT.md's "Choice" entry and
- * docs/refactor/13-phase-5-plan.md. A set of mutually-exclusive options, each rendered as a button-styled
- * radio button (`peer-checked` visual treatment). Renders its own label/error wrapper (error shown below the
- * whole group, not per-option) rather than reusing `FormFieldGroup`'s wrapper -- its own shape, same reasoning
- * as `CheckboxField`. Shares `RequiredMarker`/`FieldErrorList` with both of them, passing `field` directly
- * rather than a locally pre-computed `state` -- see `RequiredMarker`'s own doc comment for why.
- *
- * `[labelExtra]` is an optional projected slot after the label/required-marker, for commission's own
- * jump-to-detail "?" buttons -- not part of Choice's own concept, but real content some callers need next to
- * the label; keeping `RadioGroup` itself commission-agnostic rather than baking that button in.
+ * Choice's pill-style radio group: mutually exclusive options shown as buttons, with one error list for the whole
+ * group -- see CONTEXT.md's "Choice" entry and docs/refactor/13-phase-5-plan.md. `[labelExtra]` projects optional
+ * content after the label, e.g. commission's "?" jump buttons.
  */
 @Component({
   selector: 'app-radio-group',

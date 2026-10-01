@@ -2,9 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { FormSubmissionStatus } from '../../../models/form-submission-status';
 
 /**
- * The single, page-visible readout of a form's current submission state -- see CONTEXT.md's "Form Status"
- * entry. Replaces the old pattern of a plain string signal plus a separate `document.getElementById`/
- * `classList` toggle for the success/error color: one input, one source of truth, no DOM lookups.
+ * The visible message for a form's submission state, colored by outcome -- see CONTEXT.md's "Form Status" entry.
  */
 @Component({
   selector: 'app-form-status',
@@ -19,6 +17,7 @@ export class FormStatus {
   readonly status = input.required<FormSubmissionStatus>();
 
   readonly colorClass = computed(() => {
+    // Green for success, red for error, the default text color otherwise.
     switch (this.status().kind) {
       case 'success':
         return 'text-success';

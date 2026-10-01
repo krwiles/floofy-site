@@ -2,16 +2,13 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { Field } from '@angular/forms/signals';
 
 /**
- * A field's active validation errors, shown once it's both invalid and touched -- never before, so a field
- * doesn't scold the person before they've had a chance to fill it in. Shared by `FormFieldGroup`,
- * `CheckboxField`, and `RadioGroup` -- extracted after `/code-review` flagged this markup as duplicated
- * verbatim between the first two, before `RadioGroup` existed to make it a third.
- *
- * Takes `field`, not `state`, same reasoning as `RequiredMarker`'s own doc comment -- see there.
+ * A field's validation errors, shown only once it's both invalid and touched, so nobody is scolded before they've
+ * had a chance to fill it in. Shared by `FormFieldGroup`, `CheckboxField` and `RadioGroup`; takes the `field` itself.
  */
 @Component({
   selector: 'app-field-error-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // `display: contents` keeps the empty host out of the parent's flex layout -- see RequiredMarker.
   // Same layout-transparency reasoning as RequiredMarker's own host binding -- see its comment.
   host: { style: 'display: contents' },
   template: `
@@ -26,5 +23,6 @@ import { Field } from '@angular/forms/signals';
 })
 export class FieldErrorList {
   readonly field = input.required<Field<unknown>>();
+  // Calling a Signal Forms field returns its live state (errors, touched, ...).
   readonly state = computed(() => this.field()());
 }
