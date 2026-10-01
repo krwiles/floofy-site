@@ -2,16 +2,10 @@ import { Directive, computed, input } from '@angular/core';
 import { Tone } from '../../models/tone';
 
 /**
- * Applies the finished card/glass-panel design system (src/styles/components/cards.css) to its host element.
- * `tone` is required for the plain and `noBackground` surfaces (the shadow itself is tone-aware) but
- * meaningless for `glass` -- glass-panel's own CSS doesn't vary by tone (see CONTEXT.md's "Card" entry) -- so
- * it's typed optional rather than forcing every hero usage to pass an arbitrary, unused tone value. Since
- * that makes it look optional everywhere, `hostClass` throws if it's actually missing outside `glass` mode --
- * without that, a forgotten `tone` would silently produce a class matching no CSS rule (e.g.
- * `card-on-section-undefined`) with no compiler or runtime signal at all. `special`/`noBackground`/`glass`
- * combinations are still unenforced -- misuse there is a visible CSS mistake, not a silent one (see
- * docs/refactor/10-phase-3b-plan.md). Where more than one would apply, `glass` wins over `noBackground`,
- * which wins over the plain tone-painted surface.
+ * Applies the card/glass-panel design system (src/styles/components/cards.css) to its host element. `tone` is needed
+ * for every surface except `glass`, whose CSS ignores tone, so it's optional in the type and checked at runtime
+ * instead. Precedence: `glass`, then `noBackground`, then the plain tone-painted surface. See CONTEXT.md's "Card"
+ * entry and docs/refactor/10-phase-3b-plan.md.
  */
 @Directive({
   selector: '[appCard]',
@@ -24,15 +18,18 @@ export class Card {
   readonly glass = input(false);
 
   readonly hostClass = computed(() => {
+    // Glass ignores tone entirely.
     if (this.glass()) {
       return 'glass-panel';
     }
 
+    // Every other surface needs a tone; fail loudly instead of emitting `card-on-section-undefined`.
     const tone = this.tone();
     if (!tone) {
       throw new Error('[appCard] requires a `tone` input unless `glass` is set.');
     }
 
+    // Shadow-only surface, or the painted surface (optionally its -special variant).
     if (this.noBackground()) {
       return `card-shadow-${tone}`;
     }
