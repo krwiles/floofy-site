@@ -11,6 +11,7 @@ describe('ParallaxSection', () => {
   let unregisterSpy: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
+    // Spy on the shared scroll service, then render with the one required input.
     registerSpy = vi.fn();
     unregisterSpy = vi.fn();
 
@@ -26,28 +27,35 @@ describe('ParallaxSection', () => {
   });
 
   it('should create', () => {
+    // Assert: the component builds.
     expect(component).toBeTruthy();
   });
 
   it('registers itself with the shared scroll service instead of its own window listener', () => {
+    // Assert: one registration with the shared service, carrying a callback.
     expect(registerSpy).toHaveBeenCalledTimes(1);
     expect(registerSpy).toHaveBeenCalledWith(expect.any(Function));
   });
 
   it('unregisters from the shared scroll service on destroy', () => {
+    // Arrange: the callback it registered.
     const registeredCallback = registerSpy.mock.calls[0][0];
 
+    // Act: destroy the component.
     fixture.destroy();
 
+    // Assert: that same callback was unregistered.
     expect(unregisterSpy).toHaveBeenCalledWith(registeredCallback);
   });
 
   it('updates the background transform when the scroll service notifies it', () => {
+    // Arrange: the registered callback, and a section scrolled 100px past the top.
     const registeredCallback = registerSpy.mock.calls[0][0];
     const backgroundEl: HTMLElement = fixture.nativeElement.querySelector('.parallax-background');
     const rootEl: HTMLElement = fixture.nativeElement.querySelector('.parallax-root');
     vi.spyOn(rootEl, 'getBoundingClientRect').mockReturnValue({ top: -100 } as DOMRect);
 
+    // Act: simulate a scroll notification.
     registeredCallback();
 
     // parallaxStrength defaults to 0.5, so a rect.top of -100 yields translate3d(0,50px,0).

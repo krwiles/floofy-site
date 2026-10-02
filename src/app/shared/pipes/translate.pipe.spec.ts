@@ -5,6 +5,7 @@ import { I18nService } from '../../services/i18n.service';
 
 describe('TranslatePipe', () => {
   it('create an instance', () => {
+    // Arrange: a stub I18nService that echoes keys.
     TestBed.configureTestingModule({
       providers: [
         {
@@ -16,6 +17,7 @@ describe('TranslatePipe', () => {
       ],
     });
 
+    // Act and assert: the pipe builds inside an injection context (it uses inject()).
     const pipe = TestBed.runInInjectionContext(() => new TranslatePipe());
     expect(pipe).toBeTruthy();
   });

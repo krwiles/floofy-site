@@ -35,9 +35,8 @@
         class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block"
       />
       <div appCard tone="middle" class="w-lg max-w-full p-1">
-        <!-- appCard's fill/border paint via a ::before layer, which browsers never render on replaced elements
-             like <iframe> -- the directive has to live on this wrapper div instead, with the iframe as plain
-             content, or the card's whole surface silently never appears (found in code review). -->
+        <!-- appCard is on this wrapper, not the iframe: its ::before surface never renders on replaced elements
+             like <iframe>. -->
         <iframe
           id="kofiframe"
           src="https://ko-fi.com/summerfloofy/?hidefeed=true&widget=true&embed=true&preview=true"

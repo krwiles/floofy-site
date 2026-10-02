@@ -4,6 +4,7 @@ import { Flourish } from '../flourish/flourish';
 
 type Tone = 'light' | 'middle' | 'dark';
 
+// Per-tone text colors for each line, spelled out in full so Tailwind generates them.
 const TONE_CLASSES: Record<Tone, { eyebrow: string; heading: string; body: string }> = {
   light: { eyebrow: 'text-on-light-body-subtle', heading: 'text-on-light-heading', body: 'text-on-light-body' },
   middle: { eyebrow: 'text-on-middle-body-subtle', heading: 'text-on-middle-heading', body: 'text-on-middle-body' },
@@ -11,13 +12,8 @@ const TONE_CLASSES: Record<Tone, { eyebrow: string; heading: string; body: strin
 };
 
 /**
- * The eyebrow/title/description/flourish stack repeated at the top of most
- * sections. Covers the plain shape only -- one page has an extra second
- * description paragraph that doesn't fit this and stays as a hand-written
- * sibling rather than forcing the component to match (see
- * docs/refactor/09-phase-3-plan.md). Description size is standardized (no
- * configurable size) -- an earlier sm/base split across pages was an
- * unintended inconsistency, not a real design difference.
+ * The eyebrow / title / description / flourish stack at the top of most sections, at one standard size. Headers that
+ * don't fit this shape are written by hand -- see docs/refactor/09-phase-3-plan.md.
  */
 @Component({
   selector: 'app-section-header',
@@ -46,9 +42,7 @@ const TONE_CLASSES: Record<Tone, { eyebrow: string; heading: string; body: strin
       }
     </div>
   `,
-  // See section.ts's comment: custom elements default to display: inline,
-  // which breaks the block-level <div class="mb-12 text-center"> wrapper
-  // this replaces.
+  // Block, like the wrapper <div> it replaces (custom elements default to inline).
   styles: ':host { display: block; }',
 })
 export class SectionHeader {
@@ -58,5 +52,6 @@ export class SectionHeader {
   readonly tone = input.required<Tone>();
   readonly flourish = input(true);
 
+  // The color set for the current tone.
   readonly colors = computed(() => TONE_CLASSES[this.tone()]);
 }

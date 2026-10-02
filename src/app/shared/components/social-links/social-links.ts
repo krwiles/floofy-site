@@ -3,6 +3,7 @@ import { Social, SOCIALS, SocialId } from '../../../models/social';
 
 type Variant = 'plain' | 'chip';
 
+// The two looks: plain icons, or larger bordered chips.
 const VARIANT_CLASSES: Record<Variant, string> = {
   plain:
     'inline-flex items-center justify-center text-xl text-on-light-heading transition-colors hover:text-on-light-heading focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong',
@@ -10,17 +11,12 @@ const VARIANT_CLASSES: Record<Variant, string> = {
 };
 
 /**
- * A row of social-link icons. Renders only the individual <a> items -- each
- * page keeps its own wrapping container (grid/flex, whatever column/gap
- * layout it needs) around this component. See CONTEXT.md ("Social link").
+ * Social-link icons: renders only the <a> items, and each page wraps them in its own layout -- see CONTEXT.md's
+ * "Social link" entry.
  */
 @Component({
   selector: 'app-social-links',
-  // display: contents -- callers grid/flex their own wrapping container
-  // directly around the repeated <a> items (see CONTEXT.md "Social link"),
-  // so this host must not introduce its own box: a real box would become a
-  // single grid/flex item instead of letting each <a> participate in the
-  // caller's layout, silently collapsing a grid into one cell.
+  // `display: contents` so each <a> sits directly in the caller's grid/flex layout, not inside one extra box.
   styles: ':host { display: contents; }',
   template: `
     @for (social of socials(); track social.id) {
@@ -40,14 +36,18 @@ export class SocialLinks {
   readonly ids = input.required<SocialId[]>();
   readonly variant = input<Variant>('plain');
 
+  // The SOCIALS entries for the requested ids, in the order given.
   readonly socials = computed(() => this.ids().map((id) => this.findSocial(id)));
+  // The class string for the chosen look.
   readonly variantClass = computed(() => VARIANT_CLASSES[this.variant()]);
 
   isExternal(social: Social): boolean {
+    // Email links stay in the same tab; everything else opens a new one.
     return !social.url.startsWith('mailto:');
   }
 
   private findSocial(id: SocialId): Social {
+    // Look the id up, failing loudly on a typo rather than rendering a broken link.
     const social = SOCIALS.find((entry) => entry.id === id);
     if (!social) {
       throw new Error(`[app-social-links] no SOCIALS entry for id "${id}".`);

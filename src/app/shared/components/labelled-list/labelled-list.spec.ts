@@ -19,6 +19,7 @@ describe('LabelledList', () => {
   });
 
   it('renders plain items as a bulleted list, in order', () => {
+    // Arrange: three plain items.
     fixture.componentRef.setInput('items', ['First', 'Second', 'Third']);
     fixture.detectChanges();
 
@@ -29,6 +30,7 @@ describe('LabelledList', () => {
   });
 
   it('renders numbered items as an ordered list', () => {
+    // Arrange: two items, numbered.
     fixture.componentRef.setInput('items', ['Sketch', 'Colour']);
     fixture.componentRef.setInput('numbered', true);
     fixture.detectChanges();
@@ -40,6 +42,7 @@ describe('LabelledList', () => {
   });
 
   it('renders groups as a label followed by its own bulleted items', () => {
+    // Arrange: two labelled groups.
     fixture.componentRef.setInput('groups', [
       { id: 'usage', label: 'Usage', items: ['Personal only.', 'No resale.'] },
       { id: 'refunds', label: 'Refunds', items: ['Non-refundable.'] },
@@ -55,6 +58,7 @@ describe('LabelledList', () => {
   });
 
   it("colours group labels with the tone's heading colour", () => {
+    // Arrange: a dark-tone group.
     fixture.componentRef.setInput('tone', 'dark');
     fixture.componentRef.setInput('groups', [{ id: 'a', label: 'A', items: ['x'] }]);
     fixture.detectChanges();
@@ -64,6 +68,7 @@ describe('LabelledList', () => {
   });
 
   it('renders nothing when given no content', () => {
+    // Act: render with no items or groups.
     fixture.detectChanges();
 
     // No empty list or group wrappers.

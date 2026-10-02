@@ -7,6 +7,7 @@ describe('Donate', () => {
   let fixture: ComponentFixture<Donate>;
 
   beforeEach(async () => {
+    // Render the real page once per test.
     await TestBed.configureTestingModule({
       imports: [Donate],
     }).compileComponents();
@@ -17,6 +18,7 @@ describe('Donate', () => {
   });
 
   it('should create', () => {
+    // Assert: the page builds.
     expect(component).toBeTruthy();
   });
 });

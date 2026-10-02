@@ -20,6 +20,7 @@ describe('PricingCard', () => {
   });
 
   it("shows the category's title and base price", () => {
+    // Act: render the chibi card.
     const el = create('chibi');
 
     // Chibi is $27 in pricing.json.
@@ -28,6 +29,7 @@ describe('PricingCard', () => {
   });
 
   it('shows the five lists in the shared order, each with its own items', () => {
+    // Act: render the emote card.
     const el = create('emote');
 
     // Headings follow the shared list order...
@@ -39,6 +41,7 @@ describe('PricingCard', () => {
   });
 
   it("frames the carousel in the card's own shape", () => {
+    // Act: render the illustration card with its 3:4 shape.
     const el = create('illustration', 'aspect-3/4');
 
     // The carousel's wrapper carries the shape class it was given.
@@ -46,6 +49,7 @@ describe('PricingCard', () => {
   });
 
   it('emits its category when the call-to-action is clicked', () => {
+    // Arrange: render the illustration card.
     const el = create('illustration');
     // Record what the card emits.
     const picked: ArtworkCategory[] = [];
@@ -59,6 +63,7 @@ describe('PricingCard', () => {
   });
 
   it('leaves no untranslated keys on the card', () => {
+    // Act: render a card.
     const el = create('chibi');
 
     // t() echoes a missing key back, so any "commission." text means a broken lookup.

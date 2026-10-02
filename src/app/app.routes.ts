@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+// One route per page; each page's code is loaded only when first visited (then preloaded -- see app.config.ts).
 export const routes: Routes = [
   {
     path: '',

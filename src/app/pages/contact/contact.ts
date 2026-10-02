@@ -47,17 +47,21 @@ interface ContactFormData {
 })
 export class Contact {
   private readonly apiService = inject(ApiService);
+  // The message shown beside the submit button.
   readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
 
+  // The form's current values.
   private readonly contactFormModel = signal<ContactFormData>({
     name: '',
     email: '',
     message: '',
   });
 
+  // The form: its validation rules, then what happens on submit.
   contactForm = form(
     this.contactFormModel,
     (schemaPath) => {
+      // Every field is required, length-capped to match the Lambda, and the email must look valid.
       required(schemaPath.name, { message: 'Name is required.' });
       required(schemaPath.email, { message: 'Email is required.' });
       required(schemaPath.message, { message: 'Message is required.' });
@@ -69,6 +73,7 @@ export class Contact {
       email(schemaPath.email, { message: 'Please enter a valid email address.' });
     },
     {
+      // Show progress, send the request, then clear the form on success.
       submission: createFormSubmission({
         pendingMessage: 'Submitting contact...',
         invalidMessage: 'Please correct the errors in the form before submitting.',

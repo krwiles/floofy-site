@@ -23,22 +23,26 @@ export class PricingService {
   };
 
   getArtworkCategoryPricing(id: ArtworkCategory): ArtworkCategoryPricing | undefined {
+    // The category's pricing entry, or undefined if the JSON doesn't list it.
     return this.data.artworkCategories.find((category) => category.id === id);
   }
 
   getBasePriceUsd(id: ArtworkCategory): number | undefined {
+    // Just the base price from that entry.
     return this.getArtworkCategoryPricing(id)?.basePriceUsd;
   }
 
   getUsageTypePricing(id: UsageTypeId): UsageTypePricing | undefined {
+    // The usage type's pricing entry, or undefined if the JSON doesn't list it.
     return this.data.usageTypes.find((type) => type.id === id);
   }
 
   getPercentAddon(id: UsageTypeId): number | undefined {
+    // Just the addon fraction from that entry (0.5 means +50%).
     return this.getUsageTypePricing(id)?.percentAddon;
   }
 
-  /** Mechanical move from `Commission`'s own `totalPriceUsd` -- same formula, no behavior change. */
+  /** The estimated total: the category's base price, plus the usage type's percent addon. */
   getTotalPriceUsd(artworkCategory: ArtworkCategory, usageTypeId: UsageTypeId | 'unsure'): number {
     // The form's 'unsure' has no price entry, so it adds nothing on top of the base price.
     const addon = usageTypeId === 'unsure' ? 0 : (this.getPercentAddon(usageTypeId) ?? 0);

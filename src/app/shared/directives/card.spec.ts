@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Card } from './card';
 
+// Host that binds every input, so each test can set them before the first render.
 @Component({
   template: `
     <div appCard [tone]="tone" [special]="special" [noBackground]="noBackground" [glass]="glass"></div>
@@ -16,11 +17,12 @@ class HostComponent {
 }
 
 function createFixture(): ComponentFixture<HostComponent> {
+  // Build the bound host.
   TestBed.configureTestingModule({ imports: [HostComponent] });
   return TestBed.createComponent(HostComponent);
 }
 
-// No [tone] binding at all -- glass-panel's own CSS doesn't vary by tone, so glass usage shouldn't need one.
+// Host with only [glass]: glass ignores tone, so it shouldn't need one.
 @Component({
   template: `
     <div appCard [glass]="true"></div>
@@ -29,7 +31,7 @@ function createFixture(): ComponentFixture<HostComponent> {
 })
 class GlassOnlyHostComponent {}
 
-// No [tone] and no [glass] -- tone is required in practice for every other mode.
+// Host with neither [tone] nor [glass], which must be rejected.
 @Component({
   template: `
     <div appCard></div>
@@ -40,75 +42,91 @@ class NoToneNoGlassHostComponent {}
 
 describe('Card', () => {
   it('applies card-on-section-light for tone light', () => {
+    // Arrange: light tone.
     const fixture = createFixture();
     fixture.componentInstance.tone = 'light';
     fixture.detectChanges();
 
+    // Assert: the light surface class.
     expect(fixture.nativeElement.querySelector('div').classList.contains('card-on-section-light')).toBe(true);
   });
 
   it('applies card-on-section-middle for tone middle', () => {
+    // Arrange: middle tone.
     const fixture = createFixture();
     fixture.componentInstance.tone = 'middle';
     fixture.detectChanges();
 
+    // Assert: the middle surface class.
     expect(fixture.nativeElement.querySelector('div').classList.contains('card-on-section-middle')).toBe(true);
   });
 
   it('applies card-on-section-dark for tone dark', () => {
+    // Arrange: dark tone.
     const fixture = createFixture();
     fixture.componentInstance.tone = 'dark';
     fixture.detectChanges();
 
+    // Assert: the dark surface class.
     expect(fixture.nativeElement.querySelector('div').classList.contains('card-on-section-dark')).toBe(true);
   });
 
   it('applies the -special suffix when special is true', () => {
+    // Arrange: middle tone, marked special.
     const fixture = createFixture();
     fixture.componentInstance.tone = 'middle';
     fixture.componentInstance.special = true;
     fixture.detectChanges();
     const element = fixture.nativeElement.querySelector('div');
 
+    // Assert: the -special variant replaces the plain one.
     expect(element.classList.contains('card-on-section-middle-special')).toBe(true);
     expect(element.classList.contains('card-on-section-middle')).toBe(false);
   });
 
   it('applies card-shadow-{tone} and omits the tone-painted class when noBackground is true', () => {
+    // Arrange: dark tone, no background.
     const fixture = createFixture();
     fixture.componentInstance.tone = 'dark';
     fixture.componentInstance.noBackground = true;
     fixture.detectChanges();
     const element = fixture.nativeElement.querySelector('div');
 
+    // Assert: the shadow-only class replaces the painted surface.
     expect(element.classList.contains('card-shadow-dark')).toBe(true);
     expect(element.classList.contains('card-on-section-dark')).toBe(false);
   });
 
   it('applies glass-panel and omits every other class when glass is true', () => {
+    // Arrange: glass on top of a tone.
     const fixture = createFixture();
     fixture.componentInstance.tone = 'light';
     fixture.componentInstance.glass = true;
     fixture.detectChanges();
     const element = fixture.nativeElement.querySelector('div');
 
+    // Assert: glass wins, and no tone class is added.
     expect(element.classList.contains('glass-panel')).toBe(true);
     expect(element.classList.contains('card-on-section-light')).toBe(false);
     expect(element.classList.contains('card-shadow-light')).toBe(false);
   });
 
   it('applies glass-panel with no tone bound at all', () => {
+    // Arrange: glass with no tone bound.
     TestBed.configureTestingModule({ imports: [GlassOnlyHostComponent] });
     const fixture = TestBed.createComponent(GlassOnlyHostComponent);
     fixture.detectChanges();
 
+    // Assert: it still renders as glass.
     expect(fixture.nativeElement.querySelector('div').classList.contains('glass-panel')).toBe(true);
   });
 
   it('throws if tone is missing and glass is not set, instead of silently emitting a broken class', () => {
+    // Arrange: neither tone nor glass.
     TestBed.configureTestingModule({ imports: [NoToneNoGlassHostComponent] });
     const fixture = TestBed.createComponent(NoToneNoGlassHostComponent);
 
+    // Act and assert: rendering throws rather than emitting a class no CSS matches.
     expect(() => fixture.detectChanges()).toThrow();
   });
 });

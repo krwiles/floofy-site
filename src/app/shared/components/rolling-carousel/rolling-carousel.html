@@ -1,11 +1,5 @@
-<!--
-  aria-hidden on the whole strip, not per-image: this is a purely decorative, ambient preview (see
-  the component's own doc comment) -- the images aren't unique content available nowhere else, and
-  a screen-reader user gets no value from 12 (24 with the duplicate copy) consecutive image
-  announcements for something with no interaction and no information not already reachable via the
-  page's own "See full gallery" link next to this strip. Hiding the whole thing here also means the
-  duplicate copy needs no aria-hidden handling of its own -- there's nothing left to distinguish.
--->
+<!-- The whole strip is aria-hidden: it's decoration, and the "See full gallery" link beside it leads to the
+     same images. -->
 <div
   class="rolling-carousel"
   [class.rolling-carousel--framed]="cardTone()"

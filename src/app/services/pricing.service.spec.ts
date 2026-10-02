@@ -6,10 +6,12 @@ import { UsageTypeId } from '../models/pricing.model';
 
 describe('PricingService', () => {
   beforeEach(() => {
+    // The service reads the real pricing.json, so no extra providers.
     TestBed.configureTestingModule({});
   });
 
   it('should be created', () => {
+    // Act and assert: injection works.
     const service = TestBed.inject(PricingService);
     expect(service).toBeTruthy();
   });

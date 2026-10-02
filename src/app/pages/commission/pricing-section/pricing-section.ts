@@ -38,6 +38,7 @@ import { CAROUSEL_SHAPE, COMMISSION_ANCHORS, PRICING_CARD_ORDER } from '../commi
   `,
 })
 export class PricingSection {
+  // Layout constants from commission-content.ts, exposed to the template.
   protected readonly anchors = COMMISSION_ANCHORS;
   protected readonly cardOrder = PRICING_CARD_ORDER;
   protected readonly carouselShape = CAROUSEL_SHAPE;

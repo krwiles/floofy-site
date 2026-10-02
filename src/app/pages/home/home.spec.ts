@@ -9,6 +9,7 @@ describe('Home', () => {
   let fixture: ComponentFixture<Home>;
 
   beforeEach(async () => {
+    // Render the real page with the real routes (it contains router links).
     await TestBed.configureTestingModule({
       imports: [Home],
       providers: [provideRouter(routes)],
@@ -20,6 +21,7 @@ describe('Home', () => {
   });
 
   it('should create', () => {
+    // Assert: the page builds.
     expect(component).toBeTruthy();
   });
 });

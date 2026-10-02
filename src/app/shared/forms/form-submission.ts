@@ -20,23 +20,22 @@ interface CreateFormSubmissionConfig<TModel, TRequest, TResponse extends { messa
 }
 
 /**
- * Builds the `{ action, onInvalid }` shape Signal Forms' `form()` third argument expects -- see
- * docs/refactor/13-phase-5-plan.md's "FormSubmission helper" section. Every form on the site shares this same
- * skeleton (set pending, build a typed request, submit, update status) even though each form's own request
- * shape and on-success side effect differ.
+ * Builds the `{ action, onInvalid }` pair Signal Forms' `form()` expects, sharing every form's submit skeleton (set
+ * pending, build the request, send, update status) -- see docs/refactor/13-phase-5-plan.md's "FormSubmission helper".
  */
 export function createFormSubmission<TModel, TRequest, TResponse extends { message: string }>(
   config: CreateFormSubmissionConfig<TModel, TRequest, TResponse>,
 ): { action: () => Promise<void>; onInvalid: () => void } {
   return {
-    // Fire-and-forget, matching today's exact behavior: the submission's own `next`/`error` update `status`
-    // whenever they resolve, rather than this function awaiting that. Nothing today reads Signal Forms' own
-    // `submitting()` state, so there's no loss in not blocking `action`'s returned promise on the HTTP call.
+    // Fire-and-forget: status updates whenever the request resolves; nothing reads Signal Forms' `submitting()`.
     action: async () => {
+      // Show the pending message straight away.
       config.status.set({ kind: 'pending', message: config.pendingMessage });
 
+      // Build the typed request from the model's current value.
       const request = config.buildRequest(config.model());
 
+      // Send it, then show the server's message on success (plus any extra success work) or the error's on failure.
       config.submit(request).subscribe({
         next: (response) => {
           config.status.set({ kind: 'success', message: response.message });
@@ -48,6 +47,7 @@ export function createFormSubmission<TModel, TRequest, TResponse extends { messa
       });
     },
     onInvalid: () => {
+      // Submitted while invalid: show the form's "please fix" message instead of sending.
       config.status.set({ kind: 'error', message: config.invalidMessage });
     },
   };

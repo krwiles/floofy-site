@@ -55,5 +55,6 @@ export class LabelledList {
   readonly numbered = input(false);
   readonly groups = input<readonly ListGroup[]>([]);
 
+  // Group headings take the tone's heading color; everything else inherits from the container.
   protected readonly headingClass = computed(() => HEADING_CLASS[this.tone()]);
 }
