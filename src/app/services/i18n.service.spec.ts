@@ -2,6 +2,8 @@ import { DOCUMENT } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 
 import { I18nService } from './i18n.service';
+import en from '../../assets/i18n/en.json';
+import ja from '../../assets/i18n/ja.json';
 import { PricingService } from './pricing.service';
 
 describe('I18nService', () => {
@@ -283,6 +285,30 @@ describe('I18nService', () => {
       // The same check in Japanese.
       service.setLocale('ja');
       keys.forEach((key) => expect(service.t(key)).not.toBe(key));
+    });
+  });
+
+  describe('locale files', () => {
+    /** Every key path in a locale file, e.g. `home.hero.kicker`; a list counts as one path, whatever its length. */
+    function keyPaths(value: unknown, prefix = ''): string[] {
+      // A leaf (text or a list) is one path; lists may differ in length between languages.
+      if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+        return [prefix];
+      }
+
+      // An object contributes each of its children's paths.
+      return Object.entries(value).flatMap(([key, child]) => keyPaths(child, prefix ? `${prefix}.${key}` : key));
+    }
+
+    it('has exactly the same keys in English and Japanese', () => {
+      // Assert: no key missing from either file, and none left over in one.
+      expect(keyPaths(ja).sort()).toEqual(keyPaths(en).sort());
+    });
+
+    it("has no home.contact_page leftovers (the contact page's text lives under contact)", () => {
+      // Assert: gone from both files.
+      expect(keyPaths(en).some((path) => path.startsWith('home.contact_page'))).toBe(false);
+      expect(keyPaths(ja).some((path) => path.startsWith('home.contact_page'))).toBe(false);
     });
   });
 });

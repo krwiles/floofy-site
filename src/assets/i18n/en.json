@@ -1,9 +1,4 @@
 {
-  "language": {
-    "english": "English",
-    "japanese": "Japanese"
-  },
-
   "components": {
     "slideshow_carousel": {
       "previous": "Previous slide",
@@ -65,20 +60,6 @@
       "title": "Contact",
       "description": "Use this page for collaborations, business questions, press, fan mail, and other messages that are not commissions.",
       "cta": "Get in Touch"
-    },
-    "contact_page": {
-      "form": {
-        "kicker": "Let’s Talk",
-        "title": "Send a Message",
-        "description": "Share a collaboration idea, business question, press request, fan message, or anything else that fits outside of commissions.",
-        "note": "If you’re looking for a commission, please use the commissions page instead.",
-        "submit": "Send Inquiry"
-      },
-      "socials": {
-        "kicker": "Elsewhere",
-        "title": "Direct Contact",
-        "description": "If email is easier, this section gives you the fastest ways to reach me."
-      }
     }
   },
 
