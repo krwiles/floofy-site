@@ -31,4 +31,19 @@ describe('Streaming', () => {
     expect(content).toContain('Watch on Twitch');
     expect(content).toContain('SummerFloofy');
   });
+  it('lets the Twitch player load on the live site', () => {
+    // Arrange: a fake Twitch embed script that records the options it's built with.
+    const embed = vi.fn();
+    vi.stubGlobal('Twitch', { Embed: embed });
+
+    // Act: build the player.
+    component.loadEmbed();
+
+    // Assert: Twitch only plays on listed domains, so the live domain (with and without www) must be listed.
+    const options = embed.mock.calls[0][1] as { parent: string[] };
+    expect(options.parent).toEqual(expect.arrayContaining(['summerfloofy.com', 'www.summerfloofy.com']));
+
+    // Remove the fake script again.
+    vi.unstubAllGlobals();
+  });
 });

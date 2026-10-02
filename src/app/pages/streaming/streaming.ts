@@ -108,7 +108,14 @@ export class Streaming implements AfterViewInit {
       width: this.calculateWidth(),
       height: this.calculateHeight(),
       channel: 'summerfloofy',
-      parent: ['localhost', '127.0.0.1', 'floofy-site.vercel.app', 'www.floofy.site'],
+      parent: [
+        'localhost',
+        '127.0.0.1',
+        'summerfloofy.com',
+        'www.summerfloofy.com',
+        'floofy-site.vercel.app',
+        'www.floofy.site',
+      ],
     });
   }
 
