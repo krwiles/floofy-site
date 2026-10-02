@@ -86,4 +86,13 @@ describe('RequestForm', () => {
     // t() echoes a missing key back, so any "commission." text means a broken lookup.
     expect(el.textContent).not.toContain('commission.');
   });
+
+  it('keeps the submit button on one line, however long the status message beside it', () => {
+    // Arrange: the submit button, which shares a row with the status message.
+    const submit = el.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    // Assert: it never shrinks or wraps, so a long message wraps instead (as on the contact and review forms).
+    expect(submit.classList.contains('shrink-0')).toBe(true);
+    expect(submit.classList.contains('whitespace-nowrap')).toBe(true);
+  });
 });
