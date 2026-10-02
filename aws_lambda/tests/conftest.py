@@ -109,16 +109,18 @@ class FakeConnection:
 
 
 class FakeResend:
-    """Records emails instead of sending them; set `fail = True` to make sending raise."""
+    """Records emails instead of sending them; set `fail = True` to make every send raise, or add addresses to
+    `fail_for` to make only emails to them raise."""
 
     def __init__(self):
-        # Every email "sent", and whether sending should fail.
+        # Every email "sent", whether sending should fail, and the addresses whose emails should fail.
         self.sent = []
         self.fail = False
+        self.fail_for = set()
 
     def send(self, params, options=None):
-        # Simulate an outage or bad API key.
-        if self.fail:
+        # Simulate an outage, or a send refused for one recipient (e.g. a mistyped customer address).
+        if self.fail or self.fail_for & set(params["to"]):
             raise RuntimeError("resend is down")
         self.sent.append(params)
         return {"id": f"fake-{len(self.sent)}"}

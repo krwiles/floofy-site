@@ -23,6 +23,22 @@ REQUEST_WINDOW_HOURS = 24
 # numeric(10, 2) in commission_requests holds prices below 100,000,000
 MAX_PRICE = 100_000_000
 
+# The longest each text field may be, matching the form and the table's columns (exactly at the limit is fine)
+MAX_LENGTHS = {
+    "name": 50,
+    "email": 100,
+    "commission_type": 50,
+    "description": 2000,
+    "reference_links": 2000,
+    "usage_type": 50,
+    "usage_explanation": 2000,
+    "deadline": 50,
+    "additional_notes": 2000,
+}
+
+# The fields the form requires; the rest may be left empty
+REQUIRED_FIELDS = ("name", "email", "commission_type", "description", "usage_type", "usage_explanation")
+
 RECENT_REQUESTS_QUERY = """
 SELECT COUNT(*) AS recent
 FROM commission_requests
@@ -54,7 +70,7 @@ class CommissionRequest:
     deadline: str
     additional_notes: str
 
-    # Build one from the JSON body: text trimmed, anything missing empty (a missing price is -1, which validation rejects)
+    # Build one from the JSON body: text trimmed, missing text empty, price rounded to cents (missing: -1, rejected)
     @classmethod
     def from_body(cls, body: dict) -> "CommissionRequest":
         return cls(
@@ -65,7 +81,7 @@ class CommissionRequest:
             reference_links=str(body.get("referenceLinks", "")).strip(),
             usage_type=str(body.get("usageType", "")).strip(),
             usage_explanation=str(body.get("usageExplanation", "")).strip(),
-            estimated_price=float(body.get("estimatedPrice", -1.0)),
+            estimated_price=round(float(body.get("estimatedPrice", -1.0)), 2),
             deadline=str(body.get("deadline", "")).strip(),
             additional_notes=str(body.get("additionalNotes", "")).strip(),
         )
@@ -85,7 +101,7 @@ def lambda_handler(event, context):
 
 
 def main(event):
-    # Parse the request body into dataclass
+    # Read the JSON body into a CommissionRequest, with its text trimmed
     body = json.loads(event["body"])
     commission_request = CommissionRequest.from_body(body)
     
@@ -128,17 +144,17 @@ def main(event):
         request_id = cur.fetchone()["id"]
     log("commission_saved", request_id=request_id, ip=sender_ip_address)
 
-    # Format and send emails
+    # Email the owner; if that fails the visitor gets an error, since nobody would know the request arrived
     floofy_email_result = email_floofy(commission_request, request_id, sender_ip_address)
     if floofy_email_result["statusCode"] >= 400:
         return floofy_email_result
 
-    customer_email_result = email_customer(commission_request)
-    if customer_email_result["statusCode"] >= 400:
-        return customer_email_result
-    log("commission_emails_sent", request_id=request_id)
-    
-    # Both emails sent: tell the visitor it worked
+    # Then the customer's confirmation; its failure is only logged, because the owner already has the request
+    customer_email_result = email_customer(commission_request, request_id)
+    if customer_email_result["statusCode"] < 400:
+        log("commission_emails_sent", request_id=request_id)
+
+    # The owner has the request: tell the visitor it worked
     return reply(200, "ok")
 
 
@@ -180,10 +196,10 @@ def email_floofy(commission_request: CommissionRequest, request_id: int, sender_
     """
     
     # Send the email to Floofy
-    return send_email(admin_recipients(), email_subject, email_body)
+    return send_email(admin_recipients(), email_subject, email_body, request_id, "owner")
 
 
-def email_customer(commission_request: CommissionRequest):
+def email_customer(commission_request: CommissionRequest, request_id: int):
     # Format the email content
     email_subject = "Commission Request Confirmation"
     to_email = commission_request.email
@@ -209,29 +225,19 @@ def email_customer(commission_request: CommissionRequest):
     """
     
     # Send the email to the customer
-    return send_email([to_email], email_subject, email_body, reply_to=admin_recipients())
+    return send_email([to_email], email_subject, email_body, request_id, "customer", reply_to=admin_recipients())
 
 
 def validate_request(commission_request: CommissionRequest):
-    # Input validation
-    if len(commission_request.name) > 50:
-        return reply(400, "invalid")
-    if len(commission_request.email) > 100:
-        return reply(400, "invalid")
-    if len(commission_request.description) > 2000:
-        return reply(400, "invalid")
-    if len(commission_request.reference_links) > 2000:
-        return reply(400, "invalid")
-    if len(commission_request.additional_notes) > 2000:
-        return reply(400, "invalid")
-    if len(commission_request.deadline) > 50:
-        return reply(400, "invalid")
-    if len(commission_request.usage_type) > 50:
-        return reply(400, "invalid")
-    if len(commission_request.commission_type) > 50:
-        return reply(400, "invalid")
-    if len(commission_request.usage_explanation) > 2000:
-        return reply(400, "invalid")
+    # Refuse a required field left blank
+    for field in REQUIRED_FIELDS:
+        if not getattr(commission_request, field):
+            return reply(400, "invalid")
+
+    # Refuse any text longer than the form (and its column) allows
+    for field, max_length in MAX_LENGTHS.items():
+        if len(getattr(commission_request, field)) > max_length:
+            return reply(400, "invalid")
 
     # The price must be a real number the database column can store (a missing price arrives as -1)
     price = commission_request.estimated_price
@@ -241,33 +247,34 @@ def validate_request(commission_request: CommissionRequest):
     return None
 
 
-def send_email(to_emails, subject, body, reply_to=None):
-    
+def send_email(to_emails, subject, body, request_id, recipient, reply_to=None):
+    """Send one email; on failure, log it against the saved request and return a generic error reply.
+    `recipient` ("owner" or "customer") labels the log line without recording anyone's address."""
     # Authenticate with Resend using this Lambda's API key
     resend.api_key = os.environ.get("RESEND_API_KEY")
-    
+
     try:
         # The email to send, from the site's own address
-        commission_details: resend.Emails.SendParams = {
-        "from": EMAIL_FROM,
-        "to": to_emails,
-        "subject": subject,
-        # Full HTML document plus a plain-text copy
-        **email_content(body),
+        email_params: resend.Emails.SendParams = {
+            "from": EMAIL_FROM,
+            "to": to_emails,
+            "subject": subject,
+            # Full HTML document plus a plain-text copy
+            **email_content(body),
         }
 
         # Let the recipient reply to a real person rather than the no-reply sender
         if reply_to:
-            commission_details["reply_to"] = reply_to
-        
+            email_params["reply_to"] = reply_to
+
         # Send it; resend.Emails.send raises on any API or network error
-        resend.Emails.send(commission_details)
-    
+        resend.Emails.send(email_params)
+
     except Exception as e:
-        # Record the real error; the visitor only sees the generic message below
-        log("email_failed", error=repr(e))
+        # Record the real error and which saved request it belongs to; the visitor only sees the generic reply below
+        log("email_failed", request_id=request_id, to=recipient, error=repr(e))
         # A generic reply: naming the recipients would reveal the admins' addresses to the visitor
         return reply(500, "error")
-            
+
     # Sent: callers only check the status code
     return reply(200, "ok")
