@@ -33,7 +33,6 @@ export class Gallery {
     this.showLightBox.set(true);
 
     // Lock page scroll: remember the position, then pin the body in place at it.
-    // Lock scroll
     this.scrollY = window.scrollY;
     const body = this.document.body;
     const root = this.document.documentElement;
@@ -45,7 +44,6 @@ export class Gallery {
     body.style.width = '100%';
 
     // Pad for the scrollbar that just disappeared, so content doesn't shift sideways.
-    // Compensate for removed scrollbar to prevent horizontal content shift.
     if (scrollbarWidth > 0) {
       body.style.paddingRight = `${scrollbarWidth}px`;
     }
@@ -63,7 +61,6 @@ export class Gallery {
     this.selectedImage.set(null);
 
     // Unlock page scroll: undo the body pinning, then jump back to where the visitor was.
-    // Unlock scroll
     const body = this.document.body;
     const root = this.document.documentElement;
     body.style.position = '';
@@ -71,6 +68,6 @@ export class Gallery {
     body.style.width = '';
     body.style.paddingRight = '';
     root.style.removeProperty('--scrollbar-compensation');
-    window.scrollTo(0, this.scrollY); // Restore scroll position
+    window.scrollTo(0, this.scrollY);
   }
 }

@@ -84,8 +84,7 @@ describe('SlideshowCarousel', () => {
     const current = fixture.componentInstance.transformFor(1);
     expect(current).toBe('translateX(0%) scaleX(1)');
 
-    // ...every other slide is shrunk by the same amount...
-    // Every other slide (any nonzero offset) is shrunk the same amount.
+    // ...every other slide (any nonzero offset) is shrunk by the same amount...
     expect(fixture.componentInstance.scaleFor(2)).toBeLessThan(1);
     expect(fixture.componentInstance.scaleFor(0)).toBe(fixture.componentInstance.scaleFor(2));
 
@@ -134,7 +133,6 @@ describe('SlideshowCarousel', () => {
     expect(visibleAlt(fixture)).toBe('Three');
 
     // ...then past the end, back to One.
-    // Wraps forward past the last image back to the first.
     fixture.componentInstance.next();
     fixture.detectChanges();
     expect(visibleAlt(fixture)).toBe('One');
@@ -195,8 +193,8 @@ describe('SlideshowCarousel', () => {
     expect(visibleAlt(fixture)).toBe('Three');
   });
 
-  // Arrange: render.
   it('clicking the arrow buttons navigates, and they are labeled for assistive tech', () => {
+    // Arrange: render.
     fixture = create();
     fixture.detectChanges();
 

@@ -12,7 +12,6 @@ import { Button } from '../../shared/directives/button';
 import { SocialLinks } from '../../shared/components/social-links/social-links';
 
 // The global set by Twitter's widgets script (loaded in index.html), declared so TypeScript knows its shape.
-// Declare the Twitter widgets object to avoid TypeScript errors
 declare const twttr: { widgets: { load: () => void } };
 
 @Component({
