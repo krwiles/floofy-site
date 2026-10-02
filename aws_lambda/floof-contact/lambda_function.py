@@ -12,6 +12,7 @@ from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM, admin_recipients, email_content
+from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
 
@@ -32,6 +33,7 @@ class ContactRequest:
         )
 
 
+@replies_on_unexpected_errors
 def lambda_handler(event, context):
     # Record every call: requests are rare, so each one is worth seeing in CloudWatch
     log_request(event)
@@ -41,7 +43,7 @@ def lambda_handler(event, context):
     if method == "POST":
         return main(event)
     
-    return response(405, {"message": "Method Not Allowed"})
+    return reply(405, "error")
 
 
 def main(event):
@@ -61,7 +63,7 @@ def main(event):
         blocked = is_blocked(cur, sender_ip_address)
     if blocked:
         log("refused", reason="blocked", ip=sender_ip_address)
-        return response(403, {"message": "Internal Server Error"})
+        return reply(403, "error")
 
     # Format and send emails
     floofy_email_result = email_floofy(contact_request, sender_ip_address)
@@ -70,7 +72,7 @@ def main(event):
     log("contact_email_sent", ip=sender_ip_address)
     
     # Sent: tell the visitor it worked
-    return response(200, {"message": "Commission request submitted successfully! You will receive a confirmation email shortly."})
+    return reply(200, "ok")
 
 
 def email_floofy(contact_request: ContactRequest, sender_ip_address):
@@ -102,11 +104,11 @@ def email_floofy(contact_request: ContactRequest, sender_ip_address):
 def validate_request(contact_request: ContactRequest):
     # Input validation
     if len(contact_request.name) >= 50:
-        return response(400, {"message": "Bad Request: name must be fewer than 50 characters"})
+        return reply(400, "invalid")
     if len(contact_request.email) >= 50:
-        return response(400, {"message": "Bad Request: email must be fewer than 50 characters"})
+        return reply(400, "invalid")
     if len(contact_request.message) >= 2000:
-        return response(400, {"message": "Bad Request: message must be fewer than 2000 characters"})
+        return reply(400, "invalid")
 
     return None
 
@@ -133,18 +135,7 @@ def send_email(to_emails, subject, body):
         # Record the real error; the visitor only sees the generic message below
         log("email_failed", error=repr(e))
         # A generic reply: naming the recipients would reveal the admins' addresses to the visitor
-        return response(500, {"message": "Sorry, something went wrong sending your message. Please try again later."})
+        return reply(500, "error")
             
     # Sent: callers only check the status code
-    return response(200, {"message": "email sent successfully"})
-
-
-def response(status, body):
-    # A JSON reply in the shape Lambda function URLs expect
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-        },
-        "body": json.dumps(body)
-    }
+    return reply(200, "ok")

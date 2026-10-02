@@ -5,7 +5,7 @@ import time
 import pytest
 
 import admin_links
-from conftest import admin_tokens, make_event
+from conftest import admin_tokens, body_of, make_event
 
 EVIL = '<a href="//evil.example">x</a>'
 
@@ -40,7 +40,7 @@ def test_blocked_ip_gets_the_vague_403_and_no_email(contact, emails, cursor, con
 
     # Assert: the same deliberately vague reply as reviews, the IP was checked, and nothing was sent.
     assert result["statusCode"] == 403
-    assert json.loads(result["body"]) == {"message": "Internal Server Error"}
+    assert body_of(result) == {"code": "error"}
     assert cursor.queries("FROM blocked_ips")[0][1] == ("203.0.113.7",)
     assert emails.sent == []
     assert connection.closed
@@ -105,4 +105,51 @@ def test_email_failure_reply_never_reveals_admin_addresses(contact, emails, monk
     # Assert: a generic 500 for the visitor, naming no admin address.
     assert result["statusCode"] == 500
     assert "admin@example.com" not in result["body"]
-    assert "try again later" in json.loads(result["body"])["message"].lower()
+    assert body_of(result) == {"code": "error"}
+
+
+# --- Response contract: a code, never prose -----------------------------------------------------------------
+
+
+def test_sent_message_replies_ok(contact, emails):
+    # Act and assert: 200 with just the code.
+    result = contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
+    assert (result["statusCode"], body_of(result)) == (200, {"code": "ok"})
+
+
+def test_too_long_field_replies_invalid(contact, emails):
+    # Act and assert: 400 with no per-field detail.
+    result = contact.lambda_handler(make_event("POST", {"name": "x" * 60, "email": "b", "message": "c"}), None)
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+
+
+def test_unsupported_method_replies_error(contact):
+    # Act and assert: 405 with the generic code.
+    result = contact.lambda_handler(make_event("PATCH"), None)
+    assert (result["statusCode"], body_of(result)) == (405, {"code": "error"})
+
+
+# --- Anything unexpected still answers with a code ------------------------------------------------------------
+
+
+@pytest.mark.parametrize("body", ["not json", None], ids=["malformed", "missing"])
+def test_unreadable_body_replies_error(contact, emails, capsys, body):
+    # Act: post a body that isn't JSON at all.
+    result = contact.lambda_handler(make_event("POST", body=body), None)
+
+    # Assert: a coded 500 rather than a crash, with the real cause logged for CloudWatch.
+    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
+    assert "unexpected_error" in capsys.readouterr().out
+
+
+def test_database_outage_replies_error(contact, emails, monkeypatch):
+    # Arrange: the database can't be reached.
+    def unreachable():
+        raise ConnectionError("neon is down")
+
+    monkeypatch.setattr(contact, "connect_to_db", unreachable)
+
+    # Act and assert: a coded 500, and nothing was emailed.
+    result = contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
+    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
+    assert emails.sent == []

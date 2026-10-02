@@ -13,10 +13,12 @@ from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM, admin_recipients, email_content
+from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
-# More than this many requests from one IP in 24 hours are refused — see spec.md "floof-comm"
-MAX_REQUESTS_PER_DAY = 2
+# More than this many requests from one IP per window are refused -- see spec.md "floof-comm"; the reply carries both
+REQUESTS_PER_WINDOW = 2
+REQUEST_WINDOW_HOURS = 24
 
 # numeric(10, 2) in commission_requests holds prices below 100,000,000
 MAX_PRICE = 100_000_000
@@ -25,7 +27,7 @@ RECENT_REQUESTS_QUERY = """
 SELECT COUNT(*) AS recent
 FROM commission_requests
 WHERE ip_address = %s
-    AND created_at >= NOW() - INTERVAL '24 hours'
+    AND created_at >= NOW() - %s * INTERVAL '1 hour'
 """
 
 INSERT_QUERY = """
@@ -69,6 +71,7 @@ class CommissionRequest:
         )
 
 
+@replies_on_unexpected_errors
 def lambda_handler(event, context):
     # Record every call: requests are rare, so each one is worth seeing in CloudWatch
     log_request(event)
@@ -78,7 +81,7 @@ def lambda_handler(event, context):
     if method == "POST":
         return main(event)
     
-    return response(405, {"message": "Method Not Allowed"})
+    return reply(405, "error")
 
 
 def main(event):
@@ -100,13 +103,13 @@ def main(event):
         # Refuse blocked IPs with the same vague reply the other endpoints give
         if is_blocked(cur, sender_ip_address):
             log("refused", reason="blocked", ip=sender_ip_address)
-            return response(403, {"message": "Internal Server Error"})
+            return reply(403, "error")
 
-        # Refuse a third request from the same IP within 24 hours
-        cur.execute(RECENT_REQUESTS_QUERY, (sender_ip_address,))
-        if cur.fetchone()["recent"] >= MAX_REQUESTS_PER_DAY:
+        # Refuse the IP once it has reached the limit within the window
+        cur.execute(RECENT_REQUESTS_QUERY, (sender_ip_address, REQUEST_WINDOW_HOURS))
+        if cur.fetchone()["recent"] >= REQUESTS_PER_WINDOW:
             log("refused", reason="rate_limited", ip=sender_ip_address)
-            return response(429, {"message": "You have sent several commission requests recently. Please try again later."})
+            return reply(429, "rate_limited", limit=REQUESTS_PER_WINDOW, window_hours=REQUEST_WINDOW_HOURS)
 
         # Save the request; RETURNING id hands back the new row's id for the admin link
         cur.execute(INSERT_QUERY, (
@@ -136,7 +139,7 @@ def main(event):
     log("commission_emails_sent", request_id=request_id)
     
     # Both emails sent: tell the visitor it worked
-    return response(200, {"message": "Thank you! Your commission request submitted successfully. You will receive a confirmation email soon."})
+    return reply(200, "ok")
 
 
 def escaped(commission_request: CommissionRequest) -> CommissionRequest:
@@ -212,28 +215,28 @@ def email_customer(commission_request: CommissionRequest):
 def validate_request(commission_request: CommissionRequest):
     # Input validation
     if len(commission_request.name) > 50:
-        return response(400, {"message": "Bad Request: name must be fewer than 50 characters"})
+        return reply(400, "invalid")
     if len(commission_request.email) > 100:
-        return response(400, {"message": "Bad Request: email must be fewer than 100 characters"})
+        return reply(400, "invalid")
     if len(commission_request.description) > 2000:
-        return response(400, {"message": "Bad Request: description must be fewer than 2000 characters"})
+        return reply(400, "invalid")
     if len(commission_request.reference_links) > 2000:
-        return response(400, {"message": "Bad Request: reference links must be fewer than 2000 characters"})
+        return reply(400, "invalid")
     if len(commission_request.additional_notes) > 2000:
-        return response(400, {"message": "Bad Request: additional notes must be fewer than 2000 characters"})
+        return reply(400, "invalid")
     if len(commission_request.deadline) > 50:
-        return response(400, {"message": "Bad Request: deadline must be fewer than 50 characters"})
+        return reply(400, "invalid")
     if len(commission_request.usage_type) > 50:
-        return response(400, {"message": "Bad Request: usage type must be fewer than 50 characters"})
+        return reply(400, "invalid")
     if len(commission_request.commission_type) > 50:
-        return response(400, {"message": "Bad Request: commission type must be fewer than 50 characters"})
+        return reply(400, "invalid")
     if len(commission_request.usage_explanation) > 2000:
-        return response(400, {"message": "Bad Request: usage explanation must be fewer than 2000 characters"})
+        return reply(400, "invalid")
 
     # The price must be a real number the database column can store (a missing price arrives as -1)
     price = commission_request.estimated_price
     if not math.isfinite(price) or price < 0 or price >= MAX_PRICE:
-        return response(400, {"message": "Bad Request: estimated price must be a number from 0 to 99,999,999.99"})
+        return reply(400, "invalid")
 
     return None
 
@@ -264,18 +267,7 @@ def send_email(to_emails, subject, body, reply_to=None):
         # Record the real error; the visitor only sees the generic message below
         log("email_failed", error=repr(e))
         # A generic reply: naming the recipients would reveal the admins' addresses to the visitor
-        return response(500, {"message": "Sorry, something went wrong sending your message. Please try again later."})
+        return reply(500, "error")
             
     # Sent: callers only check the status code
-    return response(200, {"message": "Email sent successfully"})
-
-
-def response(status, body):
-    # A JSON reply in the shape Lambda function URLs expect
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-        },
-        "body": json.dumps(body)
-    }
+    return reply(200, "ok")

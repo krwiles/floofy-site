@@ -127,14 +127,16 @@ group for a pill-radio group, below the checkbox row for a checkbox).
 ## Form Status
 
 The single, page-visible readout of a form's current submission state — idle, pending, success, or error — text
-and color together, driven from one source of truth. Distinct from **Form Submission** (below): a Form Status
-is what the person sees; a Form Submission is the action that changes it.
+and color together, driven from one source of truth. It holds an i18n key (plus any placeholder values), translated
+when shown, so it follows the site's language. Distinct from **Form Submission** (below): a Form Status is what the
+person sees; a Form Submission is the action that changes it.
 
 ## Form Submission
 
 The async action a form runs when a valid submit happens: send the request to the backend, then update Form
 Status to success or error depending on the outcome. Shared shape across every form on the site (send a typed
-request, get back the same `{ message }` response shape, update Form Status) even though each form's actual
+request, get back a status code -- `ok`, `invalid`, `rate_limited` or `error` -- and set Form Status to that form's
+own message for it) even though each form's actual
 request payload and on-success side effect differ (contact resets its fields; reviews refreshes its list;
 commission does neither).
 

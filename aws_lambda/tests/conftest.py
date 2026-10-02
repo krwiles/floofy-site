@@ -172,6 +172,11 @@ def load_lambda(monkeypatch, connection):
     return load
 
 
+def body_of(result):
+    """The decoded JSON body of a Lambda response."""
+    return json.loads(result["body"])
+
+
 def admin_tokens(html):
     """Every admin-link token found in an email body."""
     return re.findall(r"https://admin\.example/\?token=([A-Za-z0-9_\-.]+)", html)

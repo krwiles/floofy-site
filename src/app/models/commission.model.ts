@@ -12,5 +12,5 @@ export interface CreateCommissionRequest {
 }
 
 export interface CreateCommissionResponse {
-  message: string;
+  code: 'ok';
 }

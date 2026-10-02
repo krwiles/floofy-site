@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import pytest
 
 import admin_links
-from conftest import admin_tokens, logged, make_event
+from conftest import admin_tokens, body_of, logged, make_event
 
 
 @pytest.fixture
@@ -109,7 +109,7 @@ def test_blocked_ip_gets_no_review_and_no_email(api, cursor, emails):
 
     # Assert: the existing vague refusal, with nothing inserted or emailed.
     assert result["statusCode"] == 403
-    assert json.loads(result["body"]) == {"message": "Internal Server Error"}
+    assert body_of(result) == {"code": "error"}
     assert cursor.queries("INSERT") == []
     assert emails.sent == []
 
@@ -144,3 +144,59 @@ def test_every_email_has_a_full_html_document_and_a_text_version(api, emails):
     for sent in emails.sent:
         assert sent["html"].startswith("<!doctype html>")
         assert sent["text"].strip() and "<p>" not in sent["text"]
+
+
+# --- Response contract: a code (plus the rule, for rate limits), never prose -----------------------------------
+
+
+def test_saved_review_replies_ok(api, emails):
+    # Act and assert: 201 with just the code.
+    result = post_review(api)
+    assert (result["statusCode"], body_of(result)) == (201, {"code": "ok"})
+
+
+def test_too_long_review_replies_invalid(api, emails):
+    # Act and assert: 400 with no per-field detail.
+    result = post_review(api, author="x" * 60)
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+
+
+def test_rate_limited_review_replies_with_the_rule(api, cursor, emails):
+    # Arrange: already posted within the hour.
+    cursor.on("INTERVAL '1 hour'", rows=[{"count": 1}])
+
+    # Act and assert: 429 carrying the limit, so the site never hard-codes it.
+    result = post_review(api)
+    assert (result["statusCode"], body_of(result)) == (429, {"code": "rate_limited", "limit": 1, "window_hours": 1})
+
+
+def test_unsupported_method_replies_error(api):
+    # Act and assert: 405 with the generic code.
+    result = api.lambda_handler(make_event("PATCH"), None)
+    assert (result["statusCode"], body_of(result)) == (405, {"code": "error"})
+
+
+# --- Anything unexpected still answers with a code ------------------------------------------------------------
+
+
+@pytest.mark.parametrize("body", ["not json", None], ids=["malformed", "missing"])
+def test_unreadable_body_replies_error(api, emails, capsys, body):
+    # Act: post a body that isn't JSON at all.
+    result = api.lambda_handler(make_event("POST", body=body), None)
+
+    # Assert: a coded 500 rather than a crash, with the real cause logged for CloudWatch.
+    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
+    assert "unexpected_error" in capsys.readouterr().out
+
+
+def test_database_outage_replies_error(api, emails, monkeypatch):
+    # Arrange: the database can't be reached.
+    def unreachable():
+        raise ConnectionError("neon is down")
+
+    monkeypatch.setattr(api, "connect_to_db", unreachable)
+
+    # Act and assert: a coded 500, and nothing was emailed.
+    result = api.lambda_handler(make_event("POST", {"author": "Robin", "comment": "Lovely"}), None)
+    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
+    assert emails.sent == []

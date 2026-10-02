@@ -3,6 +3,7 @@ import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import en from '../../assets/i18n/en.json';
 import ja from '../../assets/i18n/ja.json';
 import { ListGroup } from '../models/list-group';
+import { TranslateParams } from '../models/translate-params';
 
 export type Locale = 'en' | 'ja';
 
@@ -35,10 +36,18 @@ export class I18nService {
     this.localeSignal.set(locale);
   }
 
-  t(key: string): string {
+  /** The translated string for `key`, with each `{name}` placeholder filled from `params`. */
+  t(key: string, params: TranslateParams = {}): string {
     // Echo the key back when it's missing, so a typo shows up visibly on the page.
     const value = this.lookup(key);
-    return typeof value === 'string' ? value : key;
+    if (typeof value !== 'string') {
+      return key;
+    }
+
+    // Fill each {name} that has a value; leave the rest as-is, so a missing value is visible rather than blank.
+    return value.replace(/\{(\w+)\}/g, (placeholder, name: string) =>
+      name in params ? String(params[name]) : placeholder,
+    );
   }
 
   /** A flat list of strings, e.g. a pricing card's `includes`. Array-shaped content that `t()` can't return. */

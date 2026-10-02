@@ -469,5 +469,28 @@
     "reviews": { "label": "REVIEWS", "route": "/reviews" },
     "donate": { "label": "DONATE", "route": "/donate" },
     "contact": { "label": "CONTACT", "route": "/contact" }
+  },
+  "forms": {
+    "contact": {
+      "pending": "Sending your message...",
+      "invalid": "Please correct the errors in the form before sending.",
+      "ok": "Thank you! Your message has been sent.",
+      "rate_limited": "Message limit reached ({limit} per {window_hours} h). Please try again later.",
+      "error": "Sorry, something went wrong sending your message. Please try again later."
+    },
+    "review": {
+      "pending": "Submitting your review...",
+      "invalid": "Please correct the errors in the form before submitting.",
+      "ok": "Thank you for your review!",
+      "rate_limited": "Review limit reached ({limit} per {window_hours} h). Please try again later.",
+      "error": "Sorry, something went wrong submitting your review. Please try again later."
+    },
+    "commission": {
+      "pending": "Submitting your commission request...",
+      "invalid": "Please correct the errors in the form before submitting.",
+      "ok": "Thank you! Your commission request was submitted. You'll receive a confirmation email soon.",
+      "rate_limited": "Request limit reached ({limit} per {window_hours} h). Please try again later.",
+      "error": "Sorry, something went wrong submitting your request. Please try again later."
+    }
   }
 }

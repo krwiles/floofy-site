@@ -16,12 +16,12 @@ None of it can be translated. The wording also lives on the server, far from the
 
 Every response body is JSON with a `code`. The codes are the same for every Lambda:
 
-| `code`         | HTTP      | When                                                       | Extra fields           |
-| -------------- | --------- | ---------------------------------------------------------- | ---------------------- |
-| `ok`           | 200 / 201 | Saved and/or sent                                          | —                      |
-| `invalid`      | 400       | Failed server-side validation (too long, bad price, …)     | —                      |
-| `rate_limited` | 429       | Over this Lambda's limit                                   | `limit`, `window_hours` |
-| `error`        | 403 / 500 | Blocked IP, email failure, or anything unexpected; also 405 | —                      |
+| `code`         | HTTP      | When                                                        | Extra fields            |
+| -------------- | --------- | ----------------------------------------------------------- | ----------------------- |
+| `ok`           | 200 / 201 | Saved and/or sent                                           | —                       |
+| `invalid`      | 400       | Failed server-side validation (too long, bad price, …)      | —                       |
+| `rate_limited` | 429       | Over this Lambda's limit                                    | `limit`, `window_hours` |
+| `error`        | 403 / 500 | Blocked IP, email failure, or anything unexpected; also 405 | —                       |
 
 - **`rate_limited`** carries the rule itself, from the Lambda's own constants, so the limit is defined once (on the
   server):
@@ -40,7 +40,10 @@ Every response body is JSON with a `code`. The codes are the same for every Lamb
   body with no code, becomes `{ code: 'error' }`.
 - **Models:** `ApiError` and the three `Create…Response` types become the code shape instead of `{ message }`.
 - **`createFormSubmission`** takes an i18n key prefix (e.g. `forms.review`) instead of `pendingMessage` /
-  `invalidMessage`. It sets the status text from `<prefix>.pending`, `<prefix>.invalid` and `<prefix>.<code>`.
+  `invalidMessage`. It sets the status to `<prefix>.pending`, `<prefix>.invalid`, `<prefix>.ok` or `<prefix>.<code>`.
+- **`FormSubmissionStatus`** holds that i18n key (plus placeholder values) instead of finished text, and
+  `app-form-status` translates it when it renders. That way a message also switches language if the visitor toggles
+  EN/日本語 after submitting. (Settled while building; not in the original plan.)
 - **`I18nService.t()`** gains simple `{name}` placeholders, e.g. `t(key, { limit: 2, window_hours: 24 })`, so the
   rate-limit text can use the numbers from the response.
 - **New i18n keys, in both `en.json` and `ja.json`:**
@@ -51,10 +54,13 @@ Every response body is JSON with a `code`. The codes are the same for every Lamb
 
 ## Backend
 
-- **Each Lambda's `response()` helper** takes a code, plus optional extra fields, instead of a message.
+- **A shared `aws_lambda/shared/replies.py`** provides `reply(status, code, **extra)` (alongside `response()`, which
+  the review list still uses) and a `replies_on_unexpected_errors` wrapper on each form Lambda's handler. That way even
+  a crash (a malformed body, a non-numeric price, a database outage) is logged and answered `500 {"code": "error"}`.
 - **`floof-api`:** the 400s become `invalid`; blocked becomes `error` (still a 403); rate limit becomes `rate_limited`
-  with `limit: 1`, `window_hours: 1`; created becomes `ok`.
-- **`floof-comm`:** the same set, with `limit: MAX_REQUESTS_PER_DAY`, `window_hours: 24`.
+  with `limit: REVIEWS_PER_WINDOW` (1), `window_hours: REVIEW_WINDOW_HOURS` (1); created becomes `ok`. The same
+  constants feed the rate-limit query.
+- **`floof-comm`:** the same set, with `limit: REQUESTS_PER_WINDOW` (2), `window_hours: REQUEST_WINDOW_HOURS` (24).
 - **`floof-contact`:** `invalid`, `error` and `ok`.
 - **Logging is unchanged.** CloudWatch still records the real reason (`refused` / `blocked` / `email_failed`).
 

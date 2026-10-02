@@ -31,7 +31,7 @@ describe('ApiService', () => {
     const req = httpMock.expectOne(API_URLS.contact);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(request);
-    req.flush({ message: 'Thanks!' });
+    req.flush({ code: 'ok' });
   });
 
   it('gets reviews from the reviews Lambda URL', () => {
@@ -53,7 +53,7 @@ describe('ApiService', () => {
     const req = httpMock.expectOne(API_URLS.reviews);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(request);
-    req.flush({ message: 'Thanks!' });
+    req.flush({ code: 'ok' });
   });
 
   it('posts a commission submission to the commission Lambda URL', () => {
@@ -77,36 +77,50 @@ describe('ApiService', () => {
     const req = httpMock.expectOne(API_URLS.commission);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(request);
-    req.flush({ message: 'Thanks!' });
+    req.flush({ code: 'ok' });
   });
 
-  it('normalizes a JSON error body into a plain { message } shape', () => {
+  it("passes the Lambda's error code through", () => {
     // Arrange: submit, capturing whatever error comes back.
     let caught: unknown;
     service.submitContact({ name: '', email: '', message: '' }).subscribe({
       error: (err) => (caught = err),
     });
 
-    // Act: the Lambda answers 400 with its own message.
+    // Act: the Lambda answers 400 with its code.
+    httpMock.expectOne(API_URLS.contact).flush({ code: 'invalid' }, { status: 400, statusText: 'Bad Request' });
+
+    // Assert: the caller gets exactly that code.
+    expect(caught).toEqual({ code: 'invalid' });
+  });
+
+  it('keeps the rate-limit rule that comes with a rate_limited code', () => {
+    // Arrange: submit, capturing whatever error comes back.
+    let caught: unknown;
+    service.submitReview({ author: 'a', comment: 'b' }).subscribe({ error: (err) => (caught = err) });
+
+    // Act: the Lambda refuses with its limit and window.
     httpMock
-      .expectOne(API_URLS.contact)
-      .flush({ message: 'Server-side validation failed.' }, { status: 400, statusText: 'Bad Request' });
+      .expectOne(API_URLS.reviews)
+      .flush({ code: 'rate_limited', limit: 1, window_hours: 1 }, { status: 429, statusText: 'Too Many Requests' });
 
-    // Assert: the caller gets exactly that message.
-    expect(caught).toEqual({ message: 'Server-side validation failed.' });
+    // Assert: the numbers survive, so the page can show them.
+    expect(caught).toEqual({ code: 'rate_limited', limit: 1, window_hours: 1 });
   });
 
-  it('normalizes an error with no JSON body into a plain { message } shape using the HTTP status text', () => {
+  it.each([
+    ['no body', null],
+    ['a body without a code', { message: 'old-style prose' }],
+    ['an unknown code', { code: 'surprise' }],
+  ])('treats an error with %s as a generic error', (_label, body) => {
     // Arrange: submit, capturing whatever error comes back.
     let caught: unknown;
-    service.submitContact({ name: '', email: '', message: '' }).subscribe({
-      error: (err) => (caught = err),
-    });
+    service.submitContact({ name: '', email: '', message: '' }).subscribe({ error: (err) => (caught = err) });
 
-    // Act: the Lambda answers 500 with no body.
-    httpMock.expectOne(API_URLS.contact).flush(null, { status: 500, statusText: 'Internal Server Error' });
+    // Act: the server fails without a usable code.
+    httpMock.expectOne(API_URLS.contact).flush(body, { status: 500, statusText: 'Internal Server Error' });
 
-    // Assert: the caller still gets a message, built from Angular's HTTP error text.
-    expect((caught as { message: string }).message).toContain('500');
+    // Assert: the caller still gets a code it can translate.
+    expect(caught).toEqual({ code: 'error' });
   });
 });

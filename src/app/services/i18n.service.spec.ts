@@ -243,4 +243,46 @@ describe('I18nService', () => {
       expect(service.t('commission.form.usage_type.unsure')).not.toBe('commission.form.usage_type.unsure');
     });
   });
+
+  describe('t() placeholders', () => {
+    it('fills {name} placeholders from the values given', () => {
+      // The service reads the real en.json, English by default.
+      const service = TestBed.inject(I18nService);
+
+      // The commission rate-limit message carries the server's limit and window.
+      const text = service.t('forms.commission.rate_limited', { limit: 2, window_hours: 24 });
+
+      // Both numbers are in, and no placeholder is left.
+      expect(text).toContain('2');
+      expect(text).toContain('24');
+      expect(text).not.toContain('{');
+    });
+
+    it('leaves a placeholder visible when no value is given, so the gap shows up in testing', () => {
+      // The service reads the real en.json, English by default.
+      const service = TestBed.inject(I18nService);
+
+      // No values passed at all.
+      expect(service.t('forms.commission.rate_limited')).toContain('{limit}');
+    });
+  });
+
+  describe('form status keys', () => {
+    it('has every status message for every form, in both locales', () => {
+      // The service reads the real en/ja JSON.
+      const service = TestBed.inject(I18nService);
+
+      // Every status key for every form: 3 forms x 5 statuses.
+      const keys = ['contact', 'review', 'commission'].flatMap((form) =>
+        ['pending', 'invalid', 'ok', 'rate_limited', 'error'].map((status) => `forms.${form}.${status}`),
+      );
+
+      // t() echoes a missing key back, so a real translation never equals its own key.
+      keys.forEach((key) => expect(service.t(key)).not.toBe(key));
+
+      // The same check in Japanese.
+      service.setLocale('ja');
+      keys.forEach((key) => expect(service.t(key)).not.toBe(key));
+    });
+  });
 });

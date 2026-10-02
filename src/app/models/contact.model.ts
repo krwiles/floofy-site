@@ -5,5 +5,5 @@ export interface CreateContactRequest {
 }
 
 export interface CreateContactResponse {
-  message: string;
+  code: 'ok';
 }

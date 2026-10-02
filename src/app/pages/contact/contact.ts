@@ -48,7 +48,7 @@ interface ContactFormData {
 export class Contact {
   private readonly apiService = inject(ApiService);
   // The message shown beside the submit button.
-  readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
+  readonly status = signal<FormSubmissionStatus>({ kind: 'idle', key: '' });
 
   // The form's current values.
   private readonly contactFormModel = signal<ContactFormData>({
@@ -75,8 +75,7 @@ export class Contact {
     {
       // Show progress, send the request, then clear the form on success.
       submission: createFormSubmission({
-        pendingMessage: 'Submitting contact...',
-        invalidMessage: 'Please correct the errors in the form before submitting.',
+        i18nPrefix: 'forms.contact',
         model: this.contactFormModel,
         status: this.status,
         buildRequest: (model): CreateContactRequest => ({
