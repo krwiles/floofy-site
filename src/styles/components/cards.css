@@ -136,14 +136,6 @@
   z-index: 1;
 }
 
-.card-shadow {
-  /* Flat shadow still used by streaming.html (excluded from Phase 3b -- docs/refactor/10-phase-3b-plan.md).
-     Remove once streaming moves to [appCard noBackground]. */
-  box-shadow:
-    0 0.65rem 1.6rem color-mix(in srgb, var(--color-section-dark-alt) 25%, transparent),
-    0 0.1rem 0.5rem color-mix(in srgb, var(--color-section-dark-alt) 15%, transparent);
-}
-
 .card-shadow-light {
   /* Shadow-only, tone-aware: same depth as .card-on-section-light, but no fill or border, for elevated images. */
   border-radius: 1rem;
