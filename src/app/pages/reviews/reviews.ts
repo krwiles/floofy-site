@@ -25,6 +25,13 @@ interface ReviewFormValue {
   agreement: boolean;
 }
 
+// What the reviews list shows instead of reviews, for each state of the list request.
+const PLACEHOLDER_KEYS = {
+  loading: { title: 'reviews.list.loading', note: 'reviews.list.loading_note' },
+  loaded: { title: 'reviews.list.empty', note: 'reviews.list.empty_note' },
+  failed: { title: 'reviews.list.failed', note: 'reviews.list.failed_note' },
+} as const;
+
 @Component({
   selector: 'app-reviews',
   imports: [
@@ -54,11 +61,8 @@ export class Reviews implements OnInit {
   readonly reviews = signal<Review[]>([]);
   // Whether the list has arrived, is still coming, or couldn't be fetched.
   private readonly listState = signal<'loading' | 'loaded' | 'failed'>('loading');
-  // The i18n key prefix for the card shown while there are no reviews to list: loading, empty or failed.
-  readonly placeholderKey = computed(() => {
-    const state = this.listState();
-    return `reviews.list.${state === 'loaded' ? 'empty' : state}`;
-  });
+  // The card shown while there are no reviews to list: its title and note keys for loading, empty or failed.
+  readonly placeholder = computed(() => PLACEHOLDER_KEYS[this.listState()]);
   // The message shown beside the submit button.
   readonly status = signal<FormSubmissionStatus>({ kind: 'idle', key: '' });
 

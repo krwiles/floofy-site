@@ -196,7 +196,7 @@ def email_floofy(commission_request: CommissionRequest, request_id: int, sender_
     """
     
     # Send the email to Floofy
-    return send_email(admin_recipients(), email_subject, email_body, request_id, "owner")
+    return send_email(admin_recipients(), email_subject, email_body, request_id, recipient="owner")
 
 
 def email_customer(commission_request: CommissionRequest, request_id: int):
@@ -225,7 +225,7 @@ def email_customer(commission_request: CommissionRequest, request_id: int):
     """
     
     # Send the email to the customer
-    return send_email([to_email], email_subject, email_body, request_id, "customer", reply_to=admin_recipients())
+    return send_email([to_email], email_subject, email_body, request_id, recipient="customer", reply_to=admin_recipients())
 
 
 def validate_request(commission_request: CommissionRequest):

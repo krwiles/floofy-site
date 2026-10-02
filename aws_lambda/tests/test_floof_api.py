@@ -259,15 +259,16 @@ def test_database_outage_replies_error(api, emails, monkeypatch):
     assert emails.sent == []
 
 
-def test_a_failure_mid_request_still_closes_the_connection(api, cursor, connection, emails, monkeypatch):
+@pytest.mark.parametrize("method", ["GET", "POST"])
+def test_a_failure_mid_request_still_closes_the_connection(api, cursor, connection, emails, monkeypatch, method):
     # Arrange: the database drops halfway through, on the first query.
     def dropped(query, params=None):
         raise ConnectionError("connection lost")
 
     monkeypatch.setattr(cursor, "execute", dropped)
 
-    # Act: post a review.
-    result = post_review(api)
+    # Act: list the reviews, or post one.
+    result = api.lambda_handler(make_event("GET"), None) if method == "GET" else post_review(api)
 
     # Assert: a coded 500, and the connection was still closed rather than leaked.
     assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})

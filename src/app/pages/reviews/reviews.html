@@ -29,8 +29,8 @@
     @if (reviews().length === 0) {
       <!-- Loading, empty or failed, depending on how the list request went -->
       <div appCard tone="dark" class="px-6 py-6 text-center sm:px-7 sm:py-7">
-        <p class="text-lg font-semibold text-on-dark-heading">{{ placeholderKey() | translate }}</p>
-        <p class="mt-2 text-on-dark-body">{{ placeholderKey() + '_note' | translate }}</p>
+        <p class="text-lg font-semibold text-on-dark-heading">{{ placeholder().title | translate }}</p>
+        <p class="mt-2 text-on-dark-body">{{ placeholder().note | translate }}</p>
       </div>
     } @else {
       <ol class="columns-1 gap-x-6 sm:columns-2" aria-label="Client reviews">

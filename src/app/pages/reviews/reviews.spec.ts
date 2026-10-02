@@ -16,8 +16,10 @@ describe('Reviews', () => {
     // A fake ApiService: the list comes from `firstLoad`, and posting a review always succeeds.
     api = { getReviews: vi.fn(() => firstLoad), submitReview: vi.fn(() => of({ code: 'ok' })) };
 
-    // Render the real page with the fake API (real English translations).
+    // Start in English: no saved language from an earlier test.
     localStorage.clear();
+
+    // Render the real page with the fake API (real English translations).
     await TestBed.configureTestingModule({
       imports: [Reviews],
       providers: [{ provide: ApiService, useValue: api }],
