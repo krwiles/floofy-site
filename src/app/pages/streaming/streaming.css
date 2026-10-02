@@ -1,13 +1,7 @@
-/* The Twitch player's box: a minimum height while it loads, and an iframe that fills the card's width. */
+/* Room for the Twitch player while it loads; the player itself is sized in streaming.ts, since Twitch's <iframe>
+   isn't reached by this component's scoped styles. */
 #twitch-embed {
   min-height: 430px;
-  width: 100%;
-}
-
-#twitch-embed iframe {
-  display: block;
-  width: 100%;
-  border: 0;
 }
 
 @media (max-width: 640px) {

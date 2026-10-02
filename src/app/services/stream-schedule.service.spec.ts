@@ -43,8 +43,8 @@ describe('StreamScheduleService', () => {
       // Assert: three cards in order, each with its own weekday and time; only the last is the visitor's.
       expect(slots).toEqual([
         { zoneName: 'Eastern Time', time: '11:00 AM EDT', weekday: 'Saturday', isLocal: false },
-        { zoneName: 'Japan Standard Time', time: '12:00 AM GMT+9', weekday: 'Sunday', isLocal: false },
-        { zoneName: 'Singapore Standard Time', time: '11:00 PM GMT+8', weekday: 'Saturday', isLocal: true },
+        { zoneName: 'Japan Standard Time', time: '12:00 AM JST', weekday: 'Sunday', isLocal: false },
+        { zoneName: 'Singapore Standard Time', time: '11:00 PM SGT', weekday: 'Saturday', isLocal: true },
       ]);
     });
 
@@ -55,8 +55,8 @@ describe('StreamScheduleService', () => {
       // Assert: still 11:00 in New York, an hour later everywhere without daylight saving (Singapore rolls to Sunday).
       expect(slots.map(({ time, weekday }) => `${weekday} ${time}`)).toEqual([
         'Saturday 11:00 AM EST',
-        'Sunday 1:00 AM GMT+9',
-        'Sunday 12:00 AM GMT+8',
+        'Sunday 1:00 AM JST',
+        'Sunday 12:00 AM SGT',
       ]);
     });
 
@@ -66,6 +66,16 @@ describe('StreamScheduleService', () => {
 
       // Assert: Japanese zone name, 24-hour time and weekday.
       expect(tokyo).toEqual({ zoneName: '日本標準時', time: '0:00 JST', weekday: '日曜日', isLocal: false });
+    });
+
+    it('uses a zone’s abbreviation even when the site’s language has none for it', () => {
+      // Act: Japanese has no abbreviation for New York, English has none for Tokyo.
+      const nyInJapanese = service.slots('ja', october, 'Asia/Singapore')[0];
+      const zoneWithNone = service.slots('en', october, 'Asia/Seoul')[2];
+
+      // Assert: each borrows the abbreviation from another language; a zone no language abbreviates shows its offset.
+      expect(nyInJapanese.time).toBe('11:00 EDT');
+      expect(zoneWithNone.time).toBe('12:00 AM GMT+9');
     });
 
     it('still gives the visitor’s own card when they live in the home zone', () => {

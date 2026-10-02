@@ -4,6 +4,10 @@ import { StreamSchedule, StreamSlot, WEEKDAYS, Weekday } from '../models/stream-
 
 const MINUTE_MS = 60_000;
 
+// Browsers only abbreviate a zone in its home region's locale (JST in ja-JP, SGT in en-SG), so these are asked in
+// turn when the site's own language gives just an offset like "GMT+9".
+const ABBREVIATION_LOCALES = ['en-US', 'en-GB', 'en-AU', 'en-IN', 'en-SG', 'ja-JP'];
+
 // How far ahead to look for the next stream: two weeks always holds an upcoming one, even just after a start.
 const SEARCH_DAYS = 14;
 
@@ -82,10 +86,21 @@ function formatSlot(start: Date, timeZone: string, locale: string, isLocal: bool
   const format = (options: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(locale, { timeZone, ...options });
   return {
     zoneName: partOf(format({ timeZoneName: 'longGeneric' }), start, 'timeZoneName'),
-    time: format({ hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(start),
+    time: `${format({ hour: 'numeric', minute: '2-digit' }).format(start)} ${zoneAbbreviation(start, timeZone, locale)}`,
     weekday: format({ weekday: 'long' }).format(start),
     isLocal,
   };
+}
+
+/** The zone's short name at `instant` (e.g. "EDT", "JST"), or its offset ("GMT+9") when no locale abbreviates it. */
+function zoneAbbreviation(instant: Date, timeZone: string, locale: string): string {
+  // The short name in each candidate language, the site's own first.
+  const names = [locale, ...ABBREVIATION_LOCALES].map((candidate) =>
+    partOf(new Intl.DateTimeFormat(candidate, { timeZone, timeZoneName: 'short' }), instant, 'timeZoneName'),
+  );
+
+  // The first real abbreviation wins; an offset is the fallback.
+  return names.find((name) => !/^(GMT|UTC)/.test(name)) ?? names[0];
 }
 
 /** The calendar date (year, month 1–12, day) that `instant` falls on in `timeZone`. */

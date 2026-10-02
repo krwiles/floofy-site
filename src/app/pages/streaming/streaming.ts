@@ -19,8 +19,7 @@ const TWITCH_PARENTS = ['localhost', '127.0.0.1', 'summerfloofy.com', 'www.summe
 // How long resizing must pause before the player is rebuilt, so one drag or rotation rebuilds it only once.
 const RESIZE_SETTLE_MS = 300;
 
-// The player's size: the window's width up to a cap, and most of its height.
-const MAX_PLAYER_WIDTH = 1280;
+// The player's height: most of the window's height (its width is its card's).
 const PLAYER_HEIGHT_SHARE = 0.8;
 
 /** The part of Twitch's embed script this page uses: `window.Twitch`, once the script has loaded. */
@@ -92,7 +91,7 @@ export class Streaming implements AfterViewInit {
       return;
     }
 
-    // Build the player, sized to the window, and remember the width it was built for.
+    // Build the player to fill its card, and remember the width it was built for.
     this.builtWidth = this.calculateWidth();
     new Twitch.Embed('twitch-embed', {
       width: this.builtWidth,
@@ -119,7 +118,7 @@ export class Streaming implements AfterViewInit {
   }
 
   private calculateWidth() {
-    // The window's width, up to the cap.
-    return Math.min(window.innerWidth, MAX_PLAYER_WIDTH);
+    // The card's inner width: Twitch's own <iframe> can't be sized by this page's (scoped) CSS, so it's sized here.
+    return this.document.getElementById('twitch-embed')?.clientWidth ?? 0;
   }
 }

@@ -46,6 +46,12 @@ describe('Streaming', () => {
     return fixture.nativeElement.textContent;
   }
 
+  /** Pretend the player's card is `width` pixels wide inside (jsdom does no layout, so widths are always 0). */
+  function setPlayerAreaWidth(width: number): void {
+    const playerArea = fixture.nativeElement.querySelector('#twitch-embed');
+    Object.defineProperty(playerArea, 'clientWidth', { value: width, configurable: true });
+  }
+
   /** A fake Twitch.Embed that records each player built, installed as the global the page reads. */
   function fakeTwitch() {
     // A mock constructor that records every call.
@@ -72,12 +78,12 @@ describe('Streaming', () => {
     expect(cards.length).toBe(3);
     expect(cards.map((card) => card.classList.contains('card-on-section-light-special'))).toEqual([false, false, true]);
 
-    // Each shows its zone (the visitor's as "Your time" plus the zone), its time, and "Every <weekday>".
+    // Each shows its zone (the visitor's just as "Your time"), its time, and "Every <weekday>".
     expect(cards[0].textContent).toContain('Home Zone');
     expect(cards[1].textContent).toContain('1:00 AM FZT');
     expect(cards[1].textContent).toContain('Every Moonday');
     expect(cards[2].textContent).toContain('Your time');
-    expect(cards[2].textContent).toContain('Visitor Zone');
+    expect(cards[2].textContent).not.toContain('Visitor Zone');
   });
 
   it('fills every section header, with nothing hard-coded in English', () => {
@@ -96,17 +102,19 @@ describe('Streaming', () => {
   });
 
   it('builds the player once Twitch’s script has loaded, only for the allowed sites', async () => {
-    // Arrange: Twitch's script will define Twitch.Embed.
+    // Arrange: Twitch's script will define Twitch.Embed, and the player's card is 1216px wide inside.
     const embed = fakeTwitch();
+    setPlayerAreaWidth(1216);
 
     // Act: the script finishes loading.
     finishScriptLoad();
     await fixture.whenStable();
 
-    // Assert: one player, for the channel, allowed only on the live site and local development.
+    // Assert: one player, as wide as its card, for the channel, allowed only on the live site and local development.
     expect(embed).toHaveBeenCalledTimes(1);
     const [elementId, options] = embed.mock.calls[0];
     expect(elementId).toBe('twitch-embed');
+    expect(options.width).toBe(1216);
     expect(options.channel).toBe('summerfloofy');
     expect(options.parent).toEqual(['localhost', '127.0.0.1', 'summerfloofy.com', 'www.summerfloofy.com']);
   });
@@ -114,13 +122,13 @@ describe('Streaming', () => {
   it('rebuilds the player once, after resizing settles, when the width changes', () => {
     // Arrange: a player built at 800px wide, and timers the test controls.
     vi.useFakeTimers();
-    vi.stubGlobal('innerWidth', 800);
+    setPlayerAreaWidth(800);
     const embed = fakeTwitch();
     fixture.componentInstance.loadEmbed();
     embed.mockClear();
 
-    // Act: several resize events while widening the window, then the pause.
-    vi.stubGlobal('innerWidth', 1100);
+    // Act: several resize events while the window (and so the card) widens, then the pause.
+    setPlayerAreaWidth(1100);
     fixture.componentInstance.onWindowResize();
     fixture.componentInstance.onWindowResize();
     vi.advanceTimersByTime(299);
@@ -134,7 +142,7 @@ describe('Streaming', () => {
   it('keeps the player when only the height changes (a phone’s toolbar sliding away)', () => {
     // Arrange: a player built at 400px wide.
     vi.useFakeTimers();
-    vi.stubGlobal('innerWidth', 400);
+    setPlayerAreaWidth(400);
     const embed = fakeTwitch();
     fixture.componentInstance.loadEmbed();
     embed.mockClear();
