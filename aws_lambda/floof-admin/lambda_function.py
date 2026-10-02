@@ -5,6 +5,7 @@ button's POST acts. Design: docs/features/review-moderation/spec.md.
 """
 
 import base64
+import functools
 import html
 import ipaddress
 import time
@@ -45,6 +46,23 @@ SNIPPET_LENGTH = 200
 SGT = ZoneInfo("Asia/Singapore")
 
 
+def shows_error_page_on_unexpected_errors(handler):
+    """Wraps the handler so an unexpected exception becomes a safe 500 page (with the security headers), not AWS's
+    raw 502. Logs only the error, never the event, which holds the token."""
+
+    @functools.wraps(handler)
+    def wrapped(event, context):
+        # Run the real handler; anything it didn't plan for still gets a page with the security headers
+        try:
+            return handler(event, context)
+        except Exception as error:
+            log("unexpected_error", error=repr(error))
+            return error_page()
+
+    return wrapped
+
+
+@shows_error_page_on_unexpected_errors
 def lambda_handler(event, context):
     # Record every call: anyone reaching this Lambda is either the owner or someone probing it
     log_request(event)
@@ -211,6 +229,15 @@ def target_details(action, target):
 def invalid_link_page():
     # One message for every kind of bad token, so a prober learns nothing about why it failed
     return page(403, "Link not valid", "<p>This link is invalid or has expired.</p>")
+
+
+def error_page():
+    # Retrying is safe: every action is idempotent, so a half-finished one simply completes
+    return page(
+        500,
+        "Something went wrong",
+        "<p>Nothing was changed, or the change may not have finished. Please try the link again.</p>",
+    )
 
 
 def not_found_page():

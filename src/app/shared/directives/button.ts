@@ -16,5 +16,6 @@ export class Button {
   readonly variant = input<Variant>('primary');
   readonly tone = input<Tone>('light');
 
+  // The shared .btn classes for this variant and the tone of the surface it sits on.
   readonly hostClass = computed(() => `btn btn-${this.variant()} btn-on-${this.tone()}`);
 }

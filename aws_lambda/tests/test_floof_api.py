@@ -28,7 +28,7 @@ def test_new_review_emails_the_owner_with_delete_and_block_links(api, emails):
     result = post_review(api)
 
     # Assert: saved, and exactly one email went to the owner from the site address.
-    assert result["statusCode"] == 201
+    assert result["statusCode"] == 200
     [sent] = emails.sent
     assert sent["to"] == ["owner@example.com"]
     assert sent["from"] == "FloofySite <no-reply@summerfloofy.com>"
@@ -78,7 +78,7 @@ def test_insert_returns_the_new_id_and_is_committed(api, cursor, connection, ema
     assert connection.commits >= 1
 
 
-def test_email_failure_still_returns_201(api, connection, emails, capsys):
+def test_email_failure_still_replies_ok(api, connection, emails, capsys):
     # Arrange: Resend is down.
     emails.fail = True
 
@@ -86,17 +86,17 @@ def test_email_failure_still_returns_201(api, connection, emails, capsys):
     result = post_review(api)
 
     # Assert: the visitor still sees success, the review was committed, and the failure was logged for CloudWatch.
-    assert result["statusCode"] == 201
+    assert result["statusCode"] == 200
     assert connection.commits >= 1
     assert any(line["event"] == "owner_email_failed" and line["review_id"] == 7 for line in logged(capsys))
 
 
-def test_missing_admin_config_still_returns_201(api, emails, monkeypatch):
+def test_missing_admin_config_still_replies_ok(api, emails, monkeypatch):
     # Arrange: the Lambda was deployed without its link secret.
     monkeypatch.delenv("ADMIN_LINK_SECRET")
 
     # Act and assert: the review is still accepted; only the email is skipped.
-    assert post_review(api)["statusCode"] == 201
+    assert post_review(api)["statusCode"] == 200
     assert emails.sent == []
 
 
@@ -150,15 +150,58 @@ def test_every_email_has_a_full_html_document_and_a_text_version(api, emails):
 
 
 def test_saved_review_replies_ok(api, emails):
-    # Act and assert: 201 with just the code.
+    # Act and assert: 200 with just the code, the same success status every form Lambda uses.
     result = post_review(api)
-    assert (result["statusCode"], body_of(result)) == (201, {"code": "ok"})
+    assert (result["statusCode"], body_of(result)) == (200, {"code": "ok"})
 
 
 def test_too_long_review_replies_invalid(api, emails):
     # Act and assert: 400 with no per-field detail.
     result = post_review(api, author="x" * 60)
     assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+
+
+@pytest.mark.parametrize(
+    "author, comment",
+    [("x" * 50, "Lovely"), ("Robin", "x" * 2000)],
+    ids=["author-at-limit", "comment-at-limit"],
+)
+def test_review_exactly_at_the_limit_is_saved(api, cursor, emails, author, comment):
+    # Act: post a review whose field is exactly as long as the form allows.
+    result = post_review(api, author=author, comment=comment)
+
+    # Assert: saved and accepted, not refused.
+    assert (result["statusCode"], body_of(result)) == (200, {"code": "ok"})
+    assert len(cursor.queries("INSERT INTO reviews")) == 1
+
+
+@pytest.mark.parametrize(
+    "author, comment",
+    [("x" * 51, "Lovely"), ("Robin", "x" * 2001)],
+    ids=["author-over-limit", "comment-over-limit"],
+)
+def test_review_one_past_the_limit_replies_invalid(api, cursor, emails, author, comment):
+    # Act: post a review one character past a limit.
+    result = post_review(api, author=author, comment=comment)
+
+    # Assert: refused, with nothing saved.
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+    assert cursor.queries("INSERT") == []
+
+
+@pytest.mark.parametrize(
+    "author, comment",
+    [("   ", "Lovely"), ("Robin", " \n\t "), ("", "Lovely")],
+    ids=["blank-author", "blank-comment", "empty-author"],
+)
+def test_blank_review_replies_invalid(api, cursor, emails, author, comment):
+    # Act: post a review with a field that is empty once trimmed.
+    result = post_review(api, author=author, comment=comment)
+
+    # Assert: refused before the database is touched, and nothing emailed.
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+    assert cursor.executed == []
+    assert emails.sent == []
 
 
 def test_rate_limited_review_replies_with_the_rule(api, cursor, emails):
@@ -168,6 +211,20 @@ def test_rate_limited_review_replies_with_the_rule(api, cursor, emails):
     # Act and assert: 429 carrying the limit, so the site never hard-codes it.
     result = post_review(api)
     assert (result["statusCode"], body_of(result)) == (429, {"code": "rate_limited", "limit": 1, "window_hours": 1})
+
+
+def test_get_lists_the_visible_reviews_and_closes_the_connection(api, cursor, connection):
+    # Arrange: one visible review in the database.
+    review = {"id": 7, "author": "Robin", "comment": "Lovely", "created_at": datetime(2026, 9, 30, tzinfo=timezone.utc)}
+    cursor.on("FROM reviews WHERE deleted = FALSE", rows=[review])
+
+    # Act: list the reviews.
+    result = api.lambda_handler(make_event("GET"), None)
+
+    # Assert: the review comes back as JSON, and the connection was closed afterwards.
+    assert result["statusCode"] == 200
+    assert body_of(result)[0]["author"] == "Robin"
+    assert connection.closed
 
 
 def test_unsupported_method_replies_error(api):
@@ -200,3 +257,19 @@ def test_database_outage_replies_error(api, emails, monkeypatch):
     result = api.lambda_handler(make_event("POST", {"author": "Robin", "comment": "Lovely"}), None)
     assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
     assert emails.sent == []
+
+
+@pytest.mark.parametrize("method", ["GET", "POST"])
+def test_a_failure_mid_request_still_closes_the_connection(api, cursor, connection, emails, monkeypatch, method):
+    # Arrange: the database drops halfway through, on the first query.
+    def dropped(query, params=None):
+        raise ConnectionError("connection lost")
+
+    monkeypatch.setattr(cursor, "execute", dropped)
+
+    # Act: list the reviews, or post one.
+    result = api.lambda_handler(make_event("GET"), None) if method == "GET" else post_review(api)
+
+    # Assert: a coded 500, and the connection was still closed rather than leaked.
+    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
+    assert connection.closed

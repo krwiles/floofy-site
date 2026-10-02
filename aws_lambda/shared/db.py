@@ -5,6 +5,9 @@ import os
 # NOTE: the Lambda zip must contain psycopg's *Linux* binary — build it with build.sh, not a plain pip install.
 import psycopg
 
+# Give up on a slow or sleeping Neon well inside the Lambda's 30 s limit, so the failure is logged and answered
+DB_CONNECT_TIMEOUT_SECONDS = 8
+
 
 def connect_to_db():
     """Open a new TLS connection to Neon using the DB_* environment variables."""
@@ -15,4 +18,5 @@ def connect_to_db():
         password=os.environ["DB_PASSWORD"],
         port=5432,
         sslmode="require",
+        connect_timeout=DB_CONNECT_TIMEOUT_SECONDS,
     )

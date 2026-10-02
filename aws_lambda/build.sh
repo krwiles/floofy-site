@@ -43,6 +43,8 @@ cp "$name/lambda_function.py" shared/*.py "$stage/"
 
 # Include requirements.txt as a record of what's installed (Lambda itself never reads it)
 cp "$name/requirements.txt" "$stage/"
+
+# Drop Python's bytecode caches: they only bloat the zip, and the Lambda builds its own
 find "$stage" -name __pycache__ -type d -prune -exec rm -rf {} +
 
 # Zip it fresh (zip adds to an existing archive instead of replacing it)

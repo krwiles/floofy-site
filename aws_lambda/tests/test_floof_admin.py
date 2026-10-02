@@ -1,4 +1,5 @@
 import base64
+import json
 import html
 import ipaddress
 import re
@@ -9,7 +10,7 @@ from urllib.parse import urlencode
 import pytest
 
 import admin_links
-from conftest import make_event
+from conftest import logged, make_event
 
 IP = ipaddress.ip_address("203.0.113.7")
 POSTED = datetime(2026, 9, 30, 4, 0, tzinfo=timezone.utc)
@@ -46,6 +47,7 @@ def admin(load_lambda, cursor):
 
 
 def token_for(action, target_id, expires_in=3600):
+    # A genuine signed link token for this action and target, valid for an hour by default.
     return admin_links.sign(action, target_id, int(time.time()) + expires_in)
 
 
@@ -272,6 +274,32 @@ def test_every_response_carries_the_security_headers(admin, call):
     for name, value in SECURITY_HEADERS.items():
         assert headers[name] == value
     assert headers["Content-Type"] == "text/html; charset=utf-8"
+
+
+@pytest.mark.parametrize("method", ["GET", "POST"])
+def test_an_unexpected_crash_shows_a_safe_error_page(admin, monkeypatch, capsys, method):
+    # Arrange: a valid link, but the database can't be reached.
+    token = token_for("delete-review", 7)
+
+    def unreachable():
+        raise ConnectionError("neon is down")
+
+    monkeypatch.setattr(admin, "connect_to_db", unreachable)
+
+    # Act: open the link, or press Confirm.
+    result = get(admin, token) if method == "GET" else post(admin, token)
+
+    # Assert: a 500 page saying what to do, with every security header, instead of AWS's raw 502.
+    assert result["statusCode"] == 500
+    assert "Something went wrong" in result["body"]
+    assert "try the link again" in result["body"]
+    for name, value in SECURITY_HEADERS.items():
+        assert result["headers"][name] == value
+
+    # The crash is logged for CloudWatch, but the token (a credential) never is.
+    lines = logged(capsys)
+    assert any(line["event"] == "unexpected_error" for line in lines)
+    assert token not in json.dumps(lines)
 
 
 # --- Contact-message blocks (the link carries the IP, as a number) -------------------------------------------

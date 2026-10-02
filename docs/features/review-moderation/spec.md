@@ -91,7 +91,7 @@ POST, after the existing checks (blocked IP, 1-per-hour rate limit):
 2. Count this IP's earlier reviews.
 3. Send the owner a review email: author, comment, time, review number, IP, the earlier-review count, and **Delete
    this review** / **Block this reviewer** links.
-4. If the email fails, log it to CloudWatch and **still return 201**. The review is saved either way.
+4. If the email fails, log it to CloudWatch and **still return 200** (`ok`). The review is saved either way.
 
 GET is unchanged.
 

@@ -1,4 +1,5 @@
 import pytest
+import resend
 
 import email_sender
 
@@ -46,3 +47,9 @@ def test_email_content_derives_a_plain_text_version():
     assert "Comment: 5 < 6 & fine" in text
     assert "One\nTwo" in text
     assert "Delete this review: https://admin.example/?token=abc" in text
+
+
+def test_resend_gives_up_before_the_lambda_is_cut_off():
+    # Assert: importing email_sender swapped Resend's 30 second default for an 8 second timeout.
+    assert isinstance(resend.default_http_client, resend.RequestsClient)
+    assert resend.default_http_client._timeout == email_sender.EMAIL_TIMEOUT_SECONDS == 8

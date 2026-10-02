@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
@@ -44,9 +44,13 @@ export class Navbar {
     // If the menu is open and the window widens past `lg`, close it, so it never reopens by itself on narrowing
     // (spec "Edge Cases" in docs/refactor/specs/navbar-disclosure.md). jsdom's matchMedia stub never fires this.
     const media = this.document.defaultView?.matchMedia(DESKTOP_MEDIA_QUERY);
-    media?.addEventListener('change', (event) => {
+    const closeOnDesktop = (event: MediaQueryListEvent) => {
       if (event.matches) this.isMenuOpen.set(false);
-    });
+    };
+    media?.addEventListener('change', closeOnDesktop);
+
+    // Stop listening when the navbar is destroyed, so the closed-over component can be garbage-collected.
+    inject(DestroyRef).onDestroy(() => media?.removeEventListener('change', closeOnDesktop));
   }
 
   toggleMenu(): void {

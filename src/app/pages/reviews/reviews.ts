@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Hero } from '../../shared/components/hero/hero';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 import { ApiService } from '../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { CreateReviewRequest, Review } from '../../models/review.model';
 import { form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
+import { requiredText } from '../../shared/forms/required-text';
 import { Reveal } from '../../shared/directives/reveal';
 import { SectionDivider } from '../../shared/components/section-divider/section-divider';
 import { SectionHeader } from '../../shared/components/section-header/section-header';
@@ -23,6 +24,13 @@ interface ReviewFormValue {
   comment: string;
   agreement: boolean;
 }
+
+// What the reviews list shows instead of reviews, for each state of the list request.
+const PLACEHOLDER_KEYS = {
+  loading: { title: 'reviews.list.loading', note: 'reviews.list.loading_note' },
+  loaded: { title: 'reviews.list.empty', note: 'reviews.list.empty_note' },
+  failed: { title: 'reviews.list.failed', note: 'reviews.list.failed_note' },
+} as const;
 
 @Component({
   selector: 'app-reviews',
@@ -51,6 +59,10 @@ export class Reviews implements OnInit {
   private readonly apiService = inject(ApiService);
   // Every visible review, newest first (empty until loaded).
   readonly reviews = signal<Review[]>([]);
+  // Whether the list has arrived, is still coming, or couldn't be fetched.
+  private readonly listState = signal<'loading' | 'loaded' | 'failed'>('loading');
+  // The card shown while there are no reviews to list: its title and note keys for loading, empty or failed.
+  readonly placeholder = computed(() => PLACEHOLDER_KEYS[this.listState()]);
   // The message shown beside the submit button.
   readonly status = signal<FormSubmissionStatus>({ kind: 'idle', key: '' });
 
@@ -65,9 +77,9 @@ export class Reviews implements OnInit {
   reviewForm = form(
     this.reviewModel,
     (schemaPath) => {
-      // Name, review and the terms checkbox are required; lengths match the Lambda's limits.
-      required(schemaPath.author, { message: 'Name is required.' });
-      required(schemaPath.comment, { message: 'Review is required.' });
+      // Name, review (blank text counts as empty) and the terms checkbox are required; lengths match the Lambda's.
+      requiredText(schemaPath.author, { message: 'Name is required.' });
+      requiredText(schemaPath.comment, { message: 'Review is required.' });
       required(schemaPath.agreement, { message: 'You must agree to the terms and conditions.' });
       maxLength(schemaPath.author, 50, { message: 'Name cannot exceed 50 characters.' });
       maxLength(schemaPath.comment, 2000, { message: 'Review cannot exceed 2000 characters.' });
@@ -85,9 +97,8 @@ export class Reviews implements OnInit {
         submit: (request) => this.apiService.submitReview(request),
         onSuccess: () => {
           // Reload the list so the new review appears.
-          // Refresh the reviews list after a successful submission to display the newly added review.
           this.requestReviews();
-          // Clear the form, so a double-click can't post the same review twice.
+          // Clear the form, ready for another review.
           this.reviewForm().reset({ author: '', comment: '', agreement: false });
         },
       }),
@@ -105,9 +116,13 @@ export class Reviews implements OnInit {
       next: (reviews) => {
         // Each card's appReveal registers itself, so nothing needs re-scanning here.
         this.reviews.set(reviews);
+        this.listState.set('loaded');
       },
       error: () => {
-        // On failure, leave the "loading" placeholder showing.
+        // Say so only if there's nothing to show; a failed refresh keeps the reviews already listed.
+        if (this.reviews().length === 0) {
+          this.listState.set('failed');
+        }
       },
     });
   }

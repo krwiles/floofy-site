@@ -4,7 +4,7 @@ import time
 import pytest
 
 import admin_links
-from conftest import admin_tokens, body_of, make_event
+from conftest import admin_tokens, body_of, logged, make_event
 
 EVIL = '<a href="//evil.example">x</a>'
 
@@ -125,16 +125,38 @@ def test_owner_email_has_a_block_link_for_the_new_request(comm, emails):
     assert customer["to"] == ["sam@example.com"]
 
 
-def test_email_failure_is_reported_but_the_request_is_already_saved(comm, connection, emails):
-    # Arrange: Resend is down.
-    emails.fail = True
+def test_owner_email_failure_replies_error_and_skips_the_customer_email(comm, connection, emails, capsys):
+    # Arrange: Resend refuses the owner's email.
+    emails.fail_for = {"owner@example.com"}
 
     # Act: submit a valid request.
     result = comm.lambda_handler(make_event("POST", commission_body()), None)
 
-    # Assert: an error reaches the visitor, as today, but the row was committed first.
-    assert result["statusCode"] == 500
+    # Assert: the visitor sees an error, the row was committed first, and no customer confirmation was sent.
+    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
     assert connection.commits == 1
+    assert emails.sent == []
+
+    # The failure names the saved request and which email failed, so the owner can find it in the database.
+    [failure] = [line for line in logged(capsys) if line["event"] == "email_failed"]
+    assert (failure["request_id"], failure["to"]) == (42, "owner")
+
+
+def test_customer_email_failure_still_replies_ok(comm, connection, emails, capsys):
+    # Arrange: the owner's email goes out, but the customer's is refused.
+    emails.fail_for = {"sam@example.com"}
+
+    # Act: submit a valid request.
+    result = comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: the owner has the request, so the visitor is told it worked rather than prompted to resubmit.
+    assert (result["statusCode"], body_of(result)) == (200, {"code": "ok"})
+    assert connection.commits == 1
+    assert [sent["to"] for sent in emails.sent] == [["owner@example.com"]]
+
+    # The failure is still logged against the saved request.
+    [failure] = [line for line in logged(capsys) if line["event"] == "email_failed"]
+    assert (failure["request_id"], failure["to"]) == (42, "customer")
 
 
 def test_emails_come_from_the_site_address(comm, emails):
@@ -146,9 +168,32 @@ def test_emails_come_from_the_site_address(comm, emails):
 
 
 @pytest.mark.parametrize(
+    "field",
+    ["name", "email", "commissionType", "description", "usageType", "usageExplanation"],
+)
+def test_a_blank_required_field_replies_invalid(comm, cursor, emails, field):
+    # Act: submit a request with one required field that is only whitespace.
+    result = comm.lambda_handler(make_event("POST", commission_body(**{field: "  \n "})), None)
+
+    # Assert: refused before the database is touched, with nothing emailed.
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+    assert cursor.executed == []
+    assert emails.sent == []
+
+
+def test_blank_optional_fields_are_still_accepted(comm, emails):
+    # Act: submit a request leaving every optional field empty.
+    body = commission_body(referenceLinks="", deadline="", additionalNotes="")
+    result = comm.lambda_handler(make_event("POST", body), None)
+
+    # Assert: accepted as normal.
+    assert (result["statusCode"], body_of(result)) == (200, {"code": "ok"})
+
+
+@pytest.mark.parametrize(
     "price",
-    [None, -5, 100_000_000, float("inf"), float("nan")],
-    ids=["missing", "negative", "too-big-for-numeric-10-2", "infinity", "nan"],
+    [None, -5, 100_000_000, 99_999_999.996, float("inf"), float("nan")],
+    ids=["missing", "negative", "too-big-for-numeric-10-2", "rounds-up-to-too-big", "infinity", "nan"],
 )
 def test_unusable_price_is_rejected_before_touching_the_database(comm, cursor, emails, price):
     # Arrange: a request whose price the database column numeric(10, 2) can't store (or that makes no sense).
@@ -164,6 +209,21 @@ def test_unusable_price_is_rejected_before_touching_the_database(comm, cursor, e
     assert body_of(result) == {"code": "invalid"}
     assert cursor.executed == []
     assert emails.sent == []
+
+
+@pytest.mark.parametrize(
+    "price, stored",
+    [(99_999_999.99, 99_999_999.99), (12.345, 12.35), (12.344, 12.34)],
+    ids=["largest-storable", "rounds-up", "rounds-down"],
+)
+def test_price_is_stored_rounded_to_cents(comm, cursor, emails, price, stored):
+    # Act: submit a request with this price.
+    result = comm.lambda_handler(make_event("POST", commission_body(estimatedPrice=price)), None)
+
+    # Assert: accepted, and the row stores the price rounded to cents, as numeric(10, 2) would.
+    assert result["statusCode"] == 200
+    [(sql, params)] = cursor.queries("INSERT INTO commission_requests")
+    assert stored in params
 
 
 def test_zero_price_is_allowed(comm, emails):

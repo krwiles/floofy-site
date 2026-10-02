@@ -18,6 +18,10 @@ from request_log import log, log_request
 REVIEWS_PER_WINDOW = 1
 REVIEW_WINDOW_HOURS = 1
 
+# The longest author and comment the form allows; the author column is varchar(50), the comment limit is the site's rule
+MAX_AUTHOR_LENGTH = 50
+MAX_COMMENT_LENGTH = 2000
+
 
 @replies_on_unexpected_errors
 def lambda_handler(event, context):
@@ -35,7 +39,7 @@ def lambda_handler(event, context):
 
 
 def get_reviews():
-    # Query to fetch reviews without IP addresses and deleted reviews
+    # Every review not hidden by the owner, newest first, without the reviewers' IP addresses
     query = """
     SELECT
         id,
@@ -46,34 +50,28 @@ def get_reviews():
     WHERE deleted = FALSE
     ORDER BY created_at DESC
     """
-    
-    # Run the query, then close the connection
-    conn = connect_to_db()
-    with conn.cursor(row_factory=dict_row) as cur:
+
+    # Run the query; leaving the `with` block closes the connection, even if the query fails
+    with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
         cur.execute(query)
         rows = cur.fetchall()
 
-    conn.close()
-    
     return response(200, rows)
 
 
 def create_review(event):
-    # Parse the request body
+    # Read the review and the sender's IP, with surrounding spaces trimmed off the text
     body = json.loads(event["body"])
     author = body.get("author", "").strip()
     comment = body.get("comment", "").strip()
     ip_address = event["requestContext"]["http"]["sourceIp"]
 
-    # Input validation
-    if len(author) >= 50:
-        log("refused", reason="invalid", ip=ip_address)
-        return reply(400, "invalid")
-    if len(comment) >= 2000:
+    # Refuse a blank field, or one longer than the form allows (exactly at the limit is fine)
+    if not author or not comment or len(author) > MAX_AUTHOR_LENGTH or len(comment) > MAX_COMMENT_LENGTH:
         log("refused", reason="invalid", ip=ip_address)
         return reply(400, "invalid")
 
-    # Query strings
+    # The SQL for the rate-limit count, the insert and the owner email's earlier-reviews count
     rate_limit_query = """
     SELECT COUNT(*)
     FROM reviews
@@ -91,25 +89,22 @@ def create_review(event):
     WHERE ip_address = %s
         AND id < %s
     """
-    
-    # One connection for the checks, the insert and the notification
-    conn = connect_to_db()
-    with conn.cursor(row_factory=dict_row) as cur:
+
+    # One connection for the checks, the insert and the notification; leaving the `with` block closes it
+    with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
         # Check if the IP address is blocked (the same shared check every endpoint uses)
         if is_blocked(cur, ip_address):
             log("refused", reason="blocked", ip=ip_address)
-            conn.close()
             return reply(403, "error")
 
-        # Check rate limit
+        # Refuse the IP once it has reached the limit within the window
         cur.execute(rate_limit_query, (ip_address, REVIEW_WINDOW_HOURS))
         result = cur.fetchone()
         if result and result["count"] >= REVIEWS_PER_WINDOW:
             log("refused", reason="rate_limited", ip=ip_address)
-            conn.close()
             return reply(429, "rate_limited", limit=REVIEWS_PER_WINDOW, window_hours=REVIEW_WINDOW_HOURS)
 
-        # Insert the review; RETURNING hands back its new id (for the admin links) and saved time
+        # Insert the review and commit straight away; RETURNING hands back its new id (for the admin links) and time
         cur.execute(insert_query, (author, comment, ip_address))
         saved = cur.fetchone()
         review_id = saved["id"]
@@ -125,10 +120,9 @@ def create_review(event):
         except Exception as error:
             # Recorded so the owner can see which saved review went un-emailed, and why
             log("owner_email_failed", review_id=review_id, error=repr(error))
-    
-    conn.close()
 
-    return reply(201, "ok")
+    # Saved: 200, the success status every form Lambda uses
+    return reply(200, "ok")
 
 
 def email_floofy(review_id, created_at, author, comment, ip_address, earlier_reviews):

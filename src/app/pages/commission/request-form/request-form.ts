@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, output, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
+import { requiredText } from '../../../shared/forms/required-text';
 import { ArtworkCategory } from '../../../models/artwork-category';
 import { CreateCommissionRequest } from '../../../models/commission.model';
 import { FormSubmissionStatus } from '../../../models/form-submission-status';
@@ -126,15 +127,15 @@ export class RequestForm {
   readonly commissionForm = form(
     this.commissionModel,
     (schemaPath) => {
-      // Required fields, length caps matching the Lambda, and a valid email.
-      required(schemaPath.name, { message: 'Name is required.' });
-      required(schemaPath.email, { message: 'Email is required.' });
-      required(schemaPath.description, { message: 'Description is required.' });
+      // Required fields (blank text counts as empty), length caps matching the Lambda, and a valid email.
+      requiredText(schemaPath.name, { message: 'Name is required.' });
+      requiredText(schemaPath.email, { message: 'Email is required.' });
+      requiredText(schemaPath.description, { message: 'Description is required.' });
       // Radio groups always hold a value, so these two only drive the required-marker asterisk.
       required(schemaPath.commissionType, { message: 'Commission type is required.' });
       required(schemaPath.usageType, { message: 'Usage type is required.' });
       required(schemaPath.tosAccepted, { message: 'You must accept the terms of service to submit the form.' });
-      required(schemaPath.usageExplanation, { message: 'Usage explanation is required.' });
+      requiredText(schemaPath.usageExplanation, { message: 'Usage explanation is required.' });
       maxLength(schemaPath.email, 100, { message: 'Email cannot exceed 100 characters.' });
       maxLength(schemaPath.name, 50, { message: 'Name cannot exceed 50 characters.' });
       maxLength(schemaPath.description, 2000, { message: 'Description cannot exceed 2000 characters.' });
