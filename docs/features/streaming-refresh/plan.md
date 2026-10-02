@@ -100,6 +100,8 @@ the result by eye. Shared components are used as they are; none is changed to fi
 - **`streaming.css`:** only the `#twitch-embed` size rules.
 - **`cards.css`:** the legacy `.card-shadow` rule goes; its own comment asked for that once streaming moved to
   `[appCard noBackground]`.
+  The Card Shadow's corners also go from `1rem` to `2rem`, matching a full card (the owner's call, after seeing the
+  player); this rounds every Card Shadow on the site (home, about, rolling carousels) to match.
 - **i18n:** new keys in both files, all filled in:
   - `streaming.schedule.{eyebrow,title,description,your_time,every}`;
   - `streaming.live.{eyebrow,title,description,channel_note}`.
