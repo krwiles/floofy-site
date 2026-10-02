@@ -10,6 +10,9 @@ Requires Node `^22.22.3 || ^24.15.0 || >=26.0.0` (the Angular CLI's own floor) �
 - `npm run build` — production build
 - `npm test` — unit tests (Vitest via `@angular/build:unit-test`)
 - `npm run format` / `npm run format:check` — Prettier (with the Tailwind class-sorting plugin)
+- Lambdas (`aws_lambda/`):
+  - `.venv/bin/pytest`: the Lambda tests, with fakes and no network (see the README for the one-time venv setup).
+  - `./build.sh <lambda> x86_64 3.14`: build an upload zip; the AWS runtime is Python 3.14 on x86_64.
 
 ## Conventions
 
