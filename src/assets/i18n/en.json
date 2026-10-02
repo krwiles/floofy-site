@@ -406,6 +406,14 @@
       "title": "REVIEWS",
       "description": "Testimonials, commission feedback, and community impressions.",
       "tagline": "Testimonials • Feedback • Community"
+    },
+    "list": {
+      "loading": "Reviews loading...",
+      "loading_note": "Check back soon for new feedback from the community.",
+      "empty": "No reviews yet",
+      "empty_note": "Be the first to share your experience using the form below.",
+      "failed": "Couldn't load reviews",
+      "failed_note": "Please try again later."
     }
   },
   "donate": {

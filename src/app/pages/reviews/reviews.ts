@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Hero } from '../../shared/components/hero/hero';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 import { ApiService } from '../../services/api.service';
@@ -52,6 +52,13 @@ export class Reviews implements OnInit {
   private readonly apiService = inject(ApiService);
   // Every visible review, newest first (empty until loaded).
   readonly reviews = signal<Review[]>([]);
+  // Whether the list has arrived, is still coming, or couldn't be fetched.
+  private readonly listState = signal<'loading' | 'loaded' | 'failed'>('loading');
+  // The i18n key prefix for the card shown while there are no reviews to list: loading, empty or failed.
+  readonly placeholderKey = computed(() => {
+    const state = this.listState();
+    return `reviews.list.${state === 'loaded' ? 'empty' : state}`;
+  });
   // The message shown beside the submit button.
   readonly status = signal<FormSubmissionStatus>({ kind: 'idle', key: '' });
 
@@ -105,9 +112,13 @@ export class Reviews implements OnInit {
       next: (reviews) => {
         // Each card's appReveal registers itself, so nothing needs re-scanning here.
         this.reviews.set(reviews);
+        this.listState.set('loaded');
       },
       error: () => {
-        // On failure, leave the "loading" placeholder showing.
+        // Say so only if there's nothing to show; a failed refresh keeps the reviews already listed.
+        if (this.reviews().length === 0) {
+          this.listState.set('failed');
+        }
       },
     });
   }
