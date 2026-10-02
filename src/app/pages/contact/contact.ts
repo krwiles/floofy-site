@@ -75,7 +75,7 @@ export class Contact {
     {
       // Show progress, send the request, then clear the form on success.
       submission: createFormSubmission({
-        messages: 'forms.contact',
+        i18nPrefix: 'forms.contact',
         model: this.contactFormModel,
         status: this.status,
         buildRequest: (model): CreateContactRequest => ({

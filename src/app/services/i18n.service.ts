@@ -3,6 +3,7 @@ import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import en from '../../assets/i18n/en.json';
 import ja from '../../assets/i18n/ja.json';
 import { ListGroup } from '../models/list-group';
+import { TranslateParams } from '../models/translate-params';
 
 export type Locale = 'en' | 'ja';
 
@@ -36,7 +37,7 @@ export class I18nService {
   }
 
   /** The translated string for `key`, with each `{name}` placeholder filled from `params`. */
-  t(key: string, params: Record<string, string | number> = {}): string {
+  t(key: string, params: TranslateParams = {}): string {
     // Echo the key back when it's missing, so a typo shows up visibly on the page.
     const value = this.lookup(key);
     if (typeof value !== 'string') {

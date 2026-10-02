@@ -24,8 +24,10 @@ describe('FormStatus', () => {
   }
 
   beforeEach(async () => {
-    // Real translations, starting in English.
+    // Real translations, starting in English (nothing saved).
     localStorage.clear();
+
+    // Compile the component once per test.
     await TestBed.configureTestingModule({ imports: [FormStatus] }).compileComponents();
   });
 

@@ -4,7 +4,7 @@ import time
 import pytest
 
 import admin_links
-from conftest import admin_tokens, make_event
+from conftest import admin_tokens, body_of, make_event
 
 EVIL = '<a href="//evil.example">x</a>'
 
@@ -60,7 +60,7 @@ def test_blocked_ip_gets_the_vague_403_with_no_insert_or_email(comm, cursor, ema
 
     # Assert: vague refusal, nothing recorded, nothing sent.
     assert result["statusCode"] == 403
-    assert json.loads(result["body"]) == {"code": "error"}
+    assert body_of(result) == {"code": "error"}
     assert cursor.queries("INSERT") == []
     assert emails.sent == []
 
@@ -72,9 +72,9 @@ def test_third_request_in_24_hours_is_refused(comm, cursor, emails):
     # Act: send a third.
     result = comm.lambda_handler(make_event("POST", commission_body()), None)
 
-    # Assert: 429 with a "try again later" message, nothing recorded, nothing sent.
+    # Assert: 429 carrying the rule, nothing recorded, nothing sent.
     assert result["statusCode"] == 429
-    assert json.loads(result["body"]) == {"code": "rate_limited", "limit": 2, "window_hours": 24}
+    assert body_of(result) == {"code": "rate_limited", "limit": 2, "window_hours": 24}
     assert cursor.queries("INSERT") == []
     assert emails.sent == []
 
@@ -159,9 +159,9 @@ def test_unusable_price_is_rejected_before_touching_the_database(comm, cursor, e
     # Act: submit it (json.dumps writes inf/nan as Infinity/NaN, which json.loads accepts).
     result = comm.lambda_handler(make_event("POST", body), None)
 
-    # Assert: a 400 about the price, with no database work and no email.
+    # Assert: a plain invalid 400, with no database work and no email.
     assert result["statusCode"] == 400
-    assert json.loads(result["body"]) == {"code": "invalid"}
+    assert body_of(result) == {"code": "invalid"}
     assert cursor.executed == []
     assert emails.sent == []
 
@@ -216,7 +216,7 @@ def test_email_failure_reply_never_reveals_admin_addresses(comm, emails, monkeyp
     # Assert: a generic 500 for the visitor, naming no admin address.
     assert result["statusCode"] == 500
     assert "admin@example.com" not in result["body"]
-    assert json.loads(result["body"]) == {"code": "error"}
+    assert body_of(result) == {"code": "error"}
 
 
 # --- Response contract: a code (plus the rule, for rate limits), never prose -----------------------------------
@@ -225,16 +225,50 @@ def test_email_failure_reply_never_reveals_admin_addresses(comm, emails, monkeyp
 def test_successful_request_replies_ok(comm, emails):
     # Act and assert: 200 with just the code.
     result = comm.lambda_handler(make_event("POST", commission_body()), None)
-    assert (result["statusCode"], json.loads(result["body"])) == (200, {"code": "ok"})
+    assert (result["statusCode"], body_of(result)) == (200, {"code": "ok"})
 
 
 def test_too_long_field_replies_invalid(comm, emails):
     # Act and assert: 400 with no per-field detail.
     result = comm.lambda_handler(make_event("POST", commission_body(name="x" * 60)), None)
-    assert (result["statusCode"], json.loads(result["body"])) == (400, {"code": "invalid"})
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
 
 
 def test_unsupported_method_replies_error(comm):
     # Act and assert: 405 with the generic code.
     result = comm.lambda_handler(make_event("PATCH"), None)
-    assert (result["statusCode"], json.loads(result["body"])) == (405, {"code": "error"})
+    assert (result["statusCode"], body_of(result)) == (405, {"code": "error"})
+
+
+# --- Anything unexpected still answers with a code ------------------------------------------------------------
+
+
+@pytest.mark.parametrize("body", ["not json", None], ids=["malformed", "missing"])
+def test_unreadable_body_replies_error(comm, emails, capsys, body):
+    # Act: post a body that isn't JSON at all.
+    result = comm.lambda_handler(make_event("POST", body=body), None)
+
+    # Assert: a coded 500 rather than a crash, with the real cause logged for CloudWatch.
+    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
+    assert "unexpected_error" in capsys.readouterr().out
+
+
+def test_database_outage_replies_error(comm, emails, monkeypatch):
+    # Arrange: the database can't be reached.
+    def unreachable():
+        raise ConnectionError("neon is down")
+
+    monkeypatch.setattr(comm, "connect_to_db", unreachable)
+
+    # Act and assert: a coded 500, and nothing was emailed.
+    result = comm.lambda_handler(make_event("POST", commission_body()), None)
+    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
+    assert emails.sent == []
+
+
+def test_non_numeric_price_replies_error(comm, emails):
+    # Act: a price that can't be read as a number at all.
+    result = comm.lambda_handler(make_event("POST", commission_body(estimatedPrice="lots")), None)
+
+    # Assert: a coded 500 rather than a crash.
+    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})

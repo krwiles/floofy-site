@@ -1,6 +1,5 @@
 import html
 import json
-import datetime
 import os
 from zoneinfo import ZoneInfo
 
@@ -12,6 +11,7 @@ from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM, admin_recipients, email_content
+from replies import replies_on_unexpected_errors, reply, response
 from request_log import log, log_request
 
 # At most this many reviews per IP per window; the reply carries both, so the site never hard-codes them
@@ -19,6 +19,7 @@ REVIEWS_PER_WINDOW = 1
 REVIEW_WINDOW_HOURS = 1
 
 
+@replies_on_unexpected_errors
 def lambda_handler(event, context):
     # Record every call: requests are rare, so each one is worth seeing in CloudWatch
     log_request(event)
@@ -162,26 +163,3 @@ def email_floofy(review_id, created_at, author, comment, ip_address, earlier_rev
         # Full HTML document plus a plain-text copy
         **email_content(email_body),
     })
-
-
-def reply(status, code, **extra):
-    """A form reply: the HTTP status plus a short code the site translates -- see docs/features/api-status-codes/plan.md."""
-    return response(status, {"code": code, **extra})
-
-
-def response(status, body):
-    # A JSON reply in the shape Lambda function URLs expect (datetimes as ISO text)
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-        },
-        "body": json.dumps(body, default=json_serializer)
-    }
-
-
-def json_serializer(obj):
-    # Custom JSON serializer for datetime objects
-    if isinstance(obj, datetime.datetime):
-        return obj.isoformat()
-    raise TypeError(f"Type {type(obj)} not serializable")

@@ -16,12 +16,12 @@ None of it can be translated. The wording also lives on the server, far from the
 
 Every response body is JSON with a `code`. The codes are the same for every Lambda:
 
-| `code`         | HTTP      | When                                                       | Extra fields           |
-| -------------- | --------- | ---------------------------------------------------------- | ---------------------- |
-| `ok`           | 200 / 201 | Saved and/or sent                                          | —                      |
-| `invalid`      | 400       | Failed server-side validation (too long, bad price, …)     | —                      |
-| `rate_limited` | 429       | Over this Lambda's limit                                   | `limit`, `window_hours` |
-| `error`        | 403 / 500 | Blocked IP, email failure, or anything unexpected; also 405 | —                      |
+| `code`         | HTTP      | When                                                        | Extra fields            |
+| -------------- | --------- | ----------------------------------------------------------- | ----------------------- |
+| `ok`           | 200 / 201 | Saved and/or sent                                           | —                       |
+| `invalid`      | 400       | Failed server-side validation (too long, bad price, …)      | —                       |
+| `rate_limited` | 429       | Over this Lambda's limit                                    | `limit`, `window_hours` |
+| `error`        | 403 / 500 | Blocked IP, email failure, or anything unexpected; also 405 | —                       |
 
 - **`rate_limited`** carries the rule itself, from the Lambda's own constants, so the limit is defined once (on the
   server):
@@ -54,10 +54,13 @@ Every response body is JSON with a `code`. The codes are the same for every Lamb
 
 ## Backend
 
-- **Each Lambda's `response()` helper** takes a code, plus optional extra fields, instead of a message.
+- **A shared `aws_lambda/shared/replies.py`** provides `reply(status, code, **extra)` (alongside `response()`, which
+  the review list still uses) and a `replies_on_unexpected_errors` wrapper on each form Lambda's handler. That way even
+  a crash (a malformed body, a non-numeric price, a database outage) is logged and answered `500 {"code": "error"}`.
 - **`floof-api`:** the 400s become `invalid`; blocked becomes `error` (still a 403); rate limit becomes `rate_limited`
-  with `limit: 1`, `window_hours: 1`; created becomes `ok`.
-- **`floof-comm`:** the same set, with `limit: MAX_REQUESTS_PER_DAY`, `window_hours: 24`.
+  with `limit: REVIEWS_PER_WINDOW` (1), `window_hours: REVIEW_WINDOW_HOURS` (1); created becomes `ok`. The same
+  constants feed the rate-limit query.
+- **`floof-comm`:** the same set, with `limit: REQUESTS_PER_WINDOW` (2), `window_hours: REQUEST_WINDOW_HOURS` (24).
 - **`floof-contact`:** `invalid`, `error` and `ok`.
 - **Logging is unchanged.** CloudWatch still records the real reason (`refused` / `blocked` / `email_failed`).
 

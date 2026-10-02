@@ -5,7 +5,7 @@ import { FormSubmissionStatus } from '../../models/form-submission-status';
 
 interface CreateFormSubmissionConfig<TModel, TRequest, TResponse> {
   /** The form's i18n prefix, e.g. `forms.review`; its `pending`, `invalid`, `ok` and error-code keys are the messages. */
-  messages: string;
+  i18nPrefix: string;
   /** The form's own model signal -- read fresh at submit time, not captured once at setup. */
   model: Signal<TModel>;
   /** Where the resulting status is written; also what `app-form-status` reads. */
@@ -30,7 +30,7 @@ export function createFormSubmission<TModel, TRequest, TResponse>(
     // Fire-and-forget: status updates whenever the request resolves; nothing reads Signal Forms' `submitting()`.
     action: async () => {
       // Show the pending message straight away.
-      config.status.set({ kind: 'pending', key: `${config.messages}.pending` });
+      config.status.set({ kind: 'pending', key: `${config.i18nPrefix}.pending` });
 
       // Build the typed request from the model's current value.
       const request = config.buildRequest(config.model());
@@ -38,18 +38,18 @@ export function createFormSubmission<TModel, TRequest, TResponse>(
       // Send it; success shows the form's ok message (plus any extra success work), failure the message for its code.
       config.submit(request).subscribe({
         next: (response) => {
-          config.status.set({ kind: 'success', key: `${config.messages}.ok` });
+          config.status.set({ kind: 'success', key: `${config.i18nPrefix}.ok` });
           config.onSuccess?.(response);
         },
         error: ({ code, ...params }: ApiError) => {
           // Any extra fields (a rate limit's rule) fill the message's placeholders.
-          config.status.set({ kind: 'error', key: `${config.messages}.${code}`, params });
+          config.status.set({ kind: 'error', key: `${config.i18nPrefix}.${code}`, params });
         },
       });
     },
     onInvalid: () => {
       // Submitted while invalid: show the form's "please fix" message instead of sending.
-      config.status.set({ kind: 'error', key: `${config.messages}.invalid` });
+      config.status.set({ kind: 'error', key: `${config.i18nPrefix}.invalid` });
     },
   };
 }

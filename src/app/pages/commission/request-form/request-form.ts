@@ -146,7 +146,7 @@ export class RequestForm {
     {
       // Show progress, then send the request with the price computed from the current picks.
       submission: createFormSubmission({
-        messages: 'forms.commission',
+        i18nPrefix: 'forms.commission',
         model: this.commissionModel,
         status: this.status,
         buildRequest: (model): CreateCommissionRequest => ({

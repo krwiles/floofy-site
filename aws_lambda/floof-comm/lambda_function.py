@@ -13,10 +13,11 @@ from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM, admin_recipients, email_content
+from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
 # More than this many requests from one IP per window are refused -- see spec.md "floof-comm"; the reply carries both
-MAX_REQUESTS_PER_WINDOW = 2
+REQUESTS_PER_WINDOW = 2
 REQUEST_WINDOW_HOURS = 24
 
 # numeric(10, 2) in commission_requests holds prices below 100,000,000
@@ -70,6 +71,7 @@ class CommissionRequest:
         )
 
 
+@replies_on_unexpected_errors
 def lambda_handler(event, context):
     # Record every call: requests are rare, so each one is worth seeing in CloudWatch
     log_request(event)
@@ -103,11 +105,11 @@ def main(event):
             log("refused", reason="blocked", ip=sender_ip_address)
             return reply(403, "error")
 
-        # Refuse a third request from the same IP within the window
+        # Refuse the IP once it has reached the limit within the window
         cur.execute(RECENT_REQUESTS_QUERY, (sender_ip_address, REQUEST_WINDOW_HOURS))
-        if cur.fetchone()["recent"] >= MAX_REQUESTS_PER_WINDOW:
+        if cur.fetchone()["recent"] >= REQUESTS_PER_WINDOW:
             log("refused", reason="rate_limited", ip=sender_ip_address)
-            return reply(429, "rate_limited", limit=MAX_REQUESTS_PER_WINDOW, window_hours=REQUEST_WINDOW_HOURS)
+            return reply(429, "rate_limited", limit=REQUESTS_PER_WINDOW, window_hours=REQUEST_WINDOW_HOURS)
 
         # Save the request; RETURNING id hands back the new row's id for the admin link
         cur.execute(INSERT_QUERY, (
@@ -269,19 +271,3 @@ def send_email(to_emails, subject, body, reply_to=None):
             
     # Sent: callers only check the status code
     return reply(200, "ok")
-
-
-def reply(status, code, **extra):
-    """A form reply: the HTTP status plus a short code the site translates -- see docs/features/api-status-codes/plan.md."""
-    return response(status, {"code": code, **extra})
-
-
-def response(status, body):
-    # A JSON reply in the shape Lambda function URLs expect
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-        },
-        "body": json.dumps(body)
-    }

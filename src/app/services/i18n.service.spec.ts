@@ -271,12 +271,16 @@ describe('I18nService', () => {
     it('has every status message for every form, in both locales', () => {
       // The service reads the real en/ja JSON.
       const service = TestBed.inject(I18nService);
+
+      // Every status key for every form: 3 forms x 5 statuses.
       const keys = ['contact', 'review', 'commission'].flatMap((form) =>
         ['pending', 'invalid', 'ok', 'rate_limited', 'error'].map((status) => `forms.${form}.${status}`),
       );
 
       // t() echoes a missing key back, so a real translation never equals its own key.
       keys.forEach((key) => expect(service.t(key)).not.toBe(key));
+
+      // The same check in Japanese.
       service.setLocale('ja');
       keys.forEach((key) => expect(service.t(key)).not.toBe(key));
     });

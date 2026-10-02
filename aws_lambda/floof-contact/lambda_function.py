@@ -12,6 +12,7 @@ from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
 from email_sender import EMAIL_FROM, admin_recipients, email_content
+from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
 
@@ -32,6 +33,7 @@ class ContactRequest:
         )
 
 
+@replies_on_unexpected_errors
 def lambda_handler(event, context):
     # Record every call: requests are rare, so each one is worth seeing in CloudWatch
     log_request(event)
@@ -137,19 +139,3 @@ def send_email(to_emails, subject, body):
             
     # Sent: callers only check the status code
     return reply(200, "ok")
-
-
-def reply(status, code, **extra):
-    """A form reply: the HTTP status plus a short code the site translates -- see docs/features/api-status-codes/plan.md."""
-    return response(status, {"code": code, **extra})
-
-
-def response(status, body):
-    # A JSON reply in the shape Lambda function URLs expect
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-        },
-        "body": json.dumps(body)
-    }

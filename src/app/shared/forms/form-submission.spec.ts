@@ -6,16 +6,20 @@ import { FormSubmissionStatus } from '../../models/form-submission-status';
 describe('createFormSubmission', () => {
   /** A submission wired to fresh model/status signals and the given `submit`, with `forms.test` messages. */
   function setup(submit: (request: unknown) => Observable<unknown>, onSuccess?: (response: unknown) => void) {
+    // A model with one value, and a status starting idle.
     const model = signal({ name: 'Tangerine' });
     const status = signal<FormSubmissionStatus>({ kind: 'idle', key: '' });
+
+    // The submission under test, using the "forms.test" keys.
     const submission = createFormSubmission({
-      messages: 'forms.test',
+      i18nPrefix: 'forms.test',
       model,
       status,
       buildRequest: (m) => ({ requestName: m.name }),
       submit,
       onSuccess,
     });
+    // Hand back the status to inspect, plus action/onInvalid to call.
     return { status, ...submission };
   }
 

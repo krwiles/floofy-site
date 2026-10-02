@@ -1,3 +1,5 @@
+import { TranslateParams } from './translate-params';
+
 /**
  * A form's submission state: `createFormSubmission` writes it and `app-form-status` reads it, so the message and its
  * success/error styling can't drift apart. `key` is an i18n key, translated when shown, so it follows the site's
@@ -6,5 +8,5 @@
 export type FormSubmissionStatus = {
   kind: 'idle' | 'pending' | 'success' | 'error';
   key: string;
-  params?: Record<string, string | number>;
+  params?: TranslateParams;
 };

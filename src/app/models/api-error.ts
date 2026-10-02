@@ -1,12 +1,13 @@
-/** The codes every form Lambda replies with -- see docs/features/api-status-codes/plan.md. */
-export type ApiCode = 'ok' | 'invalid' | 'rate_limited' | 'error';
+/** The error codes a form Lambda can reply with -- see docs/features/api-status-codes/plan.md. */
+export const API_ERROR_CODES = ['invalid', 'rate_limited', 'error'] as const;
+export type ApiErrorCode = (typeof API_ERROR_CODES)[number];
 
-/** The error codes, for checking that a reply's code is one the site knows how to word. */
-export const API_ERROR_CODES: readonly ApiError['code'][] = ['invalid', 'rate_limited', 'error'];
+/** Every code a form Lambda can reply with: success, or one of the errors. */
+export type ApiCode = 'ok' | ApiErrorCode;
 
 /** A failed request as `ApiService` hands it back: its code, plus the server's rule when rate-limited. */
 export interface ApiError {
-  code: Exclude<ApiCode, 'ok'>;
+  code: ApiErrorCode;
   limit?: number;
   window_hours?: number;
 }

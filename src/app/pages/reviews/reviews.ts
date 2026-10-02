@@ -75,7 +75,7 @@ export class Reviews implements OnInit {
     {
       // Show progress, send the review, then refresh the list and clear the form on success.
       submission: createFormSubmission({
-        messages: 'forms.review',
+        i18nPrefix: 'forms.review',
         model: this.reviewModel,
         status: this.status,
         buildRequest: (model): CreateReviewRequest => ({
