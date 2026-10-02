@@ -25,22 +25,22 @@ the result by eye. Shared components are used as they are; none is changed to fi
 
 ## Decisions
 
-| #   | Topic               | Decision                                                                                                                                                                                                                                        |
-| --- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Scope               | The schedule service and `ScriptLoader` (for Twitch) now; Twitter later.                                                                                                                                                                        |
-| 2   | One source of truth | `src/assets/data/stream-schedule.json` holds the weekday, time, home zone and extra zones. No weekday, time or zone name is hard-coded anywhere else.                                                                                           |
-| 3   | Cards               | One card per zone, in order: the home zone, each `alsoShowIn` zone, then "Your time" (always shown, the featured card).                                                                                                                         |
-| 4   | Derived, not stored | Each card's weekday and time are worked out for the **next** stream, in that card's zone, so daylight saving and day changes (Saturday in New York is Sunday in Tokyo) are always right.                                                        |
-| 5   | Card content        | Label: the zone's name from the browser, in the site's language ("Japan Standard Time" / "日本標準時"). Big line: the time with its short zone name ("12:00 AM JST"). Under it: "Every {weekday}" from i18n, with the weekday from the browser. |
-| 6   | Card layout         | `md:grid-cols-3`, stacked on phones. There are always three or more cards; extra ones wrap.                                                                                                                                                     |
-| 7   | Hero                | The existing `streaming.hero.*` keys (now with the tagline). Background, pattern, artwork, dark tone and left-hand card stay; the `titleClass` override goes. Both buttons go, which also removes `B6`.                                         |
-| 8   | Schedule section    | `app-section tone="light"` with an `app-section-header`; cards are `appCard tone="light"`, the "Your time" card `special`.                                                                                                                      |
-| 9   | Live section        | `app-section tone="dark"` with an `app-section-header`; the player in a Card Shadow (`appCard noBackground tone="dark"`); a Twitch `app-social-links` chip with a short line, like donate's Ko-fi chip.                                         |
-| 10  | Content             | Claude writes every eyebrow, title, description, the chip line and card wording, in English and Japanese; the owner reviews it in the PR. No component slot is left empty.                                                                      |
-| 11  | CSS                 | All `.stream-*` rules go; only the player's size rules stay in `streaming.css`.                                                                                                                                                                 |
-| 12  | Player resizing     | Still rebuilt to fit (Twitch's player can't resize after it's built), but only when the width changes, after resizing has paused for 300 ms. Phone toolbars sliding in and out no longer restart the stream.                                    |
-| 13  | Embed domains       | `summerfloofy.com`, `www.summerfloofy.com`, `localhost`, `127.0.0.1`.                                                                                                                                                                           |
-| 14  | `ScriptLoader`      | A root service, `load(src): Promise<void>`: adds the `<script>` once per URL, reuses the same promise on a repeat call, and rejects on a failed load.                                                                                           |
+| #   | Topic               | Decision                                                                                                                                                                                                                                                                                                           |
+| --- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Scope               | The schedule service and `ScriptLoader` (for Twitch) now; Twitter later.                                                                                                                                                                                                                                           |
+| 2   | One source of truth | `src/assets/data/stream-schedule.json` holds the weekday, time, home zone and extra zones. No weekday, time or zone name is hard-coded anywhere else.                                                                                                                                                              |
+| 3   | Cards               | One card per zone, in order: the home zone, each `alsoShowIn` zone, then "Your time" (always shown, the featured card).                                                                                                                                                                                            |
+| 4   | Derived, not stored | Each card's weekday and time are worked out for the **next** stream, in that card's zone, so daylight saving and day changes (Saturday in New York is Sunday in Tokyo) are always right.                                                                                                                           |
+| 5   | Card content        | Label: the zone's name from the browser, in the site's language ("Japan Standard Time" / "日本標準時"). Big line: the time with the browser's short zone name ("11:00 AM EDT"; zones without one show an offset, e.g. "12:00 AM GMT+9"). Under it: "Every {weekday}" from i18n, with the weekday from the browser. |
+| 6   | Card layout         | `md:grid-cols-3`, stacked on phones. There are always three or more cards; extra ones wrap.                                                                                                                                                                                                                        |
+| 7   | Hero                | The existing `streaming.hero.*` keys (now with the tagline). Background, pattern, artwork, dark tone and left-hand card stay; the `titleClass` override goes. Both buttons go, which also removes `B6`.                                                                                                            |
+| 8   | Schedule section    | `app-section tone="light"` with an `app-section-header`; cards are `appCard tone="light"`, the "Your time" card `special`.                                                                                                                                                                                         |
+| 9   | Live section        | `app-section tone="dark"` with an `app-section-header`; the player in a Card Shadow (`appCard noBackground tone="dark"`); a Twitch `app-social-links` chip with a short line, like donate's Ko-fi chip.                                                                                                            |
+| 10  | Content             | Claude writes every eyebrow, title, description, the chip line and card wording, in English and Japanese; the owner reviews it in the PR. No component slot is left empty.                                                                                                                                         |
+| 11  | CSS                 | All `.stream-*` rules go; only the player's size rules stay in `streaming.css`.                                                                                                                                                                                                                                    |
+| 12  | Player resizing     | Still rebuilt to fit (Twitch's player can't resize after it's built), but only when the width changes, after resizing has paused for 300 ms. Phone toolbars sliding in and out no longer restart the stream.                                                                                                       |
+| 13  | Embed domains       | `summerfloofy.com`, `www.summerfloofy.com`, `localhost`, `127.0.0.1`.                                                                                                                                                                                                                                              |
+| 14  | `ScriptLoader`      | A root service, `load(src): Promise<void>`: adds the `<script>` once per URL, reuses the same promise on a repeat call, and rejects on a failed load.                                                                                                                                                              |
 
 ## The schedule file
 
@@ -66,13 +66,14 @@ the result by eye. Shared components are used as they are; none is changed to fi
   so tests can fix the clock.
 - **`slots(locale, now = new Date()): StreamSlot[]`:** one `{ zoneName, time, weekday, isLocal }` per card, in the
   decision 3 order, each formatted with `Intl.DateTimeFormat` in `locale` for the next stream:
-  - `zoneName`: `timeZoneName: 'long'`;
+  - `zoneName`: `timeZoneName: 'longGeneric'` ("Eastern Time" rather than the seasonal "Eastern Daylight Time");
   - `time`: hour, minute and `timeZoneName: 'short'`;
   - `weekday`: `weekday: 'long'`.
 - **Converting "11:00 in New York" to an instant:** guess the instant as if the zone were UTC, read the zone's offset
   at that instant with `Intl` (`shortOffset`), and correct by it. Then check the offset again at the corrected instant,
   so a daylight-saving switch that week is handled.
-- The visitor's zone comes from `Intl.DateTimeFormat().resolvedOptions().timeZone`.
+- The visitor's zone comes from `Intl.DateTimeFormat().resolvedOptions().timeZone`, as a third `slots()` parameter's
+  default so tests can choose it.
 
 **Behaviour change:** before, the local card showed a full date. Now every card shows a weekday and time, as decided.
 
@@ -97,6 +98,8 @@ the result by eye. Shared components are used as they are; none is changed to fi
     for the local card), the time, and `streaming.schedule.every` filled with `{weekday}`.
   - **Live section:** the header, the Card Shadow around `#twitch-embed`, and the Twitch chip row.
 - **`streaming.css`:** only the `#twitch-embed` size rules.
+- **`cards.css`:** the legacy `.card-shadow` rule goes; its own comment asked for that once streaming moved to
+  `[appCard noBackground]`.
 - **i18n:** new keys in both files, all filled in:
   - `streaming.schedule.{eyebrow,title,description,your_time,every}`;
   - `streaming.live.{eyebrow,title,description,channel_note}`.

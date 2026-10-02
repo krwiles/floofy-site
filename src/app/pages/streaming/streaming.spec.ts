@@ -48,7 +48,10 @@ describe('Streaming', () => {
 
   /** A fake Twitch.Embed that records each player built, installed as the global the page reads. */
   function fakeTwitch() {
+    // A mock constructor that records every call.
     const embed = vi.fn();
+
+    // Install it where Twitch's script would put it.
     vi.stubGlobal('Twitch', { Embed: embed });
     return embed;
   }

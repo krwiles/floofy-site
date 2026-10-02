@@ -19,6 +19,23 @@ const TWITCH_PARENTS = ['localhost', '127.0.0.1', 'summerfloofy.com', 'www.summe
 // How long resizing must pause before the player is rebuilt, so one drag or rotation rebuilds it only once.
 const RESIZE_SETTLE_MS = 300;
 
+// The player's size: the window's width up to a cap, and most of its height.
+const MAX_PLAYER_WIDTH = 1280;
+const PLAYER_HEIGHT_SHARE = 0.8;
+
+/** The part of Twitch's embed script this page uses: `window.Twitch`, once the script has loaded. */
+interface TwitchGlobal {
+  Embed: new (
+    elementId: string,
+    options: { width: number; height: number; channel: string; parent: string[] },
+  ) => unknown;
+}
+
+/** Twitch's global, or undefined until its script has loaded. */
+function twitch(): TwitchGlobal | undefined {
+  return (window as { Twitch?: TwitchGlobal }).Twitch;
+}
+
 @Component({
   selector: 'app-streaming',
   imports: [Hero, SectionDivider, Section, SectionHeader, SocialLinks, Card, TranslatePipe],
@@ -59,7 +76,7 @@ export class Streaming implements AfterViewInit {
     this.loadEmbed();
   }
 
-  loadEmbed() {
+  loadEmbed(): void {
     // Nothing to do if the placeholder element isn't on the page.
     const embedHost = this.document.getElementById('twitch-embed');
     if (!embedHost) {
@@ -70,13 +87,14 @@ export class Streaming implements AfterViewInit {
     embedHost.innerHTML = '';
 
     // The script failed to load (or hasn't finished): leave the placeholder empty.
-    if (!(window as any).Twitch?.Embed) {
+    const Twitch = twitch();
+    if (!Twitch?.Embed) {
       return;
     }
 
     // Build the player, sized to the window, and remember the width it was built for.
     this.builtWidth = this.calculateWidth();
-    return new (window as any).Twitch.Embed('twitch-embed', {
+    new Twitch.Embed('twitch-embed', {
       width: this.builtWidth,
       height: this.calculateHeight(),
       channel: TWITCH_CHANNEL,
@@ -88,20 +106,20 @@ export class Streaming implements AfterViewInit {
     // Twitch's player can't change size once built, so rebuild it once resizing has settled...
     clearTimeout(this.resizeTimer);
     this.resizeTimer = setTimeout(() => {
-      // ...but only for a new width: a phone's toolbar sliding away changes just the height, and mustn't restart it.
-      if (this.calculateWidth() !== this.builtWidth) {
+      // ...but only for a new width (a phone's toolbar sliding away changes just the height), and only once built.
+      if (this.builtWidth !== null && this.calculateWidth() !== this.builtWidth) {
         this.loadEmbed();
       }
     }, RESIZE_SETTLE_MS);
   }
 
-  calculateHeight() {
-    // 80% of the window's height.
-    return Math.round(window.innerHeight * 0.8);
+  private calculateHeight() {
+    // Most of the window's height.
+    return Math.round(window.innerHeight * PLAYER_HEIGHT_SHARE);
   }
 
-  calculateWidth() {
-    // The window's width, capped at 1280px.
-    return Math.min(window.innerWidth, 1280);
+  private calculateWidth() {
+    // The window's width, up to the cap.
+    return Math.min(window.innerWidth, MAX_PLAYER_WIDTH);
   }
 }

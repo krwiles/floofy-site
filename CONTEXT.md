@@ -179,5 +179,4 @@ types and the form uses `UsageTypeId | 'unsure'`. Previously called
 ## Stream schedule
 
 The weekly stream slot: one weekday and start time, stored once in the stream's home time zone. Every day and time
-the site shows (in other zones, or the visitor's own) is derived from it for the next stream, so daylight saving and
-day changes come out right. It's shown as **schedule cards**, one per zone, the visitor's own last and featured.
+the site shows, in any other zone, is derived from it. Each zone's view of it is a **schedule card**.

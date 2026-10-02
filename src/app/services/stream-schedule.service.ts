@@ -4,6 +4,16 @@ import { StreamSchedule, StreamSlot, WEEKDAYS, Weekday } from '../models/stream-
 
 const MINUTE_MS = 60_000;
 
+// How far ahead to look for the next stream: two weeks always holds an upcoming one, even just after a start.
+const SEARCH_DAYS = 14;
+
+/** A calendar date: year, month 1–12, day of the month. */
+interface CalendarDate {
+  year: number;
+  month: number;
+  day: number;
+}
+
 /**
  * The weekly stream slot from `stream-schedule.json`, turned into the next start instant and the per-zone schedule
  * cards. Stored once in its home zone; every shown day and time is derived -- see
@@ -19,27 +29,28 @@ export class StreamScheduleService {
     const targetDay = WEEKDAYS.indexOf(this.schedule.weekday);
     const [hour, minute] = this.schedule.time.split(':').map(Number);
 
+    // A mistyped stream-schedule.json would otherwise show nonsense; say exactly what's wrong instead.
+    if (targetDay === -1 || Number.isNaN(hour) || Number.isNaN(minute)) {
+      throw new Error(
+        `stream-schedule.json: bad weekday or time ("${this.schedule.weekday}", "${this.schedule.time}")`,
+      );
+    }
+
     // Today's calendar date as the home zone sees it (it may differ from UTC's).
     const today = zonedDate(now, this.schedule.timeZone);
 
     // Walk forward day by day from today: the first matching weekday whose start is still ahead is the next stream.
-    for (let offset = 0; offset < 14; offset++) {
+    for (let offset = 0; offset < SEARCH_DAYS; offset++) {
       const day = new Date(Date.UTC(today.year, today.month - 1, today.day + offset));
       if (day.getUTCDay() !== targetDay) continue;
 
       // That date at the start time, in the home zone, as an exact instant.
-      const start = zonedTimeToInstant(
-        day.getUTCFullYear(),
-        day.getUTCMonth() + 1,
-        day.getUTCDate(),
-        hour,
-        minute,
-        this.schedule.timeZone,
-      );
+      const date = { year: day.getUTCFullYear(), month: day.getUTCMonth() + 1, day: day.getUTCDate() };
+      const start = zonedTimeToInstant(date, hour, minute, this.schedule.timeZone);
       if (start.getTime() > now.getTime()) return start;
     }
 
-    // Unreachable: two weeks always contain an upcoming match.
+    // Unreachable once the schedule is valid: SEARCH_DAYS always contains an upcoming match.
     throw new Error('StreamScheduleService: no upcoming stream found');
   }
 
@@ -50,6 +61,7 @@ export class StreamScheduleService {
   slots(
     locale: string,
     now: Date = new Date(),
+    // The browser's own time zone name (e.g. "Asia/Singapore"); a parameter so tests can pick the visitor's zone.
     localTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone,
   ): StreamSlot[] {
     // Every card describes the same instant, so daylight saving and day changes come out right in each zone.
@@ -77,7 +89,7 @@ function formatSlot(start: Date, timeZone: string, locale: string, isLocal: bool
 }
 
 /** The calendar date (year, month 1–12, day) that `instant` falls on in `timeZone`. */
-function zonedDate(instant: Date, timeZone: string): { year: number; month: number; day: number } {
+function zonedDate(instant: Date, timeZone: string): CalendarDate {
   // en-CA formats dates as YYYY-MM-DD, which splits cleanly into numbers.
   const [year, month, day] = new Intl.DateTimeFormat('en-CA', {
     timeZone,
@@ -91,17 +103,10 @@ function zonedDate(instant: Date, timeZone: string): { year: number; month: numb
   return { year, month, day };
 }
 
-/** The exact instant when the wall clock in `timeZone` reads the given date and time. */
-function zonedTimeToInstant(
-  year: number,
-  month: number,
-  day: number,
-  hour: number,
-  minute: number,
-  timeZone: string,
-): Date {
+/** The exact instant when the wall clock in `timeZone` reads `hour`:`minute` on `date`. */
+function zonedTimeToInstant(date: CalendarDate, hour: number, minute: number, timeZone: string): Date {
   // First guess: read the wall time as if it were UTC, then shift by the zone's offset at that moment.
-  const asUtc = Date.UTC(year, month - 1, day, hour, minute);
+  const asUtc = Date.UTC(date.year, date.month - 1, date.day, hour, minute);
   const firstGuess = asUtc - offsetMinutes(asUtc, timeZone) * MINUTE_MS;
 
   // Re-check the offset at the corrected instant, in case a daylight-saving switch falls between the two.
