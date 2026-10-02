@@ -1,9 +1,18 @@
+import html
+import ipaddress
 import json
 import os
 import resend
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from dataclasses import dataclass
+
+# Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
+from admin_links import link
+from blocklist import is_blocked
+from db import connect_to_db
+from email_sender import EMAIL_FROM, admin_recipients, email_content
+from request_log import log, log_request
 
 
 @dataclass(frozen=True)
@@ -22,6 +31,8 @@ class ContactRequest:
 
 
 def lambda_handler(event, context):
+    # Record every call: requests are rare, so each one is worth seeing in CloudWatch
+    log_request(event)
     method = event["requestContext"]["http"]["method"]
     
     if method == "POST":
@@ -36,34 +47,52 @@ def main(event):
     contact_request = ContactRequest.from_body(body)
     
     # Validate the request
+    sender_ip_address = event["requestContext"]["http"]["sourceIp"]
     validation_response = validate_request(contact_request)
     if validation_response is not None:
+        log("refused", reason="invalid", ip=sender_ip_address)
         return validation_response
 
+    # Refuse blocked IPs with the same vague reply the other endpoints give
+    with connect_to_db() as conn, conn.cursor() as cur:
+        blocked = is_blocked(cur, sender_ip_address)
+    if blocked:
+        log("refused", reason="blocked", ip=sender_ip_address)
+        return response(403, {"message": "Internal Server Error"})
+
     # Format and send emails
-    sender_ip_address = event["requestContext"]["http"]["sourceIp"]
     floofy_email_result = email_floofy(contact_request, sender_ip_address)
     if floofy_email_result["statusCode"] >= 400:
         return floofy_email_result
+    log("contact_email_sent", ip=sender_ip_address)
     
     return response(200, {"message": "Commission request submitted successfully! You will receive a confirmation email shortly."})
 
 
 def email_floofy(contact_request: ContactRequest, sender_ip_address):
-    # Format the email content
+    # Subjects are plain text (never rendered as HTML), so they use the raw values
     email_subject = f"Website Contact: {contact_request.name}"
-    
+
+    # Escape every user value so it shows as text in the email instead of live markup
+    name = html.escape(contact_request.name)
+    email = html.escape(contact_request.email)
+    message = html.escape(contact_request.message)
+
+    # A signed Block link naming the sender's IP as a number, since contact messages aren't stored -- see spec.md
+    block_url = link(os.environ["ADMIN_URL"], "block-contact-ip", int(ipaddress.ip_address(sender_ip_address)))
+
     email_body = f"""
-        <h1>Floofy site contact sent by {contact_request.name}</h1>
-        <p><strong>Name:</strong> {contact_request.name}</p>
-        <p><strong>Email:</strong> {contact_request.email}</p>
-        <p><strong>Message:</strong> {contact_request.message}</p>
+        <h1>Floofy site contact sent by {name}</h1>
+        <p><strong>Name:</strong> {name}</p>
+        <p><strong>Email:</strong> {email}</p>
+        <p><strong>Message:</strong> {message}</p>
         <p><em>Submitted at: {datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
-        <p><em>Sender IP Address: {sender_ip_address}</em></p>
+        <p><em>Sender IP Address: {html.escape(sender_ip_address)}</em></p>
+        <p><a href="{html.escape(block_url)}">Block this sender</a></p>
     """
     
     # Send the email to Floofy
-    return send_email(os.environ.get("FLOOFY_EMAIL"), email_subject, email_body)
+    return send_email(admin_recipients(), email_subject, email_body)
 
 
 def validate_request(contact_request: ContactRequest):
@@ -78,22 +107,26 @@ def validate_request(contact_request: ContactRequest):
     return None
 
 
-def send_email(to_email, subject, body):
+def send_email(to_emails, subject, body):
     
     resend.api_key = os.environ.get("RESEND_API_KEY")
     
     try:
         commission_details: resend.Emails.SendParams = {
-        "from": "FloofySite <no-reply@summerfloofy.com>",
-        "to": [to_email],
+        "from": EMAIL_FROM,
+        "to": to_emails,
         "subject": subject,
-        "html": body
+        # Full HTML document plus a plain-text copy
+        **email_content(body),
         }
         
         resend.Emails.send(commission_details)
     
     except Exception as e:
-        return response(500, {"message": f"Failed to send email to {to_email}, please report this issue to the site owner.",})
+        # Record the real error; the visitor only sees the generic message below
+        log("email_failed", error=repr(e))
+        # A generic reply: naming the recipients would reveal the admins' addresses to the visitor
+        return response(500, {"message": "Sorry, something went wrong sending your message. Please try again later."})
             
     return response(200, {"message": "email sent successfully"})
 

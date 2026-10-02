@@ -1,0 +1,5 @@
+# Local test tools only; never shipped in a Lambda zip.
+pytest
+# The Lambdas import these at load time; tests replace their network calls with fakes.
+psycopg[binary]==3.3.4
+resend

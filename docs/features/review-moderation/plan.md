@@ -7,6 +7,8 @@ Implements [spec.md](spec.md). Each step is its own commit, tests first. One PR 
 
 - **Tests:** `pytest`, run locally from `aws_lambda/`. The database cursor and `resend` are replaced with small fakes,
   so tests need no network, no Neon and no Resend. New dev dependency: `aws_lambda/requirements-dev.txt` (`pytest`).
+  One-time setup, from `aws_lambda/`: `uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python -r
+  requirements-dev.txt`. Then run `.venv/bin/pytest`.
 - **SQL:** parameterised only (`cur.execute(query, params)`). A test in step 1 fails the build if any Lambda file
   builds SQL with an f-string.
 - **HTML:** every user-supplied value goes through `html.escape` before entering an email or page.
@@ -23,6 +25,8 @@ Implements [spec.md](spec.md). Each step is its own commit, tests first. One PR 
   insert).
 - `aws_lambda/shared/email_sender.py`: the `EMAIL_FROM = "FloofySite <no-reply@summerfloofy.com>"` constant, used by
   every Lambda that sends email.
+- `aws_lambda/shared/db.py`: `connect_to_db()`, moved out of `floof-api` (added in step 3, when a second Lambda needed
+  it).
 - `aws_lambda/tests/`: `conftest.py` puts `shared/` and each Lambda folder on the import path and provides a
   `FakeCursor` and a `FakeResend`.
 - **Tests:**
@@ -36,7 +40,8 @@ Implements [spec.md](spec.md). Each step is its own commit, tests first. One PR 
 
 ### 2. HTML escaping in the existing emails
 
-- `floof-comm` and `floof-contact`: escape every user value in every email body and subject.
+- `floof-comm` and `floof-contact`: escape every user value in every email body. Subjects stay raw: mail clients show
+  them as plain text, so escaping would only print `&amp;` for a name like "Tom & Jerry".
 - **Tests:** a request whose fields contain `<a href="https://evil.example">` produces an email body containing
   `&lt;a href=` and no raw `<a href="https://evil.example">`.
 
@@ -86,10 +91,11 @@ Implements [spec.md](spec.md). Each step is its own commit, tests first. One PR 
 
 ### 7. Build script
 
-- `aws_lambda/build.sh <lambda>`: installs that Lambda's `requirements.txt` as **Linux** wheels
-  (`pip install --platform manylinux2014_<arch> --only-binary=:all:`), copies in `shared/`, and zips the result to
-  `aws_lambda/dist/<lambda>.zip`.
-- The architecture argument must match each function's setting in AWS (`x86_64` or `arm64`).
+- `aws_lambda/build.sh <lambda> <arch> <python-version>`: installs that Lambda's `requirements.txt` as **Linux** wheels
+  (`uv pip install --python-platform <arch>-manylinux… --python-version <v> --only-binary :all:`), copies in `shared/`,
+  and zips the result to `aws_lambda/dist/<lambda>.zip`.
+- The architecture and Python version must match each function's settings in AWS. macOS's bundled `pip` 21 can't do a
+  cross-version install, hence `uv`. On `arm64`, psycopg only ships `manylinux_2_28` wheels, so ARM needs Python 3.12+.
 - `dist/` is git-ignored.
 - Manual check: build all four, unzip one, and confirm `psycopg`'s Linux binary and `admin_links.py` are inside.
 

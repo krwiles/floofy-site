@@ -75,6 +75,9 @@ token     = base64url(payload) + "." + base64url(signature)
   - `X-Robots-Tag: noindex`.
   - `Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'`.
 - **Parameterised SQL only.** Values always go through `cur.execute(query, params)`, never f-strings or `+`.
+- **Logging.** Every Lambda logs each request (method, path, IP, user agent) and each outcome as one JSON line in
+  CloudWatch, via `aws_lambda/shared/request_log.py`. Logs carry ids, never request bodies, tokens or the secret. See
+  [aws-setup.md](aws-setup.md#reading-the-logs).
 - **Separate Lambda.** `floof-admin`'s URL never appears in the site's JavaScript, and a bug in admin code can't
   affect the public endpoints.
 
@@ -108,8 +111,9 @@ POST, in order:
 
 ### `floof-contact`, changed
 
-POST: a **blocked IP** gets the same vague `403`. The email escapes every user value. There's no rate limit and no
-new table.
+POST: a **blocked IP** gets the same vague `403`. The email escapes every user value and has a **Block this sender**
+link (`block-contact-ip`). Contact messages aren't stored, so that one link carries the sender's IP itself (as an
+integer) instead of an id; the signature makes it just as tamper-proof. There's no rate limit and no new table.
 
 ### `floof-admin`, new
 
@@ -148,8 +152,8 @@ A Lambda function URL (auth `NONE`; the token is the authentication).
 | `DB_HOST/NAME/USER/PASSWORD` |   ✓ (has)   |     new      |       new       |      new      |
 | `RESEND_API_KEY`             |     new     |   ✓ (has)    |     ✓ (has)     |               |
 | `FLOOFY_EMAIL`               |     new     |   ✓ (has)    |     ✓ (has)     |               |
-| `ADMIN_LINK_SECRET`          |     new     |     new      |                 |      new      |
-| `ADMIN_URL`                  |     new     |     new      |                 |               |
+| `ADMIN_LINK_SECRET`          |     new     |     new      |       new       |      new      |
+| `ADMIN_URL`                  |     new     |     new      |       new       |               |
 
 Every email is sent as `FloofySite <no-reply@summerfloofy.com>`, from the site's own domain, verified in Resend. It's
 not a secret and won't vary by environment, so it's a constant (`EMAIL_FROM` in `aws_lambda/shared/`), not a setting.
