@@ -273,4 +273,24 @@ describe('Navbar', () => {
       matchMediaSpy.mockRestore();
     }
   });
+
+  it('stops listening for viewport changes once the navbar is destroyed', () => {
+    // Arrange: a fake media query that records its listeners, in place of the real matchMedia.
+    const media = { matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() };
+    const matchMediaSpy = vi.spyOn(window, 'matchMedia').mockReturnValue(media as unknown as MediaQueryList);
+
+    try {
+      // Act: build a fresh navbar (it subscribes while being built), then destroy it.
+      const navbar = TestBed.createComponent(Navbar);
+      navbar.destroy();
+
+      // Assert: the same `change` listener it added was removed again.
+      const [[event, listener]] = media.addEventListener.mock.calls;
+      expect(event).toBe('change');
+      expect(media.removeEventListener).toHaveBeenCalledWith('change', listener);
+    } finally {
+      // Put the real matchMedia back.
+      matchMediaSpy.mockRestore();
+    }
+  });
 });
