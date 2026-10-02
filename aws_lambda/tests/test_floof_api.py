@@ -109,7 +109,7 @@ def test_blocked_ip_gets_no_review_and_no_email(api, cursor, emails):
 
     # Assert: the existing vague refusal, with nothing inserted or emailed.
     assert result["statusCode"] == 403
-    assert json.loads(result["body"]) == {"message": "Internal Server Error"}
+    assert json.loads(result["body"]) == {"code": "error"}
     assert cursor.queries("INSERT") == []
     assert emails.sent == []
 
@@ -144,3 +144,38 @@ def test_every_email_has_a_full_html_document_and_a_text_version(api, emails):
     for sent in emails.sent:
         assert sent["html"].startswith("<!doctype html>")
         assert sent["text"].strip() and "<p>" not in sent["text"]
+
+
+# --- Response contract: a code (plus the rule, for rate limits), never prose -----------------------------------
+
+
+def body_of(result):
+    """The decoded JSON body of a Lambda response."""
+    return json.loads(result["body"])
+
+
+def test_saved_review_replies_ok(api, emails):
+    # Act and assert: 201 with just the code.
+    result = post_review(api)
+    assert (result["statusCode"], body_of(result)) == (201, {"code": "ok"})
+
+
+def test_too_long_review_replies_invalid(api, emails):
+    # Act and assert: 400 with no per-field detail.
+    result = post_review(api, author="x" * 60)
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+
+
+def test_rate_limited_review_replies_with_the_rule(api, cursor, emails):
+    # Arrange: already posted within the hour.
+    cursor.on("INTERVAL '1 hour'", rows=[{"count": 1}])
+
+    # Act and assert: 429 carrying the limit, so the site never hard-codes it.
+    result = post_review(api)
+    assert (result["statusCode"], body_of(result)) == (429, {"code": "rate_limited", "limit": 1, "window_hours": 1})
+
+
+def test_unsupported_method_replies_error(api):
+    # Act and assert: 405 with the generic code.
+    result = api.lambda_handler(make_event("PATCH"), None)
+    assert (result["statusCode"], body_of(result)) == (405, {"code": "error"})

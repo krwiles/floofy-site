@@ -40,7 +40,7 @@ def test_blocked_ip_gets_the_vague_403_and_no_email(contact, emails, cursor, con
 
     # Assert: the same deliberately vague reply as reviews, the IP was checked, and nothing was sent.
     assert result["statusCode"] == 403
-    assert json.loads(result["body"]) == {"message": "Internal Server Error"}
+    assert json.loads(result["body"]) == {"code": "error"}
     assert cursor.queries("FROM blocked_ips")[0][1] == ("203.0.113.7",)
     assert emails.sent == []
     assert connection.closed
@@ -105,4 +105,25 @@ def test_email_failure_reply_never_reveals_admin_addresses(contact, emails, monk
     # Assert: a generic 500 for the visitor, naming no admin address.
     assert result["statusCode"] == 500
     assert "admin@example.com" not in result["body"]
-    assert "try again later" in json.loads(result["body"])["message"].lower()
+    assert json.loads(result["body"]) == {"code": "error"}
+
+
+# --- Response contract: a code, never prose -----------------------------------------------------------------
+
+
+def test_sent_message_replies_ok(contact, emails):
+    # Act and assert: 200 with just the code.
+    result = contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
+    assert (result["statusCode"], json.loads(result["body"])) == (200, {"code": "ok"})
+
+
+def test_too_long_field_replies_invalid(contact, emails):
+    # Act and assert: 400 with no per-field detail.
+    result = contact.lambda_handler(make_event("POST", {"name": "x" * 60, "email": "b", "message": "c"}), None)
+    assert (result["statusCode"], json.loads(result["body"])) == (400, {"code": "invalid"})
+
+
+def test_unsupported_method_replies_error(contact):
+    # Act and assert: 405 with the generic code.
+    result = contact.lambda_handler(make_event("PATCH"), None)
+    assert (result["statusCode"], json.loads(result["body"])) == (405, {"code": "error"})

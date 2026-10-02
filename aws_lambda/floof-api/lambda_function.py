@@ -14,6 +14,11 @@ from db import connect_to_db
 from email_sender import EMAIL_FROM, admin_recipients, email_content
 from request_log import log, log_request
 
+# At most this many reviews per IP per window; the reply carries both, so the site never hard-codes them
+REVIEWS_PER_WINDOW = 1
+REVIEW_WINDOW_HOURS = 1
+
+
 def lambda_handler(event, context):
     # Record every call: requests are rare, so each one is worth seeing in CloudWatch
     log_request(event)
@@ -25,7 +30,7 @@ def lambda_handler(event, context):
     elif method == "POST":
         return create_review(event)
     
-    return response(405, {"message": "Method Not Allowed"})
+    return reply(405, "error")
 
 
 def get_reviews():
@@ -62,17 +67,17 @@ def create_review(event):
     # Input validation
     if len(author) >= 50:
         log("refused", reason="invalid", ip=ip_address)
-        return response(400, {"message": "Bad Request: author must be fewer than 50 characters"})
+        return reply(400, "invalid")
     if len(comment) >= 2000:
         log("refused", reason="invalid", ip=ip_address)
-        return response(400, {"message": "Bad Request: comment must be fewer than 2000 characters"})
+        return reply(400, "invalid")
 
     # Query strings
     rate_limit_query = """
     SELECT COUNT(*)
     FROM reviews
     WHERE ip_address = %s 
-        AND created_at >= NOW() - INTERVAL '1 hour'
+        AND created_at >= NOW() - %s * INTERVAL '1 hour'
     """
     insert_query = """
     INSERT INTO reviews (author, comment, ip_address)
@@ -93,15 +98,15 @@ def create_review(event):
         if is_blocked(cur, ip_address):
             log("refused", reason="blocked", ip=ip_address)
             conn.close()
-            return response(403, {"message": "Internal Server Error"})
+            return reply(403, "error")
 
         # Check rate limit
-        cur.execute(rate_limit_query, (ip_address,))
+        cur.execute(rate_limit_query, (ip_address, REVIEW_WINDOW_HOURS))
         result = cur.fetchone()
-        if result and result["count"] > 0:
+        if result and result["count"] >= REVIEWS_PER_WINDOW:
             log("refused", reason="rate_limited", ip=ip_address)
             conn.close()
-            return response(429, {"message": "You have exceeded the limit of 1 comment per hour. Please try again later or contact the site administrator to request a change to your existing review."})
+            return reply(429, "rate_limited", limit=REVIEWS_PER_WINDOW, window_hours=REVIEW_WINDOW_HOURS)
 
         # Insert the review; RETURNING hands back its new id (for the admin links) and saved time
         cur.execute(insert_query, (author, comment, ip_address))
@@ -122,7 +127,7 @@ def create_review(event):
     
     conn.close()
 
-    return response(201, {"message": "Review created successfully"})
+    return reply(201, "ok")
 
 
 def email_floofy(review_id, created_at, author, comment, ip_address, earlier_reviews):
@@ -157,6 +162,11 @@ def email_floofy(review_id, created_at, author, comment, ip_address, earlier_rev
         # Full HTML document plus a plain-text copy
         **email_content(email_body),
     })
+
+
+def reply(status, code, **extra):
+    """A form reply: the HTTP status plus a short code the site translates -- see docs/features/api-status-codes/plan.md."""
+    return response(status, {"code": code, **extra})
 
 
 def response(status, body):

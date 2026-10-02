@@ -60,7 +60,7 @@ def test_blocked_ip_gets_the_vague_403_with_no_insert_or_email(comm, cursor, ema
 
     # Assert: vague refusal, nothing recorded, nothing sent.
     assert result["statusCode"] == 403
-    assert json.loads(result["body"]) == {"message": "Internal Server Error"}
+    assert json.loads(result["body"]) == {"code": "error"}
     assert cursor.queries("INSERT") == []
     assert emails.sent == []
 
@@ -74,14 +74,14 @@ def test_third_request_in_24_hours_is_refused(comm, cursor, emails):
 
     # Assert: 429 with a "try again later" message, nothing recorded, nothing sent.
     assert result["statusCode"] == 429
-    assert "try again later" in json.loads(result["body"])["message"].lower()
+    assert json.loads(result["body"]) == {"code": "rate_limited", "limit": 2, "window_hours": 24}
     assert cursor.queries("INSERT") == []
     assert emails.sent == []
 
-    # The count covers this IP over exactly the last 24 hours.
+    # The count covers this IP over exactly the last 24 hours (the window is a parameter, shared with the reply).
     [(sql, params)] = cursor.queries("COUNT(*)")
-    assert "INTERVAL '24 hours'" in sql
-    assert params == ("203.0.113.7",)
+    assert "%s * INTERVAL '1 hour'" in sql
+    assert params == ("203.0.113.7", 24)
 
 
 def test_second_request_in_24_hours_still_goes_through(comm, cursor, emails):
@@ -161,7 +161,7 @@ def test_unusable_price_is_rejected_before_touching_the_database(comm, cursor, e
 
     # Assert: a 400 about the price, with no database work and no email.
     assert result["statusCode"] == 400
-    assert "price" in json.loads(result["body"])["message"].lower()
+    assert json.loads(result["body"]) == {"code": "invalid"}
     assert cursor.executed == []
     assert emails.sent == []
 
@@ -216,4 +216,25 @@ def test_email_failure_reply_never_reveals_admin_addresses(comm, emails, monkeyp
     # Assert: a generic 500 for the visitor, naming no admin address.
     assert result["statusCode"] == 500
     assert "admin@example.com" not in result["body"]
-    assert "try again later" in json.loads(result["body"])["message"].lower()
+    assert json.loads(result["body"]) == {"code": "error"}
+
+
+# --- Response contract: a code (plus the rule, for rate limits), never prose -----------------------------------
+
+
+def test_successful_request_replies_ok(comm, emails):
+    # Act and assert: 200 with just the code.
+    result = comm.lambda_handler(make_event("POST", commission_body()), None)
+    assert (result["statusCode"], json.loads(result["body"])) == (200, {"code": "ok"})
+
+
+def test_too_long_field_replies_invalid(comm, emails):
+    # Act and assert: 400 with no per-field detail.
+    result = comm.lambda_handler(make_event("POST", commission_body(name="x" * 60)), None)
+    assert (result["statusCode"], json.loads(result["body"])) == (400, {"code": "invalid"})
+
+
+def test_unsupported_method_replies_error(comm):
+    # Act and assert: 405 with the generic code.
+    result = comm.lambda_handler(make_event("PATCH"), None)
+    assert (result["statusCode"], json.loads(result["body"])) == (405, {"code": "error"})
