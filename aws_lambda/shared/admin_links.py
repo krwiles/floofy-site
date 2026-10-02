@@ -26,7 +26,7 @@ def _secret():
 
 
 def _b64encode(raw):
-    # URL-safe alphabet without "=" padding, so the token can sit in a query string untouched.
+    # URL-safe alphabet without "=" padding, so the token can sit in a query string untouched
     return base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii")
 
 
@@ -40,24 +40,24 @@ def _b64decode(text):
 
 
 def _signature(payload):
-    # HMAC-SHA256 of the payload under the secret: 32 bytes only the key holder can produce.
+    # HMAC-SHA256 of the payload under the secret: 32 bytes only the key holder can produce
     return hmac.new(_secret(), payload, hashlib.sha256).digest()
 
 
 def sign(action, target_id, expires_at):
     """Return a token allowing `action` on `target_id` until the unix time `expires_at`."""
-    # Catch typos in calling code here, rather than emailing a link that can never work.
+    # Catch typos in calling code here, rather than emailing a link that can never work
     if action not in ACTIONS:
         raise ValueError(f"unknown admin action: {action}")
 
-    # Sign the dotted payload and join the two encoded halves with a dot.
+    # Sign the dotted payload and join the two encoded halves with a dot
     payload = f"{action}.{int(target_id)}.{int(expires_at)}".encode("ascii")
     return _b64encode(payload) + "." + _b64encode(_signature(payload))
 
 
 def verify(token, now):
     """Return `(action, target_id)` for a genuine, unexpired token, or None for anything else. Never raises on bad input."""
-    # Split into payload and signature, decoding both; any malformed shape is a refusal.
+    # Split into payload and signature, decoding both; any malformed shape is a refusal
     if not isinstance(token, str):
         return None
     try:
@@ -67,11 +67,11 @@ def verify(token, now):
     except ValueError:
         return None
 
-    # Check the signature before trusting anything in the payload; compare_digest takes the same time however many bytes match.
+    # Check the signature before trusting anything in the payload; compare_digest takes the same time however many bytes match
     if not hmac.compare_digest(signature, _signature(payload)):
         return None
 
-    # Unpack the three payload parts, refusing anything the server doesn't understand.
+    # Unpack the three payload parts, refusing anything the server doesn't understand
     try:
         action, target_id, expires_at = payload.decode("ascii").split(".")
         target_id = int(target_id)
@@ -81,7 +81,7 @@ def verify(token, now):
     if action not in ACTIONS:
         return None
 
-    # A genuine token still stops working at its expiry time.
+    # A genuine token still stops working at its expiry time
     if now >= expires_at:
         return None
     return action, target_id

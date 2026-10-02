@@ -53,6 +53,7 @@ def api(load_lambda, cursor):
 
 
 def review_event():
+    # A valid review submission, as the site sends it.
     return make_event("POST", {"author": "Robin", "comment": "Lovely"})
 
 
