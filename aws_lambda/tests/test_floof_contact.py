@@ -12,7 +12,13 @@ EVIL = '<a href="//evil.example">x</a>'
 
 @pytest.fixture
 def contact(load_lambda):
+    # Load floof-contact with the fake database in place of Neon.
     return load_lambda("floof-contact")
+
+
+def send(contact, name="Robin", email="robin@example.com", message="Hello!"):
+    """Send a contact message through the handler, the way the site does."""
+    return contact.lambda_handler(make_event("POST", {"name": name, "email": email, "message": message}), None)
 
 
 def test_every_user_value_is_escaped_in_the_email(contact, emails):
@@ -152,4 +158,41 @@ def test_database_outage_replies_error(contact, emails, monkeypatch):
     # Act and assert: a coded 500, and nothing was emailed.
     result = contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
     assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
+    assert emails.sent == []
+
+
+@pytest.mark.parametrize(
+    "field, limit",
+    [("name", 50), ("email", 50), ("message", 2000)],
+)
+def test_a_field_exactly_at_its_limit_is_sent(contact, emails, field, limit):
+    # Act: send a message with one field exactly as long as the form allows.
+    result = send(contact, **{field: "x" * limit})
+
+    # Assert: accepted and emailed, not refused.
+    assert (result["statusCode"], body_of(result)) == (200, {"code": "ok"})
+    assert len(emails.sent) == 1
+
+
+@pytest.mark.parametrize(
+    "field, limit",
+    [("name", 50), ("email", 50), ("message", 2000)],
+)
+def test_a_field_one_past_its_limit_replies_invalid(contact, emails, field, limit):
+    # Act: send a message with one field a character too long.
+    result = send(contact, **{field: "x" * (limit + 1)})
+
+    # Assert: refused, with nothing emailed.
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+    assert emails.sent == []
+
+
+@pytest.mark.parametrize("field", ["name", "email", "message"])
+def test_a_blank_field_replies_invalid(contact, cursor, emails, field):
+    # Act: send a message with one field that is only whitespace.
+    result = send(contact, **{field: " \n "})
+
+    # Assert: refused before the database is touched, with nothing emailed.
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+    assert cursor.executed == []
     assert emails.sent == []

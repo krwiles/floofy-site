@@ -15,6 +15,9 @@ from email_sender import EMAIL_FROM, admin_recipients, email_content
 from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
+# The longest each field may be, matching the form (exactly at the limit is fine)
+MAX_LENGTHS = {"name": 50, "email": 50, "message": 2000}
+
 
 # The contact form's fields, as this Lambda works with them
 @dataclass(frozen=True)
@@ -47,7 +50,7 @@ def lambda_handler(event, context):
 
 
 def main(event):
-    # Parse the request body into dataclass
+    # Read the JSON body into a ContactRequest, with its text trimmed
     body = json.loads(event["body"])
     contact_request = ContactRequest.from_body(body)
     
@@ -65,7 +68,7 @@ def main(event):
         log("refused", reason="blocked", ip=sender_ip_address)
         return reply(403, "error")
 
-    # Format and send emails
+    # Email the owner; a failure is already logged and answered inside send_email
     floofy_email_result = email_floofy(contact_request, sender_ip_address)
     if floofy_email_result["statusCode"] >= 400:
         return floofy_email_result
@@ -102,13 +105,11 @@ def email_floofy(contact_request: ContactRequest, sender_ip_address):
 
 
 def validate_request(contact_request: ContactRequest):
-    # Input validation
-    if len(contact_request.name) >= 50:
-        return reply(400, "invalid")
-    if len(contact_request.email) >= 50:
-        return reply(400, "invalid")
-    if len(contact_request.message) >= 2000:
-        return reply(400, "invalid")
+    # Every field is required: refuse one that is blank or longer than the form allows
+    for field, max_length in MAX_LENGTHS.items():
+        value = getattr(contact_request, field)
+        if not value or len(value) > max_length:
+            return reply(400, "invalid")
 
     return None
 
@@ -120,16 +121,16 @@ def send_email(to_emails, subject, body):
     
     try:
         # The email to send, from the site's own address
-        commission_details: resend.Emails.SendParams = {
-        "from": EMAIL_FROM,
-        "to": to_emails,
-        "subject": subject,
-        # Full HTML document plus a plain-text copy
-        **email_content(body),
+        email_params: resend.Emails.SendParams = {
+            "from": EMAIL_FROM,
+            "to": to_emails,
+            "subject": subject,
+            # Full HTML document plus a plain-text copy
+            **email_content(body),
         }
-        
+
         # Send it; resend.Emails.send raises on any API or network error
-        resend.Emails.send(commission_details)
+        resend.Emails.send(email_params)
     
     except Exception as e:
         # Record the real error; the visitor only sees the generic message below
