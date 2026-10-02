@@ -83,7 +83,7 @@ export class RequestForm {
 
   /** Fires when a "?" button asks for more detail elsewhere on the page. */
   readonly detailRequested = output<RequestFormDetail>();
-  readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
+  readonly status = signal<FormSubmissionStatus>({ kind: 'idle', key: '' });
 
   // Element ids from commission-content.ts, exposed to the template.
   protected readonly anchors = COMMISSION_ANCHORS;
@@ -146,8 +146,7 @@ export class RequestForm {
     {
       // Show progress, then send the request with the price computed from the current picks.
       submission: createFormSubmission({
-        pendingMessage: 'Submitting commission...',
-        invalidMessage: 'Please correct the errors in the form before submitting.',
+        messages: 'forms.commission',
         model: this.commissionModel,
         status: this.status,
         buildRequest: (model): CreateCommissionRequest => ({

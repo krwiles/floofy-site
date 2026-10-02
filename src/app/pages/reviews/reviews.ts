@@ -52,7 +52,7 @@ export class Reviews implements OnInit {
   // Every visible review, newest first (empty until loaded).
   readonly reviews = signal<Review[]>([]);
   // The message shown beside the submit button.
-  readonly status = signal<FormSubmissionStatus>({ kind: 'idle', message: '' });
+  readonly status = signal<FormSubmissionStatus>({ kind: 'idle', key: '' });
 
   // The form's current values.
   private readonly reviewModel = signal<ReviewFormValue>({
@@ -75,8 +75,7 @@ export class Reviews implements OnInit {
     {
       // Show progress, send the review, then refresh the list and clear the form on success.
       submission: createFormSubmission({
-        pendingMessage: 'Submitting review...',
-        invalidMessage: 'Please correct the errors in the form before submitting.',
+        messages: 'forms.review',
         model: this.reviewModel,
         status: this.status,
         buildRequest: (model): CreateReviewRequest => ({

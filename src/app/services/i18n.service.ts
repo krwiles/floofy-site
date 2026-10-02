@@ -35,10 +35,18 @@ export class I18nService {
     this.localeSignal.set(locale);
   }
 
-  t(key: string): string {
+  /** The translated string for `key`, with each `{name}` placeholder filled from `params`. */
+  t(key: string, params: Record<string, string | number> = {}): string {
     // Echo the key back when it's missing, so a typo shows up visibly on the page.
     const value = this.lookup(key);
-    return typeof value === 'string' ? value : key;
+    if (typeof value !== 'string') {
+      return key;
+    }
+
+    // Fill each {name} that has a value; leave the rest as-is, so a missing value is visible rather than blank.
+    return value.replace(/\{(\w+)\}/g, (placeholder, name: string) =>
+      name in params ? String(params[name]) : placeholder,
+    );
   }
 
   /** A flat list of strings, e.g. a pricing card's `includes`. Array-shaped content that `t()` can't return. */

@@ -40,7 +40,10 @@ Every response body is JSON with a `code`. The codes are the same for every Lamb
   body with no code, becomes `{ code: 'error' }`.
 - **Models:** `ApiError` and the three `Create…Response` types become the code shape instead of `{ message }`.
 - **`createFormSubmission`** takes an i18n key prefix (e.g. `forms.review`) instead of `pendingMessage` /
-  `invalidMessage`. It sets the status text from `<prefix>.pending`, `<prefix>.invalid` and `<prefix>.<code>`.
+  `invalidMessage`. It sets the status to `<prefix>.pending`, `<prefix>.invalid`, `<prefix>.ok` or `<prefix>.<code>`.
+- **`FormSubmissionStatus`** holds that i18n key (plus placeholder values) instead of finished text, and
+  `app-form-status` translates it when it renders. That way a message also switches language if the visitor toggles
+  EN/日本語 after submitting. (Settled while building; not in the original plan.)
 - **`I18nService.t()`** gains simple `{name}` placeholders, e.g. `t(key, { limit: 2, window_hours: 24 })`, so the
   rate-limit text can use the numbers from the response.
 - **New i18n keys, in both `en.json` and `ja.json`:**

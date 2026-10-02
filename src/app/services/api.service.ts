@@ -2,15 +2,15 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { API_URLS } from '../config/api-urls';
-import { ApiError } from '../models/api-error';
+import { API_ERROR_CODES, ApiError } from '../models/api-error';
 import { CreateCommissionRequest, CreateCommissionResponse } from '../models/commission.model';
 import { CreateContactRequest, CreateContactResponse } from '../models/contact.model';
 import { CreateReviewRequest, CreateReviewResponse, Review } from '../models/review.model';
 
 /**
  * The one client for all three backend Lambdas (contact, reviews, commission) -- see docs/refactor/13-phase-5-plan.md's
- * "ApiService" section. Every failure is normalized here to a plain `{ message: string }`, so forms don't each need
- * their own fallback chain.
+ * "ApiService" section. Every failure is normalized here to an `ApiError` code -- see
+ * docs/features/api-status-codes/plan.md.
  */
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -37,13 +37,16 @@ export class ApiService {
   }
 
   private readonly normalizeError = (error: HttpErrorResponse): Observable<never> => {
-    // Prefer the Lambda's own `{ message }` body, which carries the user-facing reason (e.g. the rate-limit text).
-    const bodyMessage =
-      error.error && typeof error.error === 'object' && typeof error.error.message === 'string'
-        ? error.error.message
-        : undefined;
+    // Use the Lambda's code if it's one the site knows; anything else (no body, a network failure) is a generic error.
+    const body = error.error && typeof error.error === 'object' ? error.error : {};
+    const code = API_ERROR_CODES.includes(body.code) ? body.code : 'error';
+    const apiError: ApiError = { code };
 
-    // Otherwise fall back to Angular's generic HTTP message, so callers always get a string.
-    return throwError((): ApiError => ({ message: bodyMessage ?? error.message }));
+    // A rate limit also carries the server's rule, so the page can say what the limit is.
+    if (code === 'rate_limited' && typeof body.limit === 'number' && typeof body.window_hours === 'number') {
+      apiError.limit = body.limit;
+      apiError.window_hours = body.window_hours;
+    }
+    return throwError(() => apiError);
   };
 }

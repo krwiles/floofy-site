@@ -8,8 +8,8 @@ import { I18nService } from '../../services/i18n.service';
 export class TranslatePipe implements PipeTransform {
   private readonly i18n = inject(I18nService);
 
-  transform(key: string): string {
-    // Look the key up in the current locale; `pure: false` re-runs this when the locale changes.
-    return this.i18n.t(key);
+  transform(key: string, params?: Record<string, string | number>): string {
+    // Look the key up in the current locale, filling any placeholders; `pure: false` re-runs this on a locale change.
+    return this.i18n.t(key, params);
   }
 }

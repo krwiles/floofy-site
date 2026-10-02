@@ -1,8 +1,10 @@
 /**
  * A form's submission state: `createFormSubmission` writes it and `app-form-status` reads it, so the message and its
- * success/error styling can't drift apart. See CONTEXT.md's "Form Status" / "Form Submission" entries.
+ * success/error styling can't drift apart. `key` is an i18n key, translated when shown, so it follows the site's
+ * language; `params` fill its `{name}` placeholders. See CONTEXT.md's "Form Status" / "Form Submission" entries.
  */
 export type FormSubmissionStatus = {
   kind: 'idle' | 'pending' | 'success' | 'error';
-  message: string;
+  key: string;
+  params?: Record<string, string | number>;
 };
