@@ -92,8 +92,8 @@ The zips land in `aws_lambda/dist/`.
    - Click **Create**.
 2. **Code → Upload from → .zip file**, and choose `dist/floof-admin.zip`. Under **Runtime settings**, the handler must
    be `lambda_function.lambda_handler`.
-3. **Configuration → General configuration → Edit**: set the timeout to **10 seconds**. Neon can take a moment to wake
-   up on the first request after idle.
+3. **Configuration → General configuration → Edit**: set the timeout to **30 seconds**. The code gives up on the database
+   and Resend after 8 seconds each, so the Lambda can always log the problem and reply.
 4. **Configuration → Environment variables → Edit.** Add:
    - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`: copy the values from `floof-api`.
    - `ADMIN_LINK_SECRET`: the value from step 2.
@@ -113,7 +113,7 @@ Opening `ADMIN_URL` with no token should show "This link is invalid or has expir
      `floof-contact`.
    - `ADMIN_LINK_SECRET`: from step 2.
    - `ADMIN_URL`: from step 6.
-3. **General configuration**: set the timeout to **10 seconds**, since sending the email adds a little time.
+3. **General configuration**: set the timeout to **30 seconds** (see step 6).
 
 ## 8. Update `floof-comm` and `floof-contact`
 
@@ -124,7 +124,7 @@ Opening `ADMIN_URL` with no token should show "This link is invalid or has expir
    - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`: copied from `floof-api`.
    - `ADMIN_LINK_SECRET`.
    - `ADMIN_URL`.
-3. Set the timeout to **15 seconds**.
+3. Set the timeout to **30 seconds**. It can wait on the database and two emails, 8 seconds each at most.
 
 **`floof-contact`:**
 
@@ -133,7 +133,7 @@ Opening `ADMIN_URL` with no token should show "This link is invalid or has expir
    - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`.
    - `ADMIN_LINK_SECRET`.
    - `ADMIN_URL`.
-3. Set the timeout to **10 seconds**.
+3. Set the timeout to **30 seconds**.
 
 ## 9. Test it end to end
 

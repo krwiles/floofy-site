@@ -4,8 +4,14 @@ import html
 import os
 import re
 
+import resend
+
 # The verified sending address on the site's own domain; a constant, not a setting — see spec.md "Configuration".
 EMAIL_FROM = "FloofySite <no-reply@summerfloofy.com>"
+
+# Resend waits 30 s by default, longer than the Lambda's limit; give up sooner so the failure is logged and answered
+EMAIL_TIMEOUT_SECONDS = 8
+resend.default_http_client = resend.RequestsClient(timeout=EMAIL_TIMEOUT_SECONDS)
 
 
 def admin_recipients():
