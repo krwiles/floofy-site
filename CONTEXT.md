@@ -138,7 +138,7 @@ Status to success or error depending on the outcome. Shared shape across every f
 request, get back a status code -- `ok`, `invalid`, `rate_limited` or `error` -- and set Form Status to that form's
 own message for it) even though each form's actual
 request payload and on-success side effect differ (contact resets its fields; reviews refreshes its list;
-commission does neither).
+commission does neither). A form won't start a second Form Submission while one is still in flight.
 
 ## Artwork, Graphic, Icon
 

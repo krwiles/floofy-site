@@ -389,16 +389,17 @@ In each case the code is right and the doc needs updating, unless marked otherwi
 These are proposed PRs, roughly in priority order. Each needs its own planning pass (grilling if needed, a plan,
 test-first build, two-axis review) before building. All of them branch off `working`, never stacked.
 
-1. **Real bugs** — `B1`–`B12`, `B14` and the comment fixes in `C6`/`D1`.
+1. **Real bugs** — `B1`–`B12`, `B14` and the comment fixes in `C6`/`D1`. Planned in
+   [`2026-10-02-pr1-plan.md`](2026-10-02-pr1-plan.md), which moved `B4` and `B6` to a separate streaming page refresh.
    - **Off-by-one limits** (`B1`): align them (a field may hold exactly its maximum), with boundary tests.
    - **Locale keys** (`B2`): add the missing `ja.json` keys, prune the stale and unused ones, and add a key-parity
      test.
    - **Double submit** (`B3`): guard against it; disable the button while pending, or make `action` await.
-   - **Streaming date** (`B4`): fix the Saturday calculation, with tests (this overlaps Stage 4's
+   - **Streaming date** (`B4`, moved to the streaming page refresh): fix the Saturday calculation, with tests (this overlaps Stage 4's
      `StreamScheduleService`).
    - **Empty submissions** (`B5`): reject blank required fields on the backend, and on the frontend if
      `required` lets whitespace through.
-   - **Schedule link** (`B6`): use `routerLink` plus `fragment`.
+   - **Schedule link** (`B6`, moved to the streaming page refresh): the refresh removes the link.
    - **Timeouts** (`B7`): add a DB `connect_timeout` and an explicit Resend timeout that fit inside the Lambda limits,
      or raise the Lambda timeouts in `aws-setup.md`.
    - **Connections** (`B8`): use `with` in `floof-api`.
@@ -425,14 +426,12 @@ test-first build, two-axis review) before building. All of them branch off `work
    - **Status line** (`A3`): `role="status"` on `FormStatus`.
    - **Pricing-card buttons** (`A4`): make them `<button>`s.
    - **Language toggle** (`A5`): fix its accessible name.
-4. **Lambda tidy-up** — `M1`–`M3`, `C6` (the Lambda comments) and `C7` (the Python test hygiene).
+4. **Lambda tidy-up** — `M1`–`M3` and `C7` (the Python test hygiene). PR 1 fixed the `C6` Lambda comments.
    - **One email sender:** shared `email_sender.send()`.
-   - **Shared building blocks:** one parse/validate/escape pattern, one success status, one handler name, and an
-     `SGT` date helper.
+   - **Shared building blocks:** one parse/validate/escape pattern, one handler name, and an `SGT` date helper.
    - **`floof-admin`:** a per-action table.
    - **Tests:** parametrise the copied tests across the Lambdas.
-   - **Coordinate with PR 1:** decide the API success status (201 vs 200) there, so the reply contract doesn't change
-     twice.
+   - **Success status:** settled in PR 1; every form Lambda replies 200.
 5. **Docs refresh** — `D2`–`D8`, plus deleting `src/robots.txt`. This can run any time; it's doc-only.
 6. **Recorded follow-ups** — larger, or already on the roadmap. Each needs its own planning.
    - **Gallery** (`A6`): the gallery and lightbox accessibility rebuild (open idea 6).

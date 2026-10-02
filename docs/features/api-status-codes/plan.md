@@ -18,7 +18,7 @@ Every response body is JSON with a `code`. The codes are the same for every Lamb
 
 | `code`         | HTTP      | When                                                        | Extra fields            |
 | -------------- | --------- | ----------------------------------------------------------- | ----------------------- |
-| `ok`           | 200 / 201 | Saved and/or sent                                           | —                       |
+| `ok`           | 200       | Saved and/or sent                                           | —                       |
 | `invalid`      | 400       | Failed server-side validation (too long, bad price, …)      | —                       |
 | `rate_limited` | 429       | Over this Lambda's limit                                    | `limit`, `window_hours` |
 | `error`        | 403 / 500 | Blocked IP, email failure, or anything unexpected; also 405 | —                       |
