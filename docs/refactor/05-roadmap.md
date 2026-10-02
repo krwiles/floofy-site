@@ -1,6 +1,15 @@
 # 05 — Roadmap
 
 Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** = waiting on the owner.
+
+**Status as of 2026-10-02:**
+- **Done:** Phases 0–5 and Phase 6 Stages 1–3, all merged into `working`. Phase 8 is done too, delivered by the review-moderation work.
+- **Also merged:** a run of backend and feature work outside the phases (PRs #48 and #50–#58), listed under
+  [Feature work outside the phases](#feature-work-outside-the-phases).
+- **Next:** the pricing-card CTA keyboard fix, then Phase 6 Stage 4 (after its own grilling round).
+
+The paragraph below is the 2026-09-23 history, kept for reference.
+
 Status as of 2026-09-23: Phases 0–2 done and merged into `working`. Phase 3 (Stages 3a, 3b, 3c) fully done and
 merged into `working` (PR #21, #23, #24). 3 `<app-flourish>` bugs found and fixed outside phase work, merged
 (PR #25). Phase 4 has a concrete plan (see below); step 1 (image asset model) executed and merged. A 4th
@@ -896,9 +905,33 @@ section in `contact.html`" — that section is in `home.html`, is fully built, a
 
 ## Phase 8 — Backend hygiene (independent, can run any time)
 
-- [ ] Stop tracking vendored Lambda dependencies; add `requirements.txt` + build script + `.gitignore` entries
-      (**⏸** owner decision on history rewrite — default: no rewrite).
-- [ ] Document how each Lambda is deployed and its env vars (no secrets in the repo).
+- [x] Stop tracking vendored Lambda dependencies; add `requirements.txt` + build script + `.gitignore` entries
+      (done in #53: `aws_lambda/build.sh` builds each zip from `requirements.txt` plus `shared/`, and `.gitignore`
+      allows only source files under `aws_lambda/`; no history rewrite).
+- [x] Document how each Lambda is deployed and its env vars, with no secrets in the repo (done in #53:
+      [aws-setup.md](../features/review-moderation/aws-setup.md)).
+
+## Feature work outside the phases
+
+Merged into `working` between 2026-09-29 and 2026-10-02, each through its own PR:
+
+- **#48:** Lambda `usageExplanation` key fix, and the Node pin (`.nvmrc`).
+- **#50:** `robots.txt` / `llms.txt` refusing AI scraping (search indexing still allowed).
+- **#51:** Resend sends from the verified `no-reply@summerfloofy.com`.
+- **#52 / #53, review moderation:** [docs/features/review-moderation/](../features/review-moderation/spec.md).
+  - **Admin links:** signed admin email links (delete a review, block an IP), confirmed on the new `floof-admin` Lambda.
+  - **Blocklist:** every form checks `blocked_ips`, and the contact email has a "Block this sender" link.
+  - **Commission requests:** saved to `commission_requests` and rate-limited.
+  - **Emails:** user input is HTML-escaped, with plain-text copies, `reply_to` for customers, and multiple admin
+    addresses.
+  - **Logging:** structured CloudWatch logs.
+  - **Build:** `build.sh`.
+- **#54 / #57:** comment pass over the whole codebase, with the comment-length hook fixed (`python3`) and extended to
+  CSS/HTML.
+- **#56:** the Twitch embed allows `summerfloofy.com`.
+- **#55 / #58, API status codes:** [docs/features/api-status-codes/plan.md](../features/api-status-codes/plan.md).
+  - **Lambdas:** reply `{code: ok|invalid|rate_limited|error}`, with the rate-limit rule in the reply.
+  - **Site:** words each status per form, in English and Japanese.
 
 ---
 
@@ -920,7 +953,9 @@ just not this stage's job. Move these into a dedicated `backlog.md` once the who
    for `reviews.ts`'s read (manual `.subscribe()` fits today's pattern more directly, since it also needs manual
    re-triggering after a successful post), but asked to keep it flagged as worth investigating separately later,
    independent of Phase 5's `ApiService` work.
-5. **Move `GalleryImageService`'s hardcoded image arrays into a JSON file** — raised by the owner during Phase 5
+5. ~~Move `GalleryImageService`'s hardcoded image arrays into a JSON file~~: **done in Phase 6 Stage 2**
+   (`assets/data/gallery.json`).
+   Original note: **Move `GalleryImageService`'s hardcoded image arrays into a JSON file** — raised by the owner during Phase 5
    planning (2026-09-25), unrelated to forms; `galleryImages`/`emoteImages`/`chibiImages`/`illustrationImages`
    are currently hardcoded TS array literals on the service class, unlike `PricingService`, which already reads
    from `assets/data/pricing.json`. Worth the same treatment, as its own small future piece of work.
