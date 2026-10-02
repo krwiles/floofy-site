@@ -30,6 +30,7 @@ class FakeCursor:
     """Stands in for a psycopg cursor: records every query and answers from scripted rules."""
 
     def __init__(self):
+        # Every query run so far, the scripted answers, and the last query's results.
         self.executed = []
         self.rules = []
         self.rowcount = -1
@@ -54,9 +55,11 @@ class FakeCursor:
         self.rowcount = 0
 
     def fetchone(self):
+        # The first row of the last query's answer, or None, like psycopg.
         return self._rows[0] if self._rows else None
 
     def fetchall(self):
+        # Every row of the last query's answer.
         return list(self._rows)
 
     def queries(self, fragment):
@@ -64,9 +67,11 @@ class FakeCursor:
         return [(sql, params) for sql, params in self.executed if fragment in sql]
 
     def __enter__(self):
+        # `with conn.cursor() as cur:` hands back the cursor itself.
         return self
 
     def __exit__(self, *exc):
+        # Never swallow an exception raised inside the `with` block.
         return False
 
 
@@ -74,20 +79,25 @@ class FakeConnection:
     """Stands in for a psycopg connection; `with conn:` commits on success like the real one."""
 
     def __init__(self, cursor):
+        # The one shared cursor, plus counters tests can assert on.
         self._cursor = cursor
         self.commits = 0
         self.closed = False
 
     def cursor(self, row_factory=None):
+        # Always the same cursor, whatever row factory is asked for.
         return self._cursor
 
     def commit(self):
+        # Count commits, so tests can check a write was saved.
         self.commits += 1
 
     def close(self):
+        # Remember that the connection was closed.
         self.closed = True
 
     def __enter__(self):
+        # `with connect_to_db() as conn:` hands back the connection itself.
         return self
 
     def __exit__(self, exc_type, *rest):
@@ -102,6 +112,7 @@ class FakeResend:
     """Records emails instead of sending them; set `fail = True` to make sending raise."""
 
     def __init__(self):
+        # Every email "sent", and whether sending should fail.
         self.sent = []
         self.fail = False
 
@@ -124,11 +135,13 @@ def lambda_env(monkeypatch):
 
 @pytest.fixture
 def cursor():
+    # A fresh fake database cursor for each test.
     return FakeCursor()
 
 
 @pytest.fixture
 def connection(cursor):
+    # A fake connection wrapping that cursor.
     return FakeConnection(cursor)
 
 

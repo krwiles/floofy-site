@@ -19,6 +19,7 @@ def lambda_handler(event, context):
     log_request(event)
     method = event["requestContext"]["http"]["method"]
     
+    # GET lists the reviews; POST adds one; anything else is refused
     if method == "GET":
         return get_reviews()
     elif method == "POST":
@@ -40,6 +41,7 @@ def get_reviews():
     ORDER BY created_at DESC
     """
     
+    # Run the query, then close the connection
     conn = connect_to_db()
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(query)
@@ -84,6 +86,7 @@ def create_review(event):
         AND id < %s
     """
     
+    # One connection for the checks, the insert and the notification
     conn = connect_to_db()
     with conn.cursor(row_factory=dict_row) as cur:
         # Check if the IP address is blocked (the same shared check every endpoint uses)
@@ -157,6 +160,7 @@ def email_floofy(review_id, created_at, author, comment, ip_address, earlier_rev
 
 
 def response(status, body):
+    # A JSON reply in the shape Lambda function URLs expect (datetimes as ISO text)
     return {
         "statusCode": status,
         "headers": {

@@ -15,12 +15,14 @@ from email_sender import EMAIL_FROM, admin_recipients, email_content
 from request_log import log, log_request
 
 
+# The contact form's fields, as this Lambda works with them
 @dataclass(frozen=True)
 class ContactRequest:
     name: str
     email: str
     message: str
 
+    # Build one from the JSON body, with text trimmed and anything missing left empty
     @classmethod
     def from_body(cls, body: dict) -> "ContactRequest":
         return cls(
@@ -35,6 +37,7 @@ def lambda_handler(event, context):
     log_request(event)
     method = event["requestContext"]["http"]["method"]
     
+    # Only POST (the form) is accepted; anything else is refused
     if method == "POST":
         return main(event)
     
@@ -66,6 +69,7 @@ def main(event):
         return floofy_email_result
     log("contact_email_sent", ip=sender_ip_address)
     
+    # Sent: tell the visitor it worked
     return response(200, {"message": "Commission request submitted successfully! You will receive a confirmation email shortly."})
 
 
@@ -109,9 +113,11 @@ def validate_request(contact_request: ContactRequest):
 
 def send_email(to_emails, subject, body):
     
+    # Authenticate with Resend using this Lambda's API key
     resend.api_key = os.environ.get("RESEND_API_KEY")
     
     try:
+        # The email to send, from the site's own address
         commission_details: resend.Emails.SendParams = {
         "from": EMAIL_FROM,
         "to": to_emails,
@@ -120,6 +126,7 @@ def send_email(to_emails, subject, body):
         **email_content(body),
         }
         
+        # Send it; resend.Emails.send raises on any API or network error
         resend.Emails.send(commission_details)
     
     except Exception as e:
@@ -128,10 +135,12 @@ def send_email(to_emails, subject, body):
         # A generic reply: naming the recipients would reveal the admins' addresses to the visitor
         return response(500, {"message": "Sorry, something went wrong sending your message. Please try again later."})
             
+    # Sent: callers only check the status code
     return response(200, {"message": "email sent successfully"})
 
 
 def response(status, body):
+    # A JSON reply in the shape Lambda function URLs expect
     return {
         "statusCode": status,
         "headers": {
