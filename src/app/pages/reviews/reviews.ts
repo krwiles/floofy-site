@@ -86,9 +86,8 @@ export class Reviews implements OnInit {
         submit: (request) => this.apiService.submitReview(request),
         onSuccess: () => {
           // Reload the list so the new review appears.
-          // Refresh the reviews list after a successful submission to display the newly added review.
           this.requestReviews();
-          // Clear the form, so a double-click can't post the same review twice.
+          // Clear the form, ready for another review.
           this.reviewForm().reset({ author: '', comment: '', agreement: false });
         },
       }),

@@ -87,7 +87,14 @@
 
         <!-- Submit button -->
         <div class="flex items-center gap-5 pt-4 text-on-middle-body">
-          <button type="submit" appButton variant="primary" tone="middle" class="shrink-0 whitespace-nowrap">
+          <button
+            type="submit"
+            appButton
+            variant="primary"
+            tone="middle"
+            class="shrink-0 whitespace-nowrap disabled:cursor-wait disabled:opacity-70"
+            [disabled]="reviewForm().submitting()"
+          >
             Submit Review
           </button>
           <app-form-status [status]="status()" />

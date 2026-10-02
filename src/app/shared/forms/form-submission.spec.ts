@@ -1,5 +1,5 @@
 import { signal } from '@angular/core';
-import { NEVER, Observable, of, throwError } from 'rxjs';
+import { NEVER, Observable, of, Subject, throwError } from 'rxjs';
 import { createFormSubmission } from './form-submission';
 import { FormSubmissionStatus } from '../../models/form-submission-status';
 
@@ -32,6 +32,37 @@ describe('createFormSubmission', () => {
 
     // Assert: the form's pending key is already showing.
     expect(status()).toEqual({ kind: 'pending', key: 'forms.test.pending' });
+  });
+
+  it('stays pending until the reply arrives, so Signal Forms blocks a second submit meanwhile', async () => {
+    // Arrange: a submit whose reply the test sends by hand, and a flag set once action() resolves.
+    const reply = new Subject<unknown>();
+    const { status, action } = setup(() => reply);
+    let resolved = false;
+
+    // Act: submit, then let any already-queued work run.
+    const done = action().then(() => (resolved = true));
+    await Promise.resolve();
+
+    // Assert: still waiting, so Signal Forms' submitting() stays true.
+    expect(resolved).toBe(false);
+
+    // Act: the reply arrives.
+    reply.next({ code: 'ok' });
+    reply.complete();
+    await done;
+
+    // Assert: resolved, with the success message showing.
+    expect(resolved).toBe(true);
+    expect(status()).toEqual({ kind: 'success', key: 'forms.test.ok' });
+  });
+
+  it('resolves rather than rejecting when the request fails', async () => {
+    // Arrange: a submit that fails.
+    const { action } = setup(() => throwError(() => ({ code: 'error' })));
+
+    // Act and assert: the promise resolves, so a failure never becomes an unhandled rejection.
+    await expect(action()).resolves.toBeUndefined();
   });
 
   it('builds the request from the current model value at submit time', () => {
