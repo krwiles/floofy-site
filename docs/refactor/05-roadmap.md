@@ -6,7 +6,8 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** 
 - **Done:** Phases 0–5 and Phase 6 Stages 1–3, all merged into `working`. Phase 8 is done too, delivered by the review-moderation work.
 - **Also merged:** a run of backend and feature work outside the phases (PRs #48 and #50–#58), listed under
   [Feature work outside the phases](#feature-work-outside-the-phases).
-- **Next:** the pricing-card CTA keyboard fix, then Phase 6 Stage 4 (after its own grilling round).
+- **Next:** the pricing-card CTA keyboard fix, then the rest of Phase 6 Stage 4 (lazy Twitter widgets). Stage 4's
+  streaming half was done by the streaming page refresh (`docs/features/streaming-refresh/plan.md`).
 
 The paragraph below is the 2026-09-23 history, kept for reference.
 
@@ -885,6 +886,10 @@ time, each its own PR directly against `working` (never stacked). Supersedes the
       now runs as part of every stage.
 - [ ] **Stage 4 — Twitch embed + `ScriptLoader`; `StreamScheduleService` with tests; lazy Twitter widgets** (own
       grilling round first).
+  - [x] Streaming half, done by the streaming page refresh (`docs/features/streaming-refresh/plan.md`): the
+        `StreamScheduleService` (one `stream-schedule.json`, every day and time derived; fixes the review's `B4`),
+        a `ScriptLoader` for Twitch's script, and the page rebuilt from the shared components and translated.
+  - [ ] Lazy Twitter widgets through `ScriptLoader`, instead of `index.html`.
 - **Parked (moved to Open ideas):** gallery lightbox/grid a11y rebuild.
 
 Stale note resolved: Phase 0's "ask the owner before Phase 6 touches the unfinished 'Reviews, donate, contact'
@@ -940,7 +945,7 @@ Merged into `working` between 2026-09-29 and 2026-10-02, each through its own PR
 Found during Stage 3b planning (2026-09-22), deliberately excluded from that stage's scope — not lost track of,
 just not this stage's job. Move these into a dedicated `backlog.md` once the whole refactor finishes.
 
-1. **Streaming page pass** — `streaming.html`/`.css` (including `.stream-cta`) is a known formatting/consistency
+1. ~~**Streaming page pass**~~ — **done** by the streaming page refresh. `streaming.html`/`.css` (including `.stream-cta`) is a known formatting/consistency
    outlier; not touched or used as a pattern reference anywhere in Phase 3. Owner may redesign it directly with
    the finished primitives once they exist, or it becomes its own future phase.
 2. **Navbar button styling** — the login/menu-toggle buttons share most of `appButton`'s classes but add

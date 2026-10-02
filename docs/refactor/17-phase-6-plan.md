@@ -107,6 +107,8 @@ Twitch embed currently loads its script and builds the embed with `getElementByI
 use on the about page. Intent: a `ScriptLoader` service, `StreamScheduleService` with tests, Twitter loaded lazily.
 Grill before starting.
 
+**Streaming half done:** see `docs/features/streaming-refresh/plan.md`. Lazy Twitter is what's left.
+
 ## Definition of done for this phase
 
 - `pages/`, `layout/`, `shared/`, `services/` layout in place; no leftover flat page folders.

@@ -47,14 +47,14 @@ documented standard is broken. **Smell** is a judgement call. **Doc** means the 
   forget"), so Signal Forms' `submitting()` is never true, and no submit button is disabled while pending.
   - **Commission:** a double-click sends two requests and four emails.
   - **Reviews:** two simultaneous POSTs can both pass the rate-limit count before either inserts.
-- **B4 — Streaming shows the wrong week on Saturdays (Bug).** In `streaming.ts` `getNextStreamInstant()`,
+- **B4 — Streaming shows the wrong week on Saturdays (Bug). Fixed by the streaming page refresh.** In `streaming.ts` `getNextStreamInstant()`,
   `(6 - day + 7) % 7 || 7` adds a full week whenever the UTC day is Saturday. So from Friday evening (Eastern) until
   the stream starts, the page shows next week's date. The schedule maths has no tests (Stage 4 notes this; the bug
   itself wasn't known).
 - **B5 — Whitespace-only reviews get published (Bug).** The frontend's `required` accepts `"   "`. `floof-api`
   trims the text but never rejects an empty result, and the backend generally accepts empty required fields (author,
   comment, name, email, description).
-- **B6 — The streaming "#schedule" link goes to the home page (Bug).** `streaming.html` uses `href="#schedule"`. With
+- **B6 — The streaming "#schedule" link goes to the home page (Bug). Removed by the streaming page refresh.** `streaming.html` uses `href="#schedule"`. With
   `<base href="/">` that resolves to `/#schedule`, so it needs `routerLink` plus `fragment`.
 - **B7 — Lambda timeouts are shorter than their network timeouts (Bug).**
   - **The mismatch:** Resend's client defaults to a 30-second timeout, and `shared/db.py` sets no `connect_timeout`.
