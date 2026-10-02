@@ -125,7 +125,8 @@ def send_email(to_emails, subject, body):
     except Exception as e:
         # Record the real error; the visitor only sees the generic message below
         log("email_failed", error=repr(e))
-        return response(500, {"message": f"Failed to send email to {', '.join(to_emails)}, please report this issue to the site owner.",})
+        # A generic reply: naming the recipients would reveal the admins' addresses to the visitor
+        return response(500, {"message": "Sorry, something went wrong sending your message. Please try again later."})
             
     return response(200, {"message": "email sent successfully"})
 

@@ -203,3 +203,17 @@ def test_customer_confirmation_replies_to_the_admins(comm, emails, monkeypatch):
     # Assert: a customer's reply goes to the admins, not to the unanswered no-reply address.
     owner, customer = emails.sent
     assert customer["reply_to"] == ["a@example.com", "b@example.com"]
+
+
+def test_email_failure_reply_never_reveals_admin_addresses(comm, emails, monkeypatch):
+    # Arrange: two admins, and Resend is down.
+    monkeypatch.setenv("FLOOFY_EMAIL", "secret-admin@example.com,other-admin@example.com")
+    emails.fail = True
+
+    # Act: submit the form.
+    result = comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: a generic 500 for the visitor, naming no admin address.
+    assert result["statusCode"] == 500
+    assert "admin@example.com" not in result["body"]
+    assert "try again later" in json.loads(result["body"])["message"].lower()

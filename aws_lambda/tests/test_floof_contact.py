@@ -92,3 +92,17 @@ def test_every_email_has_a_full_html_document_and_a_text_version(contact, emails
     for sent in emails.sent:
         assert sent["html"].startswith("<!doctype html>")
         assert sent["text"].strip() and "<p>" not in sent["text"]
+
+
+def test_email_failure_reply_never_reveals_admin_addresses(contact, emails, monkeypatch):
+    # Arrange: two admins, and Resend is down.
+    monkeypatch.setenv("FLOOFY_EMAIL", "secret-admin@example.com,other-admin@example.com")
+    emails.fail = True
+
+    # Act: submit the form.
+    result = contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
+
+    # Assert: a generic 500 for the visitor, naming no admin address.
+    assert result["statusCode"] == 500
+    assert "admin@example.com" not in result["body"]
+    assert "try again later" in json.loads(result["body"])["message"].lower()
