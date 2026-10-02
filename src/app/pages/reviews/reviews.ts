@@ -5,6 +5,7 @@ import { ApiService } from '../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { CreateReviewRequest, Review } from '../../models/review.model';
 import { form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
+import { requiredText } from '../../shared/forms/required-text';
 import { Reveal } from '../../shared/directives/reveal';
 import { SectionDivider } from '../../shared/components/section-divider/section-divider';
 import { SectionHeader } from '../../shared/components/section-header/section-header';
@@ -65,9 +66,9 @@ export class Reviews implements OnInit {
   reviewForm = form(
     this.reviewModel,
     (schemaPath) => {
-      // Name, review and the terms checkbox are required; lengths match the Lambda's limits.
-      required(schemaPath.author, { message: 'Name is required.' });
-      required(schemaPath.comment, { message: 'Review is required.' });
+      // Name, review (blank text counts as empty) and the terms checkbox are required; lengths match the Lambda's.
+      requiredText(schemaPath.author, { message: 'Name is required.' });
+      requiredText(schemaPath.comment, { message: 'Review is required.' });
       required(schemaPath.agreement, { message: 'You must agree to the terms and conditions.' });
       maxLength(schemaPath.author, 50, { message: 'Name cannot exceed 50 characters.' });
       maxLength(schemaPath.comment, 2000, { message: 'Review cannot exceed 2000 characters.' });

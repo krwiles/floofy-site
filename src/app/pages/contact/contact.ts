@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import type { CreateContactRequest } from '../../models/contact.model';
 import { Hero } from '../../shared/components/hero/hero';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
-import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
+import { email, form, FormField, FormRoot, maxLength } from '@angular/forms/signals';
+import { requiredText } from '../../shared/forms/required-text';
 import { ApiService } from '../../services/api.service';
 import { Flourish } from '../../shared/components/flourish/flourish';
 import { SectionDivider } from '../../shared/components/section-divider/section-divider';
@@ -61,10 +62,10 @@ export class Contact {
   contactForm = form(
     this.contactFormModel,
     (schemaPath) => {
-      // Every field is required, length-capped to match the Lambda, and the email must look valid.
-      required(schemaPath.name, { message: 'Name is required.' });
-      required(schemaPath.email, { message: 'Email is required.' });
-      required(schemaPath.message, { message: 'Message is required.' });
+      // Every field is required (blank text counts as empty), length-capped to match the Lambda, with a valid email.
+      requiredText(schemaPath.name, { message: 'Name is required.' });
+      requiredText(schemaPath.email, { message: 'Email is required.' });
+      requiredText(schemaPath.message, { message: 'Message is required.' });
       maxLength(schemaPath.name, 50, { message: 'Name cannot exceed 50 characters.' });
       maxLength(schemaPath.email, 50, { message: 'Email cannot exceed 50 characters.' });
       maxLength(schemaPath.message, 2000, {
