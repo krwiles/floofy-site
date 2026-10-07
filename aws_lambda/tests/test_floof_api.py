@@ -273,3 +273,30 @@ def test_a_failure_mid_request_still_closes_the_connection(api, cursor, connecti
     # Assert: a coded 500, and the connection was still closed rather than leaked.
     assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
     assert connection.closed
+
+
+# --- Abuse protection: IP scope and the global cap ---------------------------------------------------------------
+
+
+def test_rate_limit_counts_an_ipv6_visitors_whole_64(api, cursor, emails):
+    # Act: post from an IPv6 address.
+    api.lambda_handler(make_event("POST", {"author": "Robin", "comment": "Lovely"}, ip="2001:db8:1:2::9"), None)
+
+    # Assert: the count covers every address in that /64, not just this one.
+    [(sql, params)] = cursor.queries("INTERVAL '1 hour'")
+    assert "ip_address <<= %s::inet" in sql
+    assert params == ("2001:db8:1:2::/64", 1)
+
+
+def test_global_cap_refuses_with_busy(api, cursor, emails, capsys):
+    # Arrange: 20 reviews in the last day, from anyone.
+    cursor.on("INTERVAL '24 hours'", rows=[{"recent": 20}])
+
+    # Act: a new visitor posts.
+    result = post_review(api)
+
+    # Assert: refused as busy, logged, and nothing saved or emailed.
+    assert (result["statusCode"], body_of(result)) == (503, {"code": "busy"})
+    assert any(line["event"] == "global_cap_reached" for line in logged(capsys))
+    assert cursor.queries("INSERT") == []
+    assert emails.sent == []

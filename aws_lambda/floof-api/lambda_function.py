@@ -10,6 +10,8 @@ from psycopg.rows import dict_row
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
+from ip_scope import ip_scope
+from limits import busy_reply, over_global_cap
 from email_sender import EMAIL_FROM, admin_recipients, email_content
 from replies import replies_on_unexpected_errors, reply, response
 from request_log import log, log_request
@@ -17,6 +19,9 @@ from request_log import log, log_request
 # At most this many reviews per IP per window; the reply carries both, so the site never hard-codes them
 REVIEWS_PER_WINDOW = 1
 REVIEW_WINDOW_HOURS = 1
+
+# At most this many reviews per rolling day from everyone together, then the form replies "busy"
+REVIEWS_PER_DAY = 20
 
 # The longest author and comment the form allows; the author column is varchar(50), the comment limit is the site's rule
 MAX_AUTHOR_LENGTH = 50
@@ -75,7 +80,7 @@ def create_review(event):
     rate_limit_query = """
     SELECT COUNT(*)
     FROM reviews
-    WHERE ip_address = %s 
+    WHERE ip_address <<= %s::inet
         AND created_at >= NOW() - %s * INTERVAL '1 hour'
     """
     insert_query = """
@@ -97,12 +102,16 @@ def create_review(event):
             log("refused", reason="blocked", ip=ip_address)
             return reply(403, "error")
 
-        # Refuse the IP once it has reached the limit within the window
-        cur.execute(rate_limit_query, (ip_address, REVIEW_WINDOW_HOURS))
+        # Refuse the visitor (their IPv4 address, or IPv6 /64) once they've reached the limit within the window
+        cur.execute(rate_limit_query, (ip_scope(ip_address), REVIEW_WINDOW_HOURS))
         result = cur.fetchone()
         if result and result["count"] >= REVIEWS_PER_WINDOW:
             log("refused", reason="rate_limited", ip=ip_address)
             return reply(429, "rate_limited", limit=REVIEWS_PER_WINDOW, window_hours=REVIEW_WINDOW_HOURS)
+
+        # Refuse everyone once today's reviews reach the global cap
+        if over_global_cap(cur, "reviews", REVIEWS_PER_DAY):
+            return busy_reply("review")
 
         # Insert the review and commit straight away; RETURNING hands back its new id (for the admin links) and time
         cur.execute(insert_query, (author, comment, ip_address))
