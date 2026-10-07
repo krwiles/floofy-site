@@ -1,0 +1,26 @@
+{
+  "get": {
+    "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Block the sender of a contact message?</title><style>body{font-family:system-ui,sans-serif;max-width:40rem;margin:2rem auto;padding:0 1rem;line-height:1.5}blockquote{border-left:3px solid #ccc;margin:1rem 0;padding-left:1rem;white-space:pre-wrap}button{font-size:1.1rem;padding:.6rem 1.4rem;cursor:pointer}</style></head><body><h1>Block the sender of a contact message?</h1><p><strong>IP:</strong> 198.51.100.4</p><p>IP 198.51.100.4 will no longer be able to post reviews, send commission requests or send contact messages.</p><form method=\"post\"><input type=\"hidden\" name=\"token\" value=\"YmxvY2stY29udGFjdC1pcC4zMzI1MjU2NzA4LjE3OTA3NDQ0MDA.KxQZ_pGAIbYpvWcXZ8kg_LYhQRfYroezXslYDGQU_zE\"><button type=\"submit\">Confirm</button></form></body></html>",
+    "headers": {
+      "Cache-Control": "no-store",
+      "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'",
+      "Content-Type": "text/html; charset=utf-8",
+      "Referrer-Policy": "no-referrer",
+      "X-Content-Type-Options": "nosniff",
+      "X-Robots-Tag": "noindex"
+    },
+    "statusCode": 200
+  },
+  "post": {
+    "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Block the sender of a contact message?</title><style>body{font-family:system-ui,sans-serif;max-width:40rem;margin:2rem auto;padding:0 1rem;line-height:1.5}blockquote{border-left:3px solid #ccc;margin:1rem 0;padding-left:1rem;white-space:pre-wrap}button{font-size:1.1rem;padding:.6rem 1.4rem;cursor:pointer}</style></head><body><h1>Block the sender of a contact message?</h1><p><strong>Done.</strong></p></body></html>",
+    "headers": {
+      "Cache-Control": "no-store",
+      "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'",
+      "Content-Type": "text/html; charset=utf-8",
+      "Referrer-Policy": "no-referrer",
+      "X-Content-Type-Options": "nosniff",
+      "X-Robots-Tag": "noindex"
+    },
+    "statusCode": 200
+  }
+}
