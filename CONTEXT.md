@@ -180,3 +180,8 @@ types and the form uses `UsageTypeId | 'unsure'`. Previously called
 
 The weekly stream slot: one weekday and start time, stored once in the stream's home time zone. Every day and time
 the site shows, in any other zone, is derived from it. Each zone's view of it is a **schedule card**.
+
+## IP scope
+
+The address a rate limit or block applies to: an IPv4 visitor's own address, or an IPv6 visitor's whole /64 network,
+since one IPv6 home or phone connection owns that network and moves around inside it.

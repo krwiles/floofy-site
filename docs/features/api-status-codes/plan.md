@@ -21,6 +21,7 @@ Every response body is JSON with a `code`. The codes are the same for every Lamb
 | `ok`           | 200       | Saved and/or sent                                           | —                       |
 | `invalid`      | 400       | Failed server-side validation (too long, bad price, …)      | —                       |
 | `rate_limited` | 429       | Over this Lambda's limit                                    | `limit`, `window_hours` |
+| `busy`         | 503       | This form's daily cap across every visitor is reached       | —                       |
 | `error`        | 403 / 500 | Blocked IP, email failure, or anything unexpected; also 405 | —                       |
 
 - **`rate_limited`** carries the rule itself, from the Lambda's own constants, so the limit is defined once (on the

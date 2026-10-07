@@ -25,7 +25,7 @@ without an explicit confirm; no lost reviews or requests when email fails; no HT
 - **Undo buttons.** Actions are reversible by hand; see [aws-setup.md](aws-setup.md#undoing-an-action).
 - **Blocking the whole site.** Done in the Cloudflare dashboard instead ("Under Attack" mode, WAF rules or a
   maintenance page), behind the owner's Cloudflare login and 2FA.
-- **A contact-form rate limit.** The contact form only _checks_ `blocked_ips`.
+- **A contact-form rate limit.** Added later by PR 2 (`docs/review/2026-10-02-pr2-plan.md`): 3 per visitor per day.
 - **Cloudflare Access.** An optional later hardening step: see [Future ideas](#future-ideas).
 - **Sign in with Google.** A recorded future idea.
 
