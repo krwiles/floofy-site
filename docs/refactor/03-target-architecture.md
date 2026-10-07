@@ -159,7 +159,8 @@ hosting), or `ngx-translate`/Transloco (extra dependency for little gain).
   "required/maxLength with message" helpers if they repeat.
 - Submission flow: `FormSubmission` helper (see inventory) shared across the three forms; server response messages
   displayed via `app-form-status`.
-- Field components use `aria-describedby` for errors and `aria-invalid`.
+- Field components use `aria-describedby` for errors and `aria-invalid`. **Done in PR 3** (`docs/review/2026-10-02-pr3-plan.md`):
+  `FormFieldGroup` shares its ids with `appControl`; `CheckboxField` and `RadioGroup` link their own.
 
 ## Testing
 

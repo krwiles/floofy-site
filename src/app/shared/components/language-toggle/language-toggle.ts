@@ -29,11 +29,12 @@ const FLAG_BY_LOCALE: Record<'en' | 'ja', FlagDisplay> = {
       type="button"
       (click)="toggleLanguage()"
       class="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-border bg-brand-subtle px-3 text-sm leading-5 font-semibold text-on-light-heading transition-colors hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong"
-      [attr.aria-label]="'components.language_toggle.toggle' | translate"
+      [attr.aria-label]="'components.language_toggle.name' | translate: { label: flag().label }"
     >
       <!-- Empty alt: the flag is decorative; the label beside it names the languages. -->
       <img [ngSrc]="flag().src" alt="" width="18" height="18" class="h-4 w-4 md:me-1.5" />
-      <span class="hidden md:inline">{{ flag().label }}</span>
+      <!-- Always present so the spoken name matches it; visually hidden on phones, where only the flag shows -->
+      <span class="sr-only md:not-sr-only">{{ flag().label }}</span>
     </button>
   `,
 })

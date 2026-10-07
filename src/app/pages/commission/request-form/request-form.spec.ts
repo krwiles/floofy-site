@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RequestForm, RequestFormDetail } from './request-form';
+import { expectNoAxeViolations } from '../../../../testing/expect-no-axe-violations';
 
 describe('RequestForm', () => {
   let fixture: ComponentFixture<RequestForm>;
@@ -14,7 +15,7 @@ describe('RequestForm', () => {
   // The checked radio in the group labelled `label`.
   function checkedValue(label: string): string | undefined {
     const groups: HTMLElement[] = Array.from(el.querySelectorAll('app-radio-group'));
-    const group = groups.find((g) => g.querySelector('p')?.textContent?.includes(label));
+    const group = groups.find((g) => g.querySelector('legend')?.textContent?.includes(label));
     return (group?.querySelector('input:checked') as HTMLInputElement | null)?.value;
   }
 
@@ -94,5 +95,21 @@ describe('RequestForm', () => {
     // Assert: it never shrinks or wraps, so a long message wraps instead (as on the contact and review forms).
     expect(submit.classList.contains('shrink-0')).toBe(true);
     expect(submit.classList.contains('whitespace-nowrap')).toBe(true);
+  });
+
+  it('has no accessibility violations in its form', async () => {
+    // Act and assert: the commission form, with its radio groups and checkbox, passes axe.
+    await expectNoAxeViolations(el.querySelector('form') as HTMLElement);
+  });
+
+  it('moves focus to the first empty field when submitted blank', async () => {
+    // Act: submit without filling anything in (the two radio groups already hold a choice).
+    (el.querySelector('form button[type="submit"]') as HTMLButtonElement).click();
+    await fixture.whenStable();
+
+    // Assert: the visitor lands on the name field, already marked invalid.
+    const name = el.querySelector('form input[type="text"]') as HTMLInputElement;
+    expect(document.activeElement).toBe(name);
+    expect(name.getAttribute('aria-invalid')).toBe('true');
   });
 });

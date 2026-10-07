@@ -36,6 +36,14 @@ describe('FormStatus', () => {
     localStorage.clear();
   });
 
+  it('is a status region, so screen readers announce each new message', () => {
+    // Act: render idle.
+    create({ kind: 'idle', key: '' });
+
+    // Assert: a polite live region, present before any message arrives.
+    expect(fixture.nativeElement.querySelector('p').getAttribute('role')).toBe('status');
+  });
+
   it('renders nothing, uncolored, while idle', () => {
     // Act: render idle.
     create({ kind: 'idle', key: '' });

@@ -1,5 +1,7 @@
 import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { NEVER, Observable, of, Subject, throwError } from 'rxjs';
+import { FieldTree } from '@angular/forms/signals';
 import { createFormSubmission } from './form-submission';
 import { FormSubmissionStatus } from '../../models/form-submission-status';
 
@@ -10,15 +12,17 @@ describe('createFormSubmission', () => {
     const model = signal({ name: 'Tangerine' });
     const status = signal<FormSubmissionStatus>({ kind: 'idle', key: '' });
 
-    // The submission under test, using the "forms.test" keys.
-    const submission = createFormSubmission({
-      i18nPrefix: 'forms.test',
-      model,
-      status,
-      buildRequest: (m) => ({ requestName: m.name }),
-      submit,
-      onSuccess,
-    });
+    // The submission under test, using the "forms.test" keys, built in an injection context as a form field would be.
+    const submission = TestBed.runInInjectionContext(() =>
+      createFormSubmission({
+        i18nPrefix: 'forms.test',
+        model,
+        status,
+        buildRequest: (m) => ({ requestName: m.name }),
+        submit,
+        onSuccess,
+      }),
+    );
     // Hand back the status to inspect, plus action/onInvalid to call.
     return { status, ...submission };
   }
@@ -147,14 +151,43 @@ describe('createFormSubmission', () => {
     expect(onSuccessCalled).toBe(false);
   });
 
+  /** A stand-in form whose error summary lists fields with these focus spies, in field order. */
+  function invalidForm(...focusSpies: (() => void)[]) {
+    // Each summary entry names a field whose state can focus its input.
+    const errorSummary = () => focusSpies.map((focusBoundControl) => ({ fieldTree: () => ({ focusBoundControl }) }));
+
+    // Only the parts onInvalid touches exist, so the cast through unknown stands in for a whole FieldTree.
+    return (() => ({ errorSummary })) as unknown as FieldTree<{ name: string }>;
+  }
+
   it("shows the form's invalid message when submitted while invalid", () => {
     // Arrange: a submission whose submit should never run.
     const { status, onInvalid } = setup(() => of({ code: 'ok' }));
 
     // Act: report the form as invalid.
-    onInvalid();
+    onInvalid(invalidForm(vi.fn()));
 
     // Assert: error, with this form's invalid key.
     expect(status()).toEqual({ kind: 'error', key: 'forms.test.invalid' });
+  });
+
+  it('moves focus to the first invalid field when submitted while invalid', () => {
+    // Arrange: a form with two invalid fields, in order.
+    const { onInvalid } = setup(() => of({ code: 'ok' }));
+    const first = vi.fn();
+    const second = vi.fn();
+
+    // Act: report the form as invalid.
+    onInvalid(invalidForm(first, second));
+
+    // Assert: nothing is focused until the errors have rendered, so focus lands on a field already marked invalid.
+    expect(first).not.toHaveBeenCalled();
+
+    // Act: let the next render happen.
+    TestBed.tick();
+
+    // Assert: only the first invalid field takes focus, so the visitor lands on it.
+    expect(first).toHaveBeenCalledTimes(1);
+    expect(second).not.toHaveBeenCalled();
   });
 });

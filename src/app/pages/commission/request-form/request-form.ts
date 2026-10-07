@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, computed, inject, output, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  Injector,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { email, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { requiredText } from '../../../shared/forms/required-text';
@@ -80,7 +91,11 @@ const USAGE_TYPE_OPTIONS: readonly (UsageTypeId | 'unsure')[] = [
 export class RequestForm {
   private readonly apiService = inject(ApiService);
   private readonly i18n = inject(I18nService);
+  private readonly injector = inject(Injector);
   protected readonly pricing = inject(PricingService);
+
+  // The commission-type radio group's element, so a pricing pick can move focus to the chosen radio.
+  private readonly commissionTypeGroup = viewChild.required('commissionTypeGroup', { read: ElementRef });
 
   /** Fires when a "?" button asks for more detail elsewhere on the page. */
   readonly detailRequested = output<RequestFormDetail>();
@@ -179,5 +194,20 @@ export class RequestForm {
   selectCategory(category: ArtworkCategory): void {
     // Set the form's category to the picked one.
     this.commissionForm.commissionType().value.set(category);
+  }
+
+  /**
+   * Focuses the checked commission-type radio once the pick has rendered, without jumping the page, so a smooth
+   * scroll to the form isn't interrupted. Keyboard and screen-reader users then land where the page went.
+   */
+  focusCommissionType(): void {
+    // Wait for the render that checks the newly picked radio, then focus it.
+    afterNextRender(
+      () => {
+        const host: HTMLElement = this.commissionTypeGroup().nativeElement;
+        host.querySelector<HTMLInputElement>('input:checked')?.focus({ preventScroll: true });
+      },
+      { injector: this.injector },
+    );
   }
 }

@@ -32,7 +32,7 @@ describe('PricingSection', () => {
     fixture.componentInstance.pick.subscribe((category) => picked.push(category));
 
     // Click the second card's call-to-action (emote).
-    (el.querySelectorAll('app-pricing-card a')[1] as HTMLAnchorElement).click();
+    (el.querySelectorAll('app-pricing-card button[appbutton]')[1] as HTMLButtonElement).click();
     expect(picked).toEqual(['emote']);
   });
 

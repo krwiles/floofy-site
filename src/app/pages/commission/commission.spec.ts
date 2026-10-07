@@ -35,13 +35,16 @@ describe('Commission', () => {
 
   it("hands a pricing card's pick to the request form and scrolls there", () => {
     // Click "Request Emotes" on the second pricing card.
-    (el.querySelectorAll('app-pricing-card a')[1] as HTMLAnchorElement).click();
+    (el.querySelectorAll('app-pricing-card button[appbutton]')[1] as HTMLButtonElement).click();
     fixture.detectChanges();
 
     // The form now has emote selected, and the page scrolled to it.
     const checked = el.querySelector('app-request-form app-radio-group input:checked') as HTMLInputElement;
     expect(checked.value).toBe('emote');
     expect(scrollTo).toHaveBeenCalled();
+
+    // Focus moved with the page: keyboard users land on the type they just picked.
+    expect(document.activeElement).toBe(checked);
   });
 
   it('jumps to and focuses the section a form\'s "?" button asks for', () => {

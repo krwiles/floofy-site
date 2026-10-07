@@ -2,14 +2,16 @@ import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { form, FormField, maxLength, required } from '@angular/forms/signals';
 import { FormFieldGroup } from './form-field-group';
+import { Control } from '../../directives/control';
+import { expectNoAxeViolations } from '../../../../testing/expect-no-axe-violations';
 
-// Host with a required, 5-character-max field wrapped in app-form-field.
+// Host with a required, 5-character-max field wrapped in app-form-field, its input styled by appControl.
 @Component({
   selector: 'app-form-field-test-host',
-  imports: [FormFieldGroup, FormField],
+  imports: [FormFieldGroup, FormField, Control],
   template: `
     <app-form-field label="Name" [field]="testForm.name">
-      <input [formField]="testForm.name" type="text" />
+      <input appControl [formField]="testForm.name" type="text" />
     </app-form-field>
   `,
 })
@@ -30,14 +32,26 @@ describe('FormFieldGroup', () => {
     fixture.detectChanges();
   }
 
-  function labelText(): string {
-    // The label line's text, whitespace collapsed.
-    return fixture.nativeElement.querySelector('label p')?.textContent?.replace(/\s+/g, ' ').trim() ?? '';
+  function touch(value = ''): void {
+    // Give the field a value and touch it, as if the visitor typed and moved on.
+    fixture.componentInstance.testForm.name().value.set(value);
+    fixture.componentInstance.testForm.name().markAsTouched();
+    fixture.detectChanges();
   }
 
-  function errorEls(): NodeListOf<HTMLElement> {
-    // The rendered error messages inside the label.
-    return fixture.nativeElement.querySelectorAll('label .text-error span');
+  /** The <label>, the <input> and the error list's wrapper. */
+  function parts() {
+    const el: HTMLElement = fixture.nativeElement;
+    return {
+      label: el.querySelector('label') as HTMLLabelElement,
+      input: el.querySelector('input') as HTMLInputElement,
+      errors: el.querySelector('app-field-error-list > div') as HTMLElement,
+    };
+  }
+
+  /** The rendered error messages. */
+  function messages(): string[] {
+    return Array.from(parts().errors.querySelectorAll('span')).map((span) => span.textContent ?? '');
   }
 
   beforeEach(async () => {
@@ -45,55 +59,98 @@ describe('FormFieldGroup', () => {
     await TestBed.configureTestingModule({ imports: [FormFieldTestHost] }).compileComponents();
   });
 
-  it('renders the label text', () => {
-    // Act and assert: the label text renders.
-    create();
-    expect(labelText()).toContain('Name');
-  });
-
-  it('projects the control inside its own label', () => {
+  it('labels the input: the label points at it by id', () => {
     // Act: render.
     create();
-    // Assert: the input sits inside the label (so clicking the label focuses it).
-    const input = fixture.nativeElement.querySelector('label input');
-    expect(input).toBeTruthy();
+
+    // Assert: the label's text names the field, and its `for` matches the input's id.
+    const { label, input } = parts();
+    expect(label.textContent?.trim()).toBe('Name');
+    expect(input.id).toBeTruthy();
+    expect(label.htmlFor).toBe(input.id);
+  });
+
+  it('keeps the error text out of the label, so it never becomes part of the field’s name', () => {
+    // Act: render and show an error.
+    create();
+    touch();
+
+    // Assert: the error shows, but not inside the label.
+    expect(messages()).toContain('Name is required.');
+    expect(parts().label.textContent).not.toContain('Name is required.');
   });
 
   it('shows the required asterisk when the field is required', () => {
     // Act: render.
     create();
-    // Assert: the required asterisk shows.
-    const asterisk = fixture.nativeElement.querySelector('label [aria-hidden="true"]');
+
+    // Assert: the required asterisk shows, hidden from screen readers.
+    const asterisk = fixture.nativeElement.querySelector('[aria-hidden="true"]');
     expect(asterisk?.textContent).toBe('*');
   });
 
-  it('shows no errors before the field is touched, even if invalid', () => {
-    // Act and assert: no errors before the visitor has touched it.
+  it('marks nothing invalid before the field is touched, even if it is', () => {
+    // Act: render the empty required field.
     create();
-    expect(errorEls().length).toBe(0);
+
+    // Assert: no visible errors, and no invalid state announced yet.
+    const { input } = parts();
+    expect(messages()).toEqual([]);
+    expect(input.hasAttribute('aria-invalid')).toBe(false);
+    expect(input.hasAttribute('aria-describedby')).toBe(false);
   });
 
-  it('shows the field errors once invalid and touched', () => {
-    // Arrange: render and touch the empty field.
+  it('once touched and invalid, marks the input invalid and links it to its errors', () => {
+    // Act: render and touch the empty field.
     create();
-    fixture.componentInstance.testForm.name().markAsTouched();
-    fixture.detectChanges();
+    touch();
 
-    // Assert: the required error shows.
-    const messages = Array.from(errorEls()).map((el) => el.textContent);
-    expect(messages).toContain('Name is required.');
+    // Assert: the input is announced as invalid, described by the error list.
+    const { input, errors } = parts();
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.getAttribute('aria-describedby')).toBe(errors.id);
+    expect(errors.id).toBeTruthy();
   });
 
   it('shows every active error, not just the first', () => {
-    // Arrange: render, enter a too-long value, and touch the field.
+    // Act: enter a too-long value and touch the field.
     create();
-    fixture.componentInstance.testForm.name().value.set('waytoolong');
-    fixture.componentInstance.testForm.name().markAsTouched();
-    fixture.detectChanges();
+    touch('waytoolong');
 
     // Assert: only the active (length) error shows.
-    const messages = Array.from(errorEls()).map((el) => el.textContent);
-    expect(messages).toContain('Name cannot exceed 5 characters.');
-    expect(messages).not.toContain('Name is required.');
+    expect(messages()).toContain('Name cannot exceed 5 characters.');
+    expect(messages()).not.toContain('Name is required.');
+  });
+
+  it('gives each field its own ids', () => {
+    // Act: render two fields.
+    create();
+    const first = parts().input.id;
+    create();
+
+    // Assert: the second field's ids differ from the first's.
+    expect(parts().input.id).not.toBe(first);
+  });
+
+  it('keeps the error wrapper truly empty with no errors, so it takes no space in the row', () => {
+    // Act: render the untouched field.
+    create();
+
+    // Assert: nothing but Angular's comment markers inside, so CSS :empty hides it.
+    expect(parts().errors.matches(':empty')).toBe(true);
+  });
+
+  it('has no accessibility violations, valid or showing errors', async () => {
+    // Arrange: render the untouched field.
+    create();
+
+    // Assert: clean as rendered.
+    await expectNoAxeViolations(fixture.nativeElement);
+
+    // Act: show an error.
+    touch();
+
+    // Assert: still clean with the error showing.
+    await expectNoAxeViolations(fixture.nativeElement);
   });
 });

@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { form, required } from '@angular/forms/signals';
 import { CheckboxField } from './checkbox-field';
+import { expectNoAxeViolations } from '../../../../testing/expect-no-axe-violations';
 
 // Host with a required checkbox field, optionally projecting a labelExtra button.
 @Component({
@@ -125,5 +126,42 @@ describe('CheckboxField', () => {
     // Act and assert: no labelExtra means no button.
     create();
     expect(fixture.nativeElement.querySelector('button')).toBeNull();
+  });
+
+  it('marks nothing invalid before the checkbox is touched', () => {
+    // Act: render the unchecked required box.
+    create();
+
+    // Assert: no invalid state announced yet.
+    expect(checkboxEl().hasAttribute('aria-invalid')).toBe(false);
+    expect(checkboxEl().hasAttribute('aria-describedby')).toBe(false);
+  });
+
+  it('once touched and invalid, marks the checkbox invalid and links it to its error', () => {
+    // Act: render and touch the unchecked required box.
+    create();
+    fixture.componentInstance.testForm.agreement().markAsTouched();
+    fixture.detectChanges();
+
+    // Assert: announced as invalid, described by the error list that shows the message.
+    const errors = fixture.nativeElement.querySelector('app-field-error-list > div') as HTMLElement;
+    expect(checkboxEl().getAttribute('aria-invalid')).toBe('true');
+    expect(checkboxEl().getAttribute('aria-describedby')).toBe(errors.id);
+    expect(errors.textContent).toContain('You must agree.');
+  });
+
+  it('has no accessibility violations, valid or showing errors', async () => {
+    // Arrange: render with the extra "?" button.
+    create({ withLabelExtra: true });
+
+    // Assert: clean as rendered.
+    await expectNoAxeViolations(fixture.nativeElement);
+
+    // Act: touch the unchecked required box, showing its error.
+    fixture.componentInstance.testForm.agreement().markAsTouched();
+    fixture.detectChanges();
+
+    // Assert: still clean with the error showing.
+    await expectNoAxeViolations(fixture.nativeElement);
   });
 });

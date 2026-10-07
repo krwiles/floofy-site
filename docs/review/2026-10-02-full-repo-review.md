@@ -154,22 +154,22 @@ documented standard is broken. **Smell** is a judgement call. **Doc** means the 
 
 ## Accessibility (`A`)
 
-- **A1 — Form errors aren't linked to their fields (A11y, contradicts the target architecture).**
+- **A1 — Form errors aren't linked to their fields (A11y, contradicts the target architecture). Fixed by PR 3.**
   - **The promise:** `03-target-architecture.md` says "Field components use `aria-describedby` for errors and
     `aria-invalid`".
   - **What's missing:** nothing sets either, and Signal Forms doesn't add `aria-invalid` itself.
   - **Wrong placement:** `FormFieldGroup` puts `<app-field-error-list>` inside the `<label>`'s `<p>`, so error text
     becomes part of the field's accessible name, and the `<p>`/`<div>` inside `<label>` is invalid HTML.
-- **A2 — Radio groups (A11y).**
+- **A2 — Radio groups (A11y). Fixed by PR 3.**
   - **Missing group:** `RadioGroup` has no `<fieldset>`/`<legend>` or `role="radiogroup"`, so the group label isn't tied
     to the radios.
   - **Invisible focus:** the inputs are `sr-only peer` and only `peer-checked:` is styled, so keyboard focus can't be
     seen.
-- **A3 — Form results aren't announced (A11y).** `FormStatus` renders a plain `<p>` with no `role="status"` or
+- **A3 — Form results aren't announced (A11y). Fixed by PR 3.** `FormStatus` renders a plain `<p>` with no `role="status"` or
   `aria-live`. `02-component-inventory.md` asks for them, and `01-findings.md` flagged this.
-- **A4 — Pricing-card buttons can't be reached by keyboard (A11y, already on the roadmap).** They're
+- **A4 — Pricing-card buttons can't be reached by keyboard (A11y, already on the roadmap). Fixed by PR 3.** They're
   `<a (click)>` with no `href`; they should be `<button type="button">`.
-- **A5 — Language toggle label (A11y, WCAG 2.5.3).** `aria-label="Toggle language"` replaces the visible "EN/日本語".
+- **A5 — Language toggle label (A11y, WCAG 2.5.3). Fixed by PR 3.** `aria-label="Toggle language"` replaces the visible "EN/日本語".
   The fan-art hashtag link has the same problem.
 - **A6 — Gallery.**
   - **Clickable images:** the `<img (click)>` elements aren't buttons, so there's no keyboard access.

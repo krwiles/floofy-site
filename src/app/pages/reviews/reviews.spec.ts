@@ -4,6 +4,7 @@ import { Observable, of, Subject, throwError } from 'rxjs';
 import { Reviews } from './reviews';
 import { ApiService } from '../../services/api.service';
 import { Review } from '../../models/review.model';
+import { expectNoAxeViolations } from '../../../testing/expect-no-axe-violations';
 
 const REVIEW: Review = { id: 7, author: 'Robin', comment: 'Lovely art!', created_at: '2026-09-30T04:00:00Z' };
 
@@ -108,5 +109,27 @@ describe('Reviews', () => {
     // Assert: nothing was sent, and the field explains why.
     expect(api.submitReview).not.toHaveBeenCalled();
     expect(form.textContent).toContain('Name is required.');
+  });
+
+  it('has no accessibility violations in its form', async () => {
+    // Act and assert: the review form passes axe.
+    await create(of([]));
+    await expectNoAxeViolations(fixture.nativeElement.querySelector('form'));
+  });
+
+  it('moves focus to the first empty field when submitted blank', async () => {
+    // Arrange: a page with no reviews and an empty form.
+    await create(of([]));
+    const form: HTMLElement = fixture.nativeElement.querySelector('form');
+
+    // Act: submit without filling anything in.
+    (form.querySelector('button[type="submit"]') as HTMLButtonElement).click();
+    await fixture.whenStable();
+
+    // Assert: the visitor lands on the name field, already marked invalid, and nothing was sent.
+    const name = form.querySelector('input[type="text"]') as HTMLInputElement;
+    expect(document.activeElement).toBe(name);
+    expect(name.getAttribute('aria-invalid')).toBe('true');
+    expect(api.submitReview).not.toHaveBeenCalled();
   });
 });

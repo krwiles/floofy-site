@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { form, required } from '@angular/forms/signals';
 import { RadioGroup } from './radio-group';
+import { expectNoAxeViolations } from '../../../../testing/expect-no-axe-violations';
 
 // Host with three options (starting on 'a'), a required field, and a labelExtra button.
 @Component({
@@ -98,7 +99,7 @@ describe('RadioGroup', () => {
     // Act: render.
     create();
     // Assert: the required asterisk shows.
-    const asterisk = fixture.nativeElement.querySelector('p [aria-hidden="true"]');
+    const asterisk = fixture.nativeElement.querySelector('legend [aria-hidden="true"]');
     expect(asterisk?.textContent).toBe('*');
   });
 
@@ -126,5 +127,48 @@ describe('RadioGroup', () => {
     // Assert: the required error shows.
     const messages = Array.from(errorEls()).map((el) => el.textContent);
     expect(messages).toContain('Pick one is required.');
+  });
+
+  it('groups the radios in a fieldset named by its legend', () => {
+    // Act: render.
+    create();
+
+    // Assert: every radio sits in the fieldset, and the legend carries the group's label and names the group by id.
+    const fieldset = fixture.nativeElement.querySelector('fieldset') as HTMLFieldSetElement;
+    const legend = fieldset.querySelector('legend') as HTMLLegendElement;
+    expect(fieldset.querySelectorAll('input[type="radio"]').length).toBe(3);
+    expect(legend.textContent).toContain('Pick one');
+    expect(fieldset.getAttribute('aria-labelledby')).toBe(legend.id);
+  });
+
+  it('shows a focus outline on the pill whose radio has keyboard focus', () => {
+    // Act: render.
+    create();
+
+    // Assert: each pill styles itself from its (visually hidden) radio's keyboard focus.
+    const pills: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('input[type="radio"] + span'));
+    for (const pill of pills) {
+      expect(pill.className).toContain('peer-focus-visible:outline-2');
+    }
+  });
+
+  it('once touched and invalid, marks the group invalid and links it to its error', () => {
+    // Act: clear the choice and touch the group.
+    create();
+    fixture.componentInstance.testForm.choice().value.set('');
+    fixture.componentInstance.testForm.choice().markAsTouched();
+    fixture.detectChanges();
+
+    // Assert: the group is announced as invalid, described by the error list.
+    const fieldset = fixture.nativeElement.querySelector('fieldset') as HTMLElement;
+    const errors = fixture.nativeElement.querySelector('app-field-error-list > div') as HTMLElement;
+    expect(fieldset.getAttribute('aria-invalid')).toBe('true');
+    expect(fieldset.getAttribute('aria-describedby')).toBe(errors.id);
+  });
+
+  it('has no accessibility violations', async () => {
+    // Act and assert: the rendered group passes axe.
+    create();
+    await expectNoAxeViolations(fixture.nativeElement);
   });
 });
