@@ -274,9 +274,9 @@ describe('I18nService', () => {
       // The service reads the real en/ja JSON.
       const service = TestBed.inject(I18nService);
 
-      // Every status key for every form: 3 forms x 5 statuses.
+      // Every status key for every form: 3 forms x 6 statuses.
       const keys = ['contact', 'review', 'commission'].flatMap((form) =>
-        ['pending', 'invalid', 'ok', 'rate_limited', 'error'].map((status) => `forms.${form}.${status}`),
+        ['pending', 'invalid', 'ok', 'rate_limited', 'busy', 'error'].map((status) => `forms.${form}.${status}`),
       );
 
       // t() echoes a missing key back, so a real translation never equals its own key.

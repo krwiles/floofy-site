@@ -1,5 +1,5 @@
 /** The error codes a form Lambda can reply with -- see docs/features/api-status-codes/plan.md. */
-export const API_ERROR_CODES = ['invalid', 'rate_limited', 'error'] as const;
+export const API_ERROR_CODES = ['invalid', 'rate_limited', 'busy', 'error'] as const;
 export type ApiErrorCode = (typeof API_ERROR_CODES)[number];
 
 /** Every code a form Lambda can reply with: success, or one of the errors. */
