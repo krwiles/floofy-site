@@ -101,4 +101,15 @@ describe('RequestForm', () => {
     // Act and assert: the commission form, with its radio groups and checkbox, passes axe.
     await expectNoAxeViolations(el.querySelector('form') as HTMLElement);
   });
+
+  it('moves focus to the first empty field when submitted blank', async () => {
+    // Act: submit without filling anything in (the two radio groups already hold a choice).
+    (el.querySelector('form button[type="submit"]') as HTMLButtonElement).click();
+    await fixture.whenStable();
+
+    // Assert: the visitor lands on the name field, already marked invalid.
+    const name = el.querySelector('form input[type="text"]') as HTMLInputElement;
+    expect(document.activeElement).toBe(name);
+    expect(name.getAttribute('aria-invalid')).toBe('true');
+  });
 });

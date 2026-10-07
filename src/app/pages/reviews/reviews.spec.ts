@@ -116,4 +116,20 @@ describe('Reviews', () => {
     await create(of([]));
     await expectNoAxeViolations(fixture.nativeElement.querySelector('form'));
   });
+
+  it('moves focus to the first empty field when submitted blank', async () => {
+    // Arrange: a page with no reviews and an empty form.
+    await create(of([]));
+    const form: HTMLElement = fixture.nativeElement.querySelector('form');
+
+    // Act: submit without filling anything in.
+    (form.querySelector('button[type="submit"]') as HTMLButtonElement).click();
+    await fixture.whenStable();
+
+    // Assert: the visitor lands on the name field, already marked invalid, and nothing was sent.
+    const name = form.querySelector('input[type="text"]') as HTMLInputElement;
+    expect(document.activeElement).toBe(name);
+    expect(name.getAttribute('aria-invalid')).toBe('true');
+    expect(api.submitReview).not.toHaveBeenCalled();
+  });
 });

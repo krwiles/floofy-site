@@ -151,11 +151,17 @@ describe('CheckboxField', () => {
   });
 
   it('has no accessibility violations, valid or showing errors', async () => {
-    // Act and assert: clean before and after the error appears.
+    // Arrange: render with the extra "?" button.
     create({ withLabelExtra: true });
+
+    // Assert: clean as rendered.
     await expectNoAxeViolations(fixture.nativeElement);
+
+    // Act: touch the unchecked required box, showing its error.
     fixture.componentInstance.testForm.agreement().markAsTouched();
     fixture.detectChanges();
+
+    // Assert: still clean with the error showing.
     await expectNoAxeViolations(fixture.nativeElement);
   });
 });

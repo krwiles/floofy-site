@@ -3,6 +3,7 @@ import { Field, FormField } from '@angular/forms/signals';
 import { RequiredMarker } from '../required-marker/required-marker';
 import { FieldErrorList } from '../field-error-list/field-error-list';
 import { createFieldIds } from '../field-ids';
+import { showsErrors } from '../shows-errors';
 
 /**
  * Choice's pill-style radio group: mutually exclusive options shown as buttons, with one error list for the whole
@@ -18,10 +19,11 @@ import { createFieldIds } from '../field-ids';
     <fieldset
       role="radiogroup"
       class="min-w-0"
+      [attr.aria-labelledby]="ids.controlId"
       [attr.aria-invalid]="showsErrors() ? 'true' : null"
       [attr.aria-describedby]="showsErrors() ? ids.errorId : null"
     >
-      <legend class="inline-flex items-center gap-1 font-semibold">
+      <legend class="inline-flex items-center gap-1 font-semibold" [id]="ids.controlId">
         {{ label() }}
         <app-required-marker [field]="field()" />
         <ng-content select="[labelExtra]" />
@@ -47,12 +49,10 @@ export class RadioGroup {
   readonly field = input.required<Field<string>>();
   readonly options = input.required<readonly { value: string; label: string }[]>();
 
-  // This group's error-list id, which the fieldset names in aria-describedby.
+  // This group's ids: its legend's (which names the group) and its error list's. Made here, not provided like
+  // FormFieldGroup's, because the group owns its radios instead of projecting a control.
   protected readonly ids = createFieldIds();
 
   // Mark the group invalid only once it's been touched, the same rule as the visible error.
-  protected readonly showsErrors = computed(() => {
-    const state = this.field()();
-    return state.invalid() && state.touched();
-  });
+  protected readonly showsErrors = computed(() => showsErrors(this.field()()));
 }

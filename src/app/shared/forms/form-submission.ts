@@ -1,4 +1,4 @@
-import { Signal, WritableSignal } from '@angular/core';
+import { afterNextRender, inject, Injector, Signal, WritableSignal } from '@angular/core';
 import { FieldTree } from '@angular/forms/signals';
 import { firstValueFrom, Observable } from 'rxjs';
 import { ApiError } from '../../models/api-error';
@@ -27,6 +27,9 @@ interface CreateFormSubmissionConfig<TModel, TRequest, TResponse> {
 export function createFormSubmission<TModel, TRequest, TResponse>(
   config: CreateFormSubmissionConfig<TModel, TRequest, TResponse>,
 ): { action: () => Promise<void>; onInvalid: (form: FieldTree<TModel>) => void } {
+  // Captured now (forms are built in a field initializer), so onInvalid can wait for a render later.
+  const injector = inject(Injector);
+
   return {
     // Waits for the reply, so Signal Forms' `submitting()` stays true meanwhile and a second submit is refused.
     action: async () => {
@@ -55,8 +58,9 @@ export function createFormSubmission<TModel, TRequest, TResponse>(
       // Submitted while invalid: show the form's "please fix" message instead of sending.
       config.status.set({ kind: 'error', key: `${config.i18nPrefix}.invalid` });
 
-      // Take the visitor to the first problem: errorSummary lists errors in field order, and each names its field.
-      form().errorSummary()[0]?.fieldTree().focusBoundControl();
+      // Take the visitor to the first problem once it's rendered as invalid, so a screen reader announces that on focus
+      // (errorSummary lists errors in field order, each naming its field; focusBoundControl focuses its input).
+      afterNextRender(() => form().errorSummary()[0]?.fieldTree().focusBoundControl(), { injector });
     },
   };
 }

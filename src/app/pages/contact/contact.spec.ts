@@ -82,11 +82,17 @@ describe('Contact', () => {
   });
 
   it('has no accessibility violations in its form, before and after a blank submit', async () => {
-    // Act and assert: clean as rendered, and with every error showing.
+    // Arrange: the form as rendered.
     const form = fixture.nativeElement.querySelector('form');
+
+    // Assert: clean before anything happens.
     await expectNoAxeViolations(form);
+
+    // Act: submit blank, showing every error.
     submitButton().click();
     await fixture.whenStable();
+
+    // Assert: still clean with the errors showing.
     await expectNoAxeViolations(form);
   });
 });

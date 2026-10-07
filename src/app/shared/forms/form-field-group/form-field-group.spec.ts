@@ -122,7 +122,7 @@ describe('FormFieldGroup', () => {
     expect(messages()).not.toContain('Name is required.');
   });
 
-  it('gives each field its own ids', async () => {
+  it('gives each field its own ids', () => {
     // Act: render two fields.
     create();
     const first = parts().input.id;
@@ -132,11 +132,25 @@ describe('FormFieldGroup', () => {
     expect(parts().input.id).not.toBe(first);
   });
 
-  it('has no accessibility violations, valid or showing errors', async () => {
-    // Act and assert: clean before and after an error appears.
+  it('keeps the error wrapper truly empty with no errors, so it takes no space in the row', () => {
+    // Act: render the untouched field.
     create();
+
+    // Assert: nothing but Angular's comment markers inside, so CSS :empty hides it.
+    expect(parts().errors.matches(':empty')).toBe(true);
+  });
+
+  it('has no accessibility violations, valid or showing errors', async () => {
+    // Arrange: render the untouched field.
+    create();
+
+    // Assert: clean as rendered.
     await expectNoAxeViolations(fixture.nativeElement);
+
+    // Act: show an error.
     touch();
+
+    // Assert: still clean with the error showing.
     await expectNoAxeViolations(fixture.nativeElement);
   });
 });

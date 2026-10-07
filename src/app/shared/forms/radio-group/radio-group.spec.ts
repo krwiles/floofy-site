@@ -133,10 +133,12 @@ describe('RadioGroup', () => {
     // Act: render.
     create();
 
-    // Assert: every radio sits in the fieldset, and the legend carries the group's label.
+    // Assert: every radio sits in the fieldset, and the legend carries the group's label and names the group by id.
     const fieldset = fixture.nativeElement.querySelector('fieldset') as HTMLFieldSetElement;
+    const legend = fieldset.querySelector('legend') as HTMLLegendElement;
     expect(fieldset.querySelectorAll('input[type="radio"]').length).toBe(3);
-    expect(fieldset.querySelector('legend')?.textContent).toContain('Pick one');
+    expect(legend.textContent).toContain('Pick one');
+    expect(fieldset.getAttribute('aria-labelledby')).toBe(legend.id);
   });
 
   it('shows a focus outline on the pill whose radio has keyboard focus', () => {

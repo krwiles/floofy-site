@@ -90,11 +90,12 @@ const USAGE_TYPE_OPTIONS: readonly (UsageTypeId | 'unsure')[] = [
 })
 export class RequestForm {
   private readonly apiService = inject(ApiService);
+  private readonly i18n = inject(I18nService);
   private readonly injector = inject(Injector);
+  protected readonly pricing = inject(PricingService);
+
   // The commission-type radio group's element, so a pricing pick can move focus to the chosen radio.
   private readonly commissionTypeGroup = viewChild.required('commissionTypeGroup', { read: ElementRef });
-  private readonly i18n = inject(I18nService);
-  protected readonly pricing = inject(PricingService);
 
   /** Fires when a "?" button asks for more detail elsewhere on the page. */
   readonly detailRequested = output<RequestFormDetail>();

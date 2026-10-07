@@ -66,9 +66,10 @@ describe('PricingCard', () => {
     // Act: render a card.
     const el = create('chibi');
 
-    // Assert: a plain (non-submitting) button, which is in the Tab order without any extra attributes.
+    // Assert: a plain (non-submitting) button, in the Tab order (tabIndex 0) without any extra attributes.
     const cta = el.querySelector('button[appbutton]') as HTMLButtonElement;
     expect(cta.type).toBe('button');
+    expect(cta.tabIndex).toBe(0);
     expect(el.querySelector('a:not([href])')).toBeNull();
   });
 

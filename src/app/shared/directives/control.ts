@@ -2,6 +2,7 @@ import { Directive, computed, inject, input } from '@angular/core';
 import { FormField } from '@angular/forms/signals';
 import { Tone } from '../../models/tone';
 import { FIELD_IDS } from '../forms/field-ids';
+import { showsErrors } from '../forms/shows-errors';
 import { joinClasses } from '../../utils/join-classes';
 
 // Full literal class names, not a `text-on-${tone}` template: Tailwind only generates classes it sees written out.
@@ -34,10 +35,7 @@ export class Control {
   protected readonly ids = inject(FIELD_IDS, { optional: true });
 
   // Show the error state (red border, aria-invalid) only once the visitor has touched an invalid field.
-  protected readonly invalid = computed(() => {
-    const state = this.formField.state();
-    return state.invalid() && state.touched();
-  });
+  protected readonly invalid = computed(() => showsErrors(this.formField.state()));
 
   // Base styling, then the border for the current state, then the tone's placeholder color, then the focus ring.
   readonly hostClass = computed(() =>

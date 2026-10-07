@@ -3,6 +3,7 @@ import { Field, FormField } from '@angular/forms/signals';
 import { RequiredMarker } from '../required-marker/required-marker';
 import { FieldErrorList } from '../field-error-list/field-error-list';
 import { createFieldIds } from '../field-ids';
+import { showsErrors } from '../shows-errors';
 
 /**
  * Choice's checkbox presentation: one boolean with its label beside it -- see CONTEXT.md's "Choice" entry and
@@ -37,12 +38,10 @@ import { createFieldIds } from '../field-ids';
 export class CheckboxField {
   readonly field = input.required<Field<boolean>>();
 
-  // This field's error-list id, which the checkbox names in aria-describedby.
+  // This field's error-list id, which the checkbox names in aria-describedby. Made here, not provided like
+  // FormFieldGroup's, because the field owns its checkbox instead of projecting a control.
   protected readonly ids = createFieldIds();
 
   // Mark the checkbox invalid only once it's been touched, the same rule as the visible error.
-  protected readonly showsErrors = computed(() => {
-    const state = this.field()();
-    return state.invalid() && state.touched();
-  });
+  protected readonly showsErrors = computed(() => showsErrors(this.field()()));
 }
