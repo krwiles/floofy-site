@@ -14,7 +14,7 @@ describe('RequestForm', () => {
   // The checked radio in the group labelled `label`.
   function checkedValue(label: string): string | undefined {
     const groups: HTMLElement[] = Array.from(el.querySelectorAll('app-radio-group'));
-    const group = groups.find((g) => g.querySelector('p')?.textContent?.includes(label));
+    const group = groups.find((g) => g.querySelector('legend')?.textContent?.includes(label));
     return (group?.querySelector('input:checked') as HTMLInputElement | null)?.value;
   }
 

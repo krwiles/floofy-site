@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Field, FormField } from '@angular/forms/signals';
 import { RequiredMarker } from '../required-marker/required-marker';
 import { FieldErrorList } from '../field-error-list/field-error-list';
+import { createFieldIds } from '../field-ids';
 
 /**
  * Choice's checkbox presentation: one boolean with its label beside it -- see CONTEXT.md's "Choice" entry and
@@ -16,7 +17,13 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
   template: `
     <div class="flex items-start gap-2">
       <label class="flex items-center space-x-3">
-        <input type="checkbox" [formField]="field()" class="h-4 w-4" />
+        <input
+          type="checkbox"
+          [formField]="field()"
+          class="h-4 w-4"
+          [attr.aria-invalid]="showsErrors() ? 'true' : null"
+          [attr.aria-describedby]="showsErrors() ? ids.errorId : null"
+        />
         <span class="text-sm leading-6">
           <ng-content />
           <app-required-marker [field]="field()" />
@@ -24,9 +31,18 @@ import { FieldErrorList } from '../field-error-list/field-error-list';
       </label>
       <ng-content select="[labelExtra]" />
     </div>
-    <app-field-error-list [field]="field()" />
+    <app-field-error-list [field]="field()" [id]="ids.errorId" />
   `,
 })
 export class CheckboxField {
   readonly field = input.required<Field<boolean>>();
+
+  // This field's error-list id, which the checkbox names in aria-describedby.
+  protected readonly ids = createFieldIds();
+
+  // Mark the checkbox invalid only once it's been touched, the same rule as the visible error.
+  protected readonly showsErrors = computed(() => {
+    const state = this.field()();
+    return state.invalid() && state.touched();
+  });
 }
