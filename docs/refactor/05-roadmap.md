@@ -6,7 +6,8 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · **⏸ blocked** 
 - **Done:** Phases 0–5 and Phase 6 Stages 1–3, all merged into `working`. Phase 8 is done too, delivered by the review-moderation work.
 - **Also merged:** a run of backend and feature work outside the phases (PRs #48 and #50–#58), listed under
   [Feature work outside the phases](#feature-work-outside-the-phases).
-- **Next:** the pricing-card CTA keyboard fix, then the rest of Phase 6 Stage 4 (lazy Twitter widgets). Stage 4's
+- **Next:** the rest of Phase 6 Stage 4 (lazy Twitter widgets); the pricing-card CTA keyboard fix was done by PR 3
+  (`docs/review/2026-10-02-pr3-plan.md`). Stage 4's
   streaming half was done by the streaming page refresh (`docs/features/streaming-refresh/plan.md`).
 
 The paragraph below is the 2026-09-23 history, kept for reference.

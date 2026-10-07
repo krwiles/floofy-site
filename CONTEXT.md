@@ -100,7 +100,8 @@ instance on a page).
 The wrapper around one form input: its label, its required marker, and its validation error list. A Form Field
 owns that surrounding chrome but not the input itself — it projects the actual control rather than rendering it,
 so it works the same way regardless of what kind of control sits inside it. Distinct from **Control** below,
-mirroring Angular Material's own `mat-form-field`/`matInput` split rather than one component doing both jobs.
+mirroring Angular Material's own `mat-form-field`/`matInput` split rather than one component doing both jobs. Its label
+names the Control, and its errors describe it.
 
 **Not the same as:**
 
