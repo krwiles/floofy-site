@@ -188,7 +188,7 @@ def test_post_block_review_ip_looks_up_the_ip_and_records_the_source(admin, curs
     assert cursor.queries("FROM reviews")[0][1] == (7,)
     [(sql, params)] = cursor.queries("INSERT INTO blocked_ips")
     assert "ON CONFLICT (ip_address) DO NOTHING" in sql
-    assert params == (IP, "admin email: review #7")
+    assert params == (str(IP), "admin email: review #7")
 
 
 def test_post_block_commission_ip_records_the_request_as_the_source(admin, cursor):
@@ -198,7 +198,7 @@ def test_post_block_commission_ip_records_the_request_as_the_source(admin, curso
     # Assert: the IP came from commission_requests, and the reason names the request.
     assert cursor.queries("FROM commission_requests")[0][1] == (42,)
     [(_, params)] = cursor.queries("INSERT INTO blocked_ips")
-    assert params == (IP, "admin email: commission #42")
+    assert params == (str(IP), "admin email: commission #42")
 
 
 def test_post_block_on_an_already_blocked_ip_is_already_done(admin, cursor):
@@ -331,15 +331,19 @@ def test_get_contact_block_for_an_already_blocked_ip_says_so(admin, cursor):
     assert "<form" not in page
 
 
-@pytest.mark.parametrize("ip", ["203.0.113.7", "2001:db8::1"])
-def test_post_contact_block_blocks_the_ip_from_the_link(admin, cursor, ip):
+@pytest.mark.parametrize(
+    "ip, blocked",
+    [("203.0.113.7", "203.0.113.7"), ("2001:db8::1", "2001:db8::/64")],
+    ids=["ipv4-exact", "ipv6-whole-64"],
+)
+def test_post_contact_block_blocks_the_ip_from_the_link(admin, cursor, ip, blocked):
     # Act: confirm the block.
     result = post(admin, contact_token(ip))
 
-    # Assert: that exact IP is blocked, with the contact message as the reason.
+    # Assert: the sender's scope is blocked (an IPv4 address, or an IPv6 /64), with the contact message as the reason.
     assert "Done" in result["body"]
     [(_, params)] = cursor.queries("INSERT INTO blocked_ips")
-    assert params == (ipaddress.ip_address(ip), "admin email: contact message")
+    assert params == (blocked, "admin email: contact message")
 
 
 def test_post_contact_block_on_an_already_blocked_ip_is_already_done(admin, cursor):
