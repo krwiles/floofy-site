@@ -1,41 +1,58 @@
-import { Injectable } from '@angular/core';
+import { Injectable, LOCALE_ID, inject } from '@angular/core';
+import { formatPercent } from '@angular/common';
 import pricingJson from '../../assets/data/pricing.json';
-import {
-  CommissionTypeId,
-  CommercialTypeId,
-  CommissionTypePricing,
-  CommercialTypePricing,
-  PricingData,
-} from '../models/pricing.model';
+import { ArtworkCategory } from '../models/artwork-category';
+import { ArtworkCategoryPricing, PricingData, UsageTypeId, UsageTypePricing } from '../models/pricing.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PricingService {
+  private readonly locale = inject(LOCALE_ID);
+
+  // Narrow the JSON's plain-string ids to the domain types; the JSON import alone types them as `string`.
   readonly data: PricingData = {
-    commissionTypes: pricingJson.commissionTypes.map((type) => ({
-      id: type.id as CommissionTypeId,
-      basePriceUsd: type.basePriceUsd,
+    artworkCategories: pricingJson.artworkCategories.map((category) => ({
+      id: category.id as ArtworkCategory,
+      basePriceUsd: category.basePriceUsd,
     })),
-    commercialTypes: pricingJson.commercialTypes.map((type) => ({
-      id: type.id as CommercialTypeId,
+    usageTypes: pricingJson.usageTypes.map((type) => ({
+      id: type.id as UsageTypeId,
       percentAddon: type.percentAddon,
     })),
   };
 
-  getCommissionTypePricing(id: string): CommissionTypePricing | undefined {
-    return this.data.commissionTypes.find((type) => type.id === id);
+  getArtworkCategoryPricing(id: ArtworkCategory): ArtworkCategoryPricing | undefined {
+    // The category's pricing entry, or undefined if the JSON doesn't list it.
+    return this.data.artworkCategories.find((category) => category.id === id);
   }
 
-  getBasePriceUsd(id: string): number | undefined {
-    return this.getCommissionTypePricing(id)?.basePriceUsd;
+  getBasePriceUsd(id: ArtworkCategory): number | undefined {
+    // Just the base price from that entry.
+    return this.getArtworkCategoryPricing(id)?.basePriceUsd;
   }
 
-  getCommercialTypePricing(id: string): CommercialTypePricing | undefined {
-    return this.data.commercialTypes.find((type) => type.id === id);
+  getUsageTypePricing(id: UsageTypeId): UsageTypePricing | undefined {
+    // The usage type's pricing entry, or undefined if the JSON doesn't list it.
+    return this.data.usageTypes.find((type) => type.id === id);
   }
 
-  getPercentAddon(id: string): number | undefined {
-    return this.getCommercialTypePricing(id)?.percentAddon;
+  getPercentAddon(id: UsageTypeId): number | undefined {
+    // Just the addon fraction from that entry (0.5 means +50%).
+    return this.getUsageTypePricing(id)?.percentAddon;
+  }
+
+  /** The estimated total: the category's base price, plus the usage type's percent addon. */
+  getTotalPriceUsd(artworkCategory: ArtworkCategory, usageTypeId: UsageTypeId | 'unsure'): number {
+    // The form's 'unsure' has no price entry, so it adds nothing on top of the base price.
+    const addon = usageTypeId === 'unsure' ? 0 : (this.getPercentAddon(usageTypeId) ?? 0);
+    // A category missing from the JSON prices at zero rather than throwing.
+    return (this.getBasePriceUsd(artworkCategory) ?? 0) * (addon + 1);
+  }
+
+  /** A usage type's addon as a whole-number percent ("50%"), shared by the terms cards and the request form. */
+  formatPercentAddon(id: UsageTypeId): string {
+    // formatPercent is PercentPipe's own formatter, so '1.0-0' rounds exactly as the page always has.
+    return formatPercent(this.getPercentAddon(id) ?? 0, this.locale, '1.0-0');
   }
 }

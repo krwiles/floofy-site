@@ -1,0 +1,248 @@
+[
+  {
+    "src": "assets/artwork/fauna-01.jpeg",
+    "alt": "Fauna illustration",
+    "width": 1442,
+    "height": 2048,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 1,
+      "home": 2
+    }
+  },
+  {
+    "src": "assets/artwork/kronii-01.jpeg",
+    "alt": "Kronii illustration",
+    "width": 1080,
+    "height": 1350,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 2,
+      "home": 4
+    }
+  },
+  {
+    "src": "assets/artwork/fauna-02.jpeg",
+    "alt": "Fauna illustration",
+    "width": 999,
+    "height": 1332,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 3,
+      "home": 3
+    }
+  },
+  {
+    "src": "assets/artwork/nimi-01.jpeg",
+    "alt": "Nimi illustration",
+    "width": 1080,
+    "height": 1350,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 4,
+      "home": 5
+    }
+  },
+  {
+    "src": "assets/artwork/kiara-01.jpeg",
+    "alt": "Kiara illustration",
+    "width": 1200,
+    "height": 1800,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 5,
+      "home": 1
+    }
+  },
+  {
+    "src": "assets/artwork/nimi-04.jpeg",
+    "alt": "Nimi illustration",
+    "width": 900,
+    "height": 1200,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 6,
+      "home": 9,
+      "commission": 2
+    }
+  },
+  {
+    "src": "assets/artwork/roka-01.jpeg",
+    "alt": "Roka illustration",
+    "width": 900,
+    "height": 1200,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 7,
+      "home": 7
+    }
+  },
+  {
+    "src": "assets/artwork/nimi-05.jpeg",
+    "alt": "Nimi illustration",
+    "width": 1500,
+    "height": 2000,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 8,
+      "home": 8
+    }
+  },
+  {
+    "src": "assets/artwork/nimi-02.jpeg",
+    "alt": "Nimi illustration",
+    "width": 1080,
+    "height": 1440,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 9,
+      "commission": 1
+    }
+  },
+  {
+    "src": "assets/artwork/floofy-01.png",
+    "alt": "Floofy illustration",
+    "width": 1080,
+    "height": 1861,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 10
+    }
+  },
+  {
+    "src": "assets/artwork/cecilia-01.jpg",
+    "alt": "Cecilia illustration",
+    "width": 1500,
+    "height": 2000,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 11,
+      "home": 6,
+      "commission": 3
+    }
+  },
+  {
+    "src": "assets/artwork/shiori-01.jfif",
+    "alt": "Shiori illustration",
+    "width": 1200,
+    "height": 1600,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 12,
+      "home": 10
+    }
+  },
+  {
+    "src": "assets/artwork/nimi-03.jfif",
+    "alt": "Nimi illustration",
+    "width": 900,
+    "height": 1200,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 13,
+      "home": 11,
+      "commission": 4
+    }
+  },
+  {
+    "src": "assets/artwork/nimi-06.jfif",
+    "alt": "Nimi illustration",
+    "width": 1090,
+    "height": 1600,
+    "category": "illustration",
+    "showIn": {
+      "gallery": 14,
+      "home": 12
+    }
+  },
+  {
+    "src": "assets/artwork/fauna-chibi-01.webp",
+    "alt": "Fauna chibi",
+    "width": 1080,
+    "height": 1080,
+    "category": "chibi",
+    "showIn": {
+      "commission": 5
+    }
+  },
+  {
+    "src": "assets/artwork/nimi-chibi-01.webp",
+    "alt": "Nimi chibi",
+    "width": 1080,
+    "height": 1080,
+    "category": "chibi",
+    "showIn": {
+      "commission": 6
+    }
+  },
+  {
+    "src": "assets/artwork/fauna-chibi-02.webp",
+    "alt": "Fauna chibi",
+    "width": 1080,
+    "height": 1080,
+    "category": "chibi",
+    "showIn": {
+      "commission": 7
+    }
+  },
+  {
+    "src": "assets/artwork/raora-chibi-01.jfif",
+    "alt": "Raora chibi",
+    "width": 1080,
+    "height": 1080,
+    "category": "chibi",
+    "showIn": {
+      "commission": 8
+    }
+  },
+  {
+    "src": "assets/artwork/otomo-emote-01.webp",
+    "alt": "Otomo emote",
+    "width": 400,
+    "height": 400,
+    "category": "emote",
+    "showIn": {
+      "commission": 9
+    }
+  },
+  {
+    "src": "assets/artwork/emote-01.webp",
+    "alt": "emote",
+    "width": 512,
+    "height": 512,
+    "category": "emote",
+    "showIn": {
+      "commission": 10
+    }
+  },
+  {
+    "src": "assets/artwork/duckie-emote-01.webp",
+    "alt": "Duckie emote",
+    "width": 323,
+    "height": 340,
+    "category": "emote",
+    "showIn": {
+      "commission": 11
+    }
+  },
+  {
+    "src": "assets/artwork/oko-emote-01.webp",
+    "alt": "Oko emote",
+    "width": 500,
+    "height": 500,
+    "category": "emote",
+    "showIn": {
+      "commission": 12
+    }
+  },
+  {
+    "src": "assets/artwork/emote-02.webp",
+    "alt": "emote",
+    "width": 512,
+    "height": 512,
+    "category": "emote",
+    "showIn": {
+      "commission": 13
+    }
+  }
+]

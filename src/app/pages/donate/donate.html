@@ -1,0 +1,60 @@
+﻿<!-- Donate Hero -->
+<app-hero
+  backgroundClass="bg-white"
+  heroImageSrc="assets/artwork/nimi-03.jfif"
+  heroImagePosition="center 33%"
+  heroImageHeight="110%"
+  heroImageMaxWidthClass="max-w-3xl"
+  cardAlign="start"
+  cardMaxWidthClass="max-w-2xl"
+  [kicker]="'donate.hero.kicker' | translate"
+  [description]="'donate.hero.description' | translate"
+  [tagline]="'donate.hero.tagline' | translate"
+>
+  <span heroTitle>{{ 'donate.hero.title' | translate }}</span>
+</app-hero>
+
+<app-section-divider />
+
+<!-- Ko-fi donation section -->
+<app-section tone="light">
+  <div class="mx-auto max-w-7xl items-center px-4 py-8 sm:py-16 lg:px-6">
+    <!-- Section heading -->
+    <app-section-header
+      eyebrow="Support My Art"
+      title="Ko-fi"
+      description="Thank you for considering supporting my art! Your donations help me continue creating content and improving my work. Every contribution, big or small, is greatly appreciated and goes a long way in helping me achieve my goals."
+      tone="light"
+      [flourish]="false"
+    />
+
+    <!-- Ko-fi Embed -->
+    <div class="relative mt-4 flex justify-center pb-6 md:mt-0">
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-light-heading md:inline-block"
+      />
+      <div appCard tone="middle" class="w-lg max-w-full p-1">
+        <!-- appCard is on this wrapper, not the iframe: its ::before surface never renders on replaced elements
+             like <iframe>. -->
+        <iframe
+          id="kofiframe"
+          src="https://ko-fi.com/summerfloofy/?hidefeed=true&widget=true&embed=true&preview=true"
+          height="712"
+          title="summerfloofy"
+          class="w-full"
+        ></iframe>
+      </div>
+    </div>
+
+    <!-- Ko-fi Direct Link -->
+    <div appCard tone="middle" class="mx-auto max-w-lg px-5 py-4 sm:px-6 sm:py-5">
+      <div class="flex items-center justify-between gap-2">
+        <p class="min-w-0 text-sm leading-6 font-semibold text-on-middle-body sm:text-base">
+          Prefer to use the Ko-fi site? Visit my page~
+        </p>
+        <app-social-links [ids]="['kofi']" variant="chip" class="shrink-0 text-on-middle-heading" />
+      </div>
+    </div>
+  </div>
+</app-section>

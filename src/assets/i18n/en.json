@@ -1,9 +1,4 @@
 {
-  "language": {
-    "english": "English",
-    "japanese": "Japanese"
-  },
-
   "components": {
     "slideshow_carousel": {
       "previous": "Previous slide",
@@ -65,20 +60,6 @@
       "title": "Contact",
       "description": "Use this page for collaborations, business questions, press, fan mail, and other messages that are not commissions.",
       "cta": "Get in Touch"
-    },
-    "contact_page": {
-      "form": {
-        "kicker": "Let’s Talk",
-        "title": "Send a Message",
-        "description": "Share a collaboration idea, business question, press request, fan message, or anything else that fits outside of commissions.",
-        "note": "If you’re looking for a commission, please use the commissions page instead.",
-        "submit": "Send Inquiry"
-      },
-      "socials": {
-        "kicker": "Elsewhere",
-        "title": "Direct Contact",
-        "description": "If email is easier, this section gives you the fastest ways to reach me."
-      }
     }
   },
 
@@ -155,47 +136,39 @@
     "cards": {
       "chibi": {
         "title": "Chibi",
-        "includes_1": "One half-body chibi character",
-        "includes_2": "Basic two-tone background",
-        "excludes_1": "Props",
-        "excludes_2": "Detailed backgrounds/effects",
-        "excludes_3": "Highly intricate character details",
-        "details_1": "HD PNG",
-        "details_2": "1080 x 1080 px",
-        "details_3": "300 DPI",
-        "notes_1": "Please provide pose/expression references if possible",
-        "notes_2": "Credit is appreciated when reposting",
-        "turnaround_1": "Usually within 2 weeks",
-        "turnaround_2": "May take longer depending on complexity",
+        "includes": ["One half-body chibi character", "Basic two-tone background"],
+        "excludes": ["Props", "Detailed backgrounds/effects", "Highly intricate character details"],
+        "details": ["HD PNG", "1080 x 1080 px", "300 DPI"],
+        "notes": ["Please provide pose/expression references if possible", "Credit is appreciated when reposting"],
+        "turnaround": ["Usually within 2 weeks", "May take longer depending on complexity"],
         "cta": "Request Chibi"
       },
-      "emotes": {
+      "emote": {
         "title": "Emotes",
-        "includes_1": "One half-body chibi character",
-        "includes_2": "Basic props (eating, sleeping, holding a heart or flower, etc.)",
-        "excludes_1": "Highly intricate character details",
-        "excludes_2": "Secondary characters (+USD 5)",
-        "details_1": "HD PNG",
-        "details_2": "1080 x 1080 px",
-        "details_3": "300 DPI",
-        "notes_1": "Please provide pose/expression references if possible",
-        "notes_2": "Using it as emotes on your Twitch or YouTube is considered personal usage and not commercial (no extra 50% charge)",
-        "notes_3": "You are welcome to post the illustration anywhere as long as you credit Summer Floofy",
-        "turnaround_1": "Usually within 1 week",
-        "turnaround_2": "May take longer depending on complexity",
+        "includes": [
+          "One half-body chibi character",
+          "Basic props (eating, sleeping, holding a heart or flower, etc.)"
+        ],
+        "excludes": ["Highly intricate character details", "Secondary characters (+USD 5)"],
+        "details": ["HD PNG", "1080 x 1080 px", "300 DPI"],
+        "notes": [
+          "Please provide pose/expression references if possible",
+          "Using it as emotes on your Twitch or YouTube is considered personal usage and not commercial (no extra 50% charge)",
+          "You are welcome to post the illustration anywhere as long as you credit Summer Floofy"
+        ],
+        "turnaround": ["Usually within 1 week", "May take longer depending on complexity"],
         "cta": "Request Emotes"
       },
       "illustration": {
         "title": "Illustration",
-        "includes_1": "One character (thigh-up)",
-        "includes_2": "Solid color background",
-        "excludes_1": "Props and detailed backgrounds",
-        "excludes_2": "Secondary characters",
-        "details_1": "Standard 3:4 ratio (or any requested size)",
-        "details_2": "400 DPI",
-        "notes_1": "Complex character designs may incur additional fees",
-        "turnaround_1": "Usually within 2 weeks",
-        "turnaround_2": "May take up to 1 month during busy periods or for highly detailed pieces",
+        "includes": ["One character (thigh-up)", "Solid color background"],
+        "excludes": ["Props and detailed backgrounds", "Secondary characters"],
+        "details": ["Standard 3:4 ratio (or any requested size)", "400 DPI"],
+        "notes": ["Complex character designs may incur additional fees"],
+        "turnaround": [
+          "Usually within 2 weeks",
+          "May take up to 1 month during busy periods or for highly detailed pieces"
+        ],
         "cta": "Request Illustration"
       }
     },
@@ -205,15 +178,19 @@
       "description": "Policies, workflow, and terms for all commission requests.",
       "pricing": {
         "title": "Pricing",
-        "item_1": "Base pricing includes one character.",
-        "item_2": "Additional characters, props, backgrounds, and complex character designs may incur additional fees."
+        "items": [
+          "Base pricing includes one character.",
+          "Additional characters, props, backgrounds, and complex character designs may incur additional fees."
+        ]
       },
       "revisions": {
         "title": "Revisions",
-        "item_1": "1 major revision during the sketch phase.",
-        "item_2": "2 minor revisions during the coloring phase.",
-        "item_3": "Additional revisions may incur extra charges.",
-        "item_4": "Major revisions include significant changes such as pose or expression adjustments."
+        "items": [
+          "1 major revision during the sketch phase.",
+          "2 minor revisions during the coloring phase.",
+          "Additional revisions may incur extra charges.",
+          "Major revisions include significant changes such as pose or expression adjustments."
+        ]
       },
       "communication": {
         "title": "Communication",
@@ -221,60 +198,110 @@
       },
       "artwork_usage": {
         "title": "Artwork Usage",
-        "personal": "Personal (Included)",
-        "personal_item_1": "Personal use only.",
-        "personal_item_2": "No business, distribution, or resale.",
-        "promotion": "Promotion",
-        "promotion_item_1": "Streams & content creation.",
-        "promotion_item_2": "Websites & advertising.",
-        "promotion_item_3": "Business branding.",
-        "distribution": "Distribution",
-        "distribution_item_1": "Free stickers & giveaways.",
-        "distribution_item_2": "Convention handouts.",
-        "distribution_item_3": "Digital or printed copies.",
-        "products": "Products",
-        "products_item_1": "Merchandise.",
-        "products_item_2": "Digital products.",
-        "products_item_3": "Reproduction & resale.",
-        "unsure": "Not sure? Tell me how you plan to use the artwork, and I'll recommend the appropriate license."
+        "groups": [
+          {
+            "id": "personal",
+            "label": "Personal (Included)",
+            "items": ["Personal use only.", "No business, distribution, or resale."]
+          },
+          {
+            "id": "promotion",
+            "label": "Promotion",
+            "items": ["Streams & content creation.", "Websites & advertising.", "Business branding."]
+          },
+          {
+            "id": "distribution",
+            "label": "Distribution",
+            "items": ["Free stickers & giveaways.", "Convention handouts.", "Digital or printed copies."]
+          },
+          {
+            "id": "products",
+            "label": "Products",
+            "items": ["Merchandise.", "Digital products.", "Reproduction & resale."]
+          }
+        ]
       },
       "workflow": {
         "title": "Workflow",
-        "item_1": "Discussion & quotation.",
-        "item_2": "Sketch approval.",
-        "item_3": "Coloring approval.",
-        "item_4": "Final illustration.",
-        "item_5": "Delivery via email."
+        "items": [
+          "Discussion & quotation.",
+          "Sketch approval.",
+          "Coloring approval.",
+          "Final illustration.",
+          "Delivery via email."
+        ]
       },
       "payment": {
         "title": "Payment",
-        "item_1": "Full payment is required before work begins.",
-        "item_2": "After your request has been reviewed and discussed, you'll be able to complete payment through Stripe or Ko-fi."
+        "items": [
+          "Full payment is required before work begins.",
+          "After your request has been reviewed and discussed, you'll be able to complete payment through Stripe or Ko-fi."
+        ]
       },
       "tos": {
         "title": "Terms of Service",
-        "usage": "Usage",
-        "usage_item_1": "Your commission may only be used according to the usage license selected at the time of purchase.",
-        "usage_item_2": "If you're unsure whether a particular use is covered, please contact me before using the artwork.",
-        "ownership_licensing": "Ownership & Licensing",
-        "ownership_licensing_item_1": "I retain the copyright to all commissioned artwork unless otherwise agreed in writing.",
-        "ownership_licensing_item_2": "Purchasing a commission grants you a non-exclusive, non-transferable license to use the artwork according to the selected usage license. Copyright ownership is not transferred.",
-        "ownership_licensing_item_3": "Any use beyond the selected license requires prior written permission and may require an additional licensing fee.",
-        "portfolio": "Portfolio",
-        "portfolio_item_1": "I may display commissioned artwork in my portfolio, gallery, or on social media.",
-        "portfolio_item_2": "If you'd like your commission to remain private, please let me know before work begins.",
-        "modifications": "Modifications",
-        "modifications_item_1": "Editing, painting over, or AI-generated modifications of the artwork are not permitted without permission.",
-        "ai_blockchain": "AI & Blockchain",
-        "ai_blockchain_item_1": "My artwork may not be used for AI training, machine learning datasets, or similar technologies.",
-        "ai_blockchain_item_2": "My artwork may not be used for NFTs, cryptocurrency, or other blockchain-related technologies.",
-        "delivery": "Delivery",
-        "delivery_item_1": "Final artwork will be delivered in its original resolution via email or another agreed-upon method.",
-        "refunds": "Refunds",
-        "refunds_item_1": "Payments are non-refundable once work has begun.",
-        "conduct": "Conduct",
-        "conduct_item_1": "I reserve the right to decline any commission request.",
-        "conduct_item_2": "Harassment, abusive behavior, spam, or repeated violations of these terms may result in rejection of future commissions or placement on my blacklist."
+        "groups": [
+          {
+            "id": "usage",
+            "label": "Usage",
+            "items": [
+              "Your commission may only be used according to the usage license selected at the time of purchase.",
+              "If you're unsure whether a particular use is covered, please contact me before using the artwork."
+            ]
+          },
+          {
+            "id": "ownership_licensing",
+            "label": "Ownership & Licensing",
+            "items": [
+              "I retain the copyright to all commissioned artwork unless otherwise agreed in writing.",
+              "Purchasing a commission grants you a non-exclusive, non-transferable license to use the artwork according to the selected usage license. Copyright ownership is not transferred.",
+              "Any use beyond the selected license requires prior written permission and may require an additional licensing fee."
+            ]
+          },
+          {
+            "id": "portfolio",
+            "label": "Portfolio",
+            "items": [
+              "I may display commissioned artwork in my portfolio, gallery, or on social media.",
+              "If you'd like your commission to remain private, please let me know before work begins."
+            ]
+          },
+          {
+            "id": "modifications",
+            "label": "Modifications",
+            "items": [
+              "Editing, painting over, or AI-generated modifications of the artwork are not permitted without permission."
+            ]
+          },
+          {
+            "id": "ai_blockchain",
+            "label": "AI & Blockchain",
+            "items": [
+              "My artwork may not be used for AI training, machine learning datasets, or similar technologies.",
+              "My artwork may not be used for NFTs, cryptocurrency, or other blockchain-related technologies."
+            ]
+          },
+          {
+            "id": "delivery",
+            "label": "Delivery",
+            "items": [
+              "Final artwork will be delivered in its original resolution via email or another agreed-upon method."
+            ]
+          },
+          {
+            "id": "refunds",
+            "label": "Refunds",
+            "items": ["Payments are non-refundable once work has begun."]
+          },
+          {
+            "id": "conduct",
+            "label": "Conduct",
+            "items": [
+              "I reserve the right to decline any commission request.",
+              "Harassment, abusive behavior, spam, or repeated violations of these terms may result in rejection of future commissions or placement on my blacklist."
+            ]
+          }
+        ]
       }
     },
     "inquire": {
@@ -332,12 +359,10 @@
         "note": "(final quote may vary)"
       },
       "deadline": {
-        "label": "Deadline",
-        "note": "(optional and not guaranteed)"
+        "label": "Deadline (optional and not guaranteed)"
       },
       "additional_notes": {
-        "label": "Additional Notes",
-        "note": "(optional)",
+        "label": "Additional Notes (optional)",
         "placeholder": "Please specify any additional concerns or requirements regarding the commission if needed, such as deadline."
       },
       "tos": {
@@ -354,6 +379,19 @@
       "title": "STREAMING",
       "description": "Watch live streams and catch recent broadcasts directly from Twitch.",
       "tagline": "Twitch • Art Streams • Vtuber"
+    },
+    "schedule": {
+      "eyebrow": "Weekly schedule",
+      "title": "Floofy Standard Time",
+      "description": "One stream, same time every week. Here's when it starts around the world, and where you are.",
+      "your_time": "Your time",
+      "every": "Every {weekday}"
+    },
+    "live": {
+      "eyebrow": "Live channel",
+      "title": "Watch live",
+      "description": "Drawing, chatting, games and art updates with Floofy and the Tangerines. When the stream is offline, catch recent broadcasts right here.",
+      "channel_note": "Prefer the Twitch site? Follow the channel there~"
     }
   },
   "reviews": {
@@ -362,6 +400,14 @@
       "title": "REVIEWS",
       "description": "Testimonials, commission feedback, and community impressions.",
       "tagline": "Testimonials • Feedback • Community"
+    },
+    "list": {
+      "loading": "Reviews loading...",
+      "loading_note": "Check back soon for new feedback from the community.",
+      "empty": "No reviews yet",
+      "empty_note": "Be the first to share your experience using the form below.",
+      "failed": "Couldn't load reviews",
+      "failed_note": "Please try again later."
     }
   },
   "donate": {
@@ -425,5 +471,28 @@
     "reviews": { "label": "REVIEWS", "route": "/reviews" },
     "donate": { "label": "DONATE", "route": "/donate" },
     "contact": { "label": "CONTACT", "route": "/contact" }
+  },
+  "forms": {
+    "contact": {
+      "pending": "Sending your message...",
+      "invalid": "Please correct the errors in the form before sending.",
+      "ok": "Thank you! Your message has been sent.",
+      "rate_limited": "Message limit reached ({limit} per {window_hours} h). Please try again later.",
+      "error": "Sorry, something went wrong sending your message. Please try again later."
+    },
+    "review": {
+      "pending": "Submitting your review...",
+      "invalid": "Please correct the errors in the form before submitting.",
+      "ok": "Thank you for your review!",
+      "rate_limited": "Review limit reached ({limit} per {window_hours} h). Please try again later.",
+      "error": "Sorry, something went wrong submitting your review. Please try again later."
+    },
+    "commission": {
+      "pending": "Submitting your commission request...",
+      "invalid": "Please correct the errors in the form before submitting.",
+      "ok": "Thank you! Your commission request was submitted. You'll receive a confirmation email soon.",
+      "rate_limited": "Request limit reached ({limit} per {window_hours} h). Please try again later.",
+      "error": "Sorry, something went wrong submitting your request. Please try again later."
+    }
   }
 }

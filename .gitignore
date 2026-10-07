@@ -32,6 +32,8 @@ yarn-error.log
 # Miscellaneous
 /.angular/cache
 .sass-cache/
+__pycache__/
+*.pyc
 /connect.lock
 /coverage
 /libpeerconnection.log
@@ -48,3 +50,12 @@ aws_lambda/**
 !aws_lambda/**/
 !aws_lambda/**/lambda_function.py
 !aws_lambda/**/requirements.txt
+!aws_lambda/requirements-dev.txt
+!aws_lambda/pytest.ini
+!aws_lambda/build.sh
+!aws_lambda/shared/*.py
+!aws_lambda/tests/*.py
+
+# AWS Lambda local tooling (listed after the allowlist so these always stay ignored)
+/aws_lambda/.venv
+/aws_lambda/dist

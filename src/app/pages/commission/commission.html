@@ -1,0 +1,25 @@
+<!-- Commission Hero -->
+<app-hero
+  backgroundClass="bg-hero-commission"
+  heroImageSrc="assets/artwork/nimi-06.jfif"
+  heroImagePosition="center 20%"
+  heroImageMaxWidthClass="max-w-3xl"
+  cardAlign="start"
+  cardMaxWidthClass="max-w-3xl"
+  titleClass="text-[clamp(3.4rem,10vw,4.75rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
+  [kicker]="'commission.hero.kicker' | translate"
+  [description]="'commission.hero.description' | translate"
+  [tagline]="'commission.hero.tagline' | translate"
+>
+  <span heroTitle>{{ 'commission.hero.title' | translate }}</span>
+</app-hero>
+
+<app-section-divider />
+
+<app-pricing-section (pick)="onPick($event)" />
+
+<app-terms-section />
+
+<app-section-divider />
+
+<app-request-form (detailRequested)="onDetailRequested($event)" />

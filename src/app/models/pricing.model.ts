@@ -1,18 +1,19 @@
-export type CommissionTypeId = 'chibi' | 'emotes' | 'illustration';
+import { ArtworkCategory } from './artwork-category';
 
-export type CommercialTypeId = 'personal' | 'promotion' | 'distribution' | 'products';
+/** The priced usage types -- see CONTEXT.md's "Usage type" entry. The form's extra 'unsure' option has no price. */
+export type UsageTypeId = 'personal' | 'promotion' | 'distribution' | 'products';
 
-export interface CommissionTypePricing {
-  id: CommissionTypeId;
+export interface ArtworkCategoryPricing {
+  id: ArtworkCategory;
   basePriceUsd: number;
 }
 
-export interface CommercialTypePricing {
-  id: CommercialTypeId;
+export interface UsageTypePricing {
+  id: UsageTypeId;
   percentAddon: number;
 }
 
 export interface PricingData {
-  commissionTypes: CommissionTypePricing[];
-  commercialTypes: CommercialTypePricing[];
+  artworkCategories: ArtworkCategoryPricing[];
+  usageTypes: UsageTypePricing[];
 }

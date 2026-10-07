@@ -1,0 +1,99 @@
+<!-- Contact Hero -->
+<app-hero
+  backgroundClass="bg-hero-contact"
+  backgroundPatternImage="assets/graphics/pattern-circles.svg"
+  heroImageSrc="assets/artwork/shiori-01.jfif"
+  heroImagePosition="center 50%"
+  heroImageHeight="110%"
+  heroImageMaxWidthClass="max-w-4xl"
+  tone="dark"
+  cardMaxWidthClass="max-w-3xl"
+  [kicker]="'contact.hero.kicker' | translate"
+  [description]="'contact.hero.description' | translate"
+  [tagline]="'contact.hero.tagline' | translate"
+>
+  <span heroTitle>{{ 'contact.hero.title' | translate }}</span>
+</app-hero>
+
+<app-section-divider />
+
+<!-- Contact Form Section -->
+<app-section tone="light" pattern="stars" ariaLabel="General Inquiry Form">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <!-- Section heading -->
+      <app-section-header
+        [eyebrow]="'contact.form.kicker' | translate"
+        [title]="'contact.form.title' | translate"
+        [description]="'contact.form.description' | translate"
+        tone="middle"
+      />
+
+      <!-- Contact form -->
+      <form appCard tone="middle" class="mx-auto max-w-3xl px-8 py-12 text-on-middle-heading" [formRoot]="contactForm">
+        <div class="grid grid-cols-1 gap-6">
+          <app-form-field label="Name" [field]="contactForm.name">
+            <input appControl type="text" [formField]="contactForm.name" placeholder="Enter your name or username" />
+          </app-form-field>
+
+          <app-form-field label="Email" [field]="contactForm.email">
+            <input appControl type="email" [formField]="contactForm.email" placeholder="Enter your email address" />
+          </app-form-field>
+
+          <app-form-field label="Message" [field]="contactForm.message">
+            <textarea
+              appControl
+              [formField]="contactForm.message"
+              placeholder="Write your message for Floofy."
+              rows="5"
+            ></textarea>
+          </app-form-field>
+        </div>
+
+        <!-- Submit button -->
+        <div class="flex items-center gap-5 pt-4 text-on-middle-body">
+          <button
+            type="submit"
+            appButton
+            variant="primary"
+            tone="middle"
+            class="shrink-0 whitespace-nowrap disabled:cursor-wait disabled:opacity-70"
+            [disabled]="contactForm().submitting()"
+          >
+            {{ 'contact.form.submit' | translate }}
+          </button>
+          <app-form-status [status]="status()" />
+        </div>
+      </form>
+    </div>
+  </div>
+</app-section>
+
+<!-- Contact Socials -->
+<app-section tone="middle">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div appCard tone="middle" class="relative mx-auto max-w-3xl px-5 py-8 sm:px-7">
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block"
+      />
+
+      <!-- Section heading -->
+      <app-section-header
+        [eyebrow]="'contact.socials.kicker' | translate"
+        [title]="'contact.socials.title' | translate"
+        [description]="'contact.socials.description' | translate"
+        tone="middle"
+        [flourish]="false"
+      />
+
+      <div
+        class="grid grid-cols-2 gap-3 text-on-light-heading sm:grid-cols-2 md:grid-cols-4 md:gap-4"
+        role="list"
+        aria-label="Social links"
+      >
+        <app-social-links [ids]="['x', 'bsky', 'vgen', 'email']" variant="chip" />
+      </div>
+    </div>
+  </div>
+</app-section>

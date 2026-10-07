@@ -1,0 +1,181 @@
+<!-- About Hero -->
+<app-hero
+  backgroundClass="bg-hero-about"
+  heroImageSrc="assets/artwork/floofy-01.png"
+  heroImagePosition="center 25%"
+  heroImageMaxWidthClass="max-w-2xl"
+  cardMaxWidthClass="max-w-xl"
+  [kicker]="'about.hero.kicker' | translate"
+  [description]="'about.hero.description' | translate"
+  [tagline]="'about.hero.tagline' | translate"
+>
+  <span heroTitle>{{ 'about.hero.title' | translate }}</span>
+</app-hero>
+
+<app-section-divider />
+
+<!-- Meet the Artist -->
+<app-section tone="light">
+  <div
+    class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-8 sm:py-32 md:grid md:grid-cols-2 lg:px-6 xl:gap-16"
+  >
+    <!-- Artist image -->
+    <img
+      ngSrc="assets/artwork/floofy-profile-01.webp"
+      alt="SummerFloofy"
+      height="600"
+      width="600"
+      appReveal
+      appCard
+      tone="light"
+      [noBackground]="true"
+      class="block w-full"
+    />
+
+    <!-- Artist text -->
+    <div appReveal class="text-left">
+      <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-light-body-subtle uppercase">
+        {{ 'about.artist.kicker' | translate }}
+      </p>
+      <h2 appReveal class="mb-4 gap-3 text-5xl font-black tracking-tight wrap-break-word text-on-light-heading">
+        {{ 'about.artist.name' | translate }}
+      </h2>
+      <p class="mb-4 leading-7 text-on-light-body">
+        {{ 'about.artist.short_desc' | translate }}
+      </p>
+      <p class="mb-8 leading-7 text-on-light-body">
+        {{ 'about.artist.extended_desc' | translate }}
+      </p>
+    </div>
+  </div>
+</app-section>
+
+<!-- Contact Socials -->
+<app-section tone="middle">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div appCard [glass]="true" class="mx-auto max-w-3xl px-5 py-8 sm:px-7">
+      <app-flourish
+        variant="full"
+        class="absolute top-0 left-1/2 z-10 hidden h-12 -translate-x-1/2 -translate-y-1/2 text-on-middle-heading md:inline-block"
+      />
+
+      <!-- Section heading -->
+      <app-section-header
+        eyebrow="Find Me Online"
+        title="Socials"
+        description="Whether it's art, streaming, or just general updates, you'll find it all on SummerFloofy's social channels. Connect and join the tangerine community!"
+        tone="middle"
+        [flourish]="false"
+      />
+
+      <div
+        class="grid grid-cols-2 gap-3 text-on-light-heading sm:grid-cols-2 md:grid-cols-4 md:gap-4 lg:grid-cols-6"
+        role="list"
+        aria-label="Social links"
+      >
+        <app-social-links [ids]="['x', 'bsky', 'pixiv', 'twitch', 'vgen', 'kofi']" variant="chip" />
+      </div>
+    </div>
+  </div>
+</app-section>
+
+<app-section-divider />
+
+<!-- Original Character -->
+<app-section tone="dark" pattern="circles" ariaLabel="Floofy lore section">
+  <!-- Section header -->
+  <div class="mx-auto max-w-7xl px-4 pt-16 pb-0 text-center sm:pt-24 lg:px-6">
+    <p appReveal class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">
+      {{ 'about.oc.kicker' | translate }}
+    </p>
+    <h2 appReveal class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading">
+      {{ 'about.oc.title' | translate }}
+    </h2>
+    <p appReveal class="mx-auto mb-2 max-w-3xl leading-7 text-on-dark-body">
+      {{ 'about.oc.description' | translate }}
+    </p>
+    <div appReveal class="mx-auto mb-12 flex justify-center">
+      <app-flourish variant="full" class="h-8 text-on-dark-heading" />
+    </div>
+  </div>
+
+  <!-- OC art + lore -->
+  <div class="mx-auto grid max-w-7xl items-start gap-12 px-4 pb-16 sm:pb-24 md:grid-cols-2 lg:px-6 xl:gap-20">
+    <!-- Prominent OC image -->
+    <div appReveal class="min-w-0">
+      <img
+        ngSrc="assets/artwork/floofy-04.jfif"
+        alt="Floofy – SummerFloofy's original character"
+        height="600"
+        width="600"
+        appCard
+        tone="dark"
+        [noBackground]="true"
+        class="w-full object-cover"
+      />
+    </div>
+
+    <!-- Lore -->
+    <div appReveal class="min-w-0">
+      <h3 class="mb-6 text-3xl font-black tracking-tight text-on-dark-heading">
+        {{ 'about.oc.lore_title' | translate }}
+      </h3>
+      <p class="mb-4 leading-7 text-on-dark-body">
+        {{ 'about.oc.lore_p1' | translate }}
+      </p>
+      <p class="mb-4 leading-7 text-on-dark-body">
+        {{ 'about.oc.lore_p2' | translate }}
+      </p>
+      <p class="leading-7 text-on-dark-body">
+        {{ 'about.oc.lore_p3' | translate }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Reference sheet -->
+  <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
+    <h3 appReveal class="mb-8 text-2xl font-extrabold tracking-tight text-on-dark-heading">
+      <app-flourish variant="end-short" class="mr-3 hidden h-6 text-on-dark-heading md:inline-block" />
+      {{ 'about.oc.refs.title' | translate }}
+    </h3>
+    <div class="flex justify-center">
+      <div appReveal class="overflow-hidden rounded-xl shadow-lg">
+        <img
+          ngSrc="assets/artwork/floofy-reference.jfif"
+          alt="Floofy reference sheet"
+          height="2048"
+          width="1536"
+          appCard
+          tone="dark"
+          [noBackground]="true"
+          class="max-h-[90svh] w-auto"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Fan art -->
+  <div class="mx-auto max-w-7xl px-4 pb-16 sm:pb-24 lg:px-6">
+    <div appReveal class="mb-8 flex flex-wrap items-baseline gap-4">
+      <h3 class="text-2xl font-extrabold tracking-tight text-on-dark-heading">
+        <app-flourish variant="end-short" class="mr-3 hidden h-6 text-on-dark-heading md:inline-block" />
+        {{ 'about.oc.fanart.title' | translate }}
+      </h3>
+      <a
+        appButton
+        variant="pill"
+        tone="dark"
+        href="https://twitter.com/hashtag/{{ ('about.oc.fanart.hashtag' | translate).replace('#', '') }}?src=hash"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="View fan art hashtag on X/Twitter"
+      >
+        {{ 'about.oc.fanart.hashtag' | translate }}
+      </a>
+    </div>
+    <p appReveal class="mb-8 max-w-2xl leading-7 text-on-dark-body">
+      {{ 'about.oc.fanart.description' | translate }}
+    </p>
+    <!-- Fan images here -->
+  </div>
+</app-section>

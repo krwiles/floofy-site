@@ -24,6 +24,14 @@
               {
                 "glob": "favicon.ico",
                 "input": "public"
+              },
+              {
+                "glob": "robots.txt",
+                "input": "public"
+              },
+              {
+                "glob": "llms.txt",
+                "input": "public"
               }
             ],
             "styles": ["src/styles.css"]

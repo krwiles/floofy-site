@@ -1,5 +1,5 @@
 <nav
-  class="nav-intro glass-bgx fixed inset-s-0 top-0 z-100 w-full border-b border-border bg-bg"
+  class="nav-intro fixed inset-s-0 top-0 z-100 w-full border-b border-border bg-bg"
   [class.rounded-b-2xl]="isMenuOpen()"
 >
   <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between px-4 py-1">
@@ -55,17 +55,8 @@
   </div>
 </nav>
 
-<!-- Dims the rest of the page while the mobile menu is open, same treatment as the gallery lightbox's
-     own overlay (bg-black/80). Sits below `<nav>` (z-90 vs. its z-100) so the navbar itself -- brand,
-     language toggle, the menu button, and the menu panel's own links -- all stay fully lit and
-     clickable above it. A plain click anywhere on it closes the menu, same as tapping outside the
-     lightbox's image closes that.
-
-     Fades in (shared .overlay-fade-in, motion.css) but disappears instantly on close, with no
-     matching leave animation: closing can happen mid-navigation (a tapped link starts routing the same
-     instant it closes the menu), and an animated fade-out has no way to know the new page's content
-     might already be painting underneath it -- an animated close was tried and visibly lingered as a
-     darkening film over the freshly-routed page. -->
+<!-- Dims the page under the open mobile menu, below <nav> so the navbar stays usable; a click closes the menu. It
+     fades in but closes instantly, since a fade-out lingered over the next page during navigation. -->
 @if (isMenuOpen()) {
   <div class="fixed inset-0 z-90 bg-black/80 lg:hidden" (click)="closeMenu()" animate.enter="overlay-fade-in"></div>
 }

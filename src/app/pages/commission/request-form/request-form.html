@@ -1,0 +1,176 @@
+<app-section tone="light" pattern="stars" ariaLabel="Request Form">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div [id]="anchors.form" class="mx-auto max-w-3xl rounded-4xl">
+      <app-section-header
+        [eyebrow]="'commission.inquire.kicker' | translate"
+        [title]="'commission.inquire.title' | translate"
+        [description]="'commission.inquire.subtitle' | translate"
+        tone="middle"
+      />
+      <!-- A second paragraph app-section-header has no slot for; mb-12 keeps the same gap to the form. -->
+      <p appReveal class="mx-auto mb-12 max-w-2xl text-center leading-7 text-on-middle-body">
+        {{ 'commission.inquire.description' | translate }}
+      </p>
+
+      <form
+        appCard
+        tone="middle"
+        class="mx-auto max-w-3xl px-8 py-12 text-on-middle-heading"
+        [formRoot]="commissionForm"
+      >
+        <div class="grid grid-cols-1 gap-6">
+          <!-- Requester info -->
+          <p class="mb-2 border-b-2 border-border font-semibold tracking-widest text-on-middle-heading uppercase">
+            {{ 'commission.form.sections.requester' | translate }}
+          </p>
+
+          <app-form-field [label]="'commission.form.name.label' | translate" [field]="commissionForm.name">
+            <input
+              appControl
+              type="text"
+              [formField]="commissionForm.name"
+              [placeholder]="'commission.form.name.placeholder' | translate"
+            />
+          </app-form-field>
+
+          <app-form-field [label]="'commission.form.email.label' | translate" [field]="commissionForm.email">
+            <input
+              appControl
+              type="email"
+              [formField]="commissionForm.email"
+              [placeholder]="'commission.form.email.placeholder' | translate"
+            />
+          </app-form-field>
+
+          <!-- Commission details -->
+          <p class="mt-8 mb-2 border-b-2 border-border font-semibold tracking-widest text-on-middle-heading uppercase">
+            {{ 'commission.form.sections.details' | translate }}
+          </p>
+
+          <app-radio-group
+            [label]="'commission.form.commission_type.label' | translate"
+            [field]="commissionForm.commissionType"
+            [options]="artworkCategoryOptions()"
+          >
+            <app-jump-button
+              labelExtra
+              (activate)="detailRequested.emit('categories')"
+              [ariaLabel]="'commission.form.commission_type.jump_aria' | translate"
+              [title]="'commission.form.commission_type.jump_title' | translate"
+            />
+          </app-radio-group>
+
+          <app-form-field
+            [label]="'commission.form.description.label' | translate"
+            [field]="commissionForm.description"
+          >
+            <textarea
+              appControl
+              [formField]="commissionForm.description"
+              [placeholder]="'commission.form.description.placeholder' | translate"
+              rows="5"
+            ></textarea>
+          </app-form-field>
+
+          <app-form-field
+            [label]="'commission.form.reference_links.label' | translate"
+            [field]="commissionForm.referenceLinks"
+          >
+            <textarea
+              appControl
+              [formField]="commissionForm.referenceLinks"
+              [placeholder]="'commission.form.reference_links.placeholder' | translate"
+            ></textarea>
+          </app-form-field>
+
+          <app-radio-group
+            [label]="'commission.form.usage_type.label' | translate"
+            [field]="commissionForm.usageType"
+            [options]="usageTypeOptions()"
+          >
+            <app-jump-button
+              labelExtra
+              (activate)="detailRequested.emit('usage')"
+              [ariaLabel]="'commission.form.usage_type.jump_aria' | translate"
+              [title]="'commission.form.usage_type.jump_title' | translate"
+            />
+          </app-radio-group>
+
+          <app-form-field
+            [label]="'commission.form.usage_explanation.label' | translate"
+            [field]="commissionForm.usageExplanation"
+          >
+            <textarea
+              appControl
+              [formField]="commissionForm.usageExplanation"
+              [placeholder]="'commission.form.usage_explanation.placeholder' | translate"
+              rows="3"
+            ></textarea>
+          </app-form-field>
+
+          <!-- Price estimate -->
+          <div>
+            <p class="font-semibold">
+              {{ 'commission.form.price_estimate.label' | translate }}
+              <i>{{ 'commission.form.price_estimate.note' | translate }}</i>
+            </p>
+            <p class="mt-6 flex items-baseline">
+              <span class="text-5xl font-extrabold text-on-light-heading">
+                {{ estimatedPriceUsd() | currency: 'USD' : 'symbol' : '2.0-0' }}
+              </span>
+              <span class="ml-2 text-base font-semibold tracking-wide text-on-middle-body-subtle uppercase">USD</span>
+            </p>
+          </div>
+
+          <!-- Additional info -->
+          <p class="mt-8 mb-2 border-b-2 border-border font-semibold tracking-widest text-on-middle-heading uppercase">
+            {{ 'commission.form.sections.additional' | translate }}
+          </p>
+
+          <app-form-field [label]="'commission.form.deadline.label' | translate" [field]="commissionForm.deadline">
+            <input appControl type="date" [formField]="commissionForm.deadline" />
+          </app-form-field>
+
+          <app-form-field
+            [label]="'commission.form.additional_notes.label' | translate"
+            [field]="commissionForm.additionalNotes"
+          >
+            <textarea
+              appControl
+              [formField]="commissionForm.additionalNotes"
+              [placeholder]="'commission.form.additional_notes.placeholder' | translate"
+              rows="3"
+            ></textarea>
+          </app-form-field>
+
+          <!-- TOS agreement -->
+          <app-checkbox-field [field]="commissionForm.tosAccepted">
+            {{ 'commission.form.tos.checkbox' | translate }}
+            <app-jump-button
+              labelExtra
+              extraClass="mt-px"
+              (activate)="detailRequested.emit('terms')"
+              [ariaLabel]="'commission.form.tos.jump_aria' | translate"
+              [title]="'commission.form.tos.jump_title' | translate"
+            />
+          </app-checkbox-field>
+
+          <!-- Submit button -->
+          <div class="flex items-center gap-5 pt-4 text-on-middle-body">
+            <button
+              type="submit"
+              appButton
+              variant="primary"
+              tone="middle"
+              class="shrink-0 whitespace-nowrap disabled:cursor-wait disabled:opacity-70"
+              [disabled]="commissionForm().submitting()"
+            >
+              {{ 'commission.form.submit' | translate }}
+            </button>
+            <app-form-status [status]="status()" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-section>

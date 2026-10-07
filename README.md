@@ -13,6 +13,20 @@ All images and media files (e.g., files in `/assets/`) are **not covered by the 
 They are all rights reserved.  
 You may view them as part of this repository or website, but you may not copy, reuse, modify, or distribute them without explicit permission.
 
+## Backend (AWS Lambda)
+
+The site's forms and reviews talk to Python AWS Lambdas in `aws_lambda/`: `floof-api` (reviews), `floof-comm`
+(commissions), `floof-contact` and `floof-admin` (the moderation links in admin emails). They're deployed by hand as
+zip uploads.
+
+- **Set up and run the tests:** from `aws_lambda/`, run
+  `uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python -r requirements-dev.txt` once, then
+  `.venv/bin/pytest`.
+- **Build an upload zip:** `./build.sh <lambda> <x86_64|arm64> <python-version>`, e.g.
+  `./build.sh floof-api x86_64 3.14`. The zips land in `aws_lambda/dist/`.
+- **Setup, deployment and environment variables:**
+  [docs/features/review-moderation/aws-setup.md](docs/features/review-moderation/aws-setup.md).
+
 ## Development server
 
 To start a local development server, run:

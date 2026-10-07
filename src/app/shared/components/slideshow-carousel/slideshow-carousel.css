@@ -1,0 +1,81 @@
+:host {
+  display: block;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.slideshow-carousel__viewport {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  /* Clip the neighboring slides at ±100%, so they only show mid-slide and can't widen the page. */
+  overflow: hidden;
+}
+
+.slideshow-carousel__slide {
+  position: absolute;
+  inset: 0;
+  /* NgOptimizedImage's `fill` mode sets inset inline, so it can't be adjusted here; the seam fix lives in
+     the component's scaleFor/transformFor. */
+  object-fit: cover;
+  transition: transform 450ms ease;
+}
+
+.slideshow-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  display: flex;
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: rgb(0 0 0 / 35%);
+  color: white;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition:
+    opacity 200ms ease,
+    background-color 200ms ease;
+}
+
+.slideshow-carousel__arrow--prev {
+  left: 0.5rem;
+}
+
+.slideshow-carousel__arrow--next {
+  right: 0.5rem;
+}
+
+.slideshow-carousel__arrow:hover {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+/* Arrows appear on hover or keyboard focus. :host(...) is needed because the host's own class can't be
+   matched from inside its encapsulated stylesheet. */
+:host(:hover) .slideshow-carousel__arrow,
+:host(:focus-within) .slideshow-carousel__arrow {
+  opacity: 1;
+}
+
+.slideshow-carousel__arrow:focus-visible {
+  opacity: 1;
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* No equivalent of "hovering" on a touch device -- always visible there instead, per the spec. */
+@media (hover: none) {
+  .slideshow-carousel__arrow {
+    opacity: 1;
+  }
+}
+
+/* Reduced motion: slides still auto-advance, just without the sliding animation. */
+@media (prefers-reduced-motion: reduce) {
+  .slideshow-carousel__slide {
+    transition: none;
+  }
+}

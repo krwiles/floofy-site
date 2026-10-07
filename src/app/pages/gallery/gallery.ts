@@ -1,0 +1,73 @@
+import { Component, HostListener, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { GalleryImageService } from '../../services/gallery-image.service';
+import { ImageAsset } from '../../models/image-asset';
+import { DOCUMENT } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
+import { Hero } from '../../shared/components/hero/hero';
+import { TranslatePipe } from '../../shared/pipes/translate.pipe';
+import { SectionDivider } from '../../shared/components/section-divider/section-divider';
+import { Section } from '../../shared/components/section/section';
+
+@Component({
+  selector: 'app-gallery',
+  imports: [NgOptimizedImage, Hero, TranslatePipe, SectionDivider, Section],
+  templateUrl: './gallery.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './gallery.css',
+})
+export class Gallery {
+  private readonly document = inject(DOCUMENT);
+
+  galleryImageService = inject(GalleryImageService);
+  // This page's gallery images, in its own order.
+  readonly images = this.galleryImageService.imagesFor('gallery');
+  // The image open in the lightbox, and whether the lightbox is showing.
+  selectedImage = signal<ImageAsset | null>(null);
+  showLightBox = signal<boolean>(false);
+  // Where the page was scrolled to when the lightbox opened, so closing can return there.
+  scrollY = 0;
+
+  showImage(image: ImageAsset) {
+    // Open the lightbox on this image.
+    this.selectedImage.set(image);
+    this.showLightBox.set(true);
+
+    // Lock page scroll: remember the position, then pin the body in place at it.
+    this.scrollY = window.scrollY;
+    const body = this.document.body;
+    const root = this.document.documentElement;
+    const scrollbarWidth = window.innerWidth - this.document.documentElement.clientWidth;
+    root.style.setProperty('--scrollbar-compensation', `${Math.max(scrollbarWidth, 0)}px`);
+
+    body.style.position = 'fixed';
+    body.style.top = `-${this.scrollY}px`;
+    body.style.width = '100%';
+
+    // Pad for the scrollbar that just disappeared, so content doesn't shift sideways.
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    // Escape closes the lightbox if it's open.
+    if (this.showLightBox()) this.closeImage();
+  }
+
+  closeImage() {
+    // Close the lightbox.
+    this.showLightBox.set(false);
+    this.selectedImage.set(null);
+
+    // Unlock page scroll: undo the body pinning, then jump back to where the visitor was.
+    const body = this.document.body;
+    const root = this.document.documentElement;
+    body.style.position = '';
+    body.style.top = '';
+    body.style.width = '';
+    body.style.paddingRight = '';
+    root.style.removeProperty('--scrollbar-compensation');
+    window.scrollTo(0, this.scrollY);
+  }
+}

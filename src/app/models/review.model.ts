@@ -11,5 +11,5 @@ export interface CreateReviewRequest {
 }
 
 export interface CreateReviewResponse {
-  message: string;
+  code: 'ok';
 }
