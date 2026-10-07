@@ -33,8 +33,9 @@ export class Commission {
   protected onPick(category: ArtworkCategory): void {
     // Preselect the picked category in the form.
     this.requestForm().selectCategory(category);
-    // Then scroll to the form.
+    // Then scroll to the form, and move focus to the picked type there.
     scrollToElement(COMMISSION_ANCHORS.form, { focus: false });
+    this.requestForm().focusCommissionType();
   }
 
   /** A form "?" button asked for more detail: jump to and focus that section. */

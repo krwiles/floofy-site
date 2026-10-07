@@ -56,10 +56,20 @@ describe('PricingCard', () => {
     fixture.componentInstance.pick.subscribe((category) => picked.push(category));
 
     // Clicking "Request Illustration" picks illustration.
-    const cta = el.querySelector('a') as HTMLAnchorElement;
+    const cta = el.querySelector('button[appbutton]') as HTMLButtonElement;
     expect(cta.textContent?.trim()).toBe('Request Illustration');
     cta.click();
     expect(picked).toEqual(['illustration']);
+  });
+
+  it('makes the call-to-action a real button, so the keyboard can reach and press it', () => {
+    // Act: render a card.
+    const el = create('chibi');
+
+    // Assert: a plain (non-submitting) button, which is in the Tab order without any extra attributes.
+    const cta = el.querySelector('button[appbutton]') as HTMLButtonElement;
+    expect(cta.type).toBe('button');
+    expect(el.querySelector('a:not([href])')).toBeNull();
   });
 
   it('leaves no untranslated keys on the card', () => {

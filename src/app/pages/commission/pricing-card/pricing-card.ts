@@ -48,9 +48,17 @@ import { PRICING_LIST_ORDER } from '../commission-content';
         }
       </div>
 
-      <a (click)="pick.emit(category())" appReveal appButton variant="primary" tone="dark" class="mt-8">
+      <button
+        type="button"
+        (click)="pick.emit(category())"
+        appReveal
+        appButton
+        variant="primary"
+        tone="dark"
+        class="mt-8"
+      >
         {{ 'commission.cards.' + category() + '.cta' | translate }}
-      </a>
+      </button>
     </div>
   `,
 })
