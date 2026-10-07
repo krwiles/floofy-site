@@ -1,4 +1,5 @@
 import { Signal, WritableSignal } from '@angular/core';
+import { FieldTree } from '@angular/forms/signals';
 import { firstValueFrom, Observable } from 'rxjs';
 import { ApiError } from '../../models/api-error';
 import { FormSubmissionStatus } from '../../models/form-submission-status';
@@ -25,7 +26,7 @@ interface CreateFormSubmissionConfig<TModel, TRequest, TResponse> {
  */
 export function createFormSubmission<TModel, TRequest, TResponse>(
   config: CreateFormSubmissionConfig<TModel, TRequest, TResponse>,
-): { action: () => Promise<void>; onInvalid: () => void } {
+): { action: () => Promise<void>; onInvalid: (form: FieldTree<TModel>) => void } {
   return {
     // Waits for the reply, so Signal Forms' `submitting()` stays true meanwhile and a second submit is refused.
     action: async () => {
@@ -50,9 +51,12 @@ export function createFormSubmission<TModel, TRequest, TResponse>(
       config.status.set({ kind: 'success', key: `${config.i18nPrefix}.ok` });
       config.onSuccess?.(response);
     },
-    onInvalid: () => {
+    onInvalid: (form) => {
       // Submitted while invalid: show the form's "please fix" message instead of sending.
       config.status.set({ kind: 'error', key: `${config.i18nPrefix}.invalid` });
+
+      // Take the visitor to the first problem: errorSummary lists errors in field order, and each names its field.
+      form().errorSummary()[0]?.fieldTree().focusBoundControl();
     },
   };
 }

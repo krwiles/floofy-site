@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import { NEVER, Observable, of, Subject, throwError } from 'rxjs';
+import { FieldTree } from '@angular/forms/signals';
 import { createFormSubmission } from './form-submission';
 import { FormSubmissionStatus } from '../../models/form-submission-status';
 
@@ -147,14 +148,34 @@ describe('createFormSubmission', () => {
     expect(onSuccessCalled).toBe(false);
   });
 
+  /** A stand-in form whose error summary lists fields with these focus spies, in field order. */
+  function invalidForm(...focusSpies: (() => void)[]) {
+    const errorSummary = () => focusSpies.map((focusBoundControl) => ({ fieldTree: () => ({ focusBoundControl }) }));
+    return (() => ({ errorSummary })) as unknown as FieldTree<{ name: string }>;
+  }
+
   it("shows the form's invalid message when submitted while invalid", () => {
     // Arrange: a submission whose submit should never run.
     const { status, onInvalid } = setup(() => of({ code: 'ok' }));
 
     // Act: report the form as invalid.
-    onInvalid();
+    onInvalid(invalidForm(vi.fn()));
 
     // Assert: error, with this form's invalid key.
     expect(status()).toEqual({ kind: 'error', key: 'forms.test.invalid' });
+  });
+
+  it('moves focus to the first invalid field when submitted while invalid', () => {
+    // Arrange: a form with two invalid fields, in order.
+    const { onInvalid } = setup(() => of({ code: 'ok' }));
+    const first = vi.fn();
+    const second = vi.fn();
+
+    // Act: report the form as invalid.
+    onInvalid(invalidForm(first, second));
+
+    // Assert: only the first invalid field takes focus, so the visitor lands on it.
+    expect(first).toHaveBeenCalledTimes(1);
+    expect(second).not.toHaveBeenCalled();
   });
 });

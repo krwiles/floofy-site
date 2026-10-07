@@ -11,7 +11,8 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
   imports: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <p class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" [class]="colorClass()">
+    <!-- role="status": a polite live region, so each new message is read out after whatever is being said now -->
+    <p role="status" class="min-w-0 flex-1 text-sm font-semibold wrap-break-word" [class]="colorClass()">
       {{ status().key | translate: status().params }}
     </p>
   `,
