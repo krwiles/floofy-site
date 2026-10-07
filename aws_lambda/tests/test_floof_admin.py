@@ -19,6 +19,7 @@ SECURITY_HEADERS = {
     "Referrer-Policy": "no-referrer",
     "X-Robots-Tag": "noindex",
     "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'",
+    "X-Content-Type-Options": "nosniff",
 }
 
 
@@ -300,6 +301,25 @@ def test_an_unexpected_crash_shows_a_safe_error_page(admin, monkeypatch, capsys,
     lines = logged(capsys)
     assert any(line["event"] == "unexpected_error" for line in lines)
     assert token not in json.dumps(lines)
+
+
+def test_ipv6_block_says_it_covers_the_whole_64(admin, cursor):
+    # Arrange: the review came from an IPv6 address.
+    cursor.on("FROM reviews", rows=[review_row(ip_address=ipaddress.ip_address("2001:db8:1:2::9"))])
+
+    # Act: open its Block link.
+    result = get(admin, token_for("block-review-ip", 7))
+
+    # Assert: the page names the range the block will cover, not just the one address.
+    assert "IP range 2001:db8:1:2::/64 will no longer be able to" in result["body"]
+
+
+def test_ipv4_block_names_the_single_address(admin):
+    # Act: open a Block link for an IPv4 review.
+    result = get(admin, token_for("block-review-ip", 7))
+
+    # Assert: the page names exactly that address.
+    assert "IP 203.0.113.7 will no longer be able to" in result["body"]
 
 
 # --- Contact-message blocks (the link carries the IP, as a number) -------------------------------------------
