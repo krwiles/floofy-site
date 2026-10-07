@@ -5,7 +5,7 @@
       "next": "Next slide"
     },
     "language_toggle": {
-      "toggle": "Toggle language"
+      "name": "{label}, switch language"
     }
   },
 
@@ -109,6 +109,7 @@
       "fanart": {
         "title": "Fan Art",
         "hashtag": "#Floofyllust",
+        "on_x": "(fan art on X)",
         "description": "Love Floofy? We'd love to see your take on them! Share your fan art on Twitter or Bluesky using the tag #Floofyllust."
       }
     }

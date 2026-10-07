@@ -21,4 +21,13 @@ describe('About', () => {
     // Assert: the page builds.
     expect(component).toBeTruthy();
   });
+
+  it('names the fan-art link by the hashtag it shows', () => {
+    // Act: find the link to the hashtag on X.
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a[href*="twitter.com/hashtag"]');
+
+    // Assert: no aria-label hiding the visible text; the name is the hashtag plus a hidden note of where it goes.
+    expect(link.hasAttribute('aria-label')).toBe(false);
+    expect(link.textContent?.replace(/\s+/g, ' ').trim()).toBe('#Floofyllust (fan art on X)');
+  });
 });

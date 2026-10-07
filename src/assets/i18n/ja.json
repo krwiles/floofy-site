@@ -5,7 +5,7 @@
       "next": "次のスライド"
     },
     "language_toggle": {
-      "toggle": "言語を切り替える"
+      "name": "{label}、言語を切り替え"
     }
   },
   "home": {
@@ -98,6 +98,7 @@
       "fanart": {
         "title": "ファンアート",
         "hashtag": "#Floofyllust",
+        "on_x": "（Xのファンアート）",
         "description": "フルーフィが好きですか？ぜひあなたのイラストを見せてください！TwitterやBlueskyで #floofyfanart タグを付けて投稿し、フルーフィを描いたアーティストのコミュニティに参加しましょう。"
       }
     }

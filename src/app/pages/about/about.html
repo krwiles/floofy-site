@@ -168,9 +168,10 @@
         href="https://twitter.com/hashtag/{{ ('about.oc.fanart.hashtag' | translate).replace('#', '') }}?src=hash"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="View fan art hashtag on X/Twitter"
       >
         {{ 'about.oc.fanart.hashtag' | translate }}
+        <!-- Spoken after the visible hashtag, so screen-reader users also hear where the link goes -->
+        <span class="sr-only">{{ 'about.oc.fanart.on_x' | translate }}</span>
       </a>
     </div>
     <p appReveal class="mb-8 max-w-2xl leading-7 text-on-dark-body">
