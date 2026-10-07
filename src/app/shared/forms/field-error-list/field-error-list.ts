@@ -10,18 +10,21 @@ import { Field } from '@angular/forms/signals';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // `display: contents` keeps the empty host out of the parent's flex layout -- see RequiredMarker.
   host: { style: 'display: contents' },
+  // Always rendered (hidden while empty), so a control's aria-describedby never points at a missing element.
   template: `
-    @if (state().invalid() && state().touched()) {
-      <div class="text-error">
+    <div class="text-error empty:hidden" [id]="id()">
+      @if (state().invalid() && state().touched()) {
         @for (error of state().errors(); track error.kind) {
           <span>{{ error.message }}</span>
         }
-      </div>
-    }
+      }
+    </div>
   `,
 })
 export class FieldErrorList {
   readonly field = input.required<Field<unknown>>();
+  /** The wrapper's id, which the field's control names in `aria-describedby`. */
+  readonly id = input<string | null>(null);
   // Calling a Signal Forms field returns its live state (errors, touched, ...).
   readonly state = computed(() => this.field()());
 }
