@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RequestForm, RequestFormDetail } from './request-form';
+import { expectNoAxeViolations } from '../../../../testing/expect-no-axe-violations';
 
 describe('RequestForm', () => {
   let fixture: ComponentFixture<RequestForm>;
@@ -94,5 +95,10 @@ describe('RequestForm', () => {
     // Assert: it never shrinks or wraps, so a long message wraps instead (as on the contact and review forms).
     expect(submit.classList.contains('shrink-0')).toBe(true);
     expect(submit.classList.contains('whitespace-nowrap')).toBe(true);
+  });
+
+  it('has no accessibility violations in its form', async () => {
+    // Act and assert: the commission form, with its radio groups and checkbox, passes axe.
+    await expectNoAxeViolations(el.querySelector('form') as HTMLElement);
   });
 });

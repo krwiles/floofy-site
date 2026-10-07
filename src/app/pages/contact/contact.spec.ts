@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { Contact } from './contact';
+import { expectNoAxeViolations } from '../../../testing/expect-no-axe-violations';
 import { ApiService } from '../../services/api.service';
 import { CreateContactResponse } from '../../models/contact.model';
 
@@ -67,5 +68,25 @@ describe('Contact', () => {
 
     // Assert: the button can be used again.
     expect(submitButton().disabled).toBe(false);
+  });
+
+  it('moves focus to the first empty field when submitted blank', async () => {
+    // Act: submit without filling anything in.
+    submitButton().click();
+    await fixture.whenStable();
+
+    // Assert: the visitor lands on the name field, now marked invalid.
+    const name = fixture.nativeElement.querySelector('input[type="text"]') as HTMLInputElement;
+    expect(document.activeElement).toBe(name);
+    expect(name.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('has no accessibility violations in its form, before and after a blank submit', async () => {
+    // Act and assert: clean as rendered, and with every error showing.
+    const form = fixture.nativeElement.querySelector('form');
+    await expectNoAxeViolations(form);
+    submitButton().click();
+    await fixture.whenStable();
+    await expectNoAxeViolations(form);
   });
 });
