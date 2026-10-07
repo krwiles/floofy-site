@@ -10,13 +10,13 @@ import html
 import ipaddress
 import time
 from urllib.parse import parse_qs
-from zoneinfo import ZoneInfo
 
 from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import verify
 from blocklist import block, is_blocked
+from dates import format_sgt
 from db import connect_to_db
 from ip_scope import canonical_ip, ip_scope
 from request_log import log, log_request
@@ -46,7 +46,6 @@ WHERE id = %s
 DELETE_REVIEW_QUERY = "UPDATE reviews SET deleted = TRUE WHERE id = %s"
 
 SNIPPET_LENGTH = 200
-SGT = ZoneInfo("Asia/Singapore")
 
 
 def shows_error_page_on_unexpected_errors(handler):
@@ -229,7 +228,7 @@ def target_details(action, target):
         text = text[:SNIPPET_LENGTH] + "…"
 
     # Show the time in Singapore time, matching the notification emails
-    posted = target["created_at"].astimezone(SGT).strftime("%A, %d %B %Y at %I:%M %p (SGT)")
+    posted = format_sgt(target["created_at"])
 
     return (
         f"<p><strong>From:</strong> {html.escape(target['who'])}</p>"

@@ -3,14 +3,14 @@ import json
 import math
 import os
 import resend
-from datetime import datetime
-from zoneinfo import ZoneInfo
+from datetime import datetime, timezone
 from dataclasses import dataclass, fields, replace
 from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import link
 from blocklist import is_blocked
+from dates import format_sgt
 from db import connect_to_db
 from email_rules import MAX_ADDRESS_LENGTH, defuse_links, is_plain_address
 from email_sender import EMAIL_FROM, admin_recipients, email_content
@@ -214,7 +214,7 @@ def email_floofy(commission_request: CommissionRequest, request_id: int, sender_
         <p><strong>Estimated Price:</strong> ${commission_request.estimated_price:.2f} USD</p>
         <p><strong>Deadline:</strong> {commission_request.deadline}</p>
         <p><strong>Additional Notes:</strong> {commission_request.additional_notes}</p>
-        <p><em>Submitted at: {datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
+        <p><em>Submitted at: {format_sgt(datetime.now(timezone.utc))}</em></p>
         <p><em>Sender IP Address: {html.escape(sender_ip_address)}</em></p>
         <p><em>Request #{request_id}</em></p>
         <p><a href="{html.escape(block_url)}">Block this requester</a></p>

@@ -3,14 +3,14 @@ import ipaddress
 import json
 import os
 import resend
-from datetime import datetime
-from zoneinfo import ZoneInfo
+from datetime import datetime, timezone
 from dataclasses import dataclass
 from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import link
 from blocklist import is_blocked
+from dates import format_sgt
 from db import connect_to_db
 from email_sender import EMAIL_FROM, admin_recipients, email_content
 from ip_scope import canonical_ip, ip_scope
@@ -129,7 +129,7 @@ def email_floofy(contact_request: ContactRequest, sender_ip_address):
         <p><strong>Name:</strong> {name}</p>
         <p><strong>Email:</strong> {email}</p>
         <p><strong>Message:</strong> {message}</p>
-        <p><em>Submitted at: {datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
+        <p><em>Submitted at: {format_sgt(datetime.now(timezone.utc))}</em></p>
         <p><em>Sender IP Address: {html.escape(sender_ip_address)}</em></p>
         <p><a href="{html.escape(block_url)}">Block this sender</a></p>
     """

@@ -1,7 +1,6 @@
 import html
 import json
 import os
-from zoneinfo import ZoneInfo
 
 import resend
 from psycopg.rows import dict_row
@@ -9,6 +8,7 @@ from psycopg.rows import dict_row
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import link
 from blocklist import is_blocked
+from dates import format_sgt
 from db import connect_to_db
 from email_sender import EMAIL_FROM, admin_recipients, email_content
 from ip_scope import canonical_ip, ip_scope
@@ -150,7 +150,7 @@ def email_floofy(review_id, created_at, author, comment, ip_address, earlier_rev
         <h1>New review #{review_id}</h1>
         <p><strong>Author:</strong> {safe_author}</p>
         <p><strong>Comment:</strong> {safe_comment}</p>
-        <p><em>Posted at: {created_at.astimezone(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
+        <p><em>Posted at: {format_sgt(created_at)}</em></p>
         <p><em>Sender IP Address: {html.escape(ip_address)}</em></p>
         <p><strong>Earlier reviews from this IP:</strong> {earlier_reviews}</p>
         <p><a href="{html.escape(delete_url)}">Delete this review</a></p>
