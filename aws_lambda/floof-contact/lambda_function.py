@@ -6,17 +6,36 @@ import resend
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from dataclasses import dataclass
+from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
+from ip_scope import ip_scope
+from limits import busy_reply, over_global_cap
 from email_sender import EMAIL_FROM, admin_recipients, email_content
 from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
 # The longest each field may be, matching the form (exactly at the limit is fine)
 MAX_LENGTHS = {"name": 50, "email": 50, "message": 2000}
+
+# At most this many messages per visitor per window, and per rolling day from everyone; the reply carries the former
+MESSAGES_PER_WINDOW = 3
+MESSAGE_WINDOW_HOURS = 24
+MESSAGES_PER_DAY = 20
+
+# Count this visitor's recent messages (their IPv4 address, or anything in their IPv6 /64)
+RECENT_MESSAGES_QUERY = """
+SELECT COUNT(*) AS recent
+FROM contact_messages
+WHERE ip_address <<= %s::inet
+    AND created_at >= NOW() - %s * INTERVAL '1 hour'
+"""
+
+# Record a message by its IP alone: nothing the visitor typed is kept
+INSERT_QUERY = "INSERT INTO contact_messages (ip_address) VALUES (%s)"
 
 
 # The contact form's fields, as this Lambda works with them
@@ -61,12 +80,26 @@ def main(event):
         log("refused", reason="invalid", ip=sender_ip_address)
         return validation_response
 
-    # Refuse blocked IPs with the same vague reply the other endpoints give
-    with connect_to_db() as conn, conn.cursor() as cur:
-        blocked = is_blocked(cur, sender_ip_address)
-    if blocked:
-        log("refused", reason="blocked", ip=sender_ip_address)
-        return reply(403, "error")
+    # Check the blocklist and limits, then record the message before any email is attempted
+    # (leaving the `with` block commits the insert and closes the connection)
+    with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
+        # Refuse blocked IPs with the same vague reply the other endpoints give
+        if is_blocked(cur, sender_ip_address):
+            log("refused", reason="blocked", ip=sender_ip_address)
+            return reply(403, "error")
+
+        # Refuse the visitor once they've reached the limit within the window
+        cur.execute(RECENT_MESSAGES_QUERY, (ip_scope(sender_ip_address), MESSAGE_WINDOW_HOURS))
+        if cur.fetchone()["recent"] >= MESSAGES_PER_WINDOW:
+            log("refused", reason="rate_limited", ip=sender_ip_address)
+            return reply(429, "rate_limited", limit=MESSAGES_PER_WINDOW, window_hours=MESSAGE_WINDOW_HOURS)
+
+        # Refuse everyone once today's messages reach the global cap
+        if over_global_cap(cur, "contact_messages", MESSAGES_PER_DAY):
+            return busy_reply("contact")
+
+        # Record it, so a failed send still counts towards the limits
+        cur.execute(INSERT_QUERY, (sender_ip_address,))
 
     # Email the owner; a failure is already logged and answered inside send_email
     floofy_email_result = email_floofy(contact_request, sender_ip_address)
