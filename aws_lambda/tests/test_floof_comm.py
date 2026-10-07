@@ -4,7 +4,7 @@ import time
 import pytest
 
 import admin_links
-from conftest import admin_tokens, body_of, logged, make_event
+from conftest import LAMBDA_ROOT, admin_tokens, body_of, logged, make_event
 
 EVIL = '<a href="//evil.example">x</a>'
 
@@ -14,7 +14,7 @@ def commission_body(**overrides):
     body = {
         "name": "Sam",
         "email": "sam@example.com",
-        "commissionType": "portrait",
+        "commissionType": "chibi",
         "description": "A fox in a scarf",
         "referenceLinks": "https://ref.example/fox",
         "usageType": "personal",
@@ -37,7 +37,7 @@ def comm(load_lambda, cursor):
 
 def test_every_user_value_is_escaped_in_both_emails(comm, emails):
     # Arrange: put an injected link in every free-text field.
-    fields = ["name", "commissionType", "description", "referenceLinks", "usageType", "usageExplanation", "deadline", "additionalNotes"]
+    fields = ["name", "description", "referenceLinks", "usageExplanation", "deadline", "additionalNotes"]
     body = commission_body(**{field: EVIL for field in fields})
 
     # Act: submit the request.
@@ -102,7 +102,7 @@ def test_valid_request_is_recorded_with_every_field_and_the_ip(comm, cursor, con
     [(sql, params)] = cursor.queries("INSERT INTO commission_requests")
     assert "RETURNING id" in sql
     assert params == (
-        "203.0.113.7", "Sam", "sam@example.com", "portrait", "personal", "A fox in a scarf",
+        "203.0.113.7", "Sam", "sam@example.com", "chibi", "personal", "A fox in a scarf",
         "https://ref.example/fox", "Profile picture", 120.0, "December", "Thanks!",
     )
 
@@ -332,3 +332,77 @@ def test_non_numeric_price_replies_error(comm, emails):
 
     # Assert: a coded 500 rather than a crash.
     assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
+
+
+# --- Abuse protection: the customer address, fixed lists, defused copy, IP scope and the global cap -------------
+
+
+@pytest.mark.parametrize("email", ["a@b.com, victim@x.com", "Sam <sam@example.com>", "sam@localhost"])
+def test_anything_but_one_plain_customer_address_is_invalid(comm, cursor, emails, email):
+    # Act: submit with an address the confirmation could be abused through.
+    result = comm.lambda_handler(make_event("POST", commission_body(email=email)), None)
+
+    # Assert: refused before the database is touched, with nothing emailed.
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+    assert cursor.executed == []
+    assert emails.sent == []
+
+
+@pytest.mark.parametrize(
+    "field, value",
+    [("commissionType", "portrait"), ("usageType", "Click https://evil.example")],
+    ids=["unknown-type", "text-in-usage"],
+)
+def test_type_and_usage_must_come_from_the_fixed_lists(comm, cursor, emails, field, value):
+    # Act: submit a value the form never offers.
+    result = comm.lambda_handler(make_event("POST", commission_body(**{field: value})), None)
+
+    # Assert: refused, with nothing saved or emailed.
+    assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
+    assert cursor.executed == []
+
+
+def test_fixed_lists_match_the_sites_pricing_data(comm):
+    # Arrange: the ids the site's commission form offers, from its pricing data (plus the form's extra "unsure").
+    pricing = json.loads((LAMBDA_ROOT.parent / "src/assets/data/pricing.json").read_text())
+    types = {category["id"] for category in pricing["artworkCategories"]}
+    usages = {usage["id"] for usage in pricing["usageTypes"]} | {"unsure"}
+
+    # Assert: the Lambda accepts exactly what the form can send.
+    assert set(comm.COMMISSION_TYPES) == types
+    assert set(comm.USAGE_TYPES) == usages
+
+
+def test_links_are_defused_only_in_the_customers_copy(comm, emails):
+    # Act: submit with a link in the description.
+    comm.lambda_handler(make_event("POST", commission_body(description="See https://ref.example/fox")), None)
+
+    # Assert: the owner can click it; the customer's copy has nothing clickable.
+    owner, customer = emails.sent
+    assert "https://ref.example/fox" in owner["html"]
+    assert "hxxps[:]//ref[.]example/fox" in customer["html"]
+    assert "https://ref.example" not in customer["html"] + customer["text"]
+
+
+def test_rate_limit_counts_an_ipv6_visitors_whole_64(comm, cursor, emails):
+    # Act: submit from an IPv6 address.
+    comm.lambda_handler(make_event("POST", commission_body(), ip="2001:db8:1:2::9"), None)
+
+    # Assert: the per-visitor count covers the whole /64.
+    [(sql, params)] = [query for query in cursor.queries("FROM commission_requests") if "%s" in query[0]][:1]
+    assert "ip_address <<= %s::inet" in sql
+    assert params == ("2001:db8:1:2::/64", 24)
+
+
+def test_global_cap_refuses_with_busy(comm, cursor, emails, capsys):
+    # Arrange: this visitor has sent none today, but 10 requests came from everyone together.
+    cursor.on("INTERVAL '24 hours'", rows=[{"recent": 10}])
+
+    # Act: submit.
+    result = comm.lambda_handler(make_event("POST", commission_body()), None)
+
+    # Assert: refused as busy and logged, with nothing saved or emailed.
+    assert (result["statusCode"], body_of(result)) == (503, {"code": "busy"})
+    assert any(line["event"] == "global_cap_reached" for line in logged(capsys))
+    assert cursor.queries("INSERT") == []
+    assert emails.sent == []
