@@ -171,7 +171,17 @@ key costs $1 a month.
 
 Do these **before** uploading the PR 2 zips. Plan: `docs/review/2026-10-02-pr2-plan.md`.
 
-1. **Create the contact-message table.** In the Neon SQL Editor, run:
+1. **Check the IP columns are `inet`.** The new matching (an IPv6 visitor's whole /64) only works on Postgres's `inet`
+   type. In the Neon SQL Editor, run:
+
+   ```sql
+   SELECT table_name, data_type FROM information_schema.columns WHERE column_name = 'ip_address';
+   ```
+
+   Every row should say `inet`. If `reviews` or `blocked_ips` says `text` or `character varying`, stop and ask before
+   uploading: those tables need converting first.
+
+2. **Create the contact-message table.** In the Neon SQL Editor, run:
 
    ```sql
    CREATE TABLE contact_messages (
@@ -185,10 +195,10 @@ Do these **before** uploading the PR 2 zips. Plan: `docs/review/2026-10-02-pr2-p
    It holds only each message's IP and time (never what was typed), so the contact form can be limited to 3 messages
    per visitor per day and 20 per day overall.
 
-2. **Check Resend click tracking is off.** In the Resend dashboard, open **Domains → summerfloofy.com** and make sure
+3. **Check Resend click tracking is off.** In the Resend dashboard, open **Domains → summerfloofy.com** and make sure
    **Click tracking** is disabled. If it were on, Resend would rewrite the admin links and see their tokens.
 
-3. **Upload all four rebuilt zips** (step 5), then deploy the site so the new "busy" messages show.
+4. **Upload all four rebuilt zips** (step 5), then deploy the site so the new "busy" messages show.
 
 **What changed for visitors:** each form has a daily cap across everyone (reviews 20, commissions 10, contact 20).
 Once it's hit, the form says it's busy and to try again tomorrow, and the logs show `global_cap_reached`. An IPv6
@@ -233,6 +243,7 @@ UPDATE reviews SET deleted = FALSE WHERE id = 123;
 
 -- Unblock an IP. >>= also removes an IPv6 block on the /64 the address belongs to.
 DELETE FROM blocked_ips WHERE ip_address >>= '203.0.113.7';
+DELETE FROM blocked_ips WHERE ip_address >>= '2001:db8:1:2::9';
 
 -- See what's blocked and why (the reason names the review/request it came from).
 SELECT ip_address, reason, blocked_at FROM blocked_ips ORDER BY blocked_at DESC;

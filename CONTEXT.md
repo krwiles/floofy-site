@@ -183,5 +183,4 @@ the site shows, in any other zone, is derived from it. Each zone's view of it is
 
 ## IP scope
 
-The address a rate limit or block applies to: an IPv4 visitor's own address, or an IPv6 visitor's whole /64 network,
-since one IPv6 home or phone connection owns that network and moves around inside it.
+The address a rate limit or block applies to: an IPv4 visitor's own address, or an IPv6 visitor's whole /64 network.

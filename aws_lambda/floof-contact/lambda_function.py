@@ -12,9 +12,9 @@ from psycopg.rows import dict_row
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
-from ip_scope import ip_scope
-from limits import busy_reply, over_global_cap
 from email_sender import EMAIL_FROM, admin_recipients, email_content
+from ip_scope import canonical_ip, ip_scope
+from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
@@ -74,7 +74,8 @@ def main(event):
     contact_request = ContactRequest.from_body(body)
     
     # Validate the request
-    sender_ip_address = event["requestContext"]["http"]["sourceIp"]
+    # The visitor's IP in standard form, so the same visitor is always stored and matched the same way
+    sender_ip_address = canonical_ip(event["requestContext"]["http"]["sourceIp"])
     validation_response = validate_request(contact_request)
     if validation_response is not None:
         log("refused", reason="invalid", ip=sender_ip_address)

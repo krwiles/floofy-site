@@ -15,7 +15,7 @@ DOMAIN_DOT = re.compile(r"(?<=\w)\.(?=[A-Za-z]{2,})")
 
 
 def is_plain_address(email):
-    """True only for a single, ordinary email address of at most 100 characters."""
+    """True only for a single, ordinary email address no longer than MAX_ADDRESS_LENGTH."""
     return len(email) <= MAX_ADDRESS_LENGTH and PLAIN_ADDRESS.fullmatch(email) is not None
 
 

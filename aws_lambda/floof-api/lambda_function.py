@@ -10,9 +10,9 @@ from psycopg.rows import dict_row
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
-from ip_scope import ip_scope
-from limits import busy_reply, over_global_cap
 from email_sender import EMAIL_FROM, admin_recipients, email_content
+from ip_scope import canonical_ip, ip_scope
+from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply, response
 from request_log import log, log_request
 
@@ -69,7 +69,8 @@ def create_review(event):
     body = json.loads(event["body"])
     author = body.get("author", "").strip()
     comment = body.get("comment", "").strip()
-    ip_address = event["requestContext"]["http"]["sourceIp"]
+    # The visitor's IP in standard form, so the same visitor is always stored and matched the same way
+    ip_address = canonical_ip(event["requestContext"]["http"]["sourceIp"])
 
     # Refuse a blank field, or one longer than the form allows (exactly at the limit is fine)
     if not author or not comment or len(author) > MAX_AUTHOR_LENGTH or len(comment) > MAX_COMMENT_LENGTH:

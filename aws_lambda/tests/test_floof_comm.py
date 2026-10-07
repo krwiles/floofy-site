@@ -389,7 +389,7 @@ def test_rate_limit_counts_an_ipv6_visitors_whole_64(comm, cursor, emails):
     comm.lambda_handler(make_event("POST", commission_body(), ip="2001:db8:1:2::9"), None)
 
     # Assert: the per-visitor count covers the whole /64.
-    [(sql, params)] = [query for query in cursor.queries("FROM commission_requests") if "%s" in query[0]][:1]
+    [(sql, params)] = cursor.queries("INTERVAL '1 hour'")
     assert "ip_address <<= %s::inet" in sql
     assert params == ("2001:db8:1:2::/64", 24)
 

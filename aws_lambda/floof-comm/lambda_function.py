@@ -12,10 +12,10 @@ from psycopg.rows import dict_row
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
-from email_rules import defuse_links, is_plain_address
-from ip_scope import ip_scope
-from limits import busy_reply, over_global_cap
+from email_rules import MAX_ADDRESS_LENGTH, defuse_links, is_plain_address
 from email_sender import EMAIL_FROM, admin_recipients, email_content
+from ip_scope import canonical_ip, ip_scope
+from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
@@ -36,7 +36,7 @@ MAX_PRICE = 100_000_000
 # The longest each text field may be, matching the form and the table's columns (exactly at the limit is fine)
 MAX_LENGTHS = {
     "name": 50,
-    "email": 100,
+    "email": MAX_ADDRESS_LENGTH,
     "commission_type": 50,
     "description": 2000,
     "reference_links": 2000,
@@ -116,7 +116,8 @@ def main(event):
     commission_request = CommissionRequest.from_body(body)
     
     # Validate the request
-    sender_ip_address = event["requestContext"]["http"]["sourceIp"]
+    # The visitor's IP in standard form, so the same visitor is always stored and matched the same way
+    sender_ip_address = canonical_ip(event["requestContext"]["http"]["sourceIp"])
     validation_response = validate_request(commission_request)
     if validation_response is not None:
         log("refused", reason="invalid", ip=sender_ip_address)
@@ -172,22 +173,23 @@ def main(event):
     return reply(200, "ok")
 
 
-def escaped(commission_request: CommissionRequest) -> CommissionRequest:
-    """A copy with every text field HTML-escaped, so user input shows as text in an email instead of live markup."""
+def with_text_fields(commission_request: CommissionRequest, change) -> CommissionRequest:
+    """A copy with `change` applied to every text field (the price is left alone)."""
     return replace(commission_request, **{
-        field.name: html.escape(getattr(commission_request, field.name))
+        field.name: change(getattr(commission_request, field.name))
         for field in fields(commission_request)
         if isinstance(getattr(commission_request, field.name), str)
     })
+
+
+def escaped(commission_request: CommissionRequest) -> CommissionRequest:
+    """A copy with every text field HTML-escaped, so user input shows as text in an email instead of live markup."""
+    return with_text_fields(commission_request, html.escape)
 
 
 def defused(commission_request: CommissionRequest) -> CommissionRequest:
     """A copy with links in every text field made unclickable, for the customer's confirmation only."""
-    return replace(commission_request, **{
-        field.name: defuse_links(getattr(commission_request, field.name))
-        for field in fields(commission_request)
-        if isinstance(getattr(commission_request, field.name), str)
-    })
+    return with_text_fields(commission_request, defuse_links)
 
 
 def email_floofy(commission_request: CommissionRequest, request_id: int, sender_ip_address: str):

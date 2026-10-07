@@ -18,7 +18,7 @@ from psycopg.rows import dict_row
 from admin_links import verify
 from blocklist import block, is_blocked
 from db import connect_to_db
-from ip_scope import ip_scope
+from ip_scope import canonical_ip, ip_scope
 from request_log import log, log_request
 
 # Headers on every page, so tokens aren't cached, leaked via Referer, indexed or framed — see spec.md
@@ -211,9 +211,9 @@ def describe(action, target_id, target):
 
 def blocked_range(ip):
     """What a block on `ip` covers, escaped: "IP 203.0.113.7", or "IP range 2001:db8:1:2::/64" for IPv6."""
-    # ip_scope gives an IPv4 address unchanged, or an IPv6 address's /64 network (which contains a "/")
+    # ip_scope gives an IPv4 address unchanged, or an IPv6 address's /64 network
     scope = ip_scope(ip)
-    label = "IP range" if "/" in scope else "IP"
+    label = "IP" if ipaddress.ip_address(canonical_ip(ip)).version == 4 else "IP range"
     return f"{label} {html.escape(scope)}"
 
 
