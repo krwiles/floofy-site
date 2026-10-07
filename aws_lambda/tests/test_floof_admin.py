@@ -19,6 +19,7 @@ SECURITY_HEADERS = {
     "Referrer-Policy": "no-referrer",
     "X-Robots-Tag": "noindex",
     "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'",
+    "X-Content-Type-Options": "nosniff",
 }
 
 
@@ -188,7 +189,7 @@ def test_post_block_review_ip_looks_up_the_ip_and_records_the_source(admin, curs
     assert cursor.queries("FROM reviews")[0][1] == (7,)
     [(sql, params)] = cursor.queries("INSERT INTO blocked_ips")
     assert "ON CONFLICT (ip_address) DO NOTHING" in sql
-    assert params == (IP, "admin email: review #7")
+    assert params == (str(IP), "admin email: review #7")
 
 
 def test_post_block_commission_ip_records_the_request_as_the_source(admin, cursor):
@@ -198,7 +199,7 @@ def test_post_block_commission_ip_records_the_request_as_the_source(admin, curso
     # Assert: the IP came from commission_requests, and the reason names the request.
     assert cursor.queries("FROM commission_requests")[0][1] == (42,)
     [(_, params)] = cursor.queries("INSERT INTO blocked_ips")
-    assert params == (IP, "admin email: commission #42")
+    assert params == (str(IP), "admin email: commission #42")
 
 
 def test_post_block_on_an_already_blocked_ip_is_already_done(admin, cursor):
@@ -302,6 +303,25 @@ def test_an_unexpected_crash_shows_a_safe_error_page(admin, monkeypatch, capsys,
     assert token not in json.dumps(lines)
 
 
+def test_ipv6_block_says_it_covers_the_whole_64(admin, cursor):
+    # Arrange: the review came from an IPv6 address.
+    cursor.on("FROM reviews", rows=[review_row(ip_address=ipaddress.ip_address("2001:db8:1:2::9"))])
+
+    # Act: open its Block link.
+    result = get(admin, token_for("block-review-ip", 7))
+
+    # Assert: the page names the range the block will cover, not just the one address.
+    assert "IP range 2001:db8:1:2::/64 will no longer be able to" in result["body"]
+
+
+def test_ipv4_block_names_the_single_address(admin):
+    # Act: open a Block link for an IPv4 review.
+    result = get(admin, token_for("block-review-ip", 7))
+
+    # Assert: the page names exactly that address.
+    assert "IP 203.0.113.7 will no longer be able to" in result["body"]
+
+
 # --- Contact-message blocks (the link carries the IP, as a number) -------------------------------------------
 
 
@@ -331,15 +351,19 @@ def test_get_contact_block_for_an_already_blocked_ip_says_so(admin, cursor):
     assert "<form" not in page
 
 
-@pytest.mark.parametrize("ip", ["203.0.113.7", "2001:db8::1"])
-def test_post_contact_block_blocks_the_ip_from_the_link(admin, cursor, ip):
+@pytest.mark.parametrize(
+    "ip, blocked",
+    [("203.0.113.7", "203.0.113.7"), ("2001:db8::1", "2001:db8::/64")],
+    ids=["ipv4-exact", "ipv6-whole-64"],
+)
+def test_post_contact_block_blocks_the_ip_from_the_link(admin, cursor, ip, blocked):
     # Act: confirm the block.
     result = post(admin, contact_token(ip))
 
-    # Assert: that exact IP is blocked, with the contact message as the reason.
+    # Assert: the sender's scope is blocked (an IPv4 address, or an IPv6 /64), with the contact message as the reason.
     assert "Done" in result["body"]
     [(_, params)] = cursor.queries("INSERT INTO blocked_ips")
-    assert params == (ipaddress.ip_address(ip), "admin email: contact message")
+    assert params == (blocked, "admin email: contact message")
 
 
 def test_post_contact_block_on_an_already_blocked_ip_is_already_done(admin, cursor):

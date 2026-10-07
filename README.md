@@ -24,6 +24,10 @@ zip uploads.
   `.venv/bin/pytest`.
 - **Build an upload zip:** `./build.sh <lambda> <x86_64|arm64> <python-version>`, e.g.
   `./build.sh floof-api x86_64 3.14`. The zips land in `aws_lambda/dist/`.
+- **Upgrade a dependency:** edit the version in `<lambda>/requirements.in`, then regenerate its hashed lock file, from
+  `aws_lambda/`:
+  `uv pip compile <lambda>/requirements.in --generate-hashes --python-version 3.14 --python-platform x86_64-manylinux2014 --no-header -o <lambda>/requirements.txt`.
+  `build.sh` refuses any package whose hash doesn't match.
 - **Setup, deployment and environment variables:**
   [docs/features/review-moderation/aws-setup.md](docs/features/review-moderation/aws-setup.md).
 

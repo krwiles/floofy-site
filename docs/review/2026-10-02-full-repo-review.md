@@ -107,7 +107,7 @@ documented standard is broken. **Smell** is a judgement call. **Doc** means the 
 
 **Findings:**
 
-- **S1 — The commission form can be used to send email (Med).**
+- **S1 — The commission form can be used to send email (Med). Fixed by PR 2.**
   - **The hole:** the customer confirmation goes to the `email` field as typed, with no format check. It carries up to
     about 8k characters of the sender's own text, and URLs in it become clickable.
   - **The abuse:** anyone can send phishing or spam to any address from `no-reply@summerfloofy.com`, signed with your
@@ -117,14 +117,14 @@ documented standard is broken. **Smell** is a judgement call. **Doc** means the 
     - Accept only a single, strictly formatted email address (no `<>,;`).
     - Leave the visitor's own text out of the customer copy.
     - Add a global cap.
-- **S2 — The contact form has no rate limit (Med).**
+- **S2 — The contact form has no rate limit (Med). Fixed by PR 2 (reserved concurrency decided against).**
   - **The abuse:** a loop of POSTs sends one email per admin address each time. That can flood the inbox and use up
     the Resend quota, which also stops review and commission notifications.
   - **Status:** deferred in the moderation spec, but it's the cheapest way to abuse the site.
   - **Fix ideas:**
     - A per-IP limit plus a global cap.
     - AWS reserved concurrency on the three public Lambdas.
-- **S3 — Per-IP limits and blocks are easy to get around (Med).**
+- **S3 — Per-IP limits and blocks are easy to get around (Med). Fixed by PR 2 (IPv6 /64 and global caps; Turnstile deferred).**
   - **The bypass:** every check uses the exact address, and one IPv6 host can rotate through 2^64 of them.
   - **Made worse by:** reviews publish immediately and email the owner each time.
   - **Fix ideas:**
@@ -138,14 +138,14 @@ documented standard is broken. **Smell** is a judgement call. **Doc** means the 
   - **Fix:**
     - Add a CSP through a Cloudflare `_headers` file.
     - Only load Twitter's script where it's needed (it currently loads site-wide with no embeds — see `T5`).
-- **S5 — Python dependencies aren't pinned (Low).**
+- **S5 — Python dependencies aren't pinned (Low). Fixed by PR 2.**
   - **The risk:** `floof-comm`'s and `floof-contact`'s `requirements.txt` list `resend`, `requests` and `certifi` with
     no versions, so each build pulls whatever is newest into a Lambda that holds the API key and database
     credentials.
   - **Fix:** pin exact versions, ideally with `uv pip compile --generate-hashes`.
   - **Also:** `requests` and `certifi` aren't imported anywhere (`resend` pulls them in itself), so they can be dropped
     from the lists.
-- **S6 — Personal data in logs (Low).**
+- **S6 — Personal data in logs (Low). Hardening done by PR 2 (`nosniff`, a click-tracking check).**
   - **What's logged:** every request's IP and user agent, and the full error text (`repr(error)`) from Resend and
     psycopg failures, which might include email addresses.
   - **Fix:** set a CloudWatch retention period (already in `aws-setup.md` step 10).

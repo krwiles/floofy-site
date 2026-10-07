@@ -18,6 +18,7 @@ from psycopg.rows import dict_row
 from admin_links import verify
 from blocklist import block, is_blocked
 from db import connect_to_db
+from ip_scope import canonical_ip, ip_scope
 from request_log import log, log_request
 
 # Headers on every page, so tokens aren't cached, leaked via Referer, indexed or framed — see spec.md
@@ -27,6 +28,8 @@ SECURITY_HEADERS = {
     "Referrer-Policy": "no-referrer",
     "X-Robots-Tag": "noindex",
     "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'",
+    # Browsers must trust the declared Content-Type rather than guess one from the body
+    "X-Content-Type-Options": "nosniff",
 }
 
 # Both lookups return the same column names (who / text / ...), so the page code doesn't care which table it came from
@@ -195,13 +198,23 @@ def describe(action, target_id, target):
         return f"Delete review #{target_id}?", "The review will be hidden from the site."
 
     # Both blocks have the same effect; only the title names a different source
-    ip = html.escape(str(target["ip_address"]))
-    block_effect = f"IP {ip} will no longer be able to post reviews, send commission requests or send contact messages."
+    block_effect = (
+        f"{blocked_range(target['ip_address'])} will no longer be able to post reviews, send commission requests or "
+        "send contact messages."
+    )
     if action == "block-review-ip":
         return f"Block the reviewer behind review #{target_id}?", block_effect
     if action == "block-contact-ip":
         return "Block the sender of a contact message?", block_effect
     return f"Block the requester behind commission request #{target_id}?", block_effect
+
+
+def blocked_range(ip):
+    """What a block on `ip` covers, escaped: "IP 203.0.113.7", or "IP range 2001:db8:1:2::/64" for IPv6."""
+    # ip_scope gives an IPv4 address unchanged, or an IPv6 address's /64 network
+    scope = ip_scope(ip)
+    label = "IP" if ipaddress.ip_address(canonical_ip(ip)).version == 4 else "IP range"
+    return f"{label} {html.escape(scope)}"
 
 
 def target_details(action, target):

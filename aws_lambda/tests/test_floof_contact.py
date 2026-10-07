@@ -5,13 +5,16 @@ import time
 import pytest
 
 import admin_links
-from conftest import admin_tokens, body_of, make_event
+from conftest import admin_tokens, body_of, logged, make_event
 
 EVIL = '<a href="//evil.example">x</a>'
 
 
 @pytest.fixture
-def contact(load_lambda):
+def contact(load_lambda, cursor):
+    # Default database state: no recent messages, from this visitor or anyone.
+    cursor.on("FROM contact_messages", rows=[{"recent": 0}])
+
     # Load floof-contact with the fake database in place of Neon.
     return load_lambda("floof-contact")
 
@@ -195,4 +198,59 @@ def test_a_blank_field_replies_invalid(contact, cursor, emails, field):
     # Assert: refused before the database is touched, with nothing emailed.
     assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
     assert cursor.executed == []
+    assert emails.sent == []
+
+
+# --- Abuse protection: the per-visitor limit, the global cap and the record they count ---------------------------
+
+
+def test_each_message_is_recorded_with_only_its_ip_before_emailing(contact, cursor, connection, emails):
+    # Arrange: Resend is down, so only the record could survive.
+    emails.fail = True
+
+    # Act: send a message.
+    send(contact)
+
+    # Assert: the IP (and nothing the visitor typed) was saved and committed, so a failed send still counts.
+    [(sql, params)] = cursor.queries("INSERT INTO contact_messages")
+    assert params == ("203.0.113.7",)
+    assert connection.commits >= 1
+
+
+def test_fourth_message_in_24_hours_is_rate_limited(contact, cursor, emails):
+    # Arrange: this visitor already sent three today.
+    cursor.on("FROM contact_messages", rows=[{"recent": 3}])
+
+    # Act: send a fourth.
+    result = send(contact)
+
+    # Assert: refused with the rule, with nothing recorded or emailed.
+    assert (result["statusCode"], body_of(result)) == (429, {"code": "rate_limited", "limit": 3, "window_hours": 24})
+    assert cursor.queries("INSERT") == []
+    assert emails.sent == []
+
+
+def test_rate_limit_counts_an_ipv6_visitors_whole_64(contact, cursor, emails):
+    # Act: send from an IPv6 address.
+    contact.lambda_handler(
+        make_event("POST", {"name": "Robin", "email": "robin@example.com", "message": "Hi"}, ip="2001:db8:1:2::9"), None
+    )
+
+    # Assert: the per-visitor count covers the whole /64.
+    [(sql, params)] = cursor.queries("INTERVAL '1 hour'")
+    assert "ip_address <<= %s::inet" in sql
+    assert params == ("2001:db8:1:2::/64", 24)
+
+
+def test_global_cap_refuses_with_busy(contact, cursor, emails, capsys):
+    # Arrange: 20 messages in the last day, from everyone together.
+    cursor.on("INTERVAL '24 hours'", rows=[{"recent": 20}])
+
+    # Act: a new visitor sends a message.
+    result = send(contact)
+
+    # Assert: refused as busy and logged, with nothing recorded or emailed.
+    assert (result["statusCode"], body_of(result)) == (503, {"code": "busy"})
+    assert any(line["event"] == "global_cap_reached" for line in logged(capsys))
+    assert cursor.queries("INSERT") == []
     assert emails.sent == []

@@ -1,0 +1,2 @@
+# What floof-admin imports; requirements.txt is compiled from this with hashes (see the README).
+psycopg[binary]==3.3.4

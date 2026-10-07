@@ -478,6 +478,7 @@
       "invalid": "Please correct the errors in the form before sending.",
       "ok": "Thank you! Your message has been sent.",
       "rate_limited": "Message limit reached ({limit} per {window_hours} h). Please try again later.",
+      "busy": "We're getting a lot of messages right now. Please try again tomorrow.",
       "error": "Sorry, something went wrong sending your message. Please try again later."
     },
     "review": {
@@ -485,6 +486,7 @@
       "invalid": "Please correct the errors in the form before submitting.",
       "ok": "Thank you for your review!",
       "rate_limited": "Review limit reached ({limit} per {window_hours} h). Please try again later.",
+      "busy": "We're getting a lot of reviews right now. Please try again tomorrow.",
       "error": "Sorry, something went wrong submitting your review. Please try again later."
     },
     "commission": {
@@ -492,6 +494,7 @@
       "invalid": "Please correct the errors in the form before submitting.",
       "ok": "Thank you! Your commission request was submitted. You'll receive a confirmation email soon.",
       "rate_limited": "Request limit reached ({limit} per {window_hours} h). Please try again later.",
+      "busy": "We're getting a lot of requests right now. Please try again tomorrow.",
       "error": "Sorry, something went wrong submitting your request. Please try again later."
     }
   }

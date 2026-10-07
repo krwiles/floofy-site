@@ -108,6 +108,18 @@ describe('ApiService', () => {
     expect(caught).toEqual({ code: 'rate_limited', limit: 1, window_hours: 1 });
   });
 
+  it('passes the busy code through when a form has hit its daily cap', () => {
+    // Arrange: submit, capturing whatever error comes back.
+    let caught: unknown;
+    service.submitCommission({} as never).subscribe({ error: (err) => (caught = err) });
+
+    // Act: the Lambda refuses because everyone together used up today's requests.
+    httpMock.expectOne(API_URLS.commission).flush({ code: 'busy' }, { status: 503, statusText: 'Service Unavailable' });
+
+    // Assert: the page gets "busy", not the generic error, so it can say to come back tomorrow.
+    expect(caught).toEqual({ code: 'busy' });
+  });
+
   it.each([
     ['no body', null],
     ['a body without a code', { message: 'old-style prose' }],

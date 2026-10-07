@@ -12,7 +12,10 @@ from psycopg.rows import dict_row
 from admin_links import link
 from blocklist import is_blocked
 from db import connect_to_db
+from email_rules import MAX_ADDRESS_LENGTH, defuse_links, is_plain_address
 from email_sender import EMAIL_FROM, admin_recipients, email_content
+from ip_scope import canonical_ip, ip_scope
+from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
@@ -20,13 +23,20 @@ from request_log import log, log_request
 REQUESTS_PER_WINDOW = 2
 REQUEST_WINDOW_HOURS = 24
 
+# At most this many requests per rolling day from everyone together, then the form replies "busy"
+REQUESTS_PER_DAY = 10
+
+# The only commission types and usages the form offers (src/assets/data/pricing.json, plus the form's "unsure")
+COMMISSION_TYPES = ("chibi", "emote", "illustration")
+USAGE_TYPES = ("personal", "promotion", "distribution", "products", "unsure")
+
 # numeric(10, 2) in commission_requests holds prices below 100,000,000
 MAX_PRICE = 100_000_000
 
 # The longest each text field may be, matching the form and the table's columns (exactly at the limit is fine)
 MAX_LENGTHS = {
     "name": 50,
-    "email": 100,
+    "email": MAX_ADDRESS_LENGTH,
     "commission_type": 50,
     "description": 2000,
     "reference_links": 2000,
@@ -42,7 +52,7 @@ REQUIRED_FIELDS = ("name", "email", "commission_type", "description", "usage_typ
 RECENT_REQUESTS_QUERY = """
 SELECT COUNT(*) AS recent
 FROM commission_requests
-WHERE ip_address = %s
+WHERE ip_address <<= %s::inet
     AND created_at >= NOW() - %s * INTERVAL '1 hour'
 """
 
@@ -106,7 +116,8 @@ def main(event):
     commission_request = CommissionRequest.from_body(body)
     
     # Validate the request
-    sender_ip_address = event["requestContext"]["http"]["sourceIp"]
+    # The visitor's IP in standard form, so the same visitor is always stored and matched the same way
+    sender_ip_address = canonical_ip(event["requestContext"]["http"]["sourceIp"])
     validation_response = validate_request(commission_request)
     if validation_response is not None:
         log("refused", reason="invalid", ip=sender_ip_address)
@@ -121,11 +132,15 @@ def main(event):
             log("refused", reason="blocked", ip=sender_ip_address)
             return reply(403, "error")
 
-        # Refuse the IP once it has reached the limit within the window
-        cur.execute(RECENT_REQUESTS_QUERY, (sender_ip_address, REQUEST_WINDOW_HOURS))
+        # Refuse the visitor (their IPv4 address, or IPv6 /64) once they've reached the limit within the window
+        cur.execute(RECENT_REQUESTS_QUERY, (ip_scope(sender_ip_address), REQUEST_WINDOW_HOURS))
         if cur.fetchone()["recent"] >= REQUESTS_PER_WINDOW:
             log("refused", reason="rate_limited", ip=sender_ip_address)
             return reply(429, "rate_limited", limit=REQUESTS_PER_WINDOW, window_hours=REQUEST_WINDOW_HOURS)
+
+        # Refuse everyone once today's requests reach the global cap
+        if over_global_cap(cur, "commission_requests", REQUESTS_PER_DAY):
+            return busy_reply("commission")
 
         # Save the request; RETURNING id hands back the new row's id for the admin link
         cur.execute(INSERT_QUERY, (
@@ -158,13 +173,23 @@ def main(event):
     return reply(200, "ok")
 
 
-def escaped(commission_request: CommissionRequest) -> CommissionRequest:
-    """A copy with every text field HTML-escaped, so user input shows as text in an email instead of live markup."""
+def with_text_fields(commission_request: CommissionRequest, change) -> CommissionRequest:
+    """A copy with `change` applied to every text field (the price is left alone)."""
     return replace(commission_request, **{
-        field.name: html.escape(getattr(commission_request, field.name))
+        field.name: change(getattr(commission_request, field.name))
         for field in fields(commission_request)
         if isinstance(getattr(commission_request, field.name), str)
     })
+
+
+def escaped(commission_request: CommissionRequest) -> CommissionRequest:
+    """A copy with every text field HTML-escaped, so user input shows as text in an email instead of live markup."""
+    return with_text_fields(commission_request, html.escape)
+
+
+def defused(commission_request: CommissionRequest) -> CommissionRequest:
+    """A copy with links in every text field made unclickable, for the customer's confirmation only."""
+    return with_text_fields(commission_request, defuse_links)
 
 
 def email_floofy(commission_request: CommissionRequest, request_id: int, sender_ip_address: str):
@@ -204,9 +229,9 @@ def email_customer(commission_request: CommissionRequest, request_id: int):
     email_subject = "Commission Request Confirmation"
     to_email = commission_request.email
 
-    # Escape every user value before it goes into the HTML body
-    commission_request = escaped(commission_request)
-    
+    # Escape every user value, then break up any links, so this copy can't carry clickable phishing to a stranger
+    commission_request = defused(escaped(commission_request))
+
     email_body = f"""
         <h1>Thank you for your commission request!</h1>
         <p>Dear {commission_request.name},</p>
@@ -233,6 +258,14 @@ def validate_request(commission_request: CommissionRequest):
     for field in REQUIRED_FIELDS:
         if not getattr(commission_request, field):
             return reply(400, "invalid")
+
+    # Refuse an address that isn't exactly one plain address, so the confirmation can't be aimed at a list
+    if not is_plain_address(commission_request.email):
+        return reply(400, "invalid")
+
+    # Refuse a type or usage the form never offers, so those fields can't carry free text
+    if commission_request.commission_type not in COMMISSION_TYPES or commission_request.usage_type not in USAGE_TYPES:
+        return reply(400, "invalid")
 
     # Refuse any text longer than the form (and its column) allows
     for field, max_length in MAX_LENGTHS.items():

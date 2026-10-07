@@ -167,11 +167,48 @@ Neon's and Resend's free plans (Resend allows 100 emails a day). Two settings ma
 When AWS asks about encrypting environment variables, keep the default **AWS managed key**: a customer-managed KMS
 key costs $1 a month.
 
+## 11. Abuse protection (PR 2)
+
+Do these **before** uploading the PR 2 zips. Plan: `docs/review/2026-10-02-pr2-plan.md`.
+
+1. **Check the IP columns are `inet`.** The new matching (an IPv6 visitor's whole /64) only works on Postgres's `inet`
+   type. In the Neon SQL Editor, run:
+
+   ```sql
+   SELECT table_name, data_type FROM information_schema.columns WHERE column_name = 'ip_address';
+   ```
+
+   Every row should say `inet`. If `reviews` or `blocked_ips` says `text` or `character varying`, stop and ask before
+   uploading: those tables need converting first.
+
+2. **Create the contact-message table.** In the Neon SQL Editor, run:
+
+   ```sql
+   CREATE TABLE contact_messages (
+     id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+     created_at  timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     ip_address  inet        NOT NULL
+   );
+   CREATE INDEX idx_contact_messages_created ON contact_messages (created_at DESC);
+   ```
+
+   It holds only each message's IP and time (never what was typed), so the contact form can be limited to 3 messages
+   per visitor per day and 20 per day overall.
+
+3. **Check Resend click tracking is off.** In the Resend dashboard, open **Domains → summerfloofy.com** and make sure
+   **Click tracking** is disabled. If it were on, Resend would rewrite the admin links and see their tokens.
+
+4. **Upload all four rebuilt zips** (step 5), then deploy the site so the new "busy" messages show.
+
+**What changed for visitors:** each form has a daily cap across everyone (reviews 20, commissions 10, contact 20).
+Once it's hit, the form says it's busy and to try again tomorrow, and the logs show `global_cap_reached`. An IPv6
+visitor is counted and blocked by their whole /64 network, which is what one home or phone connection owns.
+
 ## Reading the logs
 
 Every Lambda writes one JSON line per request (method, path, IP and browser, never what the visitor typed), plus a line
 for each outcome: `review_saved`, `commission_saved`, `refused` (with `reason`: `invalid`, `blocked` or
-`rate_limited`), `owner_email_failed` / `email_failed`, and on `floof-admin`, `admin_invalid_link`,
+`rate_limited`), `global_cap_reached` (with `form`), `owner_email_failed` / `email_failed`, and on `floof-admin`, `admin_invalid_link`,
 `admin_confirm_shown` and `admin_action`. Admin tokens are never logged.
 
 To search them, open **CloudWatch → Logs Insights**, pick one or more `/aws/lambda/floof-*` log groups, and run, for
@@ -204,8 +241,9 @@ Run these in the Neon SQL Editor:
 -- Restore a deleted review.
 UPDATE reviews SET deleted = FALSE WHERE id = 123;
 
--- Unblock an IP.
-DELETE FROM blocked_ips WHERE ip_address = '203.0.113.7';
+-- Unblock an IP. >>= also removes an IPv6 block on the /64 the address belongs to.
+DELETE FROM blocked_ips WHERE ip_address >>= '203.0.113.7';
+DELETE FROM blocked_ips WHERE ip_address >>= '2001:db8:1:2::9';
 
 -- See what's blocked and why (the reason names the review/request it came from).
 SELECT ip_address, reason, blocked_at FROM blocked_ips ORDER BY blocked_at DESC;

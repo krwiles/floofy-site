@@ -139,6 +139,9 @@ def test_comm_logs_the_saved_request_and_an_email_failure(comm, emails, capsys):
 
 
 def test_contact_logs_blocked_and_sent_messages(load_lambda, cursor, emails, capsys):
+    # Arrange: no recent messages, from this visitor or anyone.
+    cursor.on("FROM contact_messages", rows=[{"recent": 0}])
+
     # Act: one message from an unblocked IP, then block it and try again.
     contact = load_lambda("floof-contact")
     body = {"name": "a", "email": "b", "message": "c"}
