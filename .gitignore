@@ -50,6 +50,7 @@ aws_lambda/**
 !aws_lambda/**/
 !aws_lambda/**/lambda_function.py
 !aws_lambda/**/requirements.txt
+!aws_lambda/**/requirements.in
 !aws_lambda/requirements-dev.txt
 !aws_lambda/pytest.ini
 !aws_lambda/build.sh

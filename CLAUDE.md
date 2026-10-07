@@ -13,6 +13,7 @@ Requires Node `^22.22.3 || ^24.15.0 || >=26.0.0` (the Angular CLI's own floor) â
 - Lambdas (`aws_lambda/`):
   - `.venv/bin/pytest`: the Lambda tests, with fakes and no network (see the README for the one-time venv setup).
   - `./build.sh <lambda> x86_64 3.14`: build an upload zip; the AWS runtime is Python 3.14 on x86_64.
+  - Dependencies: edit `<lambda>/requirements.in`, then recompile the hashed `requirements.txt` (command in the README).
 
 ## Conventions
 

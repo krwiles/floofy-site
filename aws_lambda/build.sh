@@ -36,7 +36,7 @@ trap 'rm -rf "$stage"' EXIT
 
 # Download Linux builds for the Lambda's Python, never this Mac's own builds (psycopg's binary differs per OS)
 uv pip install --quiet --target "$stage" --python-platform "$platform" \
-  --python-version "$python_version" --only-binary :all: -r "$name/requirements.txt"
+  --python-version "$python_version" --only-binary :all: --require-hashes -r "$name/requirements.txt"
 
 # Put the handler and the shared helpers side by side at the top of the zip, where Lambda imports from
 cp "$name/lambda_function.py" shared/*.py "$stage/"

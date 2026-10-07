@@ -1,0 +1,3 @@
+# What floof-contact imports; requirements.txt is compiled from this with hashes (see the README).
+psycopg[binary]==3.3.4
+resend==2.49.0
