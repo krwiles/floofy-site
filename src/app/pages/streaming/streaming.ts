@@ -1,12 +1,43 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Hero } from '../../shared/components/hero/hero';
 import { SectionDivider } from '../../shared/components/section-divider/section-divider';
 import { Section } from '../../shared/components/section/section';
+import { SectionHeader } from '../../shared/components/section-header/section-header';
+import { SocialLinks } from '../../shared/components/social-links/social-links';
+import { Card } from '../../shared/directives/card';
+import { TranslatePipe } from '../../shared/pipes/translate.pipe';
+import { I18nService } from '../../services/i18n.service';
+import { ScriptLoader } from '../../services/script-loader.service';
+import { StreamScheduleService } from '../../services/stream-schedule.service';
+
+// Twitch's embed script, the channel it plays, and the only sites Twitch lets it play on.
+const TWITCH_EMBED_SRC = 'https://embed.twitch.tv/embed/v1.js';
+const TWITCH_CHANNEL = 'summerfloofy';
+const TWITCH_PARENTS = ['localhost', '127.0.0.1', 'summerfloofy.com', 'www.summerfloofy.com'];
+
+// How long resizing must pause before the player is rebuilt, so one drag or rotation rebuilds it only once.
+const RESIZE_SETTLE_MS = 300;
+
+// The player's height: most of the window's height (its width is its card's).
+const PLAYER_HEIGHT_SHARE = 0.8;
+
+/** The part of Twitch's embed script this page uses: `window.Twitch`, once the script has loaded. */
+interface TwitchGlobal {
+  Embed: new (
+    elementId: string,
+    options: { width: number; height: number; channel: string; parent: string[] },
+  ) => unknown;
+}
+
+/** Twitch's global, or undefined until its script has loaded. */
+function twitch(): TwitchGlobal | undefined {
+  return (window as { Twitch?: TwitchGlobal }).Twitch;
+}
 
 @Component({
   selector: 'app-streaming',
-  imports: [Hero, SectionDivider, Section],
+  imports: [Hero, SectionDivider, Section, SectionHeader, SocialLinks, Card, TranslatePipe],
   templateUrl: './streaming.html',
   styleUrl: './streaming.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,80 +46,36 @@ import { Section } from '../../shared/components/section/section';
   },
 })
 export class Streaming implements AfterViewInit {
-  private document = inject(DOCUMENT);
+  private readonly document = inject(DOCUMENT);
+  private readonly i18n = inject(I18nService);
+  private readonly scriptLoader = inject(ScriptLoader);
+  private readonly schedule = inject(StreamScheduleService);
 
-  // The channel link, and the time zones the schedule is shown in (the visitor's own, the streamer's, and Japan's).
-  readonly twitchUrl = 'https://www.twitch.tv/summerfloofy';
-  readonly localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'local time';
-  readonly easternTimeZone = 'America/New_York';
-  readonly japanTimeZone = 'Asia/Tokyo';
+  // The schedule cards for the next stream, re-worded whenever the site's language changes.
+  readonly slots = computed(() => this.schedule.slots(this.i18n.locale()));
 
-  get streamScheduleSummary(): string {
-    // The weekly schedule line, e.g. "Saturdays at 11:00 AM EDT".
-    return `Saturdays at ${this.easternStreamTimeLabel}`;
+  // The width the current player was built at, and the pending rebuild after a resize.
+  private builtWidth: number | null = null;
+  private resizeTimer: ReturnType<typeof setTimeout> | undefined;
+
+  constructor() {
+    // Drop a pending rebuild if the visitor leaves the page mid-resize.
+    inject(DestroyRef).onDestroy(() => clearTimeout(this.resizeTimer));
   }
 
-  get easternStreamTimeLabel(): string {
-    // The Eastern start time, labelled EDT or EST depending on today's daylight saving.
-    return this.isEasternDaylightSavingTime() ? '11:00 AM EDT' : '11:00 AM EST';
-  }
-
-  get japanStreamTimeLabel(): string {
-    // The next stream's start, formatted in Japan time.
-    const streamInstant = this.getNextStreamInstant();
-    return `${new Intl.DateTimeFormat('en-US', {
-      timeZone: this.japanTimeZone,
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    }).format(streamInstant)} JST`;
-  }
-
-  get localStreamTime(): string {
-    // The next stream's start, as a full date and time in the visitor's own time zone.
-    const streamInstant = this.getNextStreamInstant();
-    return new Intl.DateTimeFormat(undefined, {
-      timeZone: this.localTimeZone,
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-      timeZoneName: 'short',
-    }).format(streamInstant);
-  }
-
-  get localStreamDescription(): string {
-    // Just the date of the next stream, in the visitor's own time zone.
-    const streamInstant = this.getNextStreamInstant();
-    const dateText = new Intl.DateTimeFormat(undefined, {
-      timeZone: this.localTimeZone,
-      weekday: 'long',
-      month: 'short',
-      day: 'numeric',
-    }).format(streamInstant);
-
-    return `${dateText}`;
-  }
-
-  ngAfterViewInit() {
-    // Twitch's embed script isn't loaded yet: add it, and build the player once it arrives.
-    if (!(window as any).Twitch) {
-      const script = this.document.createElement('script');
-      script.src = 'https://embed.twitch.tv/embed/v1.js';
-      script.onload = () => {
-        this.loadEmbed();
-      };
-      this.document.body.appendChild(script);
+  async ngAfterViewInit() {
+    // Load Twitch's script (once per visit); if it can't load, leave the player area empty.
+    try {
+      await this.scriptLoader.load(TWITCH_EMBED_SRC);
+    } catch {
       return;
     }
 
-    // Already loaded (e.g. returning to this page): build the player straight away.
+    // Build the player now that Twitch.Embed exists.
     this.loadEmbed();
   }
 
-  loadEmbed() {
+  loadEmbed(): void {
     // Nothing to do if the placeholder element isn't on the page.
     const embedHost = this.document.getElementById('twitch-embed');
     if (!embedHost) {
@@ -99,77 +86,39 @@ export class Streaming implements AfterViewInit {
     embedHost.innerHTML = '';
 
     // The script failed to load (or hasn't finished): leave the placeholder empty.
-    if (!(window as any).Twitch?.Embed) {
+    const Twitch = twitch();
+    if (!Twitch?.Embed) {
       return;
     }
 
-    // Build the player, sized to the window; Twitch only allows embedding on the listed domains.
-    return new (window as any).Twitch.Embed('twitch-embed', {
-      width: this.calculateWidth(),
+    // Build the player to fill its card, and remember the width it was built for.
+    this.builtWidth = this.calculateWidth();
+    new Twitch.Embed('twitch-embed', {
+      width: this.builtWidth,
       height: this.calculateHeight(),
-      channel: 'summerfloofy',
-      parent: [
-        'localhost',
-        '127.0.0.1',
-        'summerfloofy.com',
-        'www.summerfloofy.com',
-        'floofy-site.vercel.app',
-        'www.floofy.site',
-      ],
+      channel: TWITCH_CHANNEL,
+      parent: TWITCH_PARENTS,
     });
   }
 
   onWindowResize() {
-    // Rebuild the player at the new size once the embed script is available.
-    if ((window as any).Twitch?.Embed) {
-      this.loadEmbed();
-    }
+    // Twitch's player can't change size once built, so rebuild it once resizing has settled...
+    clearTimeout(this.resizeTimer);
+    this.resizeTimer = setTimeout(() => {
+      // ...but only for a new width (a phone's toolbar sliding away changes just the height), and only once built.
+      if (this.builtWidth !== null && this.calculateWidth() !== this.builtWidth) {
+        this.loadEmbed();
+      }
+    }, RESIZE_SETTLE_MS);
   }
 
-  calculateHeight() {
-    // 80% of the window's height.
-    return Math.round(window.innerHeight * 0.8);
+  private calculateHeight() {
+    // Most of the window's height.
+    return Math.round(window.innerHeight * PLAYER_HEIGHT_SHARE);
   }
 
-  calculateWidth() {
-    // The window's width, capped at 1280px.
-    return Math.min(window.innerWidth, 1280);
-  }
-
-  private getNextStreamInstant(): Date {
-    // Midnight UTC today, and the number of days until the next Saturday (a full week if today is Saturday).
-    const now = new Date();
-    const todayUtc = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-    const saturdayUtc = new Date(todayUtc);
-    const daysUntilSaturday = (6 - todayUtc.getUTCDay() + 7) % 7 || 7;
-    saturdayUtc.setUTCDate(todayUtc.getUTCDate() + daysUntilSaturday);
-
-    // If that Saturday's start has already passed, use the following one.
-    if (saturdayUtc.getTime() <= now.getTime()) {
-      saturdayUtc.setUTCDate(saturdayUtc.getUTCDate() + 7);
-    }
-
-    // 11:00 AM Eastern is 15:00 UTC in daylight saving time, 16:00 UTC otherwise.
-    const usesDst = this.isEasternDaylightSavingTime(saturdayUtc);
-    saturdayUtc.setUTCHours(usesDst ? 15 : 16, 0, 0, 0);
-
-    return saturdayUtc;
-  }
-
-  private isEasternDaylightSavingTime(date: Date = new Date()): boolean {
-    // Ask Intl for the Eastern offset on that date, e.g. "GMT-4".
-    const testTime = new Date(date);
-    const offsetFormatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: this.easternTimeZone,
-      timeZoneName: 'shortOffset',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-
-    // GMT-4 means daylight saving time; GMT-5 (the fallback) means standard time.
-    const offsetValue =
-      offsetFormatter.formatToParts(testTime).find((part) => part.type === 'timeZoneName')?.value ?? 'GMT-5';
-    return offsetValue.includes('-4') || offsetValue.includes('GMT-4');
+  private calculateWidth() {
+    // The card's inner width: Twitch's own <iframe> can't be sized by this page's (scoped) CSS, so it's sized here.
+    return this.document.getElementById('twitch-embed')?.clientWidth ?? 0;
   }
 }

@@ -175,3 +175,8 @@ percentage on top of the Artwork category's base price, except Personal, which a
 choice with no price of its own (it adds nothing either), so the code's `UsageTypeId` covers only the four priced
 types and the form uses `UsageTypeId | 'unsure'`. Previously called
 "commercial type" in places — that name is retired in favor of Usage type, the name a visitor actually sees.
+
+## Stream schedule
+
+The weekly stream slot: one weekday and start time, stored once in the stream's home time zone. Every day and time
+the site shows, in any other zone, is derived from it. Each zone's view of it is a **schedule card**.

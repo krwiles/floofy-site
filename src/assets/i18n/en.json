@@ -379,6 +379,19 @@
       "title": "STREAMING",
       "description": "Watch live streams and catch recent broadcasts directly from Twitch.",
       "tagline": "Twitch • Art Streams • Vtuber"
+    },
+    "schedule": {
+      "eyebrow": "Weekly schedule",
+      "title": "Floofy Standard Time",
+      "description": "One stream, same time every week. Here's when it starts around the world, and where you are.",
+      "your_time": "Your time",
+      "every": "Every {weekday}"
+    },
+    "live": {
+      "eyebrow": "Live channel",
+      "title": "Watch live",
+      "description": "Drawing, chatting, games and art updates with Floofy and the Tangerines. When the stream is offline, catch recent broadcasts right here.",
+      "channel_note": "Prefer the Twitch site? Follow the channel there~"
     }
   },
   "reviews": {

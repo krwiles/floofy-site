@@ -1,4 +1,4 @@
-<!-- Streaming Hero. Its strings are hardcoded English, not translated yet (left for Phase 7, per the owner). -->
+<!-- Streaming Hero -->
 <app-hero
   backgroundClass="bg-hero-streaming"
   backgroundPatternImage="assets/graphics/pattern-circles.svg"
@@ -9,65 +9,71 @@
   tone="dark"
   cardAlign="start"
   cardMaxWidthClass="max-w-3xl"
-  titleClass="text-[clamp(3.2rem,7vw,5.5rem)] leading-[0.9] font-black tracking-[0.02em] uppercase"
-  kicker="Live on Twitch"
-  description="SummerFloofy usually streams on Saturdays at 11:00 AM EST, with a cozy mix of drawing, chatting, games, and art updates."
+  [kicker]="'streaming.hero.kicker' | translate"
+  [description]="'streaming.hero.description' | translate"
+  [tagline]="'streaming.hero.tagline' | translate"
 >
-  <span heroTitle>Join the stream</span>
-  <div heroActions class="hero-reveal-copy mt-6 flex flex-wrap items-center gap-3">
-    <a [href]="twitchUrl" target="_blank" rel="noopener noreferrer" class="stream-cta stream-cta--primary">
-      Watch on Twitch
-    </a>
-    <a href="#schedule" class="stream-cta stream-cta--secondary">See schedule</a>
-  </div>
+  <span heroTitle>{{ 'streaming.hero.title' | translate }}</span>
 </app-hero>
 
 <app-section-divider />
 
-<section id="schedule" class="bg-section-light">
-  <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-    <div class="mb-10 text-center">
-      <p class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-light-body-subtle uppercase">Streaming schedule</p>
-      <h2 class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-light-heading">
-        Floofy Standard Time
-      </h2>
-    </div>
+<!-- Schedule Section -->
+<app-section tone="light" pattern="stars" [ariaLabel]="'streaming.schedule.title' | translate">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <!-- Section heading -->
+    <app-section-header
+      [eyebrow]="'streaming.schedule.eyebrow' | translate"
+      [title]="'streaming.schedule.title' | translate"
+      [description]="'streaming.schedule.description' | translate"
+      tone="light"
+    />
 
+    <!-- One card per time zone, the visitor's own last and featured -->
     <div class="grid gap-6 md:grid-cols-3">
-      <article class="stream-schedule-card">
-        <p class="stream-label">Eastern Time</p>
-        <h3 class="stream-time">{{ easternStreamTimeLabel }}</h3>
-        <p class="stream-detail">Saturdays</p>
-      </article>
-
-      <article class="stream-schedule-card">
-        <p class="stream-label">Japan Time</p>
-        <h3 class="stream-time">{{ japanStreamTimeLabel }}</h3>
-        <p class="stream-detail">Sunday morning</p>
-      </article>
-
-      <article class="stream-schedule-card stream-schedule-card--highlight">
-        <p class="stream-label">Your local time</p>
-        <h3 class="stream-time">{{ localStreamTime }}</h3>
-        <p class="stream-detail">{{ localStreamDescription }}</p>
-      </article>
+      @for (slot of slots(); track $index) {
+        <article appCard tone="light" [special]="slot.isLocal" class="px-5 py-7 text-center">
+          <p class="mb-3 text-xs font-bold tracking-[0.28em] text-on-light-body-subtle uppercase">
+            {{ slot.isLocal ? ('streaming.schedule.your_time' | translate) : slot.zoneName }}
+          </p>
+          <p class="text-3xl leading-tight font-black tracking-tight text-on-light-heading sm:text-4xl">
+            {{ slot.time }}
+          </p>
+          <p class="mt-3 text-on-light-body">
+            {{ 'streaming.schedule.every' | translate: { weekday: slot.weekday } }}
+          </p>
+        </article>
+      }
     </div>
   </div>
-</section>
+</app-section>
 
 <app-section-divider />
 
-<app-section tone="dark">
-  <div class="mx-auto max-w-7xl py-16">
-    <div class="mb-8 text-center">
-      <p class="mb-2 text-sm font-semibold tracking-[0.35em] text-on-dark-body-subtle uppercase">Live channel</p>
-      <h2 class="mb-4 text-4xl leading-tight font-black tracking-tight wrap-break-word text-on-dark-heading">
-        Watch live
-      </h2>
+<!-- Live Channel Section -->
+<app-section tone="dark" [ariaLabel]="'streaming.live.title' | translate">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <!-- Section heading -->
+    <app-section-header
+      [eyebrow]="'streaming.live.eyebrow' | translate"
+      [title]="'streaming.live.title' | translate"
+      [description]="'streaming.live.description' | translate"
+      tone="dark"
+    />
+
+    <!-- Twitch player; streaming.ts builds it inside #twitch-embed, and the card shadow clips it to its corners -->
+    <div appCard [noBackground]="true" tone="dark" class="overflow-hidden">
+      <div id="twitch-embed"></div>
     </div>
 
-    <div class="card-shadow mx-auto max-w-7xl overflow-hidden rounded-4xl border border-white/10 bg-white/5">
-      <div id="twitch-embed" #twitchEmbed></div>
+    <!-- Twitch Direct Link -->
+    <div appCard tone="dark" class="mx-auto mt-8 max-w-lg px-5 py-4 sm:px-6 sm:py-5">
+      <div class="flex items-center justify-between gap-2">
+        <p class="min-w-0 text-sm leading-6 font-semibold text-on-dark-body sm:text-base">
+          {{ 'streaming.live.channel_note' | translate }}
+        </p>
+        <app-social-links [ids]="['twitch']" variant="chip" class="shrink-0 text-on-dark-heading" />
+      </div>
     </div>
   </div>
 </app-section>

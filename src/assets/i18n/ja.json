@@ -362,6 +362,19 @@
       "title": "ライブ配信",
       "description": "Twitchからライブ配信や最新の放送をご覧ください。",
       "tagline": "Twitch • アート配信 • Vtuber"
+    },
+    "schedule": {
+      "eyebrow": "毎週の配信",
+      "title": "Floofy標準時",
+      "description": "配信は毎週同じ時間に始まります。世界各地とあなたの地域での開始時刻はこちらです。",
+      "your_time": "あなたの時間",
+      "every": "毎週{weekday}"
+    },
+    "live": {
+      "eyebrow": "ライブチャンネル",
+      "title": "ライブを見る",
+      "description": "お絵描き、雑談、ゲーム、アートの近況をFloofyとタンジェリンたちと一緒に。配信していないときは、最近の放送をここで見られます。",
+      "channel_note": "Twitchのサイトで見たい方は、チャンネルをフォローしてね〜"
     }
   },
   "reviews": {
