@@ -19,7 +19,9 @@ from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
 # 2 requests per visitor per 24 h (spec.md "floof-comm"), 10 a day from everyone; the reply carries the visitor rule
-COMMISSION_LIMITS = FormLimits(table="commission_requests", form="commission", per_visitor=2, window_hours=24, per_day=10)
+COMMISSION_LIMITS = FormLimits(
+    table="commission_requests", form="commission", per_visitor=2, window_hours=24, per_day=10
+)
 
 # The only commission types and usages the form offers (src/assets/data/pricing.json, plus the form's "unsure")
 COMMISSION_TYPES = ("chibi", "emote", "illustration")
