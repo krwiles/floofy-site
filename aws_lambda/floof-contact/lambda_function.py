@@ -12,6 +12,7 @@ from blocklist import is_blocked
 from dates import format_sgt
 from db import connect_to_db
 from email_sender import admin_recipients, send
+from form_input import invalid_fields
 from ip_scope import canonical_ip, ip_scope
 from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply
@@ -19,6 +20,9 @@ from request_log import log, log_request
 
 # The longest each field may be, matching the form (exactly at the limit is fine)
 MAX_LENGTHS = {"name": 50, "email": 50, "message": 2000}
+
+# Every field is required
+REQUIRED_FIELDS = tuple(MAX_LENGTHS)
 
 # At most this many messages per visitor per window, and per rolling day from everyone; the reply carries the former
 MESSAGES_PER_WINDOW = 3
@@ -62,23 +66,23 @@ def lambda_handler(event, context):
     
     # Only POST (the form) is accepted; anything else is refused
     if method == "POST":
-        return main(event)
+        return handle_post(event)
     
     return reply(405, "error")
 
 
-def main(event):
+def handle_post(event):
     # Read the JSON body into a ContactRequest, with its text trimmed
     body = json.loads(event["body"])
     contact_request = ContactRequest.from_body(body)
-    
-    # Validate the request
+
     # The visitor's IP in standard form, so the same visitor is always stored and matched the same way
     sender_ip_address = canonical_ip(event["requestContext"]["http"]["sourceIp"])
-    validation_response = validate_request(contact_request)
-    if validation_response is not None:
+
+    # Refuse input the form would never send
+    if invalid_fields(contact_request, MAX_LENGTHS, REQUIRED_FIELDS):
         log("refused", reason="invalid", ip=sender_ip_address)
-        return validation_response
+        return reply(400, "invalid")
 
     # Check the blocklist and limits, then record the message before any email is attempted
     # (leaving the `with` block commits the insert and closes the connection)
@@ -134,13 +138,3 @@ def email_floofy(contact_request: ContactRequest, sender_ip_address):
     
     # Send it to the admins; True if it went out
     return send(admin_recipients(), email_subject, email_body, to="owner")
-
-
-def validate_request(contact_request: ContactRequest):
-    # Every field is required: refuse one that is blank or longer than the form allows
-    for field, max_length in MAX_LENGTHS.items():
-        value = getattr(contact_request, field)
-        if not value or len(value) > max_length:
-            return reply(400, "invalid")
-
-    return None

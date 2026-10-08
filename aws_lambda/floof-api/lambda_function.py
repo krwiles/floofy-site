@@ -1,6 +1,7 @@
 import html
 import json
 import os
+from dataclasses import dataclass
 
 from psycopg.rows import dict_row
 
@@ -10,6 +11,7 @@ from blocklist import is_blocked
 from dates import format_sgt
 from db import connect_to_db
 from email_sender import admin_recipients, send
+from form_input import invalid_fields
 from ip_scope import canonical_ip, ip_scope
 from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply, response
@@ -23,8 +25,22 @@ REVIEW_WINDOW_HOURS = 1
 REVIEWS_PER_DAY = 20
 
 # The longest author and comment the form allows; the author column is varchar(50), the comment limit is the site's rule
-MAX_AUTHOR_LENGTH = 50
-MAX_COMMENT_LENGTH = 2000
+MAX_LENGTHS = {"author": 50, "comment": 2000}
+
+# Both fields are required
+REQUIRED_FIELDS = tuple(MAX_LENGTHS)
+
+
+# The review form's fields, as this Lambda works with them
+@dataclass(frozen=True)
+class ReviewRequest:
+    author: str
+    comment: str
+
+    # Build one from the JSON body, with text trimmed and anything missing left empty
+    @classmethod
+    def from_body(cls, body: dict) -> "ReviewRequest":
+        return cls(author=str(body.get("author", "")).strip(), comment=str(body.get("comment", "")).strip())
 
 
 @replies_on_unexpected_errors
@@ -37,7 +53,7 @@ def lambda_handler(event, context):
     if method == "GET":
         return get_reviews()
     elif method == "POST":
-        return create_review(event)
+        return handle_post(event)
     
     return reply(405, "error")
 
@@ -63,16 +79,17 @@ def get_reviews():
     return response(200, rows)
 
 
-def create_review(event):
-    # Read the review and the sender's IP, with surrounding spaces trimmed off the text
+def handle_post(event):
+    # Read the JSON body into a ReviewRequest, with its text trimmed
     body = json.loads(event["body"])
-    author = body.get("author", "").strip()
-    comment = body.get("comment", "").strip()
+    review = ReviewRequest.from_body(body)
+    author, comment = review.author, review.comment
+
     # The visitor's IP in standard form, so the same visitor is always stored and matched the same way
     ip_address = canonical_ip(event["requestContext"]["http"]["sourceIp"])
 
-    # Refuse a blank field, or one longer than the form allows (exactly at the limit is fine)
-    if not author or not comment or len(author) > MAX_AUTHOR_LENGTH or len(comment) > MAX_COMMENT_LENGTH:
+    # Refuse input the form would never send (a blank field, or one longer than the form allows)
+    if invalid_fields(review, MAX_LENGTHS, REQUIRED_FIELDS):
         log("refused", reason="invalid", ip=ip_address)
         return reply(400, "invalid")
 

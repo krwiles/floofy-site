@@ -13,6 +13,7 @@ from dates import format_sgt
 from db import connect_to_db
 from email_rules import MAX_ADDRESS_LENGTH, defuse_links, is_plain_address
 from email_sender import admin_recipients, send
+from form_input import invalid_fields
 from ip_scope import canonical_ip, ip_scope
 from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply
@@ -104,23 +105,23 @@ def lambda_handler(event, context):
     
     # Only POST (the form) is accepted; anything else is refused
     if method == "POST":
-        return main(event)
+        return handle_post(event)
     
     return reply(405, "error")
 
 
-def main(event):
+def handle_post(event):
     # Read the JSON body into a CommissionRequest, with its text trimmed
     body = json.loads(event["body"])
     commission_request = CommissionRequest.from_body(body)
-    
-    # Validate the request
+
     # The visitor's IP in standard form, so the same visitor is always stored and matched the same way
     sender_ip_address = canonical_ip(event["requestContext"]["http"]["sourceIp"])
-    validation_response = validate_request(commission_request)
-    if validation_response is not None:
+
+    # Refuse input the form would never send
+    if is_invalid(commission_request):
         log("refused", reason="invalid", ip=sender_ip_address)
-        return validation_response
+        return reply(400, "invalid")
 
     
     # Check the blocklist and rate limit, then record the request before any email is attempted
@@ -250,28 +251,20 @@ def email_customer(commission_request: CommissionRequest, request_id: int):
     return send([to_email], email_subject, email_body, reply_to=admin_recipients(), request_id=request_id, to="customer")
 
 
-def validate_request(commission_request: CommissionRequest):
-    # Refuse a required field left blank
-    for field in REQUIRED_FIELDS:
-        if not getattr(commission_request, field):
-            return reply(400, "invalid")
+def is_invalid(commission_request: CommissionRequest) -> bool:
+    """True if the request breaks any of the form's rules."""
+    # Blank required fields, or text longer than the form (and its column) allows
+    if invalid_fields(commission_request, MAX_LENGTHS, REQUIRED_FIELDS):
+        return True
 
-    # Refuse an address that isn't exactly one plain address, so the confirmation can't be aimed at a list
+    # An address that isn't exactly one plain address, so the confirmation can't be aimed at a list
     if not is_plain_address(commission_request.email):
-        return reply(400, "invalid")
+        return True
 
-    # Refuse a type or usage the form never offers, so those fields can't carry free text
+    # A type or usage the form never offers, so those fields can't carry free text
     if commission_request.commission_type not in COMMISSION_TYPES or commission_request.usage_type not in USAGE_TYPES:
-        return reply(400, "invalid")
-
-    # Refuse any text longer than the form (and its column) allows
-    for field, max_length in MAX_LENGTHS.items():
-        if len(getattr(commission_request, field)) > max_length:
-            return reply(400, "invalid")
+        return True
 
     # The price must be a real number the database column can store (a missing price arrives as -1)
     price = commission_request.estimated_price
-    if not math.isfinite(price) or price < 0 or price >= MAX_PRICE:
-        return reply(400, "invalid")
-
-    return None
+    return not math.isfinite(price) or price < 0 or price >= MAX_PRICE
