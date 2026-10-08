@@ -254,3 +254,15 @@ def test_global_cap_refuses_with_busy(contact, cursor, emails, capsys):
     assert any(line["event"] == "global_cap_reached" for line in logged(capsys))
     assert cursor.queries("INSERT") == []
     assert emails.sent == []
+
+
+def test_email_failure_is_logged_with_its_recipient(contact, emails, capsys):
+    # Arrange: Resend is down.
+    emails.fail = True
+
+    # Act: send a message.
+    send(contact)
+
+    # Assert: the shared email_failed event, saying the owner's email was the one that failed.
+    [failure] = [line for line in logged(capsys) if line["event"] == "email_failed"]
+    assert failure["to"] == "owner"

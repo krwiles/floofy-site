@@ -88,7 +88,7 @@ def test_email_failure_still_replies_ok(api, connection, emails, capsys):
     # Assert: the visitor still sees success, the review was committed, and the failure was logged for CloudWatch.
     assert result["statusCode"] == 200
     assert connection.commits >= 1
-    assert any(line["event"] == "owner_email_failed" and line["review_id"] == 7 for line in logged(capsys))
+    assert any(line["event"] == "email_failed" and line["review_id"] == 7 for line in logged(capsys))
 
 
 def test_missing_admin_config_still_replies_ok(api, emails, monkeypatch):

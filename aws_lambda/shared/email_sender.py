@@ -6,6 +6,8 @@ import re
 
 import resend
 
+from request_log import log
+
 # The verified sending address on the site's own domain; a constant, not a setting — see spec.md "Configuration".
 EMAIL_FROM = "FloofySite <no-reply@summerfloofy.com>"
 
@@ -18,6 +20,29 @@ def admin_recipients():
     """Every admin address in FLOOFY_EMAIL, which may hold several separated by commas."""
     # Split on commas and drop blanks, so spaces or a trailing comma in the console don't matter
     return [address.strip() for address in os.environ["FLOOFY_EMAIL"].split(",") if address.strip()]
+
+
+def send(recipients, subject, body_html, *, reply_to=None, **context):
+    """Send one email from the site's address; True if Resend accepted it. A failure is logged as `email_failed` with
+    `context` (e.g. request_id=42, to="customer") and returns False, so callers decide what the visitor is told."""
+    # Authenticate with Resend using this Lambda's API key
+    resend.api_key = os.environ.get("RESEND_API_KEY")
+
+    # The email: the site's own sender, the recipients, a full HTML document and its plain-text copy
+    params = {"from": EMAIL_FROM, "to": recipients, "subject": subject, **email_content(body_html)}
+
+    # Let the recipient reply to a real person rather than the no-reply sender
+    if reply_to:
+        params["reply_to"] = reply_to
+
+    # Send it; resend.Emails.send raises on any API or network error
+    try:
+        resend.Emails.send(params)
+    except Exception as error:
+        # Record what failed and for which saved row, never the recipients' addresses
+        log("email_failed", **context, error=repr(error))
+        return False
+    return True
 
 
 def email_content(body_html):

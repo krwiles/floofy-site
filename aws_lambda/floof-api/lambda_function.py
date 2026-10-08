@@ -2,7 +2,6 @@ import html
 import json
 import os
 
-import resend
 from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
@@ -10,7 +9,7 @@ from admin_links import link
 from blocklist import is_blocked
 from dates import format_sgt
 from db import connect_to_db
-from email_sender import EMAIL_FROM, admin_recipients, email_content
+from email_sender import admin_recipients, send
 from ip_scope import canonical_ip, ip_scope
 from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply, response
@@ -125,18 +124,23 @@ def create_review(event):
         try:
             cur.execute(earlier_reviews_query, (ip_address, review_id))
             earlier_reviews = cur.fetchone()["earlier"]
-            email_floofy(review_id, saved["created_at"], author, comment, ip_address, earlier_reviews)
-            log("owner_email_sent", review_id=review_id)
+            sent = email_floofy(review_id, saved["created_at"], author, comment, ip_address, earlier_reviews)
         except Exception as error:
-            # Recorded so the owner can see which saved review went un-emailed, and why
-            log("owner_email_failed", review_id=review_id, error=repr(error))
+            # Building the email failed (e.g. a missing setting): logged like a failed send
+            log("email_failed", review_id=review_id, to="owner", error=repr(error))
+            sent = False
+
+        # A failed send was already logged inside send(); record the success too
+        if sent:
+            log("owner_email_sent", review_id=review_id)
 
     # Saved: 200, the success status every form Lambda uses
     return reply(200, "ok")
 
 
 def email_floofy(review_id, created_at, author, comment, ip_address, earlier_reviews):
-    """Email the owner a new review, with signed Delete / Block links. Raises if anything goes wrong."""
+    """Email the owner a new review, with signed Delete / Block links. Returns whether it was sent; raises only if the
+    email can't be built (e.g. a missing setting)."""
     # Signed links that act only after a confirm step — see spec.md "Security model"
     admin_url = os.environ["ADMIN_URL"]
     delete_url = link(admin_url, "delete-review", review_id)
@@ -157,13 +161,6 @@ def email_floofy(review_id, created_at, author, comment, ip_address, earlier_rev
         <p><a href="{html.escape(block_url)}">Block this reviewer</a></p>
     """
 
-    # Send it; resend.Emails.send raises on any API or network error
-    resend.api_key = os.environ["RESEND_API_KEY"]
-    resend.Emails.send({
-        "from": EMAIL_FROM,
-        "to": admin_recipients(),
-        # Subjects are plain text (never rendered as HTML), so they use the raw value
-        "subject": f"New review #{review_id} from {author}",
-        # Full HTML document plus a plain-text copy
-        **email_content(email_body),
-    })
+    # Send it (subjects are plain text, never rendered as HTML, so they use the raw value); True if it went out
+    subject = f"New review #{review_id} from {author}"
+    return send(admin_recipients(), subject, email_body, review_id=review_id, to="owner")

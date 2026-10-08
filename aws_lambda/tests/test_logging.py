@@ -85,9 +85,9 @@ def test_api_logs_an_email_failure(api, emails, capsys):
     # Act: post a review.
     api.lambda_handler(review_event(), None)
 
-    # Assert: the failure names the review and the error.
-    [failure] = [line for line in logged(capsys) if line["event"] == "owner_email_failed"]
-    assert failure["review_id"] == 7
+    # Assert: the same email_failed event every Lambda uses, naming the review, the recipient and the error.
+    [failure] = [line for line in logged(capsys) if line["event"] == "email_failed"]
+    assert (failure["review_id"], failure["to"]) == (7, "owner")
     assert "resend is down" in failure["error"]
 
 

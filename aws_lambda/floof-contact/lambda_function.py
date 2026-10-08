@@ -2,7 +2,6 @@ import html
 import ipaddress
 import json
 import os
-import resend
 from datetime import datetime, timezone
 from dataclasses import dataclass
 from psycopg.rows import dict_row
@@ -12,7 +11,7 @@ from admin_links import link
 from blocklist import is_blocked
 from dates import format_sgt
 from db import connect_to_db
-from email_sender import EMAIL_FROM, admin_recipients, email_content
+from email_sender import admin_recipients, send
 from ip_scope import canonical_ip, ip_scope
 from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply
@@ -102,10 +101,9 @@ def main(event):
         # Record it, so a failed send still counts towards the limits
         cur.execute(INSERT_QUERY, (sender_ip_address,))
 
-    # Email the owner; a failure is already logged and answered inside send_email
-    floofy_email_result = email_floofy(contact_request, sender_ip_address)
-    if floofy_email_result["statusCode"] >= 400:
-        return floofy_email_result
+    # Email the owner; a failure (already logged inside send) means the visitor gets an error
+    if not email_floofy(contact_request, sender_ip_address):
+        return reply(500, "error")
     log("contact_email_sent", ip=sender_ip_address)
     
     # Sent: tell the visitor it worked
@@ -134,8 +132,8 @@ def email_floofy(contact_request: ContactRequest, sender_ip_address):
         <p><a href="{html.escape(block_url)}">Block this sender</a></p>
     """
     
-    # Send the email to Floofy
-    return send_email(admin_recipients(), email_subject, email_body)
+    # Send it to the admins; True if it went out
+    return send(admin_recipients(), email_subject, email_body, to="owner")
 
 
 def validate_request(contact_request: ContactRequest):
@@ -146,31 +144,3 @@ def validate_request(contact_request: ContactRequest):
             return reply(400, "invalid")
 
     return None
-
-
-def send_email(to_emails, subject, body):
-    
-    # Authenticate with Resend using this Lambda's API key
-    resend.api_key = os.environ.get("RESEND_API_KEY")
-    
-    try:
-        # The email to send, from the site's own address
-        email_params: resend.Emails.SendParams = {
-            "from": EMAIL_FROM,
-            "to": to_emails,
-            "subject": subject,
-            # Full HTML document plus a plain-text copy
-            **email_content(body),
-        }
-
-        # Send it; resend.Emails.send raises on any API or network error
-        resend.Emails.send(email_params)
-    
-    except Exception as e:
-        # Record the real error; the visitor only sees the generic message below
-        log("email_failed", error=repr(e))
-        # A generic reply: naming the recipients would reveal the admins' addresses to the visitor
-        return reply(500, "error")
-            
-    # Sent: callers only check the status code
-    return reply(200, "ok")

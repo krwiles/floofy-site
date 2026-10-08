@@ -2,7 +2,6 @@ import html
 import json
 import math
 import os
-import resend
 from datetime import datetime, timezone
 from dataclasses import dataclass, fields, replace
 from psycopg.rows import dict_row
@@ -13,7 +12,7 @@ from blocklist import is_blocked
 from dates import format_sgt
 from db import connect_to_db
 from email_rules import MAX_ADDRESS_LENGTH, defuse_links, is_plain_address
-from email_sender import EMAIL_FROM, admin_recipients, email_content
+from email_sender import admin_recipients, send
 from ip_scope import canonical_ip, ip_scope
 from limits import busy_reply, over_global_cap
 from replies import replies_on_unexpected_errors, reply
@@ -160,13 +159,11 @@ def main(event):
     log("commission_saved", request_id=request_id, ip=sender_ip_address)
 
     # Email the owner; if that fails the visitor gets an error, since nobody would know the request arrived
-    floofy_email_result = email_floofy(commission_request, request_id, sender_ip_address)
-    if floofy_email_result["statusCode"] >= 400:
-        return floofy_email_result
+    if not email_floofy(commission_request, request_id, sender_ip_address):
+        return reply(500, "error")
 
     # Then the customer's confirmation; its failure is only logged, because the owner already has the request
-    customer_email_result = email_customer(commission_request, request_id)
-    if customer_email_result["statusCode"] < 400:
+    if email_customer(commission_request, request_id):
         log("commission_emails_sent", request_id=request_id)
 
     # The owner has the request: tell the visitor it worked
@@ -220,8 +217,8 @@ def email_floofy(commission_request: CommissionRequest, request_id: int, sender_
         <p><a href="{html.escape(block_url)}">Block this requester</a></p>
     """
     
-    # Send the email to Floofy
-    return send_email(admin_recipients(), email_subject, email_body, request_id, recipient="owner")
+    # Send it to the admins; True if it went out
+    return send(admin_recipients(), email_subject, email_body, request_id=request_id, to="owner")
 
 
 def email_customer(commission_request: CommissionRequest, request_id: int):
@@ -249,8 +246,8 @@ def email_customer(commission_request: CommissionRequest, request_id: int):
         </ul>
     """
     
-    # Send the email to the customer
-    return send_email([to_email], email_subject, email_body, request_id, recipient="customer", reply_to=admin_recipients())
+    # Send it to the customer, replying to the admins; True if it went out
+    return send([to_email], email_subject, email_body, reply_to=admin_recipients(), request_id=request_id, to="customer")
 
 
 def validate_request(commission_request: CommissionRequest):
@@ -278,36 +275,3 @@ def validate_request(commission_request: CommissionRequest):
         return reply(400, "invalid")
 
     return None
-
-
-def send_email(to_emails, subject, body, request_id, recipient, reply_to=None):
-    """Send one email; on failure, log it against the saved request and return a generic error reply.
-    `recipient` ("owner" or "customer") labels the log line without recording anyone's address."""
-    # Authenticate with Resend using this Lambda's API key
-    resend.api_key = os.environ.get("RESEND_API_KEY")
-
-    try:
-        # The email to send, from the site's own address
-        email_params: resend.Emails.SendParams = {
-            "from": EMAIL_FROM,
-            "to": to_emails,
-            "subject": subject,
-            # Full HTML document plus a plain-text copy
-            **email_content(body),
-        }
-
-        # Let the recipient reply to a real person rather than the no-reply sender
-        if reply_to:
-            email_params["reply_to"] = reply_to
-
-        # Send it; resend.Emails.send raises on any API or network error
-        resend.Emails.send(email_params)
-
-    except Exception as e:
-        # Record the real error and which saved request it belongs to; the visitor only sees the generic reply below
-        log("email_failed", request_id=request_id, to=recipient, error=repr(e))
-        # A generic reply: naming the recipients would reveal the admins' addresses to the visitor
-        return reply(500, "error")
-
-    # Sent: callers only check the status code
-    return reply(200, "ok")
