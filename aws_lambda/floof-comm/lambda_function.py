@@ -8,23 +8,18 @@ from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import link
-from blocklist import is_blocked
 from dates import format_sgt
 from db import connect_to_db
 from email_rules import MAX_ADDRESS_LENGTH, defuse_links, is_plain_address
 from email_sender import admin_recipients, send
 from form_input import invalid_fields
-from ip_scope import canonical_ip, ip_scope
-from limits import busy_reply, over_global_cap
+from ip_scope import canonical_ip
+from limits import FormLimits, check_visitor
 from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
-# More than this many requests from one IP per window are refused -- see spec.md "floof-comm"; the reply carries both
-REQUESTS_PER_WINDOW = 2
-REQUEST_WINDOW_HOURS = 24
-
-# At most this many requests per rolling day from everyone together, then the form replies "busy"
-REQUESTS_PER_DAY = 10
+# 2 requests per visitor per 24 h (spec.md "floof-comm"), 10 a day from everyone; the reply carries the visitor rule
+COMMISSION_LIMITS = FormLimits(table="commission_requests", form="commission", per_visitor=2, window_hours=24, per_day=10)
 
 # The only commission types and usages the form offers (src/assets/data/pricing.json, plus the form's "unsure")
 COMMISSION_TYPES = ("chibi", "emote", "illustration")
@@ -48,13 +43,6 @@ MAX_LENGTHS = {
 
 # The fields the form requires; the rest may be left empty
 REQUIRED_FIELDS = ("name", "email", "commission_type", "description", "usage_type", "usage_explanation")
-
-RECENT_REQUESTS_QUERY = """
-SELECT COUNT(*) AS recent
-FROM commission_requests
-WHERE ip_address <<= %s::inet
-    AND created_at >= NOW() - %s * INTERVAL '1 hour'
-"""
 
 INSERT_QUERY = """
 INSERT INTO commission_requests (
@@ -127,20 +115,10 @@ def handle_post(event):
     # Check the blocklist and rate limit, then record the request before any email is attempted
     # (leaving the `with` block commits the insert and closes the connection)
     with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
-        # Refuse blocked IPs with the same vague reply the other endpoints give
-        if is_blocked(cur, sender_ip_address):
-            log("refused", reason="blocked", ip=sender_ip_address)
-            return reply(403, "error")
-
-        # Refuse the visitor (their IPv4 address, or IPv6 /64) once they've reached the limit within the window
-        cur.execute(RECENT_REQUESTS_QUERY, (ip_scope(sender_ip_address), REQUEST_WINDOW_HOURS))
-        if cur.fetchone()["recent"] >= REQUESTS_PER_WINDOW:
-            log("refused", reason="rate_limited", ip=sender_ip_address)
-            return reply(429, "rate_limited", limit=REQUESTS_PER_WINDOW, window_hours=REQUEST_WINDOW_HOURS)
-
-        # Refuse everyone once today's requests reach the global cap
-        if over_global_cap(cur, "commission_requests", REQUESTS_PER_DAY):
-            return busy_reply("commission")
+        # Refuse a blocked, over-limit or capped visitor (check_visitor logs why and builds the reply)
+        refusal = check_visitor(cur, COMMISSION_LIMITS, sender_ip_address)
+        if refusal:
+            return refusal
 
         # Save the request; RETURNING id hands back the new row's id for the admin link
         cur.execute(INSERT_QUERY, (

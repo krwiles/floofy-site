@@ -7,22 +7,17 @@ from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import link
-from blocklist import is_blocked
 from dates import format_sgt
 from db import connect_to_db
 from email_sender import admin_recipients, send
 from form_input import invalid_fields
-from ip_scope import canonical_ip, ip_scope
-from limits import busy_reply, over_global_cap
+from ip_scope import canonical_ip
+from limits import FormLimits, check_visitor
 from replies import replies_on_unexpected_errors, reply, response
 from request_log import log, log_request
 
-# At most this many reviews per IP per window; the reply carries both, so the site never hard-codes them
-REVIEWS_PER_WINDOW = 1
-REVIEW_WINDOW_HOURS = 1
-
-# At most this many reviews per rolling day from everyone together, then the form replies "busy"
-REVIEWS_PER_DAY = 20
+# 1 review per visitor per hour, and 20 per rolling day from everyone; the reply carries the per-visitor rule
+REVIEW_LIMITS = FormLimits(table="reviews", form="review", per_visitor=1, window_hours=1, per_day=20)
 
 # The longest author and comment the form allows; the author column is varchar(50), the comment limit is the site's rule
 MAX_LENGTHS = {"author": 50, "comment": 2000}
@@ -93,13 +88,7 @@ def handle_post(event):
         log("refused", reason="invalid", ip=ip_address)
         return reply(400, "invalid")
 
-    # The SQL for the rate-limit count, the insert and the owner email's earlier-reviews count
-    rate_limit_query = """
-    SELECT COUNT(*)
-    FROM reviews
-    WHERE ip_address <<= %s::inet
-        AND created_at >= NOW() - %s * INTERVAL '1 hour'
-    """
+    # The SQL for the insert and the owner email's earlier-reviews count
     insert_query = """
     INSERT INTO reviews (author, comment, ip_address)
     VALUES (%s, %s, %s)
@@ -114,21 +103,10 @@ def handle_post(event):
 
     # One connection for the checks, the insert and the notification; leaving the `with` block closes it
     with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
-        # Check if the IP address is blocked (the same shared check every endpoint uses)
-        if is_blocked(cur, ip_address):
-            log("refused", reason="blocked", ip=ip_address)
-            return reply(403, "error")
-
-        # Refuse the visitor (their IPv4 address, or IPv6 /64) once they've reached the limit within the window
-        cur.execute(rate_limit_query, (ip_scope(ip_address), REVIEW_WINDOW_HOURS))
-        result = cur.fetchone()
-        if result and result["count"] >= REVIEWS_PER_WINDOW:
-            log("refused", reason="rate_limited", ip=ip_address)
-            return reply(429, "rate_limited", limit=REVIEWS_PER_WINDOW, window_hours=REVIEW_WINDOW_HOURS)
-
-        # Refuse everyone once today's reviews reach the global cap
-        if over_global_cap(cur, "reviews", REVIEWS_PER_DAY):
-            return busy_reply("review")
+        # Refuse a blocked, over-limit or capped visitor (check_visitor logs why and builds the reply)
+        refusal = check_visitor(cur, REVIEW_LIMITS, ip_address)
+        if refusal:
+            return refusal
 
         # Insert the review and commit straight away; RETURNING hands back its new id (for the admin links) and time
         cur.execute(insert_query, (author, comment, ip_address))

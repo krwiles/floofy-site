@@ -46,7 +46,7 @@ def test_every_lambda_logs_every_request_even_refused_ones(load_lambda, capsys, 
 @pytest.fixture
 def api(load_lambda, cursor):
     # Not blocked, no review this hour, and the insert returns review #7.
-    cursor.on("INTERVAL '1 hour'", rows=[{"count": 0}])
+    cursor.on("INTERVAL '1 hour'", rows=[{"recent": 0}])
     cursor.on("INSERT INTO reviews", rows=[{"id": 7, "created_at": datetime.now(timezone.utc)}])
     cursor.on("AS earlier", rows=[{"earlier": 0}])
     return load_lambda("floof-api")

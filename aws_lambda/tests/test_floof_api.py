@@ -12,7 +12,7 @@ from conftest import admin_tokens, body_of, logged, make_event
 @pytest.fixture
 def api(load_lambda, cursor):
     # Default database state: not blocked, no review this hour, new review #7 saved at 04:00 UTC, and 3 earlier reviews.
-    cursor.on("INTERVAL '1 hour'", rows=[{"count": 0}])
+    cursor.on("INTERVAL '1 hour'", rows=[{"recent": 0}])
     cursor.on("INSERT INTO reviews", rows=[{"id": 7, "created_at": datetime(2026, 9, 30, 4, 0, tzinfo=timezone.utc)}])
     cursor.on("AS earlier", rows=[{"earlier": 3}])
     return load_lambda("floof-api")
@@ -116,7 +116,7 @@ def test_blocked_ip_gets_no_review_and_no_email(api, cursor, emails):
 
 def test_rate_limited_review_sends_no_email(api, cursor, emails):
     # Arrange: this IP already posted within the hour.
-    cursor.on("INTERVAL '1 hour'", rows=[{"count": 1}])
+    cursor.on("INTERVAL '1 hour'", rows=[{"recent": 1}])
 
     # Act and assert: the existing 429, with nothing inserted or emailed.
     assert post_review(api)["statusCode"] == 429
@@ -206,7 +206,7 @@ def test_blank_review_replies_invalid(api, cursor, emails, author, comment):
 
 def test_rate_limited_review_replies_with_the_rule(api, cursor, emails):
     # Arrange: already posted within the hour.
-    cursor.on("INTERVAL '1 hour'", rows=[{"count": 1}])
+    cursor.on("INTERVAL '1 hour'", rows=[{"recent": 1}])
 
     # Act and assert: 429 carrying the limit, so the site never hard-codes it.
     result = post_review(api)
