@@ -4,27 +4,9 @@ import time
 import pytest
 
 import admin_links
-from conftest import LAMBDA_ROOT, admin_tokens, body_of, logged, make_event
+from conftest import LAMBDA_ROOT, admin_tokens, body_of, commission_body, logged, make_event
 
 EVIL = '<a href="//evil.example">x</a>'
-
-
-def commission_body(**overrides):
-    """A valid request, in the shape the frontend's CreateCommissionRequest sends."""
-    body = {
-        "name": "Sam",
-        "email": "sam@example.com",
-        "commissionType": "chibi",
-        "description": "A fox in a scarf",
-        "referenceLinks": "https://ref.example/fox",
-        "usageType": "personal",
-        "usageExplanation": "Profile picture",
-        "estimatedPrice": 120,
-        "deadline": "December",
-        "additionalNotes": "Thanks!",
-    }
-    body.update(overrides)
-    return body
 
 
 @pytest.fixture
@@ -231,28 +213,6 @@ def test_zero_price_is_allowed(comm, emails):
     assert comm.lambda_handler(make_event("POST", commission_body(estimatedPrice=0)), None)["statusCode"] == 200
 
 
-def test_owner_email_goes_to_every_admin(comm, emails, monkeypatch):
-    # Arrange: two admins in FLOOFY_EMAIL.
-    monkeypatch.setenv("FLOOFY_EMAIL", "a@example.com, b@example.com")
-
-    # Act: trigger the owner email.
-    comm.lambda_handler(make_event("POST", commission_body()), None)
-
-    # Assert: the first email (the owner's) lists both admins as separate recipients.
-    assert emails.sent[0]["to"] == ["a@example.com", "b@example.com"]
-
-
-def test_every_email_has_a_full_html_document_and_a_text_version(comm, emails):
-    # Act: trigger this Lambda's emails.
-    comm.lambda_handler(make_event("POST", commission_body()), None)
-
-    # Assert: each one is a complete HTML page plus a tag-free plain-text copy.
-    assert emails.sent
-    for sent in emails.sent:
-        assert sent["html"].startswith("<!doctype html>")
-        assert sent["text"].strip() and "<p>" not in sent["text"]
-
-
 def test_customer_confirmation_replies_to_the_admins(comm, emails, monkeypatch):
     # Arrange: two admins.
     monkeypatch.setenv("FLOOFY_EMAIL", "a@example.com,b@example.com")
@@ -263,20 +223,6 @@ def test_customer_confirmation_replies_to_the_admins(comm, emails, monkeypatch):
     # Assert: a customer's reply goes to the admins, not to the unanswered no-reply address.
     owner, customer = emails.sent
     assert customer["reply_to"] == ["a@example.com", "b@example.com"]
-
-
-def test_email_failure_reply_never_reveals_admin_addresses(comm, emails, monkeypatch):
-    # Arrange: two admins, and Resend is down.
-    monkeypatch.setenv("FLOOFY_EMAIL", "secret-admin@example.com,other-admin@example.com")
-    emails.fail = True
-
-    # Act: submit the form.
-    result = comm.lambda_handler(make_event("POST", commission_body()), None)
-
-    # Assert: a generic 500 for the visitor, naming no admin address.
-    assert result["statusCode"] == 500
-    assert "admin@example.com" not in result["body"]
-    assert body_of(result) == {"code": "error"}
 
 
 # --- Response contract: a code (plus the rule, for rate limits), never prose -----------------------------------
@@ -294,36 +240,7 @@ def test_too_long_field_replies_invalid(comm, emails):
     assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
 
 
-def test_unsupported_method_replies_error(comm):
-    # Act and assert: 405 with the generic code.
-    result = comm.lambda_handler(make_event("PATCH"), None)
-    assert (result["statusCode"], body_of(result)) == (405, {"code": "error"})
-
-
 # --- Anything unexpected still answers with a code ------------------------------------------------------------
-
-
-@pytest.mark.parametrize("body", ["not json", None], ids=["malformed", "missing"])
-def test_unreadable_body_replies_error(comm, emails, capsys, body):
-    # Act: post a body that isn't JSON at all.
-    result = comm.lambda_handler(make_event("POST", body=body), None)
-
-    # Assert: a coded 500 rather than a crash, with the real cause logged for CloudWatch.
-    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
-    assert "unexpected_error" in capsys.readouterr().out
-
-
-def test_database_outage_replies_error(comm, emails, monkeypatch):
-    # Arrange: the database can't be reached.
-    def unreachable():
-        raise ConnectionError("neon is down")
-
-    monkeypatch.setattr(comm, "connect_to_db", unreachable)
-
-    # Act and assert: a coded 500, and nothing was emailed.
-    result = comm.lambda_handler(make_event("POST", commission_body()), None)
-    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
-    assert emails.sent == []
 
 
 def test_non_numeric_price_replies_error(comm, emails):

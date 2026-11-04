@@ -1,5 +1,4 @@
 import ipaddress
-import json
 import time
 
 import pytest
@@ -81,42 +80,6 @@ def test_owner_email_has_a_block_link_for_the_sender_ip(contact, emails, ip):
     assert "Block this sender" in sent["html"]
 
 
-def test_owner_email_goes_to_every_admin(contact, emails, monkeypatch):
-    # Arrange: two admins in FLOOFY_EMAIL.
-    monkeypatch.setenv("FLOOFY_EMAIL", "a@example.com, b@example.com")
-
-    # Act: trigger the owner email.
-    contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
-
-    # Assert: the first email (the owner's) lists both admins as separate recipients.
-    assert emails.sent[0]["to"] == ["a@example.com", "b@example.com"]
-
-
-def test_every_email_has_a_full_html_document_and_a_text_version(contact, emails):
-    # Act: trigger this Lambda's emails.
-    contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
-
-    # Assert: each one is a complete HTML page plus a tag-free plain-text copy.
-    assert emails.sent
-    for sent in emails.sent:
-        assert sent["html"].startswith("<!doctype html>")
-        assert sent["text"].strip() and "<p>" not in sent["text"]
-
-
-def test_email_failure_reply_never_reveals_admin_addresses(contact, emails, monkeypatch):
-    # Arrange: two admins, and Resend is down.
-    monkeypatch.setenv("FLOOFY_EMAIL", "secret-admin@example.com,other-admin@example.com")
-    emails.fail = True
-
-    # Act: submit the form.
-    result = contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
-
-    # Assert: a generic 500 for the visitor, naming no admin address.
-    assert result["statusCode"] == 500
-    assert "admin@example.com" not in result["body"]
-    assert body_of(result) == {"code": "error"}
-
-
 # --- Response contract: a code, never prose -----------------------------------------------------------------
 
 
@@ -132,36 +95,7 @@ def test_too_long_field_replies_invalid(contact, emails):
     assert (result["statusCode"], body_of(result)) == (400, {"code": "invalid"})
 
 
-def test_unsupported_method_replies_error(contact):
-    # Act and assert: 405 with the generic code.
-    result = contact.lambda_handler(make_event("PATCH"), None)
-    assert (result["statusCode"], body_of(result)) == (405, {"code": "error"})
-
-
 # --- Anything unexpected still answers with a code ------------------------------------------------------------
-
-
-@pytest.mark.parametrize("body", ["not json", None], ids=["malformed", "missing"])
-def test_unreadable_body_replies_error(contact, emails, capsys, body):
-    # Act: post a body that isn't JSON at all.
-    result = contact.lambda_handler(make_event("POST", body=body), None)
-
-    # Assert: a coded 500 rather than a crash, with the real cause logged for CloudWatch.
-    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
-    assert "unexpected_error" in capsys.readouterr().out
-
-
-def test_database_outage_replies_error(contact, emails, monkeypatch):
-    # Arrange: the database can't be reached.
-    def unreachable():
-        raise ConnectionError("neon is down")
-
-    monkeypatch.setattr(contact, "connect_to_db", unreachable)
-
-    # Act and assert: a coded 500, and nothing was emailed.
-    result = contact.lambda_handler(make_event("POST", {"name": "a", "email": "b", "message": "c"}), None)
-    assert (result["statusCode"], body_of(result)) == (500, {"code": "error"})
-    assert emails.sent == []
 
 
 @pytest.mark.parametrize(

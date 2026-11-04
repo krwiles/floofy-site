@@ -7,8 +7,7 @@ import pytest
 
 import admin_links
 import request_log
-from conftest import logged, make_event
-from test_floof_comm import commission_body
+from conftest import commission_body, logged, make_event
 
 
 def test_log_prints_one_json_line_with_the_event_name(capsys):
