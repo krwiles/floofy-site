@@ -60,6 +60,11 @@ class AdminAction:
     # How the block reason names its source, e.g. "review #7"
     source: str
 
+    @property
+    def link_carries_ip(self):
+        """True for contact messages: nothing is stored, so the link's target is the sender's IP itself."""
+        return self.query is None
+
 
 # One entry per action admin_links can sign, so adding or changing an action is one edit
 ACTIONS = {
@@ -197,11 +202,11 @@ def perform_action(token, ip):
 def load_target(cur, action, target_id):
     """The review or commission request the action applies to, or None if it doesn't exist."""
     # Contact messages aren't stored: the link itself carries the sender's IP, as a number
-    query = ACTIONS[action].query
-    if query is None:
+    if ACTIONS[action].link_carries_ip:
         return {"ip_address": ipaddress.ip_address(target_id), "deleted": False}
 
     # Otherwise read the row the link names, from the action's own table
+    query = ACTIONS[action].query
     cur.execute(query, (target_id,))
     return cur.fetchone()
 
@@ -223,7 +228,7 @@ def source_label(action, target_id):
 
 def describe(action, target_id, target):
     """The page title and a sentence saying exactly what Confirm will do."""
-    # Each action has its own title
+    # The title names the review or request the link points at (contact blocks have no number)
     title = ACTIONS[action].title.format(id=target_id)
 
     # Deleting only hides the one review
@@ -254,7 +259,7 @@ def escaped_ip(ip):
 def target_details(action, target):
     """The escaped who / when / what of the target; blocks show a snippet, deletes show the full review."""
     # A contact block has only the IP to show
-    if ACTIONS[action].query is None:
+    if ACTIONS[action].link_carries_ip:
         return f"<p><strong>IP:</strong> {escaped_ip(target['ip_address'])}</p>"
 
     # Deletes show the whole review so the owner can judge it; blocks just need enough to recognise it

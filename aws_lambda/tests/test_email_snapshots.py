@@ -49,6 +49,7 @@ def fixed_clock(monkeypatch):
 
 def freeze_lambda(module, monkeypatch):
     """A freshly loaded Lambda imports datetime after the fixture ran, so freeze its own copy too."""
+    # Swap the Lambda's datetime for the frozen one, if it uses datetime at all
     if getattr(module, "datetime", None) is datetime:
         monkeypatch.setattr(module, "datetime", FixedDatetime)
     return module
@@ -71,6 +72,7 @@ def matches_snapshot(name, value):
 
 def captured(result, emails):
     """The parts of a run that reach people: the reply, plus every email's envelope and both bodies."""
+    # Each email's sender, recipients, subject, reply-to and both bodies (missing ones as None)
     keys = ("from", "to", "subject", "reply_to", "html", "text")
     return {"reply": result, "emails": [{key: sent.get(key) for key in keys} for sent in emails.sent]}
 

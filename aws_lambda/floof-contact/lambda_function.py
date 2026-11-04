@@ -11,7 +11,7 @@ from admin_links import link
 from dates import format_sgt
 from db import connect_to_db
 from email_sender import admin_recipients, send
-from form_input import invalid_fields
+from form_input import invalid_fields, text_field
 from ip_scope import canonical_ip
 from limits import FormLimits, check_visitor
 from replies import replies_on_unexpected_errors, reply
@@ -41,9 +41,9 @@ class ContactRequest:
     @classmethod
     def from_body(cls, body: dict) -> "ContactRequest":
         return cls(
-            name=str(body.get("name", "")).strip(),
-            email=str(body.get("email", "")).strip(),
-            message=str(body.get("message", "")).strip(),
+            name=text_field(body, "name"),
+            email=text_field(body, "email"),
+            message=text_field(body, "message"),
         )
 
 

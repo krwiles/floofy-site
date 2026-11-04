@@ -10,7 +10,7 @@ from admin_links import link
 from dates import format_sgt
 from db import connect_to_db
 from email_sender import admin_recipients, send
-from form_input import invalid_fields
+from form_input import invalid_fields, text_field
 from ip_scope import canonical_ip
 from limits import FormLimits, check_visitor
 from replies import replies_on_unexpected_errors, reply, response
@@ -35,7 +35,7 @@ class ReviewRequest:
     # Build one from the JSON body, with text trimmed and anything missing left empty
     @classmethod
     def from_body(cls, body: dict) -> "ReviewRequest":
-        return cls(author=str(body.get("author", "")).strip(), comment=str(body.get("comment", "")).strip())
+        return cls(author=text_field(body, "author"), comment=text_field(body, "comment"))
 
 
 @replies_on_unexpected_errors
@@ -78,7 +78,6 @@ def handle_post(event):
     # Read the JSON body into a ReviewRequest, with its text trimmed
     body = json.loads(event["body"])
     review = ReviewRequest.from_body(body)
-    author, comment = review.author, review.comment
 
     # The visitor's IP in standard form, so the same visitor is always stored and matched the same way
     ip_address = canonical_ip(event["requestContext"]["http"]["sourceIp"])
@@ -109,7 +108,7 @@ def handle_post(event):
             return refusal
 
         # Insert the review and commit straight away; RETURNING hands back its new id (for the admin links) and time
-        cur.execute(insert_query, (author, comment, ip_address))
+        cur.execute(insert_query, (review.author, review.comment, ip_address))
         saved = cur.fetchone()
         review_id = saved["id"]
         conn.commit()
@@ -119,7 +118,7 @@ def handle_post(event):
         try:
             cur.execute(earlier_reviews_query, (ip_address, review_id))
             earlier_reviews = cur.fetchone()["earlier"]
-            sent = email_floofy(review_id, saved["created_at"], author, comment, ip_address, earlier_reviews)
+            sent = email_floofy(review_id, saved["created_at"], review, ip_address, earlier_reviews)
         except Exception as error:
             # Building the email failed (e.g. a missing setting): logged like a failed send
             log("email_failed", review_id=review_id, to="owner", error=repr(error))
@@ -133,7 +132,7 @@ def handle_post(event):
     return reply(200, "ok")
 
 
-def email_floofy(review_id, created_at, author, comment, ip_address, earlier_reviews):
+def email_floofy(review_id, created_at, review, ip_address, earlier_reviews):
     """Email the owner a new review, with signed Delete / Block links. Returns whether it was sent; raises only if the
     email can't be built (e.g. a missing setting)."""
     # Signed links that act only after a confirm step — see spec.md "Security model"
@@ -142,8 +141,8 @@ def email_floofy(review_id, created_at, author, comment, ip_address, earlier_rev
     block_url = link(admin_url, "block-review-ip", review_id)
 
     # Escape every user value so it shows as text in the email instead of live markup
-    safe_author = html.escape(author)
-    safe_comment = html.escape(comment)
+    safe_author = html.escape(review.author)
+    safe_comment = html.escape(review.comment)
 
     email_body = f"""
         <h1>New review #{review_id}</h1>
@@ -157,5 +156,5 @@ def email_floofy(review_id, created_at, author, comment, ip_address, earlier_rev
     """
 
     # Send it (subjects are plain text, never rendered as HTML, so they use the raw value); True if it went out
-    subject = f"New review #{review_id} from {author}"
+    subject = f"New review #{review_id} from {review.author}"
     return send(admin_recipients(), subject, email_body, review_id=review_id, to="owner")

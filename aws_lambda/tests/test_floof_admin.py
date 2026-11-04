@@ -372,3 +372,9 @@ def test_post_contact_block_on_an_already_blocked_ip_is_already_done(admin, curs
 
     # Act and assert: nothing changed.
     assert "already done" in post(admin, contact_token())["body"].lower()
+
+
+def test_every_signable_action_has_an_admin_page(admin):
+    # Assert: the actions admin_links can sign and the actions floof-admin can show are the same set, so a new action
+    # can't be signed without a page (or the other way round).
+    assert set(admin.ACTIONS) == set(admin_links.ACTIONS)

@@ -10,3 +10,9 @@ def invalid_fields(request, max_lengths, required):
 
     # Refuse any text longer than the form allows
     return any(len(getattr(request, field)) > limit for field, limit in max_lengths.items())
+
+
+def text_field(body, key):
+    """One field of a form's JSON body as trimmed text; missing or null counts as empty (never the text "None")."""
+    value = body.get(key)
+    return "" if value is None else str(value).strip()

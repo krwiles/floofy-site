@@ -1,5 +1,6 @@
 """Whether a visitor may submit a form: not blocked, under their own limit, and under the form's daily cap across
-everyone (so a crowd of IPs can't drain the email quota). See docs/review/2026-10-02-pr2-plan.md and the PR 4 plan."""
+everyone (so a crowd of IPs can't drain the email quota).
+See docs/review/2026-10-02-pr2-plan.md and docs/review/2026-10-02-pr4-plan.md."""
 
 from dataclasses import dataclass
 
@@ -61,15 +62,19 @@ def busy_reply(form):
 class FormLimits:
     """One form's limits: its table, its name in logs, the per-visitor rule and the daily cap across everyone."""
 
+    # The table the form saves into, counted for both limits
     table: str
+    # The form's name in the global_cap_reached log
     form: str
+    # At most this many submissions per visitor within window_hours (the reply carries both)
     per_visitor: int
     window_hours: int
+    # At most this many per rolling day from everyone together
     per_day: int
 
-    # Only the fixed tables, so a table name can never come from input
+    # Only tables with both fixed queries, so a table name can never come from input
     def __post_init__(self):
-        if self.table not in VISITOR_COUNT_QUERIES:
+        if self.table not in VISITOR_COUNT_QUERIES or self.table not in GLOBAL_CAP_QUERIES:
             raise ValueError(f"no limit queries for table {self.table!r}")
 
 

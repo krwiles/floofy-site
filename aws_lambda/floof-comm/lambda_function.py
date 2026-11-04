@@ -12,7 +12,7 @@ from dates import format_sgt
 from db import connect_to_db
 from email_rules import MAX_ADDRESS_LENGTH, defuse_links, is_plain_address
 from email_sender import admin_recipients, send
-from form_input import invalid_fields
+from form_input import invalid_fields, text_field
 from ip_scope import canonical_ip
 from limits import FormLimits, check_visitor
 from replies import replies_on_unexpected_errors, reply
@@ -74,16 +74,16 @@ class CommissionRequest:
     @classmethod
     def from_body(cls, body: dict) -> "CommissionRequest":
         return cls(
-            name=str(body.get("name", "")).strip(),
-            email=str(body.get("email", "")).strip(),
-            commission_type=str(body.get("commissionType", "")).strip(),
-            description=str(body.get("description", "")).strip(),
-            reference_links=str(body.get("referenceLinks", "")).strip(),
-            usage_type=str(body.get("usageType", "")).strip(),
-            usage_explanation=str(body.get("usageExplanation", "")).strip(),
+            name=text_field(body, "name"),
+            email=text_field(body, "email"),
+            commission_type=text_field(body, "commissionType"),
+            description=text_field(body, "description"),
+            reference_links=text_field(body, "referenceLinks"),
+            usage_type=text_field(body, "usageType"),
+            usage_explanation=text_field(body, "usageExplanation"),
             estimated_price=round(float(body.get("estimatedPrice", -1.0)), 2),
-            deadline=str(body.get("deadline", "")).strip(),
-            additional_notes=str(body.get("additionalNotes", "")).strip(),
+            deadline=text_field(body, "deadline"),
+            additional_notes=text_field(body, "additionalNotes"),
         )
 
 
