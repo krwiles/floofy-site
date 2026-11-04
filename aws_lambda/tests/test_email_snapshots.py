@@ -137,8 +137,12 @@ def test_contact_snapshot(load_lambda, cursor, emails, monkeypatch):
 @pytest.fixture
 def admin(load_lambda, cursor, monkeypatch):
     # Review #7 and commission #42 exist, from an IPv4 and an IPv6 address; nothing is blocked or deleted yet.
-    review = {"who": "Robin <b>", "text": "Lovely & kind", "created_at": FIXED_NOW, "ip_address": ipaddress.ip_address("203.0.113.7"), "deleted": False}
-    commission = {"who": "Sam", "text": "A fox in a scarf " * 20, "created_at": FIXED_NOW, "ip_address": ipaddress.ip_address("2001:db8:1:2::9"), "deleted": False}
+    ipv4, ipv6 = ipaddress.ip_address("203.0.113.7"), ipaddress.ip_address("2001:db8:1:2::9")
+    review = {
+        "who": "Robin <b>", "text": "Lovely & kind", "created_at": FIXED_NOW, "ip_address": ipv4, "deleted": False
+    }
+    long_text = "A fox in a scarf " * 20
+    commission = {"who": "Sam", "text": long_text, "created_at": FIXED_NOW, "ip_address": ipv6, "deleted": False}
     cursor.on("FROM reviews", rows=[review])
     cursor.on("FROM commission_requests", rows=[commission])
     cursor.on("INSERT INTO blocked_ips", rowcount=1)

@@ -228,7 +228,9 @@ def email_customer(commission_request: CommissionRequest, request_id: int):
     """
     
     # Send it to the customer, replying to the admins; True if it went out
-    return send([to_email], email_subject, email_body, reply_to=admin_recipients(), request_id=request_id, to="customer")
+    return send(
+        [to_email], email_subject, email_body, reply_to=admin_recipients(), request_id=request_id, to="customer"
+    )
 
 
 def is_invalid(commission_request: CommissionRequest) -> bool:
