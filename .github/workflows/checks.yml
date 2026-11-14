@@ -1,0 +1,55 @@
+name: Checks
+
+# Every PR must pass these before merging; they guard the batch branch that subagents' work is merged into.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      # Full history, so the format and comment checks can diff against the PR's base branch.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Only the files this PR changes: some older files predate the Prettier setup.
+      - name: Prettier (changed files)
+        run: |
+          git diff --name-only --diff-filter=ACM "origin/${{ github.base_ref || 'main' }}...HEAD" \
+            | xargs --no-run-if-empty npx prettier --check --ignore-unknown
+
+      - name: Comment length (changed files)
+        run: python3 scripts/check_comment_length.py --since "origin/${{ github.base_ref || 'main' }}"
+
+      - run: npm run build
+
+      - run: npx ng test --watch=false
+
+  lambdas:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: aws_lambda
+    steps:
+      - uses: actions/checkout@v4
+
+      # The AWS runtime is Python 3.14.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - run: pip install -r requirements-dev.txt
+
+      - run: pytest
