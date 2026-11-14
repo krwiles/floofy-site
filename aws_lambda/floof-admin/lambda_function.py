@@ -9,14 +9,15 @@ import functools
 import html
 import ipaddress
 import time
+from dataclasses import dataclass
 from urllib.parse import parse_qs
-from zoneinfo import ZoneInfo
 
 from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import verify
 from blocklist import block, is_blocked
+from dates import format_sgt
 from db import connect_to_db
 from ip_scope import canonical_ip, ip_scope
 from request_log import log, log_request
@@ -45,8 +46,44 @@ WHERE id = %s
 """
 DELETE_REVIEW_QUERY = "UPDATE reviews SET deleted = TRUE WHERE id = %s"
 
+
+@dataclass(frozen=True)
+class AdminAction:
+    """Everything that differs between the signed-link actions; `{id}` in `title` and `source` is the link's target."""
+
+    # How to look up the target by id, or None when the link carries the sender's IP itself (contact messages)
+    query: str | None
+    # The confirm page's title
+    title: str
+    # True: soft-delete the review; False: block the target's IP
+    deletes: bool
+    # How the block reason names its source, e.g. "review #7"
+    source: str
+
+    @property
+    def link_carries_ip(self):
+        """True for contact messages: nothing is stored, so the link's target is the sender's IP itself."""
+        return self.query is None
+
+
+# One entry per action admin_links can sign, so adding or changing an action is one edit
+ACTIONS = {
+    "delete-review": AdminAction(REVIEW_QUERY, "Delete review #{id}?", deletes=True, source="review #{id}"),
+    "block-review-ip": AdminAction(
+        REVIEW_QUERY, "Block the reviewer behind review #{id}?", deletes=False, source="review #{id}"
+    ),
+    "block-commission-ip": AdminAction(
+        COMMISSION_QUERY,
+        "Block the requester behind commission request #{id}?",
+        deletes=False,
+        source="commission #{id}",
+    ),
+    "block-contact-ip": AdminAction(
+        None, "Block the sender of a contact message?", deletes=False, source="contact message"
+    ),
+}
+
 SNIPPET_LENGTH = 200
-SGT = ZoneInfo("Asia/Singapore")
 
 
 def shows_error_page_on_unexpected_errors(handler):
@@ -145,7 +182,7 @@ def perform_action(token, ip):
             log("admin_not_found", action=action, target_id=target_id, ip=ip)
             return not_found_page()
 
-        if action == "delete-review":
+        if ACTIONS[action].deletes:
             # Soft delete: hides the review but keeps the row, so it can be restored by hand
             changed = not target["deleted"]
             if changed:
@@ -165,11 +202,11 @@ def perform_action(token, ip):
 def load_target(cur, action, target_id):
     """The review or commission request the action applies to, or None if it doesn't exist."""
     # Contact messages aren't stored: the link itself carries the sender's IP, as a number
-    if action == "block-contact-ip":
+    if ACTIONS[action].link_carries_ip:
         return {"ip_address": ipaddress.ip_address(target_id), "deleted": False}
 
-    # Commission links read commission_requests; both review actions read reviews
-    query = COMMISSION_QUERY if action == "block-commission-ip" else REVIEW_QUERY
+    # Otherwise read the row the link names, from the action's own table
+    query = ACTIONS[action].query
     cur.execute(query, (target_id,))
     return cur.fetchone()
 
@@ -177,7 +214,7 @@ def load_target(cur, action, target_id):
 def already_done(cur, action, target):
     """Whether confirming would change nothing: the review is already hidden, or its IP already blocked."""
     # A delete is done once the review's flag is set
-    if action == "delete-review":
+    if ACTIONS[action].deletes:
         return target["deleted"]
 
     # A block is done once the row's IP is in blocked_ips
@@ -186,27 +223,24 @@ def already_done(cur, action, target):
 
 def source_label(action, target_id):
     """How the block reason names its source, e.g. 'review #7', 'commission #42' or 'contact message'."""
-    if action == "block-contact-ip":
-        return "contact message"
-    return f"commission #{target_id}" if action == "block-commission-ip" else f"review #{target_id}"
+    return ACTIONS[action].source.format(id=target_id)
 
 
 def describe(action, target_id, target):
     """The page title and a sentence saying exactly what Confirm will do."""
-    # Deleting only hides the one review
-    if action == "delete-review":
-        return f"Delete review #{target_id}?", "The review will be hidden from the site."
+    # The title names the review or request the link points at (contact blocks have no number)
+    title = ACTIONS[action].title.format(id=target_id)
 
-    # Both blocks have the same effect; only the title names a different source
+    # Deleting only hides the one review
+    if ACTIONS[action].deletes:
+        return title, "The review will be hidden from the site."
+
+    # Every block has the same effect, whatever its source
     block_effect = (
         f"{blocked_range(target['ip_address'])} will no longer be able to post reviews, send commission requests or "
         "send contact messages."
     )
-    if action == "block-review-ip":
-        return f"Block the reviewer behind review #{target_id}?", block_effect
-    if action == "block-contact-ip":
-        return "Block the sender of a contact message?", block_effect
-    return f"Block the requester behind commission request #{target_id}?", block_effect
+    return title, block_effect
 
 
 def blocked_range(ip):
@@ -217,24 +251,29 @@ def blocked_range(ip):
     return f"{label} {html.escape(scope)}"
 
 
+def escaped_ip(ip):
+    """`ip` (text or an ipaddress object) as text that's safe inside the page's HTML."""
+    return html.escape(str(ip))
+
+
 def target_details(action, target):
     """The escaped who / when / what of the target; blocks show a snippet, deletes show the full review."""
     # A contact block has only the IP to show
-    if action == "block-contact-ip":
-        return f"<p><strong>IP:</strong> {html.escape(str(target['ip_address']))}</p>"
+    if ACTIONS[action].link_carries_ip:
+        return f"<p><strong>IP:</strong> {escaped_ip(target['ip_address'])}</p>"
 
     # Deletes show the whole review so the owner can judge it; blocks just need enough to recognise it
     text = target["text"]
-    if action != "delete-review" and len(text) > SNIPPET_LENGTH:
+    if not ACTIONS[action].deletes and len(text) > SNIPPET_LENGTH:
         text = text[:SNIPPET_LENGTH] + "…"
 
     # Show the time in Singapore time, matching the notification emails
-    posted = target["created_at"].astimezone(SGT).strftime("%A, %d %B %Y at %I:%M %p (SGT)")
+    posted = format_sgt(target["created_at"])
 
     return (
         f"<p><strong>From:</strong> {html.escape(target['who'])}</p>"
         f"<p><strong>Sent:</strong> {posted}</p>"
-        f"<p><strong>IP:</strong> {html.escape(str(target['ip_address']))}</p>"
+        f"<p><strong>IP:</strong> {escaped_ip(target['ip_address'])}</p>"
         f"<blockquote>{html.escape(text)}</blockquote>"
     )
 

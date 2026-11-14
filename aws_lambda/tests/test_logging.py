@@ -7,8 +7,7 @@ import pytest
 
 import admin_links
 import request_log
-from conftest import logged, make_event
-from test_floof_comm import commission_body
+from conftest import commission_body, logged, make_event
 
 
 def test_log_prints_one_json_line_with_the_event_name(capsys):
@@ -46,7 +45,7 @@ def test_every_lambda_logs_every_request_even_refused_ones(load_lambda, capsys, 
 @pytest.fixture
 def api(load_lambda, cursor):
     # Not blocked, no review this hour, and the insert returns review #7.
-    cursor.on("INTERVAL '1 hour'", rows=[{"count": 0}])
+    cursor.on("INTERVAL '1 hour'", rows=[{"recent": 0}])
     cursor.on("INSERT INTO reviews", rows=[{"id": 7, "created_at": datetime.now(timezone.utc)}])
     cursor.on("AS earlier", rows=[{"earlier": 0}])
     return load_lambda("floof-api")
@@ -85,9 +84,9 @@ def test_api_logs_an_email_failure(api, emails, capsys):
     # Act: post a review.
     api.lambda_handler(review_event(), None)
 
-    # Assert: the failure names the review and the error.
-    [failure] = [line for line in logged(capsys) if line["event"] == "owner_email_failed"]
-    assert failure["review_id"] == 7
+    # Assert: the same email_failed event every Lambda uses, naming the review, the recipient and the error.
+    [failure] = [line for line in logged(capsys) if line["event"] == "email_failed"]
+    assert (failure["review_id"], failure["to"]) == (7, "owner")
     assert "resend is down" in failure["error"]
 
 

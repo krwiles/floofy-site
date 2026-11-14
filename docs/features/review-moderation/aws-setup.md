@@ -208,7 +208,8 @@ visitor is counted and blocked by their whole /64 network, which is what one hom
 
 Every Lambda writes one JSON line per request (method, path, IP and browser, never what the visitor typed), plus a line
 for each outcome: `review_saved`, `commission_saved`, `refused` (with `reason`: `invalid`, `blocked` or
-`rate_limited`), `global_cap_reached` (with `form`), `owner_email_failed` / `email_failed`, and on `floof-admin`, `admin_invalid_link`,
+`rate_limited`), `global_cap_reached` (with `form`), `email_failed` (with `to`: `owner` or `customer`, and the `review_id` or
+`request_id`), and on `floof-admin`, `admin_invalid_link`,
 `admin_confirm_shown` and `admin_action`. Admin tokens are never logged.
 
 To search them, open **CloudWatch → Logs Insights**, pick one or more `/aws/lambda/floof-*` log groups, and run, for

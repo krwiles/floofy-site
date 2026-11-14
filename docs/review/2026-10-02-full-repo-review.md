@@ -265,7 +265,7 @@ documented standard is broken. **Smell** is a judgement call. **Doc** means the 
     - "Parse the request body into dataclass";
     - the `floof-api` GET comment reads as if it fetches deleted reviews.
   - **Inconsistent punctuation:** `shared/admin_links.py` mixes comments with and without full stops.
-- **C7 — Tests can leak into later tests (Std, test hygiene).**
+- **C7 — Tests can leak into later tests (Std, test hygiene).** Python half (the last two bullets) fixed by PR 4.
   - **The leak:** `streaming.spec`'s `vi.unstubAllGlobals()`, the i18n spec's `warn.mockRestore()` and the parallax
     spec's `errorSpy.mockRestore()` only run when the assertions pass. They belong in `afterEach` or `try/finally`.
   - **Unneeded cleanup:** `parallax-scroll.service.spec.ts` unstubs globals it never stubbed.
@@ -278,7 +278,7 @@ documented standard is broken. **Smell** is a judgement call. **Doc** means the 
 
 ## Code smells (`M`) — judgement calls
 
-- **M1 — The three form Lambdas have grown apart.** The same jobs are done differently in each:
+- **M1 — The three form Lambdas have grown apart.** Fixed by PR 4. The same jobs are done differently in each:
   - **Email sending:** `send_email` is copied into `floof-comm` and `floof-contact`, and `floof-api` sends inline. They
     also read the API key differently (`os.environ.get` vs `os.environ[...]`).
   - **Parsing:** a frozen dataclass in comm and contact; bare `body.get(...).strip()` in api.
@@ -289,11 +289,11 @@ documented standard is broken. **Smell** is a judgement call. **Doc** means the 
   - **Connections:** see `B8`.
   - **Email-result check:** `send_email` returns an HTTP reply dict, and callers check `statusCode >= 400`.
   - **Handler names:** `main(event)` in comm and contact, `create_review` in api.
-- **M2 — Repeated code.**
+- **M2 — Repeated code.** Fixed by PR 4.
   - **The SGT date format:** written out four times (api, comm, contact, admin); only admin has an `SGT` constant.
   - **`floof-admin`:** branches on the action in six functions (`load_target`, `already_done`, `source_label`,
     `describe`, `target_details`, `perform_action`), and `html.escape(str(target["ip_address"]))` appears three times.
-- **M3 — Tests copied across the three Lambdas.** Six tests are near-identical: every-admin, full-HTML-plus-text,
+- **M3 — Tests copied across the three Lambdas.** Fixed by PR 4. Six tests are near-identical: every-admin, full-HTML-plus-text,
   failure-hides-admins, 405, unreadable-body and db-outage. They could be parametrised, the way `test_logging` already
   is.
 - **M4 — Tone is defined several times.**

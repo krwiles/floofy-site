@@ -1,0 +1,21 @@
+{
+  "emails": [
+    {
+      "from": "FloofySite <no-reply@summerfloofy.com>",
+      "html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"></head><body>\n        <h1>Floofy site contact sent by Robin &lt;b&gt;</h1>\n        <p><strong>Name:</strong> Robin &lt;b&gt;</p>\n        <p><strong>Email:</strong> robin@example.com</p>\n        <p><strong>Message:</strong> Hello &amp; welcome</p>\n        <p><em>Submitted at: Wednesday, 30 September 2026 at 12:00 PM (SGT)</em></p>\n        <p><em>Sender IP Address: 2001:db8:1:2::9</em></p>\n        <p><a href=\"https://admin.example/?token=YmxvY2stY29udGFjdC1pcC40MjU0MDc2NjQxMTI4MzgwMTgxOTYxNzA4NzcyODI0NzYzNTk3Ny4xNzkxMzQ1NjAw.wxUf2l3BmxLbnnnVj7BaFhsiXX7hZMaEg1bWcWwQuBk\">Block this sender</a></p>\n    </body></html>",
+      "reply_to": null,
+      "subject": "Website Contact: Robin <b>",
+      "text": "Floofy site contact sent by Robin <b>\nName: Robin <b>\nEmail: robin@example.com\nMessage: Hello & welcome\nSubmitted at: Wednesday, 30 September 2026 at 12:00 PM (SGT)\nSender IP Address: 2001:db8:1:2::9\nBlock this sender: https://admin.example/?token=YmxvY2stY29udGFjdC1pcC40MjU0MDc2NjQxMTI4MzgwMTgxOTYxNzA4NzcyODI0NzYzNTk3Ny4xNzkxMzQ1NjAw.wxUf2l3BmxLbnnnVj7BaFhsiXX7hZMaEg1bWcWwQuBk",
+      "to": [
+        "owner@example.com"
+      ]
+    }
+  ],
+  "reply": {
+    "body": "{\"code\": \"ok\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "statusCode": 200
+  }
+}

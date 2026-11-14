@@ -2,29 +2,26 @@ import html
 import json
 import math
 import os
-import resend
-from datetime import datetime
-from zoneinfo import ZoneInfo
+from datetime import datetime, timezone
 from dataclasses import dataclass, fields, replace
 from psycopg.rows import dict_row
 
 # Shared helpers from aws_lambda/shared/, copied beside this file by build.sh
 from admin_links import link
-from blocklist import is_blocked
+from dates import format_sgt
 from db import connect_to_db
 from email_rules import MAX_ADDRESS_LENGTH, defuse_links, is_plain_address
-from email_sender import EMAIL_FROM, admin_recipients, email_content
-from ip_scope import canonical_ip, ip_scope
-from limits import busy_reply, over_global_cap
+from email_sender import admin_recipients, send
+from form_input import invalid_fields, text_field
+from ip_scope import canonical_ip
+from limits import FormLimits, check_visitor
 from replies import replies_on_unexpected_errors, reply
 from request_log import log, log_request
 
-# More than this many requests from one IP per window are refused -- see spec.md "floof-comm"; the reply carries both
-REQUESTS_PER_WINDOW = 2
-REQUEST_WINDOW_HOURS = 24
-
-# At most this many requests per rolling day from everyone together, then the form replies "busy"
-REQUESTS_PER_DAY = 10
+# 2 requests per visitor per 24 h (spec.md "floof-comm"), 10 a day from everyone; the reply carries the visitor rule
+COMMISSION_LIMITS = FormLimits(
+    table="commission_requests", form="commission", per_visitor=2, window_hours=24, per_day=10
+)
 
 # The only commission types and usages the form offers (src/assets/data/pricing.json, plus the form's "unsure")
 COMMISSION_TYPES = ("chibi", "emote", "illustration")
@@ -48,13 +45,6 @@ MAX_LENGTHS = {
 
 # The fields the form requires; the rest may be left empty
 REQUIRED_FIELDS = ("name", "email", "commission_type", "description", "usage_type", "usage_explanation")
-
-RECENT_REQUESTS_QUERY = """
-SELECT COUNT(*) AS recent
-FROM commission_requests
-WHERE ip_address <<= %s::inet
-    AND created_at >= NOW() - %s * INTERVAL '1 hour'
-"""
 
 INSERT_QUERY = """
 INSERT INTO commission_requests (
@@ -84,16 +74,16 @@ class CommissionRequest:
     @classmethod
     def from_body(cls, body: dict) -> "CommissionRequest":
         return cls(
-            name=str(body.get("name", "")).strip(),
-            email=str(body.get("email", "")).strip(),
-            commission_type=str(body.get("commissionType", "")).strip(),
-            description=str(body.get("description", "")).strip(),
-            reference_links=str(body.get("referenceLinks", "")).strip(),
-            usage_type=str(body.get("usageType", "")).strip(),
-            usage_explanation=str(body.get("usageExplanation", "")).strip(),
+            name=text_field(body, "name"),
+            email=text_field(body, "email"),
+            commission_type=text_field(body, "commissionType"),
+            description=text_field(body, "description"),
+            reference_links=text_field(body, "referenceLinks"),
+            usage_type=text_field(body, "usageType"),
+            usage_explanation=text_field(body, "usageExplanation"),
             estimated_price=round(float(body.get("estimatedPrice", -1.0)), 2),
-            deadline=str(body.get("deadline", "")).strip(),
-            additional_notes=str(body.get("additionalNotes", "")).strip(),
+            deadline=text_field(body, "deadline"),
+            additional_notes=text_field(body, "additionalNotes"),
         )
 
 
@@ -105,42 +95,32 @@ def lambda_handler(event, context):
     
     # Only POST (the form) is accepted; anything else is refused
     if method == "POST":
-        return main(event)
+        return handle_post(event)
     
     return reply(405, "error")
 
 
-def main(event):
+def handle_post(event):
     # Read the JSON body into a CommissionRequest, with its text trimmed
     body = json.loads(event["body"])
     commission_request = CommissionRequest.from_body(body)
-    
-    # Validate the request
+
     # The visitor's IP in standard form, so the same visitor is always stored and matched the same way
     sender_ip_address = canonical_ip(event["requestContext"]["http"]["sourceIp"])
-    validation_response = validate_request(commission_request)
-    if validation_response is not None:
+
+    # Refuse input the form would never send
+    if is_invalid(commission_request):
         log("refused", reason="invalid", ip=sender_ip_address)
-        return validation_response
+        return reply(400, "invalid")
 
     
     # Check the blocklist and rate limit, then record the request before any email is attempted
     # (leaving the `with` block commits the insert and closes the connection)
     with connect_to_db() as conn, conn.cursor(row_factory=dict_row) as cur:
-        # Refuse blocked IPs with the same vague reply the other endpoints give
-        if is_blocked(cur, sender_ip_address):
-            log("refused", reason="blocked", ip=sender_ip_address)
-            return reply(403, "error")
-
-        # Refuse the visitor (their IPv4 address, or IPv6 /64) once they've reached the limit within the window
-        cur.execute(RECENT_REQUESTS_QUERY, (ip_scope(sender_ip_address), REQUEST_WINDOW_HOURS))
-        if cur.fetchone()["recent"] >= REQUESTS_PER_WINDOW:
-            log("refused", reason="rate_limited", ip=sender_ip_address)
-            return reply(429, "rate_limited", limit=REQUESTS_PER_WINDOW, window_hours=REQUEST_WINDOW_HOURS)
-
-        # Refuse everyone once today's requests reach the global cap
-        if over_global_cap(cur, "commission_requests", REQUESTS_PER_DAY):
-            return busy_reply("commission")
+        # Refuse a blocked, over-limit or capped visitor (check_visitor logs why and builds the reply)
+        refusal = check_visitor(cur, COMMISSION_LIMITS, sender_ip_address)
+        if refusal:
+            return refusal
 
         # Save the request; RETURNING id hands back the new row's id for the admin link
         cur.execute(INSERT_QUERY, (
@@ -160,13 +140,11 @@ def main(event):
     log("commission_saved", request_id=request_id, ip=sender_ip_address)
 
     # Email the owner; if that fails the visitor gets an error, since nobody would know the request arrived
-    floofy_email_result = email_floofy(commission_request, request_id, sender_ip_address)
-    if floofy_email_result["statusCode"] >= 400:
-        return floofy_email_result
+    if not email_floofy(commission_request, request_id, sender_ip_address):
+        return reply(500, "error")
 
     # Then the customer's confirmation; its failure is only logged, because the owner already has the request
-    customer_email_result = email_customer(commission_request, request_id)
-    if customer_email_result["statusCode"] < 400:
+    if email_customer(commission_request, request_id):
         log("commission_emails_sent", request_id=request_id)
 
     # The owner has the request: tell the visitor it worked
@@ -214,14 +192,14 @@ def email_floofy(commission_request: CommissionRequest, request_id: int, sender_
         <p><strong>Estimated Price:</strong> ${commission_request.estimated_price:.2f} USD</p>
         <p><strong>Deadline:</strong> {commission_request.deadline}</p>
         <p><strong>Additional Notes:</strong> {commission_request.additional_notes}</p>
-        <p><em>Submitted at: {datetime.now(ZoneInfo("Asia/Singapore")).strftime('%A, %d %B %Y at %I:%M %p (SGT)')}</em></p>
+        <p><em>Submitted at: {format_sgt(datetime.now(timezone.utc))}</em></p>
         <p><em>Sender IP Address: {html.escape(sender_ip_address)}</em></p>
         <p><em>Request #{request_id}</em></p>
         <p><a href="{html.escape(block_url)}">Block this requester</a></p>
     """
     
-    # Send the email to Floofy
-    return send_email(admin_recipients(), email_subject, email_body, request_id, recipient="owner")
+    # Send it to the admins; True if it went out
+    return send(admin_recipients(), email_subject, email_body, request_id=request_id, to="owner")
 
 
 def email_customer(commission_request: CommissionRequest, request_id: int):
@@ -249,65 +227,26 @@ def email_customer(commission_request: CommissionRequest, request_id: int):
         </ul>
     """
     
-    # Send the email to the customer
-    return send_email([to_email], email_subject, email_body, request_id, recipient="customer", reply_to=admin_recipients())
+    # Send it to the customer, replying to the admins; True if it went out
+    return send(
+        [to_email], email_subject, email_body, reply_to=admin_recipients(), request_id=request_id, to="customer"
+    )
 
 
-def validate_request(commission_request: CommissionRequest):
-    # Refuse a required field left blank
-    for field in REQUIRED_FIELDS:
-        if not getattr(commission_request, field):
-            return reply(400, "invalid")
+def is_invalid(commission_request: CommissionRequest) -> bool:
+    """True if the request breaks any of the form's rules."""
+    # Blank required fields, or text longer than the form (and its column) allows
+    if invalid_fields(commission_request, MAX_LENGTHS, REQUIRED_FIELDS):
+        return True
 
-    # Refuse an address that isn't exactly one plain address, so the confirmation can't be aimed at a list
+    # An address that isn't exactly one plain address, so the confirmation can't be aimed at a list
     if not is_plain_address(commission_request.email):
-        return reply(400, "invalid")
+        return True
 
-    # Refuse a type or usage the form never offers, so those fields can't carry free text
+    # A type or usage the form never offers, so those fields can't carry free text
     if commission_request.commission_type not in COMMISSION_TYPES or commission_request.usage_type not in USAGE_TYPES:
-        return reply(400, "invalid")
-
-    # Refuse any text longer than the form (and its column) allows
-    for field, max_length in MAX_LENGTHS.items():
-        if len(getattr(commission_request, field)) > max_length:
-            return reply(400, "invalid")
+        return True
 
     # The price must be a real number the database column can store (a missing price arrives as -1)
     price = commission_request.estimated_price
-    if not math.isfinite(price) or price < 0 or price >= MAX_PRICE:
-        return reply(400, "invalid")
-
-    return None
-
-
-def send_email(to_emails, subject, body, request_id, recipient, reply_to=None):
-    """Send one email; on failure, log it against the saved request and return a generic error reply.
-    `recipient` ("owner" or "customer") labels the log line without recording anyone's address."""
-    # Authenticate with Resend using this Lambda's API key
-    resend.api_key = os.environ.get("RESEND_API_KEY")
-
-    try:
-        # The email to send, from the site's own address
-        email_params: resend.Emails.SendParams = {
-            "from": EMAIL_FROM,
-            "to": to_emails,
-            "subject": subject,
-            # Full HTML document plus a plain-text copy
-            **email_content(body),
-        }
-
-        # Let the recipient reply to a real person rather than the no-reply sender
-        if reply_to:
-            email_params["reply_to"] = reply_to
-
-        # Send it; resend.Emails.send raises on any API or network error
-        resend.Emails.send(email_params)
-
-    except Exception as e:
-        # Record the real error and which saved request it belongs to; the visitor only sees the generic reply below
-        log("email_failed", request_id=request_id, to=recipient, error=repr(e))
-        # A generic reply: naming the recipients would reveal the admins' addresses to the visitor
-        return reply(500, "error")
-
-    # Sent: callers only check the status code
-    return reply(200, "ok")
+    return not math.isfinite(price) or price < 0 or price >= MAX_PRICE

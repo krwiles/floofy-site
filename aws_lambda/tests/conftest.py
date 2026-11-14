@@ -198,3 +198,24 @@ def make_event(method, body=None, ip="203.0.113.7", query=None, base64_body=Fals
         "isBase64Encoded": base64_body,
         "queryStringParameters": query,
     }
+
+
+def commission_body(**overrides):
+    """A valid request, in the shape the frontend's CreateCommissionRequest sends."""
+    # Every field filled in with an ordinary value
+    body = {
+        "name": "Sam",
+        "email": "sam@example.com",
+        "commissionType": "chibi",
+        "description": "A fox in a scarf",
+        "referenceLinks": "https://ref.example/fox",
+        "usageType": "personal",
+        "usageExplanation": "Profile picture",
+        "estimatedPrice": 120,
+        "deadline": "December",
+        "additionalNotes": "Thanks!",
+    }
+
+    # Then each test's own changes on top
+    body.update(overrides)
+    return body

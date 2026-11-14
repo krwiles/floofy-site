@@ -1,0 +1,33 @@
+{
+  "emails": [
+    {
+      "from": "FloofySite <no-reply@summerfloofy.com>",
+      "html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"></head><body>\n        <h1>Chibi Request</h1>\n        <p><strong>Name:</strong> Sam &lt;i&gt;</p>\n        <p><strong>Email:</strong> sam@example.com</p>\n        <p><strong>Commission Type:</strong> chibi</p>\n        <p><strong>Description:</strong> A fox in a scarf, see https://ref.example/fox</p>\n        <p><strong>Reference Links:</strong> https://ref.example/a &amp; https://ref.example/b</p>\n        <p><strong>Usage Type:</strong> personal</p>\n        <p><strong>Usage Explanation:</strong> Profile picture</p>\n        <p><strong>Estimated Price:</strong> $120.50 USD</p>\n        <p><strong>Deadline:</strong> December</p>\n        <p><strong>Additional Notes:</strong> Thanks!</p>\n        <p><em>Submitted at: Wednesday, 30 September 2026 at 12:00 PM (SGT)</em></p>\n        <p><em>Sender IP Address: 203.0.113.7</em></p>\n        <p><em>Request #42</em></p>\n        <p><a href=\"https://admin.example/?token=YmxvY2stY29tbWlzc2lvbi1pcC40Mi4xNzkxMzQ1NjAw.ehvMXNUl2kLMTkloToXHVQT8Qp8cq5P82GXuW0A3Q5w\">Block this requester</a></p>\n    </body></html>",
+      "reply_to": null,
+      "subject": "New Commission Request: Sam <i>",
+      "text": "Chibi Request\nName: Sam <i>\nEmail: sam@example.com\nCommission Type: chibi\nDescription: A fox in a scarf, see https://ref.example/fox\nReference Links: https://ref.example/a & https://ref.example/b\nUsage Type: personal\nUsage Explanation: Profile picture\nEstimated Price: $120.50 USD\nDeadline: December\nAdditional Notes: Thanks!\nSubmitted at: Wednesday, 30 September 2026 at 12:00 PM (SGT)\nSender IP Address: 203.0.113.7\nRequest #42\nBlock this requester: https://admin.example/?token=YmxvY2stY29tbWlzc2lvbi1pcC40Mi4xNzkxMzQ1NjAw.ehvMXNUl2kLMTkloToXHVQT8Qp8cq5P82GXuW0A3Q5w",
+      "to": [
+        "owner@example.com"
+      ]
+    },
+    {
+      "from": "FloofySite <no-reply@summerfloofy.com>",
+      "html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"></head><body>\n        <h1>Thank you for your commission request!</h1>\n        <p>Dear Sam &lt;i&gt;,</p>\n        <p>I have received your chibi commission request.</p>\n        <p>I will review your request and get back to you shortly!</p>\n        <p><strong>Details of your request:</strong></p>\n        <ul>\n            <li><strong>Description:</strong> A fox in a scarf, see hxxps[:]//ref[.]example/fox</li>\n            <li><strong>Reference Links:</strong> hxxps[:]//ref[.]example/a &amp; hxxps[:]//ref[.]example/b</li>\n            <li><strong>Usage Type:</strong> personal</li>\n            <li><strong>Usage Explanation:</strong> Profile picture</li>\n            <li><strong>Estimated Price:</strong> $120.50 USD</li>\n            <li><strong>Deadline:</strong> December</li>\n            <li><strong>Additional Notes:</strong> Thanks!</li>\n        </ul>\n    </body></html>",
+      "reply_to": [
+        "owner@example.com"
+      ],
+      "subject": "Commission Request Confirmation",
+      "text": "Thank you for your commission request!\nDear Sam <i>,\nI have received your chibi commission request.\nI will review your request and get back to you shortly!\nDetails of your request:\nDescription: A fox in a scarf, see hxxps[:]//ref[.]example/fox\nReference Links: hxxps[:]//ref[.]example/a & hxxps[:]//ref[.]example/b\nUsage Type: personal\nUsage Explanation: Profile picture\nEstimated Price: $120.50 USD\nDeadline: December\nAdditional Notes: Thanks!",
+      "to": [
+        "sam@example.com"
+      ]
+    }
+  ],
+  "reply": {
+    "body": "{\"code\": \"ok\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "statusCode": 200
+  }
+}

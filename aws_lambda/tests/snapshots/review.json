@@ -1,0 +1,21 @@
+{
+  "emails": [
+    {
+      "from": "FloofySite <no-reply@summerfloofy.com>",
+      "html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"></head><body>\n        <h1>New review #7</h1>\n        <p><strong>Author:</strong> Robin &lt;b&gt;</p>\n        <p><strong>Comment:</strong> Lovely art! See https://ref.example &amp; more</p>\n        <p><em>Posted at: Wednesday, 30 September 2026 at 12:00 PM (SGT)</em></p>\n        <p><em>Sender IP Address: 203.0.113.7</em></p>\n        <p><strong>Earlier reviews from this IP:</strong> 3</p>\n        <p><a href=\"https://admin.example/?token=ZGVsZXRlLXJldmlldy43LjE3OTEzNDU2MDA.Ndv2jXppET_xyq5nHrxf_fKJ8hUQ_CnnvaSpaU3xJuI\">Delete this review</a></p>\n        <p><a href=\"https://admin.example/?token=YmxvY2stcmV2aWV3LWlwLjcuMTc5MTM0NTYwMA.dKuQH7xhs-q65vYvTvBhvG0SzTCilV92WKXv691lo6w\">Block this reviewer</a></p>\n    </body></html>",
+      "reply_to": null,
+      "subject": "New review #7 from Robin <b>",
+      "text": "New review #7\nAuthor: Robin <b>\nComment: Lovely art! See https://ref.example & more\nPosted at: Wednesday, 30 September 2026 at 12:00 PM (SGT)\nSender IP Address: 203.0.113.7\nEarlier reviews from this IP: 3\nDelete this review: https://admin.example/?token=ZGVsZXRlLXJldmlldy43LjE3OTEzNDU2MDA.Ndv2jXppET_xyq5nHrxf_fKJ8hUQ_CnnvaSpaU3xJuI\nBlock this reviewer: https://admin.example/?token=YmxvY2stcmV2aWV3LWlwLjcuMTc5MTM0NTYwMA.dKuQH7xhs-q65vYvTvBhvG0SzTCilV92WKXv691lo6w",
+      "to": [
+        "owner@example.com"
+      ]
+    }
+  ],
+  "reply": {
+    "body": "{\"code\": \"ok\"}",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "statusCode": 200
+  }
+}
