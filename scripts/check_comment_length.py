@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Flags inline comment blocks longer than 2 lines (CLAUDE.md's "Comments" rule).
+"""Flags inline comment blocks longer than 2 lines (CODING_STANDARDS.md's "Comments" rule).
 Checks .py (# comments), .ts/.tsx (// comments), .css (/* */ comments) and .html (<!-- --> comments).
 Docstrings, JSDoc and CSS `/** */` doc comments are exempt.
 
-Two modes: no args checks staged files and exits 1 on a violation (a pre-commit hook, blocking);
-`--file PATH [PATH ...]` checks specific files and always exits 0 (the PostToolUse hook, advisory
--- warns without interrupting an in-progress edit).
+Three modes: no args checks staged files and exits 1 on a violation (a pre-commit hook, blocking);
+`--since REF` checks every file changed since REF and exits 1 too (the CI check on a PR);
+`--file PATH` checks specific files and always exits 0 (the PostToolUse hook, advisory).
 
 A line starting a "Label:" pattern (e.g. "Arrange:", "Act & assert:") begins a fresh block even
 with no blank line above it, so two adjacent short step-comments aren't flagged as one long one.
@@ -30,6 +30,17 @@ def staged_files() -> list[str]:
     # The staged (added, copied or modified) file paths, from git.
     out = subprocess.run(
         ["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"],
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout
+    return [f for f in out.splitlines() if f]
+
+
+def changed_since(ref: str) -> list[str]:
+    # The file paths added, copied or modified between REF's merge-base and HEAD (what a PR changes), from git.
+    out = subprocess.run(
+        ["git", "diff", "--name-only", "--diff-filter=ACM", f"{ref}...HEAD"],
         capture_output=True,
         text=True,
         check=True,
@@ -123,13 +134,19 @@ def prefix_for(path: str) -> str | None:
 
 
 def main() -> int:
-    # Either --file paths (advisory, from the hook) or the staged files (blocking, as a pre-commit check).
+    # Either --file paths (advisory, from the hook), the files changed --since a ref (CI) or the staged files (pre-commit).
     parser = argparse.ArgumentParser()
     parser.add_argument("--file", action="append", default=None, help="Check specific file(s) instead of staged files; always exits 0.")
+    parser.add_argument("--since", default=None, help="Check the files changed since this git ref (e.g. origin/main).")
     args = parser.parse_args()
 
     advisory = args.file is not None
-    paths = args.file if advisory else staged_files()
+    if advisory:
+        paths = args.file
+    elif args.since is not None:
+        paths = changed_since(args.since)
+    else:
+        paths = staged_files()
 
     had_violation = False
     for path in paths:
@@ -145,11 +162,11 @@ def main() -> int:
         # Report each over-long block.
         for start, end, n in found:
             had_violation = True
-            print(f"{path}:{start}-{end}: comment block is {n} lines (CLAUDE.md caps inline comments at {MAX_LINES})")
+            print(f"{path}:{start}-{end}: comment block is {n} lines (CODING_STANDARDS.md caps inline comments at {MAX_LINES})")
 
-    # Only the pre-commit mode fails; the hook just warns.
+    # Only the pre-commit and CI modes fail; the hook just warns.
     if had_violation and not advisory:
-        print("\nTrim the blocks above to 1-2 lines (see CLAUDE.md's Comments section).")
+        print("\nTrim the blocks above to 1-2 lines (see CODING_STANDARDS.md's Comments section).")
         print("To commit anyway: git commit --no-verify")
         return 1
     return 0
